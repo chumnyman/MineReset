@@ -8,6 +8,8 @@ public class Edit
 {
 	private static String curMine;
 	
+	// TODO Add a method to set up a mine spawn point
+	
 	public static void run(String[] args)
 	{
 		if(!Util.senderHasPermission("edit", true))

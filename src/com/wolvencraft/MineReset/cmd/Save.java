@@ -151,6 +151,11 @@ public class Save
 		Util.setRegionInt(baseNode + ".pos1.y", (int)loc[1].getY());
 		Util.setRegionInt(baseNode + ".pos1.z", (int)loc[1].getZ());
 		
+		// = = = Position 2 (mine spawn point)
+		Util.setRegionInt(baseNode + ".pos1.x", 0);
+		Util.setRegionInt(baseNode + ".pos1.y", 0);
+		Util.setRegionInt(baseNode + ".pos1.z", 0);
+		
 		if(Util.debugEnabled()) Util.log("Writing reset data");
 		
 		// = = Materials
@@ -183,6 +188,6 @@ public class Save
 		Util.saveRegionData();
 		
 		if(Util.debugEnabled()) Util.log("Data saved successfully");
-		
+		return;
 	}
 }

@@ -13,6 +13,8 @@ public class Reset
 	// TODO: Half of the things that are in the configuration do nothing.
 	// Gotta fix that.
 	
+	// TODO: Also, add a check to tp a player outside the mine before a reset
+	// (if a mine spawn point is set)
 	public static void run(String[] args)
 	{
 		if(!Util.senderHasPermission("reset", true))

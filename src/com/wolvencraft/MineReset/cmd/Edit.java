@@ -15,13 +15,6 @@ public class Edit
 			Util.sendDenied(args);
 			return;
 		}
-			
-		// 3 mine edit default
-		// 3 mine cooldown toggle
-		// 3 mine cooldown <time>
-		// 4 mine add <name> <percentage>
-		// 4 mine remove <name> <percentage>
-		// 4 mine delete <name>
 		
 		if(args.length == 1)
 		{

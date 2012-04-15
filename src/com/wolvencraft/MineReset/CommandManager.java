@@ -51,7 +51,7 @@ public class CommandManager implements CommandExecutor
 		else if(args[0].equalsIgnoreCase("delete")) {}
 		else if(args[0].equalsIgnoreCase("auto")) {}
 		else if(args[0].equalsIgnoreCase("protection")) {}
-		else Util.sendInvalid(args[0]);
+		else Util.sendInvalid(args);
 			
 		return true;
 	}

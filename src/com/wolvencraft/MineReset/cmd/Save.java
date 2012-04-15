@@ -152,9 +152,9 @@ public class Save
 		Util.setRegionInt(baseNode + ".pos1.z", (int)loc[1].getZ());
 		
 		// = = = Position 2 (mine spawn point)
-		Util.setRegionInt(baseNode + ".pos1.x", 0);
-		Util.setRegionInt(baseNode + ".pos1.y", 0);
-		Util.setRegionInt(baseNode + ".pos1.z", 0);
+		Util.setRegionInt(baseNode + ".pos2.x", 0);
+		Util.setRegionInt(baseNode + ".pos2.y", 0);
+		Util.setRegionInt(baseNode + ".pos2.z", 0);
 		
 		if(Util.debugEnabled()) Util.log("Writing reset data");
 		

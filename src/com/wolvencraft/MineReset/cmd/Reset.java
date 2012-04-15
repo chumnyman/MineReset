@@ -14,7 +14,7 @@ public class Reset
 	{
 		if(!Util.senderHasPermission("reset", true))
 		{
-			Util.sendDenied("reset");
+			Util.sendDenied(args);
 			return;
 		}
 		String mineName;

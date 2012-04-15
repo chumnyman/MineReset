@@ -12,7 +12,7 @@ public class Edit
 	{
 		if(!Util.senderHasPermission("edit", true))
 		{
-			Util.sendDenied(args[0] + " " + args[1]);
+			Util.sendDenied(args);
 			return;
 		}
 			

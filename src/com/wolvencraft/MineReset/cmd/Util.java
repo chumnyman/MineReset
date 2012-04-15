@@ -162,11 +162,14 @@ public class Util
 	 * Message thrown when the user is denied of an action
 	 * @param command Command used
 	 */
-	public static void sendDenied(String command)
+	public static void sendDenied(String[] args)
 	{
 		CommandSender sender = CommandManager.getSender();
 		String title = getConfigString("messages.title");
 		String message = getConfigString("messages.access-denied");
+		String command = "";
+		for(int i = 0; i < args.length; i++)
+			command = command + " " + args[i];
 		log(sender.getName() + " was denied to use a command (" + command + ")");
 		sender.sendMessage(ChatColor.RED + "[" + title + "] " + ChatColor.WHITE + message);
 	}

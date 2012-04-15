@@ -11,7 +11,7 @@ public class Select
 	{
 		if(!Util.isPlayer() || !Util.senderHasPermission("edit", false))
 		{
-			Util.sendDenied(args[0]);
+			Util.sendDenied(args);
 			return null;
 		}
 		

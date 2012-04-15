@@ -10,6 +10,9 @@ import com.wolvencraft.MineReset.util.Pattern;
 
 public class Reset
 {
+	// TODO: Half of the things that are in the configuration do nothing.
+	// Gotta fix that.
+	
 	public static void run(String[] args)
 	{
 		if(!Util.senderHasPermission("reset", true))

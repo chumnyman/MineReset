@@ -26,9 +26,9 @@ public class Help
 		
 		formatHelp("mine delete", " <name>", "Completely deletes a mine and all information about it", "edit");
 		
-		formatHelp("mine auto", "", "Shows a help page on how to automate the mine", "auto");
+		formatHelp("mine auto", "", "Shows a help page on how to automate the mine", "edit");
 		
-		formatHelp("mine protection", "", "Shows how to set up a mine protection", "protection");
+		formatHelp("mine protection", "", "Shows how to set up a mine protection", "edit");
 		
 		return;
 	}

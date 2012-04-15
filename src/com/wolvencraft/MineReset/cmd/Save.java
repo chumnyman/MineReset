@@ -19,7 +19,7 @@ public class Save
 		}
 		if(args.length > 2)
 		{
-			Util.sendInvalid(args[0] + " " + args[1] + " " + args[2]);
+			Util.sendInvalid(args);
 			return;
 		}
 		

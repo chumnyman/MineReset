@@ -20,7 +20,7 @@ public class Reset
 		String mineName;
 		if(args[0].length() > 2)
 		{
-			Util.sendInvalid(args[0] + " " + args[1] + " " + args[2]);
+			Util.sendInvalid(args);
 			return;
 		}
 		if(args[0].length() == 1)

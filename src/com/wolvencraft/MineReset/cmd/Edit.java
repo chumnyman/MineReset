@@ -30,7 +30,7 @@ public class Edit
 		}
 		if(args.length > 3)
 		{
-			Util.sendInvalid(args[0] + " " + args[1] + " " + args[2] + " " + args[3]);
+			Util.sendInvalid(args);
 		}
 		
 		curMine = CommandManager.getMine();
@@ -56,7 +56,7 @@ public class Edit
 			
 			if(args.length != 3)
 			{
-				Util.sendInvalid(args[0] + " " + args[1]);
+				Util.sendInvalid(args);
 				return;
 			}
 			
@@ -78,7 +78,7 @@ public class Edit
 			}
 			else
 			{
-				Util.sendInvalid(args[0] + " " + args[1] + " " + args[2]);
+				Util.sendInvalid(args);
 				return;
 			}
 		}
@@ -194,7 +194,7 @@ public class Edit
 		}
 		else
 		{
-			Util.sendInvalid("args[0]");
+			Util.sendInvalid(args);
 			return;
 		}
 	}

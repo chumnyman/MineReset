@@ -146,11 +146,14 @@ public class Util
 	 * Also sends a command into the log
 	 * @param command Command used
 	 */
-	public static void sendInvalid(String command)
+	public static void sendInvalid(String[] args)
 	{
 		CommandSender sender = CommandManager.getSender();
 		String title = getConfigString("messages.title");
 		String message = getConfigString("messages.invalid-command");
+		String command = "";
+		for(int i = 0; i < args.length; i++)
+			command = command + " " + args[i];
 		log(sender.getName() + " sent an invalid command (" + command + ")");
 		sender.sendMessage(ChatColor.RED + "[" + title + "] " + ChatColor.WHITE + message);
 	}

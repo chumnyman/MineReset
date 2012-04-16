@@ -32,7 +32,7 @@ public class BlockBreakListener implements Listener
 		{
 			if(usePermissions)
 			{
-				if(!Util.playerHasPermission(player, "break") && !Util.playerHasPermission(player, "break." + regionList.get(i)))
+				if(!Util.playerHasPermission(player, "protection") && !Util.playerHasPermission(player, "protection.break") && !Util.playerHasPermission(player, "protection.break." + regionList.get(i)))
 				{
 					Location blockLocation = event.getBlock().getLocation();
 					padding = Util.getRegionInt("mines." + regionList.get(i) + ".protection.padding");

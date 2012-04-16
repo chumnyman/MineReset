@@ -1,16 +1,11 @@
 package com.wolvencraft.MineReset.cmd;
 
-import org.bukkit.command.CommandSender;
 
-import com.wolvencraft.MineReset.CommandManager;
-import com.wolvencraft.MineReset.MineReset;
 
 public class Teleport
 {
 	public static void run()
 	{
-		CommandSender sender = CommandManager.getSender();
-		MineReset plugin = CommandManager.getPlugin();
 		
 		// This function should allow the user to teleport a player to each
 		// individual mine. Checks for the correctness of arguments should be included.

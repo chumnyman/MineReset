@@ -1,22 +1,106 @@
 package com.wolvencraft.MineReset.cmd;
 
-import org.bukkit.command.CommandSender;
-
 import com.wolvencraft.MineReset.CommandManager;
-import com.wolvencraft.MineReset.MineReset;
 
 public class Protection
 {
-	public static void run()
+	public static void run(String[] args)
 	{
-		CommandSender sender = CommandManager.getSender();
-		MineReset plugin = CommandManager.getPlugin();
+		if(!Util.senderHasPermission("edit", true))
+		{
+			Util.sendDenied(args);
+			return;
+		}
 		
-		// This function should allow the user to enable the protection for each
-		// individual mine, as well as edit its properties. Checks for the
-		// correctness of arguments should be included.
+		if(args.length == 1)
+		{
+			Help.getProtection();
+			return;
+		}
+		if(args.length > 4)
+		{
+			Util.sendInvalid(args);
+		}
 		
-		// Help.java includes command help. Util.java has a bunch of helpful functions
-		// for accessing the configuration and printing out messages to the user.
+		String curMine = CommandManager.getMine();
+		
+		if(curMine == null)
+		{
+			Util.sendError("Select a mine first with /mine edit <name>");
+			return;
+		}
+		
+		if(args[1].equalsIgnoreCase("breaking"))
+		{
+			if(args[2].equalsIgnoreCase("toggle"))
+			{
+				
+			}
+			else if(args[2].equalsIgnoreCase("blacklist"))
+			{
+				if(args[3].equalsIgnoreCase("toggle"))
+				{
+					
+				}
+				else if(args[3].equalsIgnoreCase("whitelist"))
+				{
+					
+				}
+				else if(args[3].equalsIgnoreCase("add"))
+				{
+					
+				}
+				else if(args[3].equalsIgnoreCase("remove"))
+				{
+					
+				}
+				else
+				{
+					Util.sendInvalid(args);
+				}
+			}
+			else
+			{
+				Util.sendInvalid(args);
+			}
+		}
+		else if(args[1].equalsIgnoreCase("placement"))
+		{
+			if(args[2].equalsIgnoreCase("toggle"))
+			{
+				
+			}
+			else if(args[2].equalsIgnoreCase("blacklist"))
+			{
+				if(args[3].equalsIgnoreCase("toggle"))
+				{
+					
+				}
+				else if(args[3].equalsIgnoreCase("whitelist"))
+				{
+					
+				}
+				else if(args[3].equalsIgnoreCase("add"))
+				{
+					
+				}
+				else if(args[3].equalsIgnoreCase("remove"))
+				{
+					
+				}
+				else
+				{
+					Util.sendInvalid(args);
+				}
+			}
+			else
+			{
+				Util.sendInvalid(args);
+			}
+		}
+		else
+		{
+			Util.sendInvalid(args);
+		}
 	}
 }

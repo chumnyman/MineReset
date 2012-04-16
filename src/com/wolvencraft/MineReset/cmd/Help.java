@@ -71,10 +71,10 @@ public class Help
 		formatHelp("mine protection", "breaking blacklist add", "Add a block to the block breaking blacklist", "");
 		formatHelp("mine protection", "breaking blacklist remove", "Remove a block from the block breaking blacklist", "");
 
-		formatHelp("mine protection", "breaking placement toggle", "Enables or disables the block placement blacklist", "");
-		formatHelp("mine protection", "breaking placement whitelist", "Should the blacklist be treated as a whitelist?", "");
-		formatHelp("mine protection", "breaking placement add", "Add a block to the block placement blacklist", "");
-		formatHelp("mine protection", "breaking placement remove", "Remove a block from the block placement blacklist", "");
+		formatHelp("mine protection", "placement blacklist toggle", "Enables or disables the block breaking blacklist", "");
+		formatHelp("mine protection", "placement blacklist whitelist", "Should the blacklist be treated as a whitelist?", "");
+		formatHelp("mine protection", "placement blacklist add", "Add a block to the block breaking blacklist", "");
+		formatHelp("mine protection", "placement blacklist remove", "Remove a block from the block breaking blacklist", "");
 		
 		return;
 	}

@@ -7,23 +7,23 @@ import com.wolvencraft.MineReset.CommandManager;
 
 public class Select
 {
-	public static Location[] run(String[] args)
+	public static void run(String[] args)
 	{
 		if(!Util.isPlayer() || !Util.senderHasPermission("edit", false))
 		{
 			Util.sendDenied(args);
-			return null;
+			return;
 		}
 		
 		if(args.length == 1)
 		{
 			Help.getSelect();
-			return null;
+			return;
 		}
 		if(args.length > 2)
 		{
 			Util.sendInvalid(args);
-			return null;
+			return;
 		}
 		
 		Location[] loc = {null, null};
@@ -52,8 +52,9 @@ public class Select
 		else
 		{
 			Util.sendInvalid(args);
-			return null;
+			return;
 		}
-		return loc;
+		
+		CommandManager.setLocation(loc);
 	}
 }

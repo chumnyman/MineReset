@@ -50,7 +50,7 @@ public class Help
 		formatHelp("mine select", "", "Shows region selection help page", "edit");
 		formatHelp("mine save", " <name>", "Saves the region for future use", "edit");
 		formatHelp("mine edit", "", "Shows a help page on how to handle the mine options", "edit");
-		formatHelp("mine delete", " <name>", "Completely deletes a mine and all information about it", "edit");
+		formatHelp("mine delete", " <name>", "Completely deletes a mine", "edit");
 		formatHelp("mine auto", "", "Shows a help page on how to automate the mine", "edit");
 		formatHelp("mine protection", "", "Shows how to set up a mine protection", "edit");
 		

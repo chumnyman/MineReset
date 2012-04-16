@@ -12,11 +12,6 @@ public class Save
 	public static void run(String[] args)
 	{
 		if(Util.debugEnabled()) Util.log("Intitiating the creation of a new mine");
-		if(args.length == 1)
-		{
-			Help.getSave();
-			return;
-		}
 		if(args.length > 2)
 		{
 			Util.sendInvalid(args);
@@ -39,7 +34,12 @@ public class Save
 		
 		if(Util.debugEnabled()) Util.log("Selections checks passed");
 		
-		String mineName = args[1];
+		String mineName;
+		if(args.length == 1)
+		{
+			mineName = Util.getConfigString("configuration.default-name");
+		}
+		else mineName = args[1];
 		if(Util.mineExists(mineName))
 		{
 			Util.sendError("Mine " + mineName + " already exists!");

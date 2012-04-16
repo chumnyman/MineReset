@@ -5,11 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.wolvencraft.MineReset.cmd.Help;
-import com.wolvencraft.MineReset.cmd.Reset;
-import com.wolvencraft.MineReset.cmd.Save;
-import com.wolvencraft.MineReset.cmd.Select;
-import com.wolvencraft.MineReset.cmd.Util;
+import com.wolvencraft.MineReset.cmd.*;
 
 public class CommandManager implements CommandExecutor
 {
@@ -32,25 +28,51 @@ public class CommandManager implements CommandExecutor
 		if(!command.getName().equalsIgnoreCase("mine")) return false;
 		
 		if(args.length == 0) Help.getHelp();
-		
-		if(args[0].equalsIgnoreCase("info")) {}
-		else if(args[0].equalsIgnoreCase("list")) {}
+
+		else if(args[0].equalsIgnoreCase("auto"))
+		{
+			Util.sendError("This command does not yet exist");
+		}
+		else if(args[0].equalsIgnoreCase("blacklist"))
+		{
+			Blacklist.run(args);
+		}
+		else if(args[0].equalsIgnoreCase("edit") || args[0].equalsIgnoreCase("cooldown") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("delete"))
+		{
+			Edit.run(args);
+		}
+		if(args[0].equalsIgnoreCase("help"))
+		{
+			Help.getHelp();
+		}
+		if(args[0].equalsIgnoreCase("info"))
+		{
+			Info.run(args);
+		}
+		else if(args[0].equalsIgnoreCase("list"))
+		{
+			Util.sendError("This command does not yet exist");
+		}
+		else if(args[0].equalsIgnoreCase("protection"))
+		{
+			Protection.run(args);
+		}
 		else if(args[0].equalsIgnoreCase("reset"))
 		{
 			Reset.run(args);
-		}
-		else if(args[0].equalsIgnoreCase("select"))
-		{
-			Select.run(args);
 		}
 		else if(args[0].equalsIgnoreCase("save"))
 		{
 			Save.run(args);
 		}
-		else if(args[0].equalsIgnoreCase("edit")) {}
-		else if(args[0].equalsIgnoreCase("delete")) {}
-		else if(args[0].equalsIgnoreCase("auto")) {}
-		else if(args[0].equalsIgnoreCase("protection")) {}
+		else if(args[0].equalsIgnoreCase("select"))
+		{
+			Select.run(args);
+		}
+		else if(args[0].equalsIgnoreCase("warp"))
+		{
+			Util.sendError("This command does not yet exist");
+		}
 		else Util.sendInvalid(args);
 			
 		return true;

@@ -11,7 +11,7 @@ public class CommandManager implements CommandExecutor
 {
 	private static CommandSender sender;
 	private static MineReset plugin;
-	private static Location[] loc = null;
+	private static Location[] loc = {null, null};
 	private static String curMine = null;
 	
 	public CommandManager(MineReset plugin)
@@ -86,6 +86,7 @@ public class CommandManager implements CommandExecutor
 	/**
 	 * Sets the location selected with either a command or a wand
 	 * @param newLoc New selection location
+	 * @param id ID of a selection location (0 or 1)
 	 */
 	public static void setLocation(Location newLoc, int id)
 	{

@@ -21,15 +21,17 @@ public class Save
 		if(Util.debugEnabled()) Util.log("Argument check passed");
 		
 		Location[] loc = CommandManager.getLocation();
-		if(loc == null)
+		if(loc == null || loc[0] == null || loc[1] == null)
 		{
+			if(loc[0] == null) Util.sendError("Point 0 is missing");
+			if(loc[1] == null) Util.sendError("Point 1 is missing");
 			Util.sendError("Make a selection first");
 			return;
 		}
 		
 		if(Util.debugEnabled()) Util.log(loc[0].getWorld().getName() + " ?= " + loc[1].getWorld().getName());
 		
-		if(loc[0].getWorld().getName().equalsIgnoreCase(loc[1].getWorld().getName()))
+		if(!loc[0].getWorld().getName().equalsIgnoreCase(loc[1].getWorld().getName()))
 		{
 			Util.sendError("Your selection points are in different worlds");
 			return;
@@ -188,7 +190,8 @@ public class Save
 		
 		if(Util.debugEnabled()) Util.log("Mine creation completed");
 		
-		CommandManager.setLocation(null);
+		CommandManager.setLocation(null, 0);
+		CommandManager.setLocation(null, 1);
 		
 		Util.saveRegionData();
 		

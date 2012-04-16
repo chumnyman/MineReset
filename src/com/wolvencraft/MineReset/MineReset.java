@@ -38,6 +38,8 @@ public class MineReset extends JavaPlugin
 		
 		manager = new CommandManager(this);
 		getCommand("mine").setExecutor(manager);
+		this.getConfig();
+		this.getRegionData();
 		log.info("MineReset started");
 	}
 	
@@ -68,9 +70,7 @@ public class MineReset extends JavaPlugin
 	}
 
 	public void saveRegionData() {
-	    if (regionData == null || regionDataFile == null) {
-	    return;
-	    }
+	    if (regionData == null || regionDataFile == null) return;
 	    try {
 	        regionData.save(regionDataFile);
 	    } catch (IOException ex) {

@@ -21,7 +21,7 @@ public class Info
 		
 		if(!Util.mineExists(args[1]))
 		{
-			Util.sendError("Mine " + args[0] + " does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
+			Util.sendError("Mine " + args[1] + " does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
 			return;
 		}
 		String mineName = args[0];

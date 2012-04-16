@@ -26,7 +26,7 @@ public class Save
 			Util.sendError("Make a selection first");
 			return;
 		}
-		if(loc[0].getWorld() == loc[1].getWorld())
+		if(loc[0].getWorld().getName().equalsIgnoreCase(loc[1].getWorld().getName()))
 		{
 			Util.sendError("Your selection points are in different worlds");
 			return;

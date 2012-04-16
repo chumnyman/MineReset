@@ -19,6 +19,9 @@ permissions:
   MineReset.list:
     description: Allows a player to look at the list of existing mines
     default: true
+  MineReset.warp:
+    description: Allows a player to teleport to the mine warp location
+    default: true
   MineReset.protection:
     description: Handles whether a player can place and break blocks in the mine
     default: true

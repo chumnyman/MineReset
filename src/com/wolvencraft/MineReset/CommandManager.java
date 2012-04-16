@@ -27,52 +27,30 @@ public class CommandManager implements CommandExecutor
 		
 		if(!command.getName().equalsIgnoreCase("mine")) return false;
 		
-		if(args.length == 0) Help.getHelp();
-
-		else if(args[0].equalsIgnoreCase("auto"))
-		{
-			Util.sendError("This command does not yet exist");
-		}
-		else if(args[0].equalsIgnoreCase("blacklist"))
-		{
-			Blacklist.run(args);
-		}
-		else if(args[0].equalsIgnoreCase("edit") || args[0].equalsIgnoreCase("cooldown") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("delete"))
-		{
-			Edit.run(args);
-		}
-		if(args[0].equalsIgnoreCase("help"))
-		{
+		if(args.length == 0)
 			Help.getHelp();
-		}
+		else if(args[0].equalsIgnoreCase("auto"))
+			Util.sendError("This command does not yet exist");
+		else if(args[0].equalsIgnoreCase("blacklist"))
+			Blacklist.run(args);
+		else if(args[0].equalsIgnoreCase("edit") || args[0].equalsIgnoreCase("cooldown") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("delete"))
+			Edit.run(args);
+		if(args[0].equalsIgnoreCase("help"))
+			Help.getHelp();
 		if(args[0].equalsIgnoreCase("info"))
-		{
 			Info.run(args);
-		}
 		else if(args[0].equalsIgnoreCase("list"))
-		{
 			Util.sendError("This command does not yet exist");
-		}
-		else if(args[0].equalsIgnoreCase("protection"))
-		{
+		else if(args[0].equalsIgnoreCase("protection") || args[0].equalsIgnoreCase("prot"))
 			Protection.run(args);
-		}
 		else if(args[0].equalsIgnoreCase("reset"))
-		{
 			Reset.run(args);
-		}
 		else if(args[0].equalsIgnoreCase("save"))
-		{
 			Save.run(args);
-		}
-		else if(args[0].equalsIgnoreCase("select"))
-		{
+		else if(args[0].equalsIgnoreCase("select") || args[0].equalsIgnoreCase("sel"))
 			Select.run(args);
-		}
 		else if(args[0].equalsIgnoreCase("warp"))
-		{
 			Util.sendError("This command does not yet exist");
-		}
 		else Util.sendInvalid(args);
 			
 		return true;
@@ -103,6 +81,16 @@ public class CommandManager implements CommandExecutor
 	public static Location[] getLocation()
 	{
 		return loc;
+	}
+	
+	/**
+	 * Sets the location selected with either a command or a wand
+	 * @param newLoc New selection location
+	 */
+	public static void setLocation(Location newLoc, int id)
+	{
+		loc[id] = newLoc;
+		return;
 	}
 	
 	/**

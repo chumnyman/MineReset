@@ -18,7 +18,7 @@ public class Save
 			return;
 		}
 		
-		if(Util.debugEnabled())Util.log("Argument check passed");
+		if(Util.debugEnabled()) Util.log("Argument check passed");
 		
 		Location[] loc = CommandManager.getLocation();
 		if(loc == null)
@@ -26,6 +26,9 @@ public class Save
 			Util.sendError("Make a selection first");
 			return;
 		}
+		
+		if(Util.debugEnabled()) Util.log(loc[0].getWorld().getName() + " ?= " + loc[1].getWorld().getName());
+		
 		if(loc[0].getWorld().getName().equalsIgnoreCase(loc[1].getWorld().getName()))
 		{
 			Util.sendError("Your selection points are in different worlds");
@@ -184,6 +187,8 @@ public class Save
 		Util.setRegionInt(baseNode + ".cooldown-time", resetManualCooldownTime);
 		
 		if(Util.debugEnabled()) Util.log("Mine creation completed");
+		
+		CommandManager.setLocation(null);
 		
 		Util.saveRegionData();
 		

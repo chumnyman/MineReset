@@ -31,7 +31,7 @@ public class CommandManager implements CommandExecutor
 		
 		if(!command.getName().equalsIgnoreCase("mine")) return false;
 		
-		if(args.length == 0) Help.run();
+		if(args.length == 0) Help.getHelp();
 		
 		if(args[0].equalsIgnoreCase("info")) {}
 		else if(args[0].equalsIgnoreCase("list")) {}

@@ -196,6 +196,7 @@ public class Save
 		Util.saveRegionData();
 		
 		if(Util.debugEnabled()) Util.log("Data saved successfully");
+		Util.sendSuccess("Mine '" + mineName + "' created successfully!");
 		return;
 	}
 }

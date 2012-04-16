@@ -19,7 +19,7 @@ public class Info
 			Util.sendInvalid(args);
 		}
 		
-		if(!Util.mineExists(args[0]))
+		if(!Util.mineExists(args[1]))
 		{
 			Util.sendError("Mine " + args[0] + " does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
 			return;

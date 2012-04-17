@@ -32,7 +32,21 @@ public class Protection
 			return;
 		}
 		
-		if(args[1].equalsIgnoreCase("breaking"))
+		if(args[1].equalsIgnoreCase("pvp"))
+		{
+			String baseNode = "mines." + curMine + ".protection.pvp";
+			if(Util.getRegionBoolean(baseNode + ".enabled"))
+			{
+				Util.setRegionBoolean(baseNode + ".enabled", false);
+				Util.sendSuccess("PVP has been turned OFF for mine '" + curMine + "'");
+			}
+			else
+			{
+				Util.setRegionBoolean(baseNode + ".enabled", true);
+				Util.sendSuccess("PVP has been turned ON for mine '" + curMine + "'");
+			}
+		}
+		else if(args[1].equalsIgnoreCase("breaking"))
 		{
 			String baseNode = "mines." + curMine + ".protection.breaking";
 			if(args[2].equalsIgnoreCase("toggle"))
@@ -40,12 +54,12 @@ public class Protection
 				if(Util.getRegionBoolean(baseNode + ".enabled"))
 				{
 					Util.setRegionBoolean(baseNode + ".enabled", false);
-					Util.sendSuccess("Mine protection has been turned off for mine '" + curMine + "'");
+					Util.sendSuccess("Mine protection has been turned OFF for mine '" + curMine + "'");
 				}
 				else
 				{
 					Util.setRegionBoolean(baseNode + ".enabled", true);
-					Util.sendSuccess("Mine breaking protection has been turned on for mine '" + curMine + "'");
+					Util.sendSuccess("Mine breaking protection has been turned ON for mine '" + curMine + "'");
 				}
 			}
 			else if(args[2].equalsIgnoreCase("blacklist"))
@@ -55,12 +69,12 @@ public class Protection
 					if(Util.getRegionBoolean(baseNode + ".blacklist.enabled"))
 					{
 						Util.setRegionBoolean(baseNode + ".blacklist.enabled", false);
-						Util.sendSuccess("Block breaking protection blacklist has been turned off for mine '" + curMine + "'");
+						Util.sendSuccess("Block breaking protection blacklist has been turned OFF for mine '" + curMine + "'");
 					}
 					else
 					{
 						Util.setRegionBoolean(baseNode + ".blacklist.enabled", true);
-						Util.sendSuccess("Block breaking protection blacklist has been turned on for mine '" + curMine + "'");
+						Util.sendSuccess("Block breaking protection blacklist has been turned ON for mine '" + curMine + "'");
 					}
 					
 				}
@@ -125,7 +139,7 @@ public class Protection
 					Util.setRegionList(baseNode + ".blacklist.blocks", blockList);
 					
 					Util.saveRegionData();
-					Util.sendSuccess(args[4] + " was successfully removed from block breaking protection mine '" + curMine + "'");
+					Util.sendSuccess(args[4] + " was successfully removed from block breaking protection of mine '" + curMine + "'");
 					return;
 				}
 				else
@@ -146,12 +160,12 @@ public class Protection
 				if(Util.getRegionBoolean(baseNode + ".enabled"))
 				{
 					Util.setRegionBoolean(baseNode + ".enabled", false);
-					Util.sendSuccess("Block placement protection has been turned off for mine '" + curMine + "'");
+					Util.sendSuccess("Block placement protection has been turned OFF for mine '" + curMine + "'");
 				}
 				else
 				{
 					Util.setRegionBoolean(baseNode + ".enabled", true);
-					Util.sendSuccess("Block placement protection has been turned on for mine '" + curMine + "'");
+					Util.sendSuccess("Block placement protection has been turned ON for mine '" + curMine + "'");
 				}
 			}
 			else if(args[2].equalsIgnoreCase("blacklist"))
@@ -161,12 +175,12 @@ public class Protection
 					if(Util.getRegionBoolean(baseNode + ".blacklist.enabled"))
 					{
 						Util.setRegionBoolean(baseNode + ".blacklist.enabled", false);
-						Util.sendSuccess("Block placement protection blacklist has been turned off for mine '" + curMine + "'");
+						Util.sendSuccess("Block placement protection blacklist has been turned OFF for mine '" + curMine + "'");
 					}
 					else
 					{
 						Util.setRegionBoolean(baseNode + ".blacklist.enabled", true);
-						Util.sendSuccess("Block placement protection blacklist has been turned on for mine '" + curMine + "'");
+						Util.sendSuccess("Block placement protection blacklist has been turned ON for mine '" + curMine + "'");
 					}
 					
 				}
@@ -231,7 +245,7 @@ public class Protection
 					Util.setRegionList(baseNode + ".blacklist.blocks", blockList);
 					
 					Util.saveRegionData();
-					Util.sendSuccess(args[4] + " was successfully removed from block placement protection mine '" + curMine + "'");
+					Util.sendSuccess(args[4] + " was successfully removed from block placement protection of mine '" + curMine + "'");
 					return;
 				}
 				else

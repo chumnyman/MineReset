@@ -17,7 +17,7 @@ public class Reset
 	// (if a mine spawn point is set)
 	public static void run(String[] args, boolean automatic)
 	{
-		if(!Util.senderHasPermission("reset", true))
+		if(!automatic && !Util.senderHasPermission("reset", true))
 		{
 			Util.sendDenied(args);
 			return;
@@ -35,6 +35,13 @@ public class Reset
 		if(!Util.mineExists(mineName))
 		{
 			Util.sendError("Mine '" + mineName + "' does not exist");
+			return;
+		}
+		
+
+		if(!Util.getRegionBoolean("mines." + mineName + ".enabled"))
+		{
+			Util.sendError("Mine '" + mineName + "' has been disabled");
 			return;
 		}
 		
@@ -137,25 +144,22 @@ public class Reset
 			}
 		}
 			
+		int nextReset = Util.getRegionInt("mines." + mineName + ".reset.auto.reset-time");
+		Util.setRegionInt("mines." + mineName + ".reset.auto.data.min", nextReset);
+		Util.setRegionInt("mines." + mineName + ".reset.auto.data.min", 0);
+		
 		if(broadcastReset)
 		{
-			int nextReset = Util.getRegionInt("mines." + mineName + ".reset.auto.data.min");
-			if(!automatic)
-			{
-				String broadcastMessage = Util.getConfigString("messages.manual-mine-reset-successful");
-				broadcastMessage = Util.parseString(broadcastMessage, "%MINE%", mineName);
-				broadcastMessage = Util.parseString(broadcastMessage, "%TIME%", nextReset+"");
-				
-				Util.broadcastSuccess(broadcastMessage);
-			}
+			String broadcastMessage;
+			if(automatic)
+				broadcastMessage = Util.getConfigString("messages.automatic-mine-reset-successful");
 			else
-			{
-				String broadcastMessage = Util.getConfigString("messages.automatic-mine-reset-successful");
+				broadcastMessage = Util.getConfigString("messages.manual-mine-reset-successful");
+			
 				broadcastMessage = Util.parseString(broadcastMessage, "%MINE%", mineName);
 				broadcastMessage = Util.parseString(broadcastMessage, "%TIME%", nextReset+"");
 				
 				Util.broadcastSuccess(broadcastMessage);
-			}
 		}
 	}
 }

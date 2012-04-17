@@ -408,19 +408,29 @@ public class Util
 	 * @param blockName Name of a block
 	 * @return Block ID if a block exists, -1 if it does not
 	 */
-	public static int getBlockId(String blockName)
+	public static String getBlockId(String blockName)
 	{
-		try
+		if(blockName.indexOf(":") != -1)
 		{
-			if(isNumeric(blockName)) return Integer.parseInt(blockName);
-			else
-			{
-				Material material = Material.matchMaterial(blockName);
-				if(material == null) return -1;
-				return material.getId();
-			}
+			String[] bits = blockname.split(":");
+			if(bits.length > 2) return null;
+			
+			// ???
 		}
-		catch(NumberFormatException nfe) { return -1; }
+		else
+		{
+			try
+			{
+				if(isNumeric(blockName)) return Integer.parseInt(blockName);
+				else
+				{
+					Material material = Material.matchMaterial(blockName);
+					if(material == null) return null;
+					return material.getId();
+				}
+			}
+			catch(NumberFormatException nfe) { return null; }
+		}
 	}
 	
 	/**

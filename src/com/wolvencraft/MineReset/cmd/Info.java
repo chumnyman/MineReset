@@ -17,6 +17,7 @@ public class Info
 		if(args.length != 2)
 		{
 			Util.sendInvalid(args);
+			return;
 		}
 		
 		if(!Util.mineExists(args[1]))
@@ -24,7 +25,7 @@ public class Info
 			Util.sendError("Mine " + args[1] + " does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
 			return;
 		}
-		String mineName = args[0];
+		String mineName = args[1];
 		
 		List<String> itemList = Util.getRegionList("mines." + mineName + ".materials.blocks");
 		List<String> weightList = Util.getRegionList("mines." + mineName + ".materials.weights");

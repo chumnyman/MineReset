@@ -33,6 +33,8 @@ public class CommandManager implements CommandExecutor
 			Util.sendError("This command does not yet exist");
 		else if(args[0].equalsIgnoreCase("blacklist"))
 			Blacklist.run(args);
+		else if(args[0].equalsIgnoreCase("config"))
+			Config.run(args);
 		else if(args[0].equalsIgnoreCase("edit") || args[0].equalsIgnoreCase("cooldown") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("delete"))
 			Edit.run(args);
 		else if(args[0].equalsIgnoreCase("help"))

@@ -40,7 +40,9 @@ public class MineReset extends JavaPlugin
 		
 		manager = new CommandManager(this);
 		getCommand("mine").setExecutor(manager);
+		getConfig().options().copyDefaults(true);
 		this.getConfig();
+		getRegionData().options().copyDefaults(true);
 		this.getRegionData();
 		log.info("MineReset started");
 		

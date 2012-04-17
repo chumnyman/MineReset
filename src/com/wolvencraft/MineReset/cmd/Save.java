@@ -168,7 +168,7 @@ public class Save
 		List<String> blockList = new ArrayList<String>();
 		blockList.add(defaultBlock);
 		List<String> weightList = new ArrayList<String>();
-		weightList.add("100");
+		weightList.add(100 + "");
 		// = = = Blocks
 		Util.setRegionList(baseNode + ".blocks", blockList);
 		
@@ -192,6 +192,11 @@ public class Save
 		baseNode = "mines." + mineName + ".reset.manual";
 		Util.setRegionBoolean(baseNode + ".cooldown-enabled", resetManualCooldownEnabled);
 		Util.setRegionInt(baseNode + ".cooldown-time", resetManualCooldownTime);
+		
+		// = = Adding to the mine list
+		List<String> mineList = Util.getRegionList("data.list-of-mines");
+		mineList.add(mineName);
+		Util.setRegionList("data.list-of-mines", mineList);
 		
 		if(Util.debugEnabled()) Util.log("Mine creation completed");
 		

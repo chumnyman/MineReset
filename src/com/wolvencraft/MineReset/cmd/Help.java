@@ -9,7 +9,7 @@ public class Help
 {	
 	public void getAuto()
 	{
-		formatHelp("mine auto", " enabled toggle", "Toggles the automatic resets on and off", "");
+		formatHelp("mine auto", " toggle", "Toggles the automatic resets on and off", "");
 		formatHelp("mine auto", " time <time>", "Changes the automatic reset time to the value specified, in minutes", "");
 		Util.sendMessage(" The value cannot be smaller then 5 minutes");
 		formatHelp("mine auto", " warning toggle", "Toggles warnings before the reset on and off", "");
@@ -19,11 +19,11 @@ public class Help
 	
 	public static void getBlacklist()
 	{
-		formatHelp("mine blacklist", " <name> enable", "Enables the use of blacklist for the mine", "");
-		formatHelp("mine blacklist", " <name> whitelist", "Makes the blacklist be treated as a whitelist", "");
+		formatHelp("mine blacklist", " toggle", "Enables the use of blacklist for the mine", "");
+		formatHelp("mine blacklist", " whitelist", "Makes the blacklist be treated as a whitelist", "");
 		Util.sendMessage(" Blacklist should be enabled");
-		formatHelp("mine blacklist", " <name> add <block>", "Adds a block to the blacklist", "");
-		formatHelp("mine blacklist", " <name> remove <block>", "Removes a block from the whitelist", "");
+		formatHelp("mine blacklist", " add <block>", "Adds a block to the blacklist", "");
+		formatHelp("mine blacklist", " remove <block>", "Removes a block from the whitelist", "");
 	}
 	
 	public static void getConfig()

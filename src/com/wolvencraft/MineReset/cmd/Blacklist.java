@@ -2,6 +2,8 @@ package com.wolvencraft.MineReset.cmd;
 
 import java.util.List;
 
+import com.wolvencraft.MineReset.CommandManager;
+
 public class Blacklist
 {
 	public static void run(String[] args)
@@ -10,21 +12,20 @@ public class Blacklist
 		{
 			Help.getBlacklist();
 		}
-		else if(args.length > 4 || args.length == 2)
+		else if(args.length > 3)
 		{
 			Util.sendInvalid(args);
 			return;
 		}
 		
-		String mineName = "";
-		if(!Util.mineExists(args[1]))
+		String mineName = CommandManager.getMine();
+		if(mineName == null)
 		{
-			Util.sendError("Mine " + args[1] + " does not exist");
+			Util.sendError("Select a mine first with /mine edit <name>");
 			return;
 		}
-		else mineName = args[1];
 		
-		if(args[2].equalsIgnoreCase("toggle"))
+		if(args[1].equalsIgnoreCase("toggle"))
 		{
 			if(Util.getRegionBoolean("mines." + mineName + ".blacklist.enabled"))
 			{
@@ -38,7 +39,7 @@ public class Blacklist
 			}
 			return;
 		}
-		else if(args[2].equalsIgnoreCase("whitelist"))
+		else if(args[1].equalsIgnoreCase("whitelist"))
 		{
 			if(Util.getConfigBoolean("mines." + mineName + ".blacklist.whitelist"))
 			{
@@ -52,12 +53,12 @@ public class Blacklist
 			}
 			return;
 		}
-		else if(args[2].equalsIgnoreCase("add"))
+		else if(args[1].equalsIgnoreCase("add"))
 		{
-			int blockID = Util.getBlockId(args[3]);
+			int blockID = Util.getBlockId(args[2]);
 			if(blockID == -1)
 			{
-				Util.sendError("Block '"+ args[3] + "' does not exist");
+				Util.sendError("Block '"+ args[2] + "' does not exist");
 				return;
 			}
 			
@@ -65,15 +66,15 @@ public class Blacklist
 			blacklist.add("" + blockID);
 			Util.setRegionList("mines." + mineName + ".blacklist.blocks", blacklist);
 
-			Util.sendSuccess("Block " + args[2] + " is now in the blacklist");
+			Util.sendSuccess("Block " + args[1] + " is now in the blacklist");
 			return;
 		}
-		else if(args[2].equalsIgnoreCase("remove"))
+		else if(args[1].equalsIgnoreCase("remove"))
 		{
-			int blockID = Util.getBlockId(args[3]);
+			int blockID = Util.getBlockId(args[2]);
 			if(blockID == -1)
 			{
-				Util.sendError("Block '"+ args[3] + "' does not exist");
+				Util.sendError("Block '"+ args[2] + "' does not exist");
 				return;
 			}
 			

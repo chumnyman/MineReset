@@ -22,9 +22,17 @@ public class Teleport
 		
 		if(args[1].equalsIgnoreCase("set"))
 		{
-			CommandManager.getPlugin().saveConfig();
+			Player player = (Player) CommandManager.getSender();
+			Location loc = player.getLocation();
+			String mineName = CommandManager.getMine();
+			
+			String baseNode = "mines." + mineName + ".coordinates";
+			Util.setRegionInt(baseNode + ".pos2.x", 0);
+			Util.setRegionInt(baseNode + ".pos2.y", 0);
+			Util.setRegionInt(baseNode + ".pos2.z", 0);
+			
 			CommandManager.getPlugin().saveRegionData();
-			Util.sendSuccess("Configuration saved to disc");
+			Util.sendSuccess ("Mine spawn point set (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
 			return;
 		}
 		
@@ -39,13 +47,15 @@ public class Teleport
 			};
 			Location newLoc = new Location(Bukkit.getServer().getWorld(newLocWorld), coords[0], coords[1], coords[1]);
 			
-			//TODO how to change the coords of a player???
+			player.teleport(newLoc);
+			
+			Util.sendSuccess("You have teleported to mine + '" + args[1] + "'");
+			return;
 		}
 		else
 		{
 			Util.sendError("Mine '" + args[1] + "' does not exist");
+			return;
 		}
-		
-		return;
 	}
 }

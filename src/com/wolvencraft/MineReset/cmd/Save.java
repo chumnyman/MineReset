@@ -183,6 +183,11 @@ public class Save
 		Util.setRegionBoolean(baseNode + ".warn", resetAutoWarnEnabled);
 		Util.setRegionInt(baseNode + ".warn-time", resetAutoWarnTime);
 		
+		// = = = = Data
+		baseNode = "mines." + mineName + ".reset.auto.data";
+		Util.setRegionInt(baseNode + ".min", resetAutoTime);
+		Util.setRegionInt(baseNode + ".sec", 0);
+		
 		// = = = Manual
 		baseNode = "mines." + mineName + ".reset.manual";
 		Util.setRegionBoolean(baseNode + ".cooldown-enabled", resetManualCooldownEnabled);

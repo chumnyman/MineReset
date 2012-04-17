@@ -44,7 +44,7 @@ public class PlayerInteractListener implements Listener
 	        	
 	        	
 	     		String mineName[] = {sign.getLine(1)};
-	     		Reset.run(mineName);
+	     		Reset.run(mineName, false);
 	
 	        	if(Util.debugEnabled()) Util.log("Event finishing");
 	     		return;

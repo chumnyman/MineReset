@@ -15,7 +15,7 @@ public class Reset
 	
 	// TODO: Also, add a check to tp a player outside the mine before a reset
 	// (if a mine spawn point is set)
-	public static void run(String[] args)
+	public static void run(String[] args, boolean automatic)
 	{
 		if(!Util.senderHasPermission("reset", true))
 		{
@@ -139,8 +139,23 @@ public class Reset
 			
 		if(broadcastReset)
 		{
-			String broadcastMessage = Util.getConfigString("messages.manual-mine-reset-successful");
-			Util.broadcastSuccess(broadcastMessage);
+			int nextReset = Util.getRegionInt("mines." + mineName + ".reset.auto.data.min");
+			if(!automatic)
+			{
+				String broadcastMessage = Util.getConfigString("messages.manual-mine-reset-successful");
+				broadcastMessage = Util.parseString(broadcastMessage, "%MINE%", mineName);
+				broadcastMessage = Util.parseString(broadcastMessage, "%TIME%", nextReset+"");
+				
+				Util.broadcastSuccess(broadcastMessage);
+			}
+			else
+			{
+				String broadcastMessage = Util.getConfigString("messages.automatic-mine-reset-successful");
+				broadcastMessage = Util.parseString(broadcastMessage, "%MINE%", mineName);
+				broadcastMessage = Util.parseString(broadcastMessage, "%TIME%", nextReset+"");
+				
+				Util.broadcastSuccess(broadcastMessage);
+			}
 		}
 	}
 }

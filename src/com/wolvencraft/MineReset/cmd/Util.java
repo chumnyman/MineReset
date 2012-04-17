@@ -450,4 +450,17 @@ public class Util
 		if(mineList.indexOf(name) == -1) return false;
 		else return true;
 	}
+	
+	/**
+	 * Replaces the specified value in the string provided with the new value
+	 * @param str String to parse
+	 * @param replaceFrom Value to be replaced
+	 * @param replaceTo Value to be substituted
+	 * @return A new String with necessary values substituted
+	 */
+	public static String parseString(String str, String replaceFrom, String replaceTo)
+	{
+		str = str.replaceAll(replaceFrom, replaceTo);
+		return str;
+	}
 }

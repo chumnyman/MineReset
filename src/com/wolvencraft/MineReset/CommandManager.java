@@ -44,7 +44,7 @@ public class CommandManager implements CommandExecutor
 		else if(args[0].equalsIgnoreCase("protection") || args[0].equalsIgnoreCase("prot"))
 			Protection.run(args);
 		else if(args[0].equalsIgnoreCase("reset"))
-			Reset.run(args);
+			Reset.run(args, false);
 		else if(args[0].equalsIgnoreCase("save"))
 			Save.run(args);
 		else if(args[0].equalsIgnoreCase("select") || args[0].equalsIgnoreCase("sel"))

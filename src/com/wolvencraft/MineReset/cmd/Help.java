@@ -26,6 +26,14 @@ public class Help
 		formatHelp("mine blacklist", " <name> remove <block>", "Removes a block from the whitelist", "");
 	}
 	
+	public static void getConfig()
+	{
+		Util.sendMessage(" You do NOT need these commands. At all. I promise.");
+		formatHelp("mine config", " save", "Saves the data into a configuration file", "");
+		formatHelp("mine config", " load", "Loads the configuration from a file", "");
+		formatHelp("mine config", " update", "Updates the region data from the old format to the new one", "");
+	}
+	
 	public static void getEdit()
 	{
 		formatHelp("mine edit", " <name>", "Selects a mine to edit its properties", "");
@@ -65,6 +73,8 @@ public class Help
 	
 	public static void getProtection()
 	{
+		formatHelp("mine protection", " pvp", "Toggles the PVP on and off for the current mine", "");
+		
 		formatHelp("mine protection", " breaking toggle", "Enables or disables the block breaking protection", "");
 		formatHelp("mine protection", " breaking blacklist toggle", "Enables or disables the block breaking blacklist", "");
 		formatHelp("mine protection", " breaking blacklist whitelist", "Should the blacklist be treated as a whitelist?", "");
@@ -109,6 +119,7 @@ public class Help
 	public static void getTeleport()
 	{
 		formatHelp("mine warp", " <name>", "Teleports you to the mine warp location", "");
+		formatHelp("mine warp", " set", "Sets a warp for the current mine", "");
 		return;
 	}
 	

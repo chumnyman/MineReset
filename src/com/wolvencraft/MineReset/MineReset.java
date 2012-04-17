@@ -41,6 +41,16 @@ public class MineReset extends JavaPlugin
 		this.getConfig();
 		this.getRegionData();
 		log.info("MineReset started");
+		
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
+		{
+			@Override
+           	 	public void run()
+           	 	{
+                		// insert the timer code here
+            		}
+        	}, 0, 20L);
+    }
 	}
 	
 	public void onDisable()

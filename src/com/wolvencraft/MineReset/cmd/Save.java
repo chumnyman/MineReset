@@ -1,6 +1,5 @@
 package com.wolvencraft.MineReset.cmd;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -23,8 +22,6 @@ public class Save
 		Location[] loc = CommandManager.getLocation();
 		if(loc == null || loc[0] == null || loc[1] == null)
 		{
-			if(loc[0] == null) Util.sendError("Point 0 is missing");
-			if(loc[1] == null) Util.sendError("Point 1 is missing");
 			Util.sendError("Make a selection first");
 			return;
 		}
@@ -47,7 +44,7 @@ public class Save
 		else mineName = args[1];
 		if(Util.mineExists(mineName))
 		{
-			Util.sendError("Mine " + mineName + " already exists!");
+			Util.sendError("Mine '" + mineName + "' already exists!");
 			return;
 		}
 		if(Util.debugEnabled()) Util.log("Mine existance check passed");
@@ -84,7 +81,8 @@ public class Save
 		List<String> protectionPlacingBlacklistedBlocks = Util.getConfigList("defaults.protection.placing.blacklist.blocks");
 		
 		// - - Materials
-		String defaultBlock = Util.getConfigString("defaults.materials.default-block");
+		List<String> blockList = Util.getConfigList("defaults.materials.blocks");
+		List<String> weightList = Util.getConfigList("defaults.materials.weights");	
 		
 		// - - Reset
 		
@@ -165,15 +163,8 @@ public class Save
 		
 		// = = Materials
 		baseNode = "mines." + mineName + ".materials";
-		List<String> blockList = new ArrayList<String>();
-		blockList.add(defaultBlock);
-		List<String> weightList = new ArrayList<String>();
-		weightList.add(100 + "");
-		// = = = Blocks
 		Util.setRegionList(baseNode + ".blocks", blockList);
-		
-		// = = = Weights
-		Util.setRegionList(baseNode + ".weights", blockList);
+		Util.setRegionList(baseNode + ".weights", weightList);
 		
 		// = = Reset
 		// = = = Automatic

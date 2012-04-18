@@ -95,12 +95,20 @@ public class Edit
 			}
 			
 			double percent;
-			if(Util.isNumeric(args[3])) percent = Double.parseDouble(args[3]);
+			if(Util.isNumeric(args[2])) percent = Double.parseDouble(args[2]);
 			else {
 				if(Util.debugEnabled()) Util.log("Argument not numeric, attempting to parse");
-				String awkwardValue = args[3];
+				String awkwardValue = args[2];
 				String[] awkArray = awkwardValue.split("%");
+				try
+				{
 				percent = Double.parseDouble(awkArray[0]);
+				}
+				catch(NumberFormatException nfe)
+				{
+					Util.sendInvalid(args);
+					return;
+				}
 			}
 			if(Util.debugEnabled()) Util.log("Percent value is " + percent);
 			
@@ -120,8 +128,8 @@ public class Edit
 			itemList.add(""+blockID);
 			weightList.add(""+percent);
 			weightList.set(0, ""+newStonePercent);
-			Util.setRegionList(curMine + ".blocks", itemList);
-			Util.setRegionList(curMine + ".weights", weightList);
+			Util.setRegionList("mines." + curMine + ".materials.blocks", itemList);
+			Util.setRegionList("mines."+ curMine + ".materials.weights", weightList);
 			
 			Util.saveRegionData();
 			
@@ -178,12 +186,12 @@ public class Edit
 		}
 		else if(args[0].equalsIgnoreCase("delete"))
 		{
-			CommandManager.getPlugin().getRegionData().set(args[1], null);
-			Util.saveRegionData();
+			CommandManager.getPlugin().getRegionData().set("mines." + curMine, null);
 			List<String> regionList = Util.getRegionList("data.list-of-mines");
 			regionList.remove(regionList.indexOf(args[1]));
 			Util.setRegionList("data.list-of-mines", regionList);
 			Util.saveRegionData();
+			CommandManager.setMine(null);
 			Util.sendSuccess("Mine '" + args[1] + "' removed successfully");
 			return;
 		}

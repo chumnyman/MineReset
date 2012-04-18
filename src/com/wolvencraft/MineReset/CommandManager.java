@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.cmd.*;
 
@@ -24,8 +25,14 @@ public class CommandManager implements CommandExecutor
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
 		CommandManager.sender = sender;
-		
+		Player player = null;
 		if(!command.getName().equalsIgnoreCase("mine")) return false;
+		
+		if(Util.isPlayer())
+		{
+			player = (Player) sender;
+			if(Util.debugEnabled()) Util.log(player.getName() + " sent a command: " + args[0]);
+		}
 		
 		if(args.length == 0)
 			Help.getHelp();

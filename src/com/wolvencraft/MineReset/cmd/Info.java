@@ -14,6 +14,11 @@ public class Info
 			Util.sendDenied(args);
 			return;
 		}
+		if(args.length == 1)
+		{
+			Help.getInfo();
+			return;
+		}
 		if(args.length != 2)
 		{
 			Util.sendInvalid(args);
@@ -22,7 +27,7 @@ public class Info
 		
 		if(!Util.mineExists(args[1]))
 		{
-			Util.sendError("Mine " + args[1] + " does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
+			Util.sendError("Mine '" + args[1] + "' does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
 			return;
 		}
 		String mineName = args[1];

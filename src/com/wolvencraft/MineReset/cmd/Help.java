@@ -43,7 +43,7 @@ public class Help
 		formatHelp("mine remove", " <block>", "Removes a block from the mine", "");
 		formatHelp("mine warp", " pos", "Sets up a mine warp at your immediate location", "");
 		formatHelp("mine warp", " hpos", "Sets up a mine warp one block above the targeted block", "");
-		formatHelp("mine delete", " <name>", "Completely deletes all the data about the mine", "");
+		formatHelp("mine delete", "", "Completely deletes all the data about the selected mine", "");
 	}
 	
 	public static void getHelp()
@@ -67,7 +67,7 @@ public class Help
 	
 	public static void getInfo()
 	{
-		formatHelp("mine info", " <name>", "Returns the information about a mine", "info");
+		formatHelp("mine info", " <name>", "Returns the information about a mine", "");
 		return;
 	}
 	

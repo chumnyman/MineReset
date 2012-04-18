@@ -40,11 +40,16 @@ public class MineReset extends JavaPlugin
 		
 		manager = new CommandManager(this);
 		getCommand("mine").setExecutor(manager);
+		
 		getConfig().options().copyDefaults(true);
-		this.getConfig();
+		saveDefaultConfig();
+		
 		getRegionData().options().copyDefaults(true);
-		this.getRegionData();
+		saveRegionData();
+		
+		List<String> mineList = Util.getRegionList("data.list-of-mines");
 		log.info("MineReset started");
+		log.info(mineList.size() + " mine(s) found");
 		
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
 		{

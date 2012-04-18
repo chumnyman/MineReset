@@ -32,6 +32,8 @@ public class MineReset extends JavaPlugin
 	public CommandManager manager;
 	private FileConfiguration regionData = null;
 	private File regionDataFile = null;
+	private FileConfiguration oldConfig = null;
+	private File oldConfigFile = null;
 	Logger log;
 	
 	public void onEnable()
@@ -113,7 +115,7 @@ public class MineReset extends JavaPlugin
 	    regionData = YamlConfiguration.loadConfiguration(regionDataFile);
 	 
 	    // Look for defaults in the jar
-	    InputStream defConfigStream = getResource("customConfig.yml");
+	    InputStream defConfigStream = getResource("regions.yml");
 	    if (defConfigStream != null) {
 	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
 	        regionData.setDefaults(defConfig);
@@ -133,6 +135,36 @@ public class MineReset extends JavaPlugin
 	        regionData.save(regionDataFile);
 	    } catch (IOException ex) {
 	        Util.logWarning("Could not save config to " + regionDataFile);
+	    }
+	}
+	
+	public void reloadOldConfig() {
+	    if (oldConfigFile == null) {
+	    oldConfigFile = new File(getDataFolder(), "config.old.yml");
+	    }
+	    oldConfig = YamlConfiguration.loadConfiguration(regionDataFile);
+	 
+	    // Look for defaults in the jar
+	    InputStream defConfigStream = getResource("config.old.yml");
+	    if (defConfigStream != null) {
+	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+	        oldConfig.setDefaults(defConfig);
+	    }
+	}
+	
+	public FileConfiguration getOldConfig() {
+	    if (oldConfig == null) {
+	        reloadOldConfig();
+	    }
+	    return oldConfig;
+	}
+
+	public void saveOldConfig() {
+	    if (oldConfig == null || oldConfigFile == null) return;
+	    try {
+	        oldConfig.save(oldConfigFile);
+	    } catch (IOException ex) {
+	        Util.logWarning("Could not save config to " + oldConfigFile);
 	    }
 	}
 }

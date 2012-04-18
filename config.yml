@@ -7,7 +7,7 @@ configuration:
 defaults:
   enabled: true
   blacklist:
-    enabled: true
+    enabled: false
     whitelist: false
     blocks: []
   protection:
@@ -36,13 +36,17 @@ defaults:
       cooldown-enabled: true
       cooldown-time: 5
   materials:
-    default-block: "1"
+    blocks:
+    - '1'
+    weights:
+    - '100'
 messages:
   title: "Mine Reset"
   title-on-signs: "Reset"
   manual-mine-reset-successful: "Mine %MINE% was reset!"
   automatic-mine-reset-successful: "Mine %MINE% was reset! Next reset in %TIME% minutes."
+  automatic-mine-reset-warning: "Mine %MINE% resets in %TIME% minutes."
   invalid-command: "Invalid command! Use /mine help for help."
   access-denied: "You do not have permission to do that"
 data:
-  version: 1.0b
+  version: 1.0dev1

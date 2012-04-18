@@ -55,15 +55,15 @@ public class Blacklist
 		}
 		else if(args[1].equalsIgnoreCase("add"))
 		{
-			int blockID = Util.getBlockId(args[2]);
-			if(blockID == -1)
+			int blockId = Util.getBlockId(args[2]);
+			if(blockId == -1)
 			{
 				Util.sendError("Block '"+ args[2] + "' does not exist");
 				return;
 			}
 			
 			List<String> blacklist = Util.getRegionList("mines." + mineName + ".blacklist.blocks");
-			blacklist.add("" + blockID);
+			blacklist.add(blockId + "");
 			Util.setRegionList("mines." + mineName + ".blacklist.blocks", blacklist);
 
 			Util.sendSuccess("Block " + args[1] + " is now in the blacklist");
@@ -71,8 +71,8 @@ public class Blacklist
 		}
 		else if(args[1].equalsIgnoreCase("remove"))
 		{
-			int blockID = Util.getBlockId(args[2]);
-			if(blockID == -1)
+			int blockId = Util.getBlockId(args[2]);
+			if(blockId == -1)
 			{
 				Util.sendError("Block '"+ args[2] + "' does not exist");
 				return;
@@ -80,7 +80,7 @@ public class Blacklist
 			
 			List<String> blacklist = Util.getRegionList("mines." + mineName + ".blacklist.blocks");
 			
-			int index = blacklist.indexOf(blockID);
+			int index = blacklist.indexOf(blockId);
 			if(index == -1)
 			{
 				Util.sendError("Block " + args[2] + " is not in the blacklist");

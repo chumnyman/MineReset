@@ -4,31 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.wolvencraft.MineReset.cmd.Util;
+
 public class Pattern {
-    double []Totals;
  
-    List<String> blocks;
-    List<String> weights;
     List<String> bin;
     
     public Pattern (List<String> blockList, List<String> weightList)
     {
-    	blocks = blockList;
-    	weights = weightList;
-    	bin = new ArrayList<String>();
+    	bin = new ArrayList<String>(100000);
+    	
+    	int counter = 0;
+    	if(Util.debugEnabled()) Util.log(blockList.size() + " blocks in a queue");
+    	for(int i = 0; i < blockList.size(); i++)
+    	{
+    		for(int j = 0; j < (Integer.parseInt(weightList.get(i)) * 1000); j++)
+    		{
+    			bin.add(blockList.get(i));
+    			counter++;
+    		}
+			if(Util.debugEnabled()) Util.log("Added " + counter + " "+ blockList.get(i) + " to the bin");
+			counter = 0;
+    	}
+    	
+		if(Util.debugEnabled()) Util.log(bin.size() + " blocks in the bin");
     }
     
     public int next()
     {
     	Random seed = new Random();
-    	
-    	for(int i = 0; i < blocks.size(); i++)
-    	{
-    		for(int j = 0; j < (Integer.parseInt(weights.get(i)) * 1000); j++)
-    		{
-    			bin.add(blocks.get(i));
-    		}
-    	}
     	
     	int rand = Integer.parseInt(bin.get(seed.nextInt(bin.size())));
     	return rand;

@@ -23,12 +23,12 @@ public class Reset
 			return;
 		}
 		String mineName;
-		if(args[0].length() > 2)
+		if(args.length > 2)
 		{
 			Util.sendInvalid(args);
 			return;
 		}
-		if(args[0].length() == 1)
+		if(args.length == 1)
 			mineName = Util.getConfigString("configuration.default-name");
 		else mineName = args[1];
 		
@@ -45,8 +45,8 @@ public class Reset
 			return;
 		}
 		
-		List<String> blockList = Util.getConfigList("mines." + mineName + ".materials.blocks");
-		List<String> weightList = Util.getConfigList("mines." + mineName + ".materials.weights");
+		List<String> blockList = Util.getRegionList("mines." + mineName + ".materials.blocks");
+		List<String> weightList = Util.getRegionList("mines." + mineName + ".materials.weights");
 		Pattern pattern = new Pattern(blockList, weightList);
 		boolean blacklist = Util.getRegionBoolean("mines." + mineName + ".blacklist.enabled");
 		boolean whitelist = Util.getRegionBoolean("mines." + mineName + ".blacklist.whitelist");
@@ -84,6 +84,7 @@ public class Reset
 		
 		if(whitelist)
 		{
+			if(Util.debugEnabled()) Util.log("Whitelist detected");
 			for(int y = point1[1]; y <= point2[1]; y++)
 			{
 				for(int x = point1[0]; x <= point2[0]; x++)
@@ -100,6 +101,8 @@ public class Reset
 							{
 								if(Util.debugEnabled()) Util.log(blockID + " is not whitelisted and thus not replaced");
 							}	
+							
+							if(Util.debugEnabled()) Util.log("Replaced block at (" + x + ", " + y + ", " + z + ")");
 						}
 					}
 				}
@@ -107,6 +110,7 @@ public class Reset
 		}
 		else if(blacklist)
 		{
+			if(Util.debugEnabled()) Util.log("Blacklist detected");
 			for(int y = point1[1]; y <= point2[1]; y++)
 			{
 				for(int x = point1[0]; x <= point2[0]; x++)
@@ -123,6 +127,8 @@ public class Reset
 							{
 								b.setTypeId(blockID);
 							}	
+							
+							if(Util.debugEnabled()) Util.log("Replaced block at (" + x + ", " + y + ", " + z + ")");
 						}
 					}
 				}
@@ -130,15 +136,19 @@ public class Reset
 		}
 		else
 		{
+			if(Util.debugEnabled()) Util.log("No blacklist detected");
 			for(int y = point1[1]; y <= point2[1]; y++)
 			{
+				if(Util.debugEnabled()) Util.log("Parsing y " + y);
 				for(int x = point1[0]; x <= point2[0]; x++)
 				{
+					if(Util.debugEnabled()) Util.log("Parsing x " + x);
 					for(int z = point1[2]; z <= point2[2]; z++ )
 					{
 						Block b = mineWorld.getBlockAt(x, y, z);
 						blockID = pattern.next();
 						b.setTypeId(blockID);
+						if(Util.debugEnabled()) Util.log("Replaced block at (" + x + ", " + y + ", " + z + ")");
 					}
 				}
 			}

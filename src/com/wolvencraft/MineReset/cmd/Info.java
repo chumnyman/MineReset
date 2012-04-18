@@ -58,7 +58,7 @@ public class Info
 			blockID = Integer.parseInt(itemList.get(i));
 			blockName = Material.getMaterial(blockID).toString();
 			blockWeight = weightList.get(i);
-			Util.sendMessage(" - " + blockWeight + "% of " + ChatColor.GREEN + blockName);
+			Util.sendMessage(" - " + blockWeight + "% " + ChatColor.GREEN + blockName.toLowerCase().replace("_", " "));
 		}
 		List<String> blacklistBlocks =  Util.getRegionList("mines." + mineName + ".blacklist.blocks");
 		if(Util.getRegionBoolean(mineName + ".blacklist.enabled") && blacklistBlocks.size() != 0)

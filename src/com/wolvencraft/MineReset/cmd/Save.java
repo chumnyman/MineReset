@@ -80,6 +80,44 @@ public class Save
 		boolean protectionPlacingWhitelistEnabled = Util.getConfigBoolean("defaults.protection.placing.blacklist.whitelist");
 		List<String> protectionPlacingBlacklistedBlocks = Util.getConfigList("defaults.protection.placing.blacklist.blocks");
 		
+		// - - - Coordinates
+		
+		int[] p1 = new int[3];
+		int[] p2 = new int[3];
+		
+		if((int)loc[0].getX() < (int)loc[1].getX())
+		{
+			p1[0] = (int)loc[0].getX();
+			p2[0] = (int)loc[1].getX();
+		}
+		else
+		{
+			p2[0] = (int)loc[0].getX();
+			p1[0] = (int)loc[1].getX();
+		}
+		
+		if((int)loc[0].getY() < (int)loc[1].getY())
+		{
+			p1[1] = (int)loc[0].getY();
+			p2[1] = (int)loc[1].getY();
+		}
+		else
+		{
+			p2[1] = (int)loc[0].getY();
+			p1[1] = (int)loc[1].getY();
+		}
+		
+		if((int)loc[0].getZ() < (int)loc[1].getZ())
+		{
+			p1[2] = (int)loc[0].getZ();
+			p2[2] = (int)loc[1].getZ();
+		}
+		else
+		{
+			p2[2] = (int)loc[0].getZ();
+			p1[2] = (int)loc[1].getZ();
+		}
+		
 		// - - Materials
 		List<String> blockList = Util.getConfigList("defaults.materials.blocks");
 		List<String> weightList = Util.getConfigList("defaults.materials.weights");	
@@ -144,16 +182,17 @@ public class Save
 		baseNode = "mines." + mineName + ".coordinates";
 		Util.setRegionString(baseNode + ".world", loc[0].getWorld().getName());
 		
+		//TODO thah
 		// = = = Position 0
-		Util.setRegionInt(baseNode + ".pos0.x", (int)loc[0].getX());
-		Util.setRegionInt(baseNode + ".pos0.y", (int)loc[0].getY());
-		Util.setRegionInt(baseNode + ".pos0.z", (int)loc[0].getZ());
+		Util.setRegionInt(baseNode + ".pos0.x", p1[0]);
+		Util.setRegionInt(baseNode + ".pos0.y", p1[1]);
+		Util.setRegionInt(baseNode + ".pos0.z", p1[2]);
 		
 		// = = = Position 1
-		Util.setRegionInt(baseNode + ".pos1.x", (int)loc[1].getX());
-		Util.setRegionInt(baseNode + ".pos1.y", (int)loc[1].getY());
-		Util.setRegionInt(baseNode + ".pos1.z", (int)loc[1].getZ());
-		
+		Util.setRegionInt(baseNode + ".pos1.x", p2[0]);
+		Util.setRegionInt(baseNode + ".pos1.y", p2[1]);
+		Util.setRegionInt(baseNode + ".pos1.z", p2[2]);
+				
 		// = = = Position 2 (mine spawn point)
 		Util.setRegionInt(baseNode + ".pos2.x", 0);
 		Util.setRegionInt(baseNode + ".pos2.y", 0);

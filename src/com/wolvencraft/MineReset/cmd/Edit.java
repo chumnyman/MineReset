@@ -86,9 +86,9 @@ public class Edit
 			}
 			
 			String blockName = args[2];
-			int blockID = Util.getBlockId(args[2]);
+			int blockId = Util.getBlockId(args[2]);
 			
-			if(blockID == -1)
+			if(blockId == -1)
 			{
 				Util.sendError("Block '"+ args[2] + "' does not exist");
 				return;
@@ -125,7 +125,7 @@ public class Edit
 			else newStonePercent = percentAvailable - percent;
 			
 			// Writing everything down
-			itemList.add(""+blockID);
+			itemList.add(blockId + "");
 			weightList.add(""+percent);
 			weightList.set(0, ""+newStonePercent);
 			Util.setRegionList("mines." + curMine + ".materials.blocks", itemList);
@@ -145,15 +145,15 @@ public class Edit
 				return;
 			}
 			
-			int blockID = Util.getBlockId(args[2]);
+			int blockId = Util.getBlockId(args[2]);
 			
-			if(blockID == -1)
+			if(blockId == -1)
 			{
 				Util.sendError("Block '"+ args[2] + "' does not exist");
 				return;
 			}
 			
-			if(blockID == Util.getConfigInt("defaults.materials.default-block"))
+			if(blockId == Util.getConfigInt("defaults.materials.default-block"))
 			{
 				Util.sendError("You cannot remove the default block from the mine");
 				return;
@@ -163,8 +163,8 @@ public class Edit
 			List<String> weightList = Util.getRegionList("mines." + curMine + ".materials.weights");
 			
 			
-			int index = itemList.indexOf("" + blockID);
-			if(Util.debugEnabled()) Util.log(blockID + " ? " + index);
+			int index = itemList.indexOf("" + blockId);
+			if(Util.debugEnabled()) Util.log(blockId + " ? " + index);
 			if(index == -1)
 			{
 				Util.sendError("There is no '" + args[2] + "' in mine '" + curMine + "'");

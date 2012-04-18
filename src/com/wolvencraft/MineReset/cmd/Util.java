@@ -404,33 +404,23 @@ public class Util
 	}
 	
 	/**
-	 * Returns the numeric ID of a block specified
+	 * Parses a block specified for a material
 	 * @param blockName Name of a block
-	 * @return Block ID if a block exists, -1 if it does not
+	 * @return Block material if it exists, null if it does not.
 	 */
-	public static String getBlockId(String blockName)
+	public static int getBlockId(String blockName)
 	{
-		if(blockName.indexOf(":") != -1)
+		try
 		{
-			String[] bits = blockname.split(":");
-			if(bits.length > 2) return null;
-			
-			// ???
-		}
-		else
-		{
-			try
+			if(isNumeric(blockName)) return Integer.parseInt(blockName);
+			else
 			{
-				if(isNumeric(blockName)) return Integer.parseInt(blockName);
-				else
-				{
-					Material material = Material.matchMaterial(blockName);
-					if(material == null) return null;
-					return material.getId();
-				}
+				Material material = Material.matchMaterial(blockName);
+				if(material == null) return -1;
+				return material.getId();
 			}
-			catch(NumberFormatException nfe) { return null; }
 		}
+		catch(NumberFormatException nfe) { return -1; }
 	}
 	
 	/**

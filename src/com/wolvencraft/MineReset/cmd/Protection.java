@@ -94,9 +94,9 @@ public class Protection
 				else if(args[3].equalsIgnoreCase("add"))
 				{
 					String blockName = args[2];
-					int blockID = Util.getBlockId(args[4]);
+					int blockId = Util.getBlockId(args[4]);
 					
-					if(blockID == -1)
+					if(blockId == -1)
 					{
 						Util.sendError("Block '"+ args[4] + "' does not exist");
 						return;
@@ -106,7 +106,7 @@ public class Protection
 					
 					
 					// Writing everything down
-					blockList.add(""+blockID);
+					blockList.add(""+blockId);
 					Util.setRegionList(baseNode + ".blacklist.blocks", blockList);
 					
 					Util.saveRegionData();
@@ -116,9 +116,9 @@ public class Protection
 				}
 				else if(args[3].equalsIgnoreCase("remove"))
 				{
-					int blockID = Util.getBlockId(args[4]);
+					int blockId = Util.getBlockId(args[4]);
 					
-					if(blockID == -1)
+					if(blockId == -1)
 					{
 						Util.sendError("Block '"+ args[4] + "' does not exist");
 						return;
@@ -127,7 +127,7 @@ public class Protection
 					List<String> blockList = Util.getRegionList(baseNode + ".blacklist.blocks");
 					
 					
-					int index = blockList.indexOf("" + blockID);
+					int index = blockList.indexOf("" + blockId);
 					if(index == -1)
 					{
 						Util.sendError("There is no '" + args[4] + "' in protection blacklist of mine '" + curMine + "'");

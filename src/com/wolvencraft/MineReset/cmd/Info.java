@@ -27,7 +27,7 @@ public class Info
 			return;
 		}
 		
-		if(!Util.mineExists(args[1]))
+		if(args.length != 1 && !Util.mineExists(args[1]))
 		{
 			Util.sendError("Mine '" + args[1] + "' does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
 			return;
@@ -61,13 +61,16 @@ public class Info
 		{
 			blockID = Integer.parseInt(itemList.get(i));
 			blockName = Material.getMaterial(blockID).toString();
-			blockWeight = weightList.get(i);
+			if(Double.parseDouble(weightList.get(i)) < 10)
+				blockWeight = " " + weightList.get(i);
+			else
+				blockWeight = weightList.get(i);
 			Util.sendMessage(" - " + blockWeight + "% " + ChatColor.GREEN + blockName.toLowerCase().replace("_", " "));
 		}
 		List<String> blacklistBlocks =  Util.getRegionList("mines." + mineName + ".blacklist.blocks");
-		if(Util.getRegionBoolean(mineName + ".blacklist.enabled") && blacklistBlocks.size() != 0)
+		if(Util.getRegionBoolean("mines" + mineName + ".blacklist.enabled") && blacklistBlocks.size() != 0)
 		{
-			if(Util.getRegionBoolean(mineName + ".blacklist.whitelist"))
+			if(Util.getRegionBoolean("mines" + mineName + ".blacklist.whitelist"))
 			{
 				Util.sendMessage(ChatColor.BLUE + " Blacklist:");
 			}

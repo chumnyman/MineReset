@@ -191,7 +191,7 @@ public class Edit
 			Util.setRegionList("mines." + curMine + ".materials.weights", weightList);
 			
 			Util.saveRegionData();
-			Util.sendSuccess(args[2] + " was successfully removed from mine '" + args[1] + "'");
+			Util.sendSuccess(args[1] + " was successfully removed from mine '" + curMine + "'");
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("delete"))

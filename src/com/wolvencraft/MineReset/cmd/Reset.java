@@ -87,8 +87,10 @@ public class Reset
 			if(Util.debugEnabled()) Util.log("Whitelist detected");
 			for(int y = point1[1]; y <= point2[1]; y++)
 			{
+				if(Util.debugEnabled()) Util.log("Parsing y " + y);
 				for(int x = point1[0]; x <= point2[0]; x++)
 				{
+					if(Util.debugEnabled()) Util.log("Parsing x " + x);
 					for(int z = point1[2]; z <= point2[2]; z++ )
 					{
 						Block b = mineWorld.getBlockAt(x, y, z);
@@ -102,7 +104,6 @@ public class Reset
 								if(Util.debugEnabled()) Util.log(blockID + " is not whitelisted and thus not replaced");
 							}	
 							
-							if(Util.debugEnabled()) Util.log("Replaced block at (" + x + ", " + y + ", " + z + ")");
 						}
 					}
 				}
@@ -113,8 +114,10 @@ public class Reset
 			if(Util.debugEnabled()) Util.log("Blacklist detected");
 			for(int y = point1[1]; y <= point2[1]; y++)
 			{
+				if(Util.debugEnabled()) Util.log("Parsing y " + y);
 				for(int x = point1[0]; x <= point2[0]; x++)
 				{
+					if(Util.debugEnabled()) Util.log("Parsing x " + x);
 					for(int z = point1[2]; z <= point2[2]; z++ )
 					{
 						Block b = mineWorld.getBlockAt(x, y, z);
@@ -127,9 +130,7 @@ public class Reset
 							{
 								b.setTypeId(blockID);
 							}	
-							
-							if(Util.debugEnabled()) Util.log("Replaced block at (" + x + ", " + y + ", " + z + ")");
-						}
+													}
 					}
 				}
 			}

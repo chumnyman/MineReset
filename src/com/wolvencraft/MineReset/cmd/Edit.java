@@ -85,14 +85,17 @@ public class Edit
 				return;
 			}
 			
-			String blockName = args[2];
-			int blockId = Util.getBlockId(args[2]);
+			String blockName = args[1];
+			int blockId = Util.getBlockId(blockName);
 			
 			if(blockId == -1)
 			{
-				Util.sendError("Block '"+ args[2] + "' does not exist");
+				Util.sendError("Block '"+ args[1] + "' does not exist");
 				return;
 			}
+			
+			List<String> itemList = Util.getRegionList("mines." + curMine + ".materials.blocks");
+			List<String> weightList = Util.getRegionList("mines." + curMine + ".materials.weights");
 			
 			double percent;
 			if(Util.isNumeric(args[2])) percent = Double.parseDouble(args[2]);
@@ -112,9 +115,6 @@ public class Edit
 			}
 			if(Util.debugEnabled()) Util.log("Percent value is " + percent);
 			
-			List<String> itemList = Util.getRegionList("mines." + curMine + ".materials.blocks");
-			List<String> weightList = Util.getRegionList("mines." + curMine + ".materials.weights");
-			
 			double percentAvailable = Double.parseDouble(weightList.get(0));
 			double newStonePercent;
 			if((percentAvailable - percent) < 0)
@@ -124,9 +124,19 @@ public class Edit
 			}
 			else newStonePercent = percentAvailable - percent;
 			
+			int index = itemList.indexOf("" + blockId);
+			if(Util.debugEnabled()) Util.log(blockId + " ? " + index);
+			if(index == -1)
+			{
+				itemList.add(blockId + "");
+				weightList.add(""+percent);
+			}
+			else
+			{
+				weightList.set(index, weightList.get(index) + percent);
+			}
 			// Writing everything down
-			itemList.add(blockId + "");
-			weightList.add(""+percent);
+			
 			weightList.set(0, ""+newStonePercent);
 			Util.setRegionList("mines." + curMine + ".materials.blocks", itemList);
 			Util.setRegionList("mines."+ curMine + ".materials.weights", weightList);
@@ -145,11 +155,11 @@ public class Edit
 				return;
 			}
 			
-			int blockId = Util.getBlockId(args[2]);
+			int blockId = Util.getBlockId(args[1]);
 			
 			if(blockId == -1)
 			{
-				Util.sendError("Block '"+ args[2] + "' does not exist");
+				Util.sendError("Block '"+ args[1] + "' does not exist");
 				return;
 			}
 			

@@ -18,7 +18,7 @@ public class Pattern {
     	if(Util.debugEnabled()) Util.log(blockList.size() + " blocks in a queue");
     	for(int i = 0; i < blockList.size(); i++)
     	{
-    		for(int j = 0; j < (Integer.parseInt(weightList.get(i)) * 1000); j++)
+    		for(int j = 0; j < (Double.parseDouble(weightList.get(i)) * 1000); j++)
     		{
     			bin.add(blockList.get(i));
     			counter++;

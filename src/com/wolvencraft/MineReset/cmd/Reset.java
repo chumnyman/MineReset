@@ -148,7 +148,6 @@ public class Reset
 						Block b = mineWorld.getBlockAt(x, y, z);
 						blockID = pattern.next();
 						b.setTypeId(blockID);
-						if(Util.debugEnabled()) Util.log("Replaced block at (" + x + ", " + y + ", " + z + ")");
 					}
 				}
 			}

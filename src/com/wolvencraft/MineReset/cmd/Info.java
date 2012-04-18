@@ -5,6 +5,8 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
+import com.wolvencraft.MineReset.CommandManager;
+
 public class Info
 {
 	public static void run(String[] args)
@@ -14,12 +16,12 @@ public class Info
 			Util.sendDenied(args);
 			return;
 		}
-		if(args.length == 1)
+		if(args.length == 1 && CommandManager.getMine() == null)
 		{
 			Help.getInfo();
 			return;
 		}
-		if(args.length != 2)
+		if(args.length > 2)
 		{
 			Util.sendInvalid(args);
 			return;
@@ -30,7 +32,9 @@ public class Info
 			Util.sendError("Mine '" + args[1] + "' does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
 			return;
 		}
-		String mineName = args[1];
+		String mineName;
+		if(CommandManager.getMine() == null) mineName = args[1];
+		else mineName = CommandManager.getMine();
 		
 		List<String> itemList = Util.getRegionList("mines." + mineName + ".materials.blocks");
 		List<String> weightList = Util.getRegionList("mines." + mineName + ".materials.weights");

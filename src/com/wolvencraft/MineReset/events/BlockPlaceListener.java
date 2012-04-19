@@ -2,6 +2,7 @@ package com.wolvencraft.MineReset.events;
 
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -14,17 +15,17 @@ public class BlockPlaceListener implements Listener
 {
 	public BlockPlaceListener()
 	{
-		//does nothing
+		// does nothing
 	}
 	
 	@SuppressWarnings("unused")
-	public void onBlockPlace(BlockPlaceEvent event)
+	public void onBlockBreak(BlockPlaceEvent event)
 	{
 		if(!Util.getConfigBoolean("use-protection")) return;
 		
 		Player player = event.getPlayer();
 		
-		if(player.isOp() || Util.playerHasPermission(player, "protection") || Util.playerHasPermission(player, "protection.break"))
+		if(player.isOp() || Util.playerHasPermission(player, "protection") || Util.playerHasPermission(player, "protection.place"))
 			return;
 		
 		int padding;
@@ -57,7 +58,7 @@ public class BlockPlaceListener implements Listener
 								{
 									if(blacklist.get(j).indexOf(b.getTypeId() + "") == -1)
 									{
-										Util.sendPlayerError(player, "You are not allowed to break blocks in this mine");
+										Util.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
 										event.setCancelled(true);
 										return;
 									}
@@ -72,7 +73,7 @@ public class BlockPlaceListener implements Listener
 										return;
 									else
 									{
-										Util.sendPlayerError(player, "You are not allowed to break blocks in this mine");
+										Util.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
 										event.setCancelled(true);
 										return;
 									}
@@ -80,7 +81,7 @@ public class BlockPlaceListener implements Listener
 							}
 						}
 					
-					Util.sendPlayerError(player, "You are not allowed to break blocks in this mine");
+					Util.sendPlayerError(player, "You are not allowed to place blocks in this mine");
 					event.setCancelled(true);
 					}
 					else return;

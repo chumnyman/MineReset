@@ -41,8 +41,6 @@ public class Help
 		//formatHelp("mine cooldown", " <time>", "Sets a cooldown time for the manual reset", "");
 		formatHelp("mine add", " <block> <percentage>", "Adds another type of block to the mine", "");
 		formatHelp("mine remove", " <block>", "Removes a block from the mine", "");
-		formatHelp("mine warp", " pos", "Sets up a mine warp at your immediate location", "");
-		formatHelp("mine warp", " hpos", "Sets up a mine warp one block above the targeted block", "");
 		formatHelp("mine delete", "", "Completely deletes all the data about the selected mine", "");
 	}
 	

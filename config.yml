@@ -5,6 +5,7 @@ configuration:
   use-permissions: true
   use-protection: true
 defaults:
+  display-name: ""
   enabled: true
   blacklist:
     enabled: false

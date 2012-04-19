@@ -2,6 +2,7 @@ package com.wolvencraft.MineReset.events;
 
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -57,7 +58,7 @@ public class BlockBreakListener implements Listener
 								{
 									if(blacklist.get(j).indexOf(b.getTypeId() + "") == -1)
 									{
-										Util.sendPlayerError(player, "You are not allowed to break blocks in this mine");
+										Util.sendPlayerError(player, "You are not allowed to break " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
 										event.setCancelled(true);
 										return;
 									}
@@ -72,7 +73,7 @@ public class BlockBreakListener implements Listener
 										return;
 									else
 									{
-										Util.sendPlayerError(player, "You are not allowed to break blocks in this mine");
+										Util.sendPlayerError(player, "You are not allowed to break " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
 										event.setCancelled(true);
 										return;
 									}

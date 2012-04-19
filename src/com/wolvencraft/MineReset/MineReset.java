@@ -15,6 +15,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wolvencraft.MineReset.cmd.*;
+import com.wolvencraft.MineReset.events.*;
 
 
 /**
@@ -39,6 +40,10 @@ public class MineReset extends JavaPlugin
 	public void onEnable()
 	{
 		log = this.getLogger();
+		
+		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
+		getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
+		getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);
 		
 		manager = new CommandManager(this);
 		getCommand("mine").setExecutor(manager);

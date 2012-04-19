@@ -53,7 +53,7 @@ public class Save
 		// - Fetching the default values
 		// - - Is the mine enabled by default?
 		boolean enabled = Util.getConfigBoolean("defaults.enabled");
-		
+		String displayName = Util.getConfigString("defaults.display-name");
 		
 		// - - Blacklist defaults
 		boolean blacklistEnabled = Util.getConfigBoolean("defaults.blacklist.enabled");
@@ -143,6 +143,7 @@ public class Save
 		String baseNode = "mines." + mineName;
 		// = = Basic info
 		Util.setRegionBoolean(baseNode + ".enabled", enabled);
+		Util.setRegionString(baseNode + ".display-name", displayName);
 		
 		if(Util.debugEnabled()) Util.log("Writing blacklist data");
 		

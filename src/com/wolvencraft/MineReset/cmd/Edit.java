@@ -214,7 +214,12 @@ public class Edit
 			}
 			
 			String name = args[1];
+			for(int i = 2; i < args.length; i++)
+			{
+				name = name + " " + args[i];
+			}
 			Util.setRegionString("mines." + curMine + ".display-name", name);
+			Util.sendSuccess("Mine '" + curMine + "' now has a display name '" + name + "'");
 			Util.saveRegionData();
 			return;
 		}

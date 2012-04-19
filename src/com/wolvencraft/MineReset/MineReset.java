@@ -87,13 +87,13 @@ public class MineReset extends JavaPlugin
 						Util.setRegionInt("mines." + mineList.get(i) + ".reset.auto.data.sec", sec);
 						Util.saveRegionData();
 						
-						if(min == warnTime && sec == 0)
+						if(min == warnTime && sec == 30)
 						{
 		                	warnMessage = Util.parseString(warnMessage, "%MINE%", mineList.get(i));
 		                	warnMessage = Util.parseString(warnMessage, "%TIME%", warnTime + "");
 		                	Util.sendSuccess(warnMessage);
 						}
-						else if(min == 0 && sec == 0)
+						else if(min <= 0 || (min == 0 && sec == 0))
 						{
 							String[] args = {mineList.get(i)};
 							Reset.run(args, true);

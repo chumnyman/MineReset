@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
@@ -18,15 +19,17 @@ public class BlockPlaceListener implements Listener
 		// does nothing
 	}
 	
-	@SuppressWarnings("unused")
+	@EventHandler
 	public void onBlockBreak(BlockPlaceEvent event)
 	{
-		if(!Util.getConfigBoolean("use-protection")) return;
+		if(Util.debugEnabled()) Util.log("BlockBreakEvent called");
 		
 		Player player = event.getPlayer();
 		
 		if(player.isOp() || Util.playerHasPermission(player, "protection") || Util.playerHasPermission(player, "protection.place"))
 			return;
+		
+		if(Util.debugEnabled()) Util.log("Permissions check passed");
 		
 		int padding;
 		int paddingTop;
@@ -49,14 +52,15 @@ public class BlockPlaceListener implements Listener
 							&& (blockLocation.getY() > (y[0] - padding) && blockLocation.getY() < (y[1] + paddingTop))
 							&& (blockLocation.getZ() > (z[0] - padding) && blockLocation.getZ() < (z[1] + padding)))
 					{
+						if(Util.debugEnabled()) Util.log("Player is in the mine region");
 						if(Util.getConfigBoolean("mines." + regionList.get(i) + ".protection.placement.blacklist.enabled"))
 						{
 							List<String> blacklist = Util.getConfigList("mines." + regionList.get(i) + ".protection.placement.blacklist.blocks");
 							if(Util.getConfigBoolean("mines." + regionList.get(i) + ".protection.placement.blacklist.whitelist"))
 							{
-								for(int j = 0; j < blacklist.size(); j++)
+								for(String block : blacklist)
 								{
-									if(blacklist.get(j).indexOf(b.getTypeId() + "") == -1)
+									if(Integer.parseInt(block) == b.getTypeId())
 									{
 										Util.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
 										event.setCancelled(true);
@@ -67,22 +71,21 @@ public class BlockPlaceListener implements Listener
 							}
 							else
 							{
-								for(int j = 0; j < blacklist.size(); j++)
+								for(String block : blacklist)
 								{
-									if(blacklist.get(j).indexOf(b.getTypeId() + "") == -1)
-										return;
-									else
+									if(Integer.parseInt(block) != b.getTypeId())
 									{
 										Util.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
 										event.setCancelled(true);
 										return;
 									}
+									else return;
 								}
 							}
 						}
 					
-					Util.sendPlayerError(player, "You are not allowed to place blocks in this mine");
-					event.setCancelled(true);
+						Util.sendPlayerError(player, "You are not allowed to place blocks in this mine");
+						event.setCancelled(true);
 					}
 					else return;
 				}

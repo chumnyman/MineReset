@@ -40,7 +40,23 @@ public class Info
 		
 		// Title
 		String displayName = Util.getRegionString("mines." + mineName + ".display-name");
+		if(displayName.equals("")) displayName = mineName;
 		Util.sendMessage(ChatColor.DARK_RED + "                    -=[ " + displayName + " ]=-");
+		
+		// Reset
+		boolean autoReset = Util.getRegionBoolean("mines." + mineName + ".reset.auto.reset");
+		int autoResetTime = Util.getRegionInt("mines." + mineName + ".reset.auto.reset-time");
+		int nextResetMin = Util.getRegionInt("mines." + mineName + ".reset.auto.data.min");
+		int nextResetSec = Util.getRegionInt("mines." + mineName + ".reset.auto.data.sec");
+		
+		if(autoReset)
+		{
+			Util.sendMessage(" Resets every " + ChatColor.GOLD +  autoResetTime + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetMin + ChatColor.WHITE + " minutes " + ChatColor.GOLD + nextResetSec + ChatColor.WHITE + " seconds");
+		}
+		else
+		{
+			Util.sendMessage("The mine has to be reset manually");
+		}
 		
 		// Protection
 		String pvp;
@@ -52,10 +68,14 @@ public class Info
 		String breakingProt;
 		if(Util.getRegionBoolean("mines." + mineName + ".protection.breaking.enabled"))
 		{
+			
 			if(Util.getRegionBoolean("mines." + mineName + ".protection.breaking.blacklist.enabled"))
-				breakingProt = ChatColor.GREEN + "ON" + ChatColor.WHITE + " (W)";
-			else if(Util.getRegionBoolean("mines." + mineName + ".protection.breaking.blacklist.enabled"))
-				breakingProt = ChatColor.GREEN + "ON" + ChatColor.WHITE + " (B)";
+			{
+				if(Util.getRegionBoolean("mines." + mineName + ".protection.breaking.blacklist.whitelist"))
+					breakingProt = ChatColor.GREEN + "ON" + ChatColor.WHITE + " (W)";
+				else
+					breakingProt = ChatColor.GREEN + "ON" + ChatColor.WHITE + " (B)";
+			}
 			else
 				breakingProt = ChatColor.GREEN + "ON";
 		}
@@ -68,9 +88,12 @@ public class Info
 		if(Util.getRegionBoolean("mines." + mineName + ".protection.placement.enabled"))
 		{
 			if(Util.getRegionBoolean("mines." + mineName + ".protection.placement.blacklist.enabled"))
-				placementProt = ChatColor.GREEN + "ON" + ChatColor.WHITE + " (W)";
-			else if(Util.getRegionBoolean("mines." + mineName + ".protection.placement.blacklist.enabled"))
-				placementProt = ChatColor.GREEN + "ON" + ChatColor.WHITE + " (B)";
+			{
+				if(Util.getRegionBoolean("mines." + mineName + ".protection.placement.blacklist.whitelist"))
+					placementProt = ChatColor.GREEN + "ON" + ChatColor.WHITE + " (W)";
+				else
+					placementProt = ChatColor.GREEN + "ON" + ChatColor.WHITE + " (B)";
+			}
 			else
 				placementProt = ChatColor.GREEN + "ON";
 		}
@@ -79,21 +102,8 @@ public class Info
 			placementProt = ChatColor.RED + "OFF";
 		}
 		
-		Util.sendMessage("[ PVP: " + pvp + ChatColor.WHITE + " | Breaking: " + breakingProt + " | Placement: " + placementProt + ChatColor.WHITE + " ]");
-		
-		// Reset
-		boolean autoReset = Util.getRegionBoolean("mines." + mineName + ".reset.auto.reset-time");
-		int nextResetMin = Util.getRegionInt("mines." + mineName + ".reset.auto.data.min");
-		int nextResetSec = Util.getRegionInt("mines." + mineName + ".reset.auto.data.sec");
-		
-		if(autoReset)
-		{
-			Util.sendMessage(" Resets every " + ChatColor.GOLD +  Util.getRegionInt(mineName + ".reset.auto.reset-time") + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetMin + ChatColor.WHITE + " minutes " + ChatColor.GOLD + nextResetSec + ChatColor.WHITE + " seconds");
-		}
-		else
-		{
-			Util.sendMessage("The mine has to be reset manually");
-		}
+		Util.sendMessage(ChatColor.BLUE + " Protection:");
+		Util.sendMessage(" PVP: " + pvp + ChatColor.WHITE + " | Breaking: " + breakingProt + ChatColor.WHITE + " | Placement: " + placementProt + ChatColor.WHITE + " ");
 		
 		// Composition
 		List<String> itemList = Util.getRegionList("mines." + mineName + ".materials.blocks");
@@ -125,10 +135,10 @@ public class Info
 			}
 			else Util.sendMessage(ChatColor.BLUE + " Whitelist:");
 			
-			for(int i = 0; i < blacklistBlocks.size(); i++)
+			for(String block : blacklistBlocks)
 			{
-				if(Util.debugEnabled()) Util.log("Blacklist: " + blacklistBlocks.get(i));
-				Util.sendMessage(" - " + Material.getMaterial(blacklistBlocks.get(i)).toString());
+				if(Util.debugEnabled()) Util.log("Blacklisted: " + block);
+				Util.sendMessage(" - " + Material.getMaterial(Integer.parseInt(block)).toString());
 			}
 		}
 		return;

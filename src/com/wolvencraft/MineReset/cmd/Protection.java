@@ -45,9 +45,15 @@ public class Protection
 				Util.setRegionBoolean(baseNode + ".enabled", true);
 				Util.sendSuccess("PVP has been turned ON for mine '" + curMine + "'");
 			}
+			Util.saveRegionData();
 		}
 		else if(args[1].equalsIgnoreCase("breaking"))
 		{
+			if(args.length < 3)
+			{
+				Util.sendInvalid(args);
+				return;
+			}
 			String baseNode = "mines." + curMine + ".protection.breaking";
 			if(args[2].equalsIgnoreCase("toggle"))
 			{
@@ -145,7 +151,10 @@ public class Protection
 				else
 				{
 					Util.sendInvalid(args);
+					return;
 				}
+				Util.saveRegionData();
+				return;
 			}
 			else
 			{
@@ -251,16 +260,22 @@ public class Protection
 				else
 				{
 					Util.sendInvalid(args);
+					return;
 				}
+
+				Util.saveRegionData();
+				return;
 			}
 			else
 			{
 				Util.sendInvalid(args);
+				return;
 			}
 		}
 		else
 		{
 			Util.sendInvalid(args);
+			return;
 		}
 	}
 }

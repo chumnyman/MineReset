@@ -167,7 +167,7 @@ public class Reset
 			else
 				broadcastMessage = Util.getConfigString("messages.manual-mine-reset-successful");
 			
-				broadcastMessage = Util.parseString(broadcastMessage, "%MINE%", mineName);
+				broadcastMessage = Util.parseString(broadcastMessage, "%MINE%", "'" + mineName + "'");
 				broadcastMessage = Util.parseString(broadcastMessage, "%TIME%", nextReset+"");
 				
 				Util.broadcastSuccess(broadcastMessage);

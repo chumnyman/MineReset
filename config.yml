@@ -3,7 +3,6 @@ configuration:
   default-name: "default"
   broadcast-on-reset: true
   use-permissions: true
-  use-protection: true
 defaults:
   display-name: ""
   enabled: true
@@ -32,7 +31,7 @@ defaults:
       reset: true
       reset-time: 15
       warn: true
-      warn-time: 1
+      warn-time: 5
     manual:
       cooldown-enabled: true
       cooldown-time: 5
@@ -46,7 +45,7 @@ messages:
   title-on-signs: "Reset"
   manual-mine-reset-successful: "Mine %MINE% was reset!"
   automatic-mine-reset-successful: "Mine %MINE% was reset! Next reset in %TIME% minutes."
-  automatic-mine-reset-warning: "Mine %MINE% resets in %TIME% minutes."
+  automatic-mine-reset-warning: "Mine %MINE% resets in %TIME% minute(s)."
   invalid-command: "Invalid command! Use /mine help for help."
   access-denied: "You do not have permission to do that"
 data:

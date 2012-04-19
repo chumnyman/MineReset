@@ -31,7 +31,7 @@ public class Teleport
 			Util.setRegionInt(baseNode + ".pos2.y", 0);
 			Util.setRegionInt(baseNode + ".pos2.z", 0);
 			
-			CommandManager.getPlugin().saveRegionData();
+			Util.saveRegionData();
 			Util.sendSuccess ("Mine spawn point set (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
 			return;
 		}

@@ -40,6 +40,7 @@ public class Blacklist
 				Util.setRegionBoolean("mines." + mineName + ".blacklist.enabled", true);
 				Util.sendSuccess("Blacklist turned ON for mine '" + mineName + "'");
 			}
+			Util.saveRegionData();
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("whitelist"))
@@ -54,6 +55,7 @@ public class Blacklist
 				Util.setRegionBoolean("mines." + mineName + ".blacklist.whitelist", true);
 				Util.sendSuccess("Blacklist is now treated as a whitelist for mine '" + mineName + "'");
 			}
+			Util.saveRegionData();
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("add"))
@@ -69,6 +71,7 @@ public class Blacklist
 			blacklist.add(blockId + "");
 			Util.setRegionList("mines." + mineName + ".blacklist.blocks", blacklist);
 
+			Util.saveRegionData();
 			Util.sendSuccess("Block " + ChatColor.GREEN + args[2] + ChatColor.WHITE + " is now in the blacklist");
 			return;
 		}
@@ -91,6 +94,7 @@ public class Blacklist
 			}
 			blacklist.remove(index);
 			Util.setRegionList("mines." + mineName + ".blacklist.blocks", blacklist);
+			Util.saveRegionData();
 			Util.sendSuccess("Block " + args[2] + " has been removed from the blacklist");
 			return;
 		}

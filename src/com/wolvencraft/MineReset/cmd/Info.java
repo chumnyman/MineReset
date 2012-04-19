@@ -39,7 +39,8 @@ public class Info
 		
 		
 		// Title
-		Util.sendMessage(ChatColor.DARK_RED + "                    -=[ " + mineName + " ]=-");
+		String displayName = Util.getRegionString("mines." + mineName + ".display-name");
+		Util.sendMessage(ChatColor.DARK_RED + "                    -=[ " + displayName + " ]=-");
 		
 		// Protection
 		String pvp;

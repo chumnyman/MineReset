@@ -205,6 +205,19 @@ public class Edit
 			Util.sendSuccess("Mine '" + args[1] + "' removed successfully");
 			return;
 		}
+		else if(args[0].equalsIgnoreCase("name"))
+		{
+			if(curMine == null)
+			{
+				Util.sendError("Select a mine first with /mine edit <name>");
+				return;
+			}
+			
+			String name = args[1];
+			Util.setRegionString("mines." + curMine + ".display-name", name);
+			Util.saveRegionData();
+			return;
+		}
 		else
 		{
 			Util.sendInvalid(args);

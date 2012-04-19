@@ -79,7 +79,7 @@ public class Info
 			placementProt = ChatColor.RED + "OFF";
 		}
 		
-		Util.sendMessage("Protection: PVP " + pvp + " | Breaking: " + breakingProt + " | Placement: " + placementProt);
+		Util.sendMessage("[ PVP: " + pvp + ChatColor.WHITE + " | Breaking: " + breakingProt + " | Placement: " + placementProt + ChatColor.WHITE + " ]");
 		
 		// Reset
 		boolean autoReset = Util.getRegionBoolean("mines." + mineName + ".reset.auto.reset-time");
@@ -117,9 +117,9 @@ public class Info
 		
 		// Blacklist
 		List<String> blacklistBlocks =  Util.getRegionList("mines." + mineName + ".blacklist.blocks");
-		if(Util.getRegionBoolean("mines" + mineName + ".blacklist.enabled") && blacklistBlocks.size() != 0)
+		if(Util.getRegionBoolean("mines." + mineName + ".blacklist.enabled") && blacklistBlocks.size() != 0)
 		{
-			if(Util.getRegionBoolean("mines" + mineName + ".blacklist.whitelist"))
+			if(Util.getRegionBoolean("mines." + mineName + ".blacklist.whitelist"))
 			{
 				Util.sendMessage(ChatColor.BLUE + " Blacklist:");
 			}

@@ -80,55 +80,58 @@ public class Reset
 		// of blocks is clearly not the best idea ever. Best wishes,
 		// me from the past.
 		
-		if(whitelist)
+		if(blacklist)
 		{
-			if(Util.debugEnabled()) Util.log("Whitelist detected");
-			for(int y = point1[1]; y <= point2[1]; y++)
-			{
-				if(Util.debugEnabled()) Util.log("Parsing y " + y);
-				for(int x = point1[0]; x <= point2[0]; x++)
+			if(!whitelist)
 				{
-					if(Util.debugEnabled()) Util.log("Parsing x " + x);
-					for(int z = point1[2]; z <= point2[2]; z++ )
+				if(Util.debugEnabled()) Util.log("Blacklist detected");
+				for(int y = point1[1]; y <= point2[1]; y++)
+				{
+					if(Util.debugEnabled()) Util.log("Parsing y " + y);
+					for(int x = point1[0]; x <= point2[0]; x++)
 					{
-						Block b = mineWorld.getBlockAt(x, y, z);
-						blockID = pattern.next();
-						for(int i = 0; i < blacklistedBlocks.size(); i++)
+						if(Util.debugEnabled()) Util.log("Parsing x " + x);
+						for(int z = point1[2]; z <= point2[2]; z++ )
 						{
-							if(blockID == Integer.parseInt(blacklistedBlocks.get(i)))
-								b.setTypeId(blockID);
-							else
+							Block b = mineWorld.getBlockAt(x, y, z);
+							blockID = pattern.next();
+							for(String block : blacklistedBlocks)
 							{
-								if(Util.debugEnabled()) Util.log(blockID + " is not whitelisted and thus not replaced");
-							}	
-							
+								if(blockID == Integer.parseInt(block))
+									if(Util.debugEnabled()) Util.log(blockID + " is blacklisted and thus not replaced");
+								else
+								{
+									b.setTypeId(blockID);
+								}	
+							}
 						}
 					}
 				}
 			}
-		}
-		else if(blacklist)
-		{
-			if(Util.debugEnabled()) Util.log("Blacklist detected");
-			for(int y = point1[1]; y <= point2[1]; y++)
+			else
 			{
-				if(Util.debugEnabled()) Util.log("Parsing y " + y);
-				for(int x = point1[0]; x <= point2[0]; x++)
+				if(Util.debugEnabled()) Util.log("Whitelist detected");
+				for(int y = point1[1]; y <= point2[1]; y++)
 				{
-					if(Util.debugEnabled()) Util.log("Parsing x " + x);
-					for(int z = point1[2]; z <= point2[2]; z++ )
+					if(Util.debugEnabled()) Util.log("Parsing y " + y);
+					for(int x = point1[0]; x <= point2[0]; x++)
 					{
-						Block b = mineWorld.getBlockAt(x, y, z);
-						blockID = pattern.next();
-						for(int i = 0; i < blacklistedBlocks.size(); i++)
+						if(Util.debugEnabled()) Util.log("Parsing x " + x);
+						for(int z = point1[2]; z <= point2[2]; z++ )
 						{
-							if(blockID == Integer.parseInt(blacklistedBlocks.get(i)))
-								if(Util.debugEnabled()) Util.log(blockID + " is blacklisted and thus not replaced");
-							else
+							Block b = mineWorld.getBlockAt(x, y, z);
+							blockID = pattern.next();
+							for(String block : blacklistedBlocks)
 							{
-								b.setTypeId(blockID);
-							}	
-													}
+								if(blockID == Integer.parseInt(block))
+									b.setTypeId(blockID);
+								else
+								{
+									if(Util.debugEnabled()) Util.log(blockID + " is not whitelisted and thus not replaced");
+								}	
+								
+							}
+						}
 					}
 				}
 			}

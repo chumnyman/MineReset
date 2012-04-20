@@ -130,6 +130,7 @@ public class Edit
 			}
 			else newStonePercent = percentAvailable - percent;
 			
+			newStonePercent = (double)(Math.round(newStonePercent * 1000)) / 1000;
 			int index = itemList.indexOf("" + blockId);
 			if(Util.debugEnabled()) Util.log(blockId + " ? " + index);
 			if(index == -1)

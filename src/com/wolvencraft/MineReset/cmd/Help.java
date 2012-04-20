@@ -37,6 +37,7 @@ public class Help
 	public static void getEdit()
 	{
 		formatHelp("mine edit", " <name>", "Selects a mine to edit its properties", "");
+		formatHelp("mine name", " <name>", "Creates a display name for a mine", "");
 		//formatHelp("mine cooldown", " toggle", "Toggles the reset cooldown in the mine (manual reset)", "");
 		//formatHelp("mine cooldown", " <time>", "Sets a cooldown time for the manual reset", "");
 		formatHelp("mine add", " <block> <percentage>", "Adds another type of block to the mine", "");

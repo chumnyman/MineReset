@@ -34,7 +34,10 @@ public class CommandManager implements CommandExecutor
 		}
 		
 		if(args.length == 0)
+		{
 			Help.getHelp();
+			return false;
+		}
 		else if(args[0].equalsIgnoreCase("auto") || args[0].equalsIgnoreCase("timer") || args[0].equalsIgnoreCase("tm"))
 			Util.sendError("This command does not yet exist");
 		else if(args[0].equalsIgnoreCase("blacklist") || args[0].equalsIgnoreCase("bl"))

@@ -20,9 +20,9 @@ public class BlockPlaceListener implements Listener
 	}
 	
 	@EventHandler
-	public void onBlockBreak(BlockPlaceEvent event)
+	public void onBlockPlace(BlockPlaceEvent event)
 	{
-		if(Util.debugEnabled()) Util.log("BlockBreakEvent called");
+		if(Util.debugEnabled()) Util.log("BlockPlaceEvent called");
 		
 		Player player = event.getPlayer();
 		
@@ -36,27 +36,31 @@ public class BlockPlaceListener implements Listener
 		
 		List<String> regionList = Util.getRegionList("data.list-of-mines");
 		
-		for(int i = 0; i < regionList.size(); i++)
+		if(Util.debugEnabled()) Util.log("Retrieved the region list");
+		
+		for(String mineName : regionList )
 		{
-				if(!Util.playerHasPermission(player, "protection.place." + regionList.get(i)))
+			if(Util.debugEnabled()) Util.log("For mine " + mineName);
+				if(!Util.playerHasPermission(player, "protection.place." + mineName))
 				{
+					if(Util.debugEnabled()) Util.log("The player does not have protection.place." + mineName);
 					Block b = event.getBlock();
 					Location blockLocation = b.getLocation();
-					padding = Util.getRegionInt("mines." + regionList.get(i) + ".protection.padding");
-					paddingTop = Util.getRegionInt("mines." + regionList.get(i) + ".protection.padding-top");
-					int[] x = {Util.getConfigInt("regions." + regionList.get(i) + ".coords.p1.x"), Util.getConfigInt("regions." + regionList.get(i) + ".coords.p2.x")};
-					int[] y = {Util.getConfigInt("regions." + regionList.get(i) + ".coords.p1.y"), Util.getConfigInt("regions." + regionList.get(i) + ".coords.p2.y")};
-					int[] z = {Util.getConfigInt("regions." + regionList.get(i) + ".coords.p1.z"), Util.getConfigInt("regions." + regionList.get(i) + ".coords.p2.z")};
-			
+					padding = Util.getRegionInt("mines." + mineName + ".protection.padding");
+					paddingTop = Util.getRegionInt("mines." + mineName + ".protection.padding-top");
+					int[] x = {Util.getRegionInt("mines." + mineName + ".coordinates.pos0.x"), Util.getRegionInt("mines." + mineName + ".coordinates.pos1.x")};
+					int[] y = {Util.getRegionInt("mines." + mineName + ".coordinates.pos0.y"), Util.getRegionInt("mines." + mineName + ".coordinates.pos1.y")};
+					int[] z = {Util.getRegionInt("mines." + mineName + ".coordinates.pos0.z"), Util.getRegionInt("mines." + mineName + ".coordinates.pos1.z")};
+					
 					if((blockLocation.getX() > (x[0] - padding) && blockLocation.getX() < (x[1] + padding))
 							&& (blockLocation.getY() > (y[0] - padding) && blockLocation.getY() < (y[1] + paddingTop))
 							&& (blockLocation.getZ() > (z[0] - padding) && blockLocation.getZ() < (z[1] + padding)))
 					{
 						if(Util.debugEnabled()) Util.log("Player is in the mine region");
-						if(Util.getConfigBoolean("mines." + regionList.get(i) + ".protection.placement.blacklist.enabled"))
+						if(Util.getConfigBoolean("mines." + mineName + ".protection.placement.blacklist.enabled"))
 						{
-							List<String> blacklist = Util.getConfigList("mines." + regionList.get(i) + ".protection.placement.blacklist.blocks");
-							if(Util.getConfigBoolean("mines." + regionList.get(i) + ".protection.placement.blacklist.whitelist"))
+							List<String> blacklist = Util.getConfigList("mines." + mineName + ".protection.placement.blacklist.blocks");
+							if(Util.getConfigBoolean("mines." + mineName + ".protection.placement.blacklist.whitelist"))
 							{
 								for(String block : blacklist)
 								{

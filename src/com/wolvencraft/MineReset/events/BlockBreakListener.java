@@ -36,27 +36,27 @@ public class BlockBreakListener implements Listener
 		
 		List<String> regionList = Util.getRegionList("data.list-of-mines");
 		
-		for(int i = 0; i < regionList.size(); i++)
+		for(String mineName : regionList )
 		{
-				if(!Util.playerHasPermission(player, "protection.break." + regionList.get(i)))
+				if(!Util.playerHasPermission(player, "protection.break." + mineName))
 				{
 					Block b = event.getBlock();
 					Location blockLocation = b.getLocation();
-					padding = Util.getRegionInt("mines." + regionList.get(i) + ".protection.padding");
-					paddingTop = Util.getRegionInt("mines." + regionList.get(i) + ".protection.padding-top");
-					int[] x = {Util.getConfigInt("regions." + regionList.get(i) + ".coords.p1.x"), Util.getConfigInt("regions." + regionList.get(i) + ".coords.p2.x")};
-					int[] y = {Util.getConfigInt("regions." + regionList.get(i) + ".coords.p1.y"), Util.getConfigInt("regions." + regionList.get(i) + ".coords.p2.y")};
-					int[] z = {Util.getConfigInt("regions." + regionList.get(i) + ".coords.p1.z"), Util.getConfigInt("regions." + regionList.get(i) + ".coords.p2.z")};
+					padding = Util.getRegionInt("mines." + mineName + ".protection.padding");
+					paddingTop = Util.getRegionInt("mines." + mineName + ".protection.padding-top");
+					int[] x = {Util.getConfigInt("regions." + mineName + ".coords.p1.x"), Util.getConfigInt("regions." + mineName + ".coords.p2.x")};
+					int[] y = {Util.getConfigInt("regions." + mineName + ".coords.p1.y"), Util.getConfigInt("regions." + mineName + ".coords.p2.y")};
+					int[] z = {Util.getConfigInt("regions." + mineName + ".coords.p1.z"), Util.getConfigInt("regions." + mineName + ".coords.p2.z")};
 			
 					if((blockLocation.getX() > (x[0] - padding) && blockLocation.getX() < (x[1] + padding))
 							&& (blockLocation.getY() > (y[0] - padding) && blockLocation.getY() < (y[1] + paddingTop))
 							&& (blockLocation.getZ() > (z[0] - padding) && blockLocation.getZ() < (z[1] + padding)))
 					{
 						if(Util.debugEnabled()) Util.log("Player is in the mine region");
-						if(Util.getConfigBoolean("mines." + regionList.get(i) + ".protection.breaking.blacklist.enabled"))
+						if(Util.getConfigBoolean("mines." + mineName + ".protection.breaking.blacklist.enabled"))
 						{
-							List<String> blacklist = Util.getConfigList("mines." + regionList.get(i) + ".protection.breaking.blacklist.blocks");
-							if(Util.getConfigBoolean("mines." + regionList.get(i) + ".protection.breaking.blacklist.whitelist"))
+							List<String> blacklist = Util.getConfigList("mines." + mineName + ".protection.breaking.blacklist.blocks");
+							if(Util.getConfigBoolean("mines." + mineName + ".protection.breaking.blacklist.whitelist"))
 							{
 								for(String block : blacklist)
 								{

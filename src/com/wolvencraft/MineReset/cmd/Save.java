@@ -10,6 +10,12 @@ public class Save
 {
 	public static void run(String[] args)
 	{
+		if(!Util.senderHasPermission("edit"))
+		{
+			Util.sendDenied(args);
+			return;
+		}
+		
 		if(Util.debugEnabled()) Util.log("Intitiating the creation of a new mine");
 		if(args.length > 2)
 		{
@@ -52,7 +58,6 @@ public class Save
 		if(Util.debugEnabled()) Util.log("Reading default values");
 		// - Fetching the default values
 		// - - Is the mine enabled by default?
-		boolean enabled = Util.getConfigBoolean("defaults.enabled");
 		String displayName = Util.getConfigString("defaults.display-name");
 		
 		// - - Blacklist defaults
@@ -142,7 +147,6 @@ public class Save
 		// = Setting values to the mine
 		String baseNode = "mines." + mineName;
 		// = = Basic info
-		Util.setRegionBoolean(baseNode + ".enabled", enabled);
 		Util.setRegionString(baseNode + ".display-name", displayName);
 		
 		if(Util.debugEnabled()) Util.log("Writing blacklist data");
@@ -183,7 +187,6 @@ public class Save
 		baseNode = "mines." + mineName + ".coordinates";
 		Util.setRegionString(baseNode + ".world", loc[0].getWorld().getName());
 		
-		//TODO thah
 		// = = = Position 0
 		Util.setRegionInt(baseNode + ".pos0.x", p1[0]);
 		Util.setRegionInt(baseNode + ".pos0.y", p1[1]);

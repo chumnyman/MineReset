@@ -9,7 +9,7 @@ public class Select
 {
 	public static void run(String[] args)
 	{
-		if(!Util.isPlayer() || !Util.senderHasPermission("edit", false))
+		if(!Util.isPlayer() || !Util.senderHasPermission("edit"))
 		{
 			Util.sendDenied(args);
 			return;

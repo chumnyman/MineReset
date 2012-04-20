@@ -11,11 +11,12 @@ public class Info
 {
 	public static void run(String[] args)
 	{
-		if(!Util.senderHasPermission("info", true))
+		if(!Util.senderHasPermission("info"))
 		{
 			Util.sendDenied(args);
 			return;
 		}
+		
 		if(args.length == 1 && CommandManager.getMine() == null)
 		{
 			Help.getInfo();

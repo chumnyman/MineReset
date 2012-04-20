@@ -48,17 +48,17 @@ public class CommandManager implements CommandExecutor
 			Help.getHelp();
 		else if(args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("i"))
 			Info.run(args);
-		else if(args[0].equalsIgnoreCase("list"))
+		else if(args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("all"))
 			MineList.run(args);
 		else if(args[0].equalsIgnoreCase("protection") || args[0].equalsIgnoreCase("prot"))
 			Protection.run(args);
-		else if(args[0].equalsIgnoreCase("reset"))
+		else if(args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("fill"))
 			Reset.run(args, false);
 		else if(args[0].equalsIgnoreCase("save"))
 			Save.run(args);
 		else if(args[0].equalsIgnoreCase("select") || args[0].equalsIgnoreCase("sel"))
 			Select.run(args);
-		else if(args[0].equalsIgnoreCase("warp"))
+		else if(args[0].equalsIgnoreCase("warp") || args[0].equalsIgnoreCase("tp"))
 			Util.sendError("This command does not yet exist");
 		else Util.sendInvalid(args);
 			

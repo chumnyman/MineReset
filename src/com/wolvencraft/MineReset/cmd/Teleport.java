@@ -1,6 +1,5 @@
 package com.wolvencraft.MineReset.cmd;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -12,6 +11,12 @@ public class Teleport
 {
 	public static void run(String[] args)
 	{
+		if(!Util.senderHasPermission("warp"))
+		{
+			Util.sendDenied(args);
+			return;
+		}
+		
 		if(args.length == 1)
 			Help.getTeleport();
 		else if(args.length != 2)
@@ -25,6 +30,11 @@ public class Teleport
 			Player player = (Player) CommandManager.getSender();
 			Location loc = player.getLocation();
 			String mineName = CommandManager.getMine();
+			if(mineName == null)
+			{
+				Util.sendError("Select a mine first with /mine edit <name>");
+				return;
+			}
 			
 			String baseNode = "mines." + mineName + ".coordinates";
 			Util.setRegionInt(baseNode + ".pos2.x", 0);
@@ -39,15 +49,7 @@ public class Teleport
 		if(Util.mineExists(args[1]))
 		{
 			Player player = (Player) CommandManager.getSender();
-			String newLocWorld = Util.getRegionString("mines." + args[1] + ".coordinates.world");
-			double[] coords = {
-					Util.getRegionInt("mines." + args[1] + ".coordinates.pos2.x"),
-					Util.getRegionInt("mines." + args[1] + ".coordinates.pos2.y"),
-					Util.getRegionInt("mines." + args[1] + ".coordinates.pos2.z"),
-			};
-			Location newLoc = new Location(Bukkit.getServer().getWorld(newLocWorld), coords[0], coords[1], coords[1]);
-			
-			player.teleport(newLoc);
+			Util.warpToMine(player, args[1]);
 			
 			Util.sendSuccess("You have teleported to mine + '" + args[1] + "'");
 			return;

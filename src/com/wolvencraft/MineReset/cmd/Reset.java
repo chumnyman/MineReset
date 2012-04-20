@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.util.Pattern;
 
@@ -15,7 +16,7 @@ public class Reset
 	// (if a mine spawn point is set)
 	public static void run(String[] args, boolean automatic)
 	{
-		if(!automatic && !Util.senderHasPermission("reset", true))
+		if(!automatic && !Util.senderHasPermission("reset"))
 		{
 			Util.sendDenied(args);
 			return;
@@ -33,13 +34,6 @@ public class Reset
 		if(!Util.mineExists(mineName))
 		{
 			Util.sendError("Mine '" + mineName + "' does not exist");
-			return;
-		}
-		
-
-		if(!Util.getRegionBoolean("mines." + mineName + ".enabled"))
-		{
-			Util.sendError("Mine '" + mineName + "' has been disabled");
 			return;
 		}
 		
@@ -74,6 +68,31 @@ public class Reset
 		if(Util.debugEnabled()) Util.log("y " + point1[1] + ", " + point2[1]);
 		if(Util.debugEnabled()) Util.log("z " + point1[2] + ", " + point2[2]);
 		
+		// TODO I hate the way this is done.
+		
+		if(Util.getConfigBoolean("configuration.teleport-out-of-the-mine-on-reset"))
+		{
+			Player[] onlinePlayers = Bukkit.getOnlinePlayers();
+			for(Player player : onlinePlayers)
+			{
+				if(Util.playerInTheMine(player, mineName))
+				{
+					if(Util.debugEnabled()) Util.log("Player " + player.getName() + " is in the mine");
+					
+					if(!Util.nodeIsValid("mines." + mineName + ".coordinates.pos2.x"))
+					{
+						if(Util.debugEnabled()) Util.log("Coordinates of the mine spawn point are not set");
+					}
+					else
+					{
+						Util.warpToMine(player, mineName);
+						Util.sendSuccess("You have teleported to mine + '" + args[1] + "'");
+					}
+				}
+				if(Util.debugEnabled()) Util.log("Player " + player.getName() + " is not in the mine");
+			}
+		}
+		
 		// Comment for the future me:
 		// It makes more sense to handle all the logic here, since
 		// doing the same thing in the middle of resetting a bunch
@@ -98,7 +117,7 @@ public class Reset
 							for(String block : blacklistedBlocks)
 							{
 								if(blockID == Integer.parseInt(block))
-									if(Util.debugEnabled()) Util.log(blockID + " is blacklisted and thus not replaced");
+									if(Util.debugEnabled()) Util.log(blockID + " is blacklisted and thus was not replaced");
 								else
 								{
 									b.setTypeId(blockID);

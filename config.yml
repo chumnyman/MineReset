@@ -1,11 +1,11 @@
 configuration:
   debug-mode: true
   default-name: "default"
+  teleport-out-of-the-mine-on-reset: true
   broadcast-on-reset: true
   use-permissions: true
 defaults:
   display-name: ""
-  enabled: true
   blacklist:
     enabled: false
     whitelist: false
@@ -49,4 +49,4 @@ messages:
   invalid-command: "Invalid command! Use /mine help for help."
   access-denied: "You do not have permission to do that"
 data:
-  version: 1.0dev1
+  version: 1.0dev7

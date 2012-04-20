@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ public class Util
 	 * @param node The permission node
 	 * @return true is the sender has a permission, false if he does not
 	 */
-	public static boolean senderHasPermission(String node, boolean allowConsole)
+	public static boolean senderHasPermission(String node)
 	{
 		CommandSender sender = CommandManager.getSender();
 		boolean usePermissions = getConfigBoolean("configuration.use-permissions");
@@ -27,11 +28,7 @@ public class Util
 		// automatically allowed
 		Player player;
 		if (isPlayer()) player = (Player) sender;
-		else
-		{
-			if(allowConsole) return true;
-			else return false;
-		}
+		else return true;
 		
 		if(!usePermissions)
 		{
@@ -87,6 +84,18 @@ public class Util
 	{
 		if(getConfigBoolean("configuration.debug-mode")) return true;
 		else return false;
+	}
+	
+	/**
+	 * Checks if the node specified exists
+	 * @param node Node to check
+	 * @return True if the node exists, false if it does not
+	 */
+	public static boolean nodeIsValid(String node)
+	{
+		if(getConfigString(node) == null)
+			return false;
+		else return true;
 	}
 	
 	/**
@@ -462,5 +471,44 @@ public class Util
 	{
 		str = str.replaceAll(replaceFrom, replaceTo);
 		return str;
+	}
+	
+	/**
+	 * Determines if a specific player is in the mine
+	 * @param player Player
+	 * @param mineName Name of the mine
+	 * @return true if a player is in the mine, false if he is not
+	 */
+	public static boolean playerInTheMine(Player player, String mineName)
+	{
+		int[] x = {Util.getConfigInt("regions." + mineName + ".coords.p1.x"), Util.getConfigInt("regions." + mineName + ".coords.p2.x")};
+		int[] y = {Util.getConfigInt("regions." + mineName + ".coords.p1.y"), Util.getConfigInt("regions." + mineName + ".coords.p2.y")};
+		int[] z = {Util.getConfigInt("regions." + mineName + ".coords.p1.z"), Util.getConfigInt("regions." + mineName + ".coords.p2.z")};
+		Location loc = player.getLocation();
+		if((loc.getX() > x[0] && loc.getX() < x[1])
+				&& (loc.getY() > y[0] && loc.getY() < y[1])
+				&& (loc.getZ() > z[0] && loc.getZ() < z[1]))
+				{
+					return true;
+				}
+				else return false;
+	}
+	
+	/**
+	 * Teleports a player to the mine specified
+	 * @param player Player to be teleported
+	 * @param mienName The name of the mine
+	 */
+	public static void warpToMine(Player player, String mineName)
+	{
+		String newLocWorld = Util.getRegionString("mines." + mineName + ".coordinates.world");
+		double[] coords = {
+				Util.getRegionInt("mines." + mineName + ".coordinates.pos2.x"),
+				Util.getRegionInt("mines." + mineName + ".coordinates.pos2.y"),
+				Util.getRegionInt("mines." + mineName + ".coordinates.pos2.z"),
+		};
+		Location newLoc = new Location(Bukkit.getServer().getWorld(newLocWorld), coords[0], coords[1], coords[1]);
+		
+		player.teleport(newLoc);
 	}
 }

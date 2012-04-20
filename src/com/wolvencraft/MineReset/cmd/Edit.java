@@ -12,11 +12,12 @@ public class Edit
 	
 	public static void run(String[] args)
 	{
-		if(!Util.senderHasPermission("edit", true))
-		{
-			Util.sendDenied(args);
-			return;
-		}
+		if(Util.isPlayer())
+			if(!Util.senderHasPermission("edit"))
+			{
+				Util.sendDenied(args);
+				return;
+			}
 		
 		if(args.length == 1)
 		{

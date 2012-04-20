@@ -124,7 +124,7 @@ public class Help
 	private static void formatHelp(String command, String arguments, String description, String node)
 	{
 		CommandSender sender = CommandManager.getSender();
-		if(Util.senderHasPermission(node, true))
+		if(Util.senderHasPermission(node))
 			sender.sendMessage(ChatColor.GREEN + "/" + command + ChatColor.GRAY + arguments + ChatColor.WHITE + " " + description);
 		
 		return;

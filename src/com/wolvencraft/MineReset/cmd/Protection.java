@@ -8,7 +8,7 @@ public class Protection
 {
 	public static void run(String[] args)
 	{
-		if(!Util.senderHasPermission("edit", true))
+		if(!Util.senderHasPermission("edit"))
 		{
 			Util.sendDenied(args);
 			return;

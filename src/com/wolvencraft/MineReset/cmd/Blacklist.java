@@ -10,6 +10,12 @@ public class Blacklist
 {
 	public static void run(String[] args)
 	{
+		if(!Util.senderHasPermission("edit"))
+		{
+			Util.sendDenied(args);
+			return;
+		}
+		
 		if(args.length == 1)
 		{
 			Help.getBlacklist();

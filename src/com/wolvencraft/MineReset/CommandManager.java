@@ -31,7 +31,6 @@ public class CommandManager implements CommandExecutor
 		if(Util.isPlayer())
 		{
 			player = (Player) sender;
-			if(Util.debugEnabled()) Util.log(player.getName() + " sent a command: " + args[0]);
 		}
 		
 		if(args.length == 0)
@@ -59,9 +58,12 @@ public class CommandManager implements CommandExecutor
 		else if(args[0].equalsIgnoreCase("select") || args[0].equalsIgnoreCase("sel"))
 			Select.run(args);
 		else if(args[0].equalsIgnoreCase("warp") || args[0].equalsIgnoreCase("tp"))
-			Util.sendError("This command does not yet exist");
+			Teleport.run(args);
 		else Util.sendInvalid(args);
 			
+
+		if(Util.debugEnabled()) Util.log(player.getName() + " sent a command: " + args[0]);
+		
 		return true;
 	}
 	

@@ -99,7 +99,12 @@ public class Edit
 			List<String> weightList = Util.getRegionList("mines." + curMine + ".materials.weights");
 			
 			double percent;
-			if(Util.isNumeric(args[2])) percent = Double.parseDouble(args[2]);
+			if(Util.isNumeric(args[2]))
+			{
+				percent = Double.parseDouble(args[2]);
+				if(percent <= 0) Util.sendInvalid(args);
+				percent = (double)(Math.round(percent * 1000)) / 1000;
+			}
 			else {
 				if(Util.debugEnabled()) Util.log("Argument not numeric, attempting to parse");
 				String awkwardValue = args[2];

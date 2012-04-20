@@ -16,13 +16,13 @@ defaults:
     breaking:
       enabled: true
       blacklist:
-        enabled: true
+        enabled: false
         whitelist: false
         blocks: []
     placing:
       enabled: true
       blacklist:
-        enabled: true
+        enabled: false
         whitelist: false
         blocks: []
     pvp: true
@@ -44,7 +44,7 @@ messages:
   title: "Mine Reset"
   title-on-signs: "Reset"
   manual-mine-reset-successful: "Mine %MINE% was reset!"
-  automatic-mine-reset-successful: "Mine %MINE% was reset! Next reset in %TIME% minutes."
+  automatic-mine-reset-successful: "Mine %MINE% was reset! Next reset in %TIME% minute(s)."
   automatic-mine-reset-warning: "Mine %MINE% resets in %TIME% minute(s)."
   invalid-command: "Invalid command! Use /mine help for help."
   access-denied: "You do not have permission to do that"

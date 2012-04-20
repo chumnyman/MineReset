@@ -15,7 +15,10 @@ public class Config
 		}
 		
 		if(args.length == 1)
+		{
 			Help.getConfig();
+			return;
+		}
 		else if(args.length != 2)
 		{
 			Util.sendInvalid(args);

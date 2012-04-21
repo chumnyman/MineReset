@@ -41,9 +41,9 @@ public class MineReset extends JavaPlugin
 	{
 		log = this.getLogger();
 		
-		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
-		getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
-		getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);
+		new BlockBreakListener(this);
+		new BlockPlaceListener(this);
+		new PlayerInteractListener(this);
 		
 		manager = new CommandManager(this);
 		getCommand("mine").setExecutor(manager);

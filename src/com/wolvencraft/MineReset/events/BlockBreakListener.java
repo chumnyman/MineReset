@@ -10,14 +10,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
+import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.Util;
 
 public class BlockBreakListener implements Listener
 {
-	public BlockBreakListener()
+	public BlockBreakListener(MineReset plugin)
 	{
-		// does nothing
-	}
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
 	
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event)
@@ -48,15 +49,17 @@ public class BlockBreakListener implements Listener
 					Location blockLocation = b.getLocation();
 					padding = Util.getRegionInt("mines." + mineName + ".protection.padding");
 					paddingTop = Util.getRegionInt("mines." + mineName + ".protection.padding-top");
+					String mineWorld = Util.getRegionString("mines." + mineName + ".coordinates.world");
 					int[] x = {Util.getRegionInt("mines." + mineName + ".coordinates.pos0.x"), Util.getRegionInt("mines." + mineName + ".coordinates.pos1.x")};
 					int[] y = {Util.getRegionInt("mines." + mineName + ".coordinates.pos0.y"), Util.getRegionInt("mines." + mineName + ".coordinates.pos1.y")};
 					int[] z = {Util.getRegionInt("mines." + mineName + ".coordinates.pos0.z"), Util.getRegionInt("mines." + mineName + ".coordinates.pos1.z")};
 					
-					if((blockLocation.getX() > (x[0] - padding) && blockLocation.getX() < (x[1] + padding))
-							&& (blockLocation.getY() > (y[0] - padding) && blockLocation.getY() < (y[1] + paddingTop))
-							&& (blockLocation.getZ() > (z[0] - padding) && blockLocation.getZ() < (z[1] + padding)))
+					if(mineWorld.equals(blockLocation.getWorld().getName())
+							&& (blockLocation.getX() >= (x[0] - padding) && blockLocation.getX() <= (x[1] + padding))
+							&& (blockLocation.getY() >= (y[0] - padding) && blockLocation.getY() <= (y[1] + paddingTop))
+							&& (blockLocation.getZ() >= (z[0] - padding) && blockLocation.getZ() <= (z[1] + padding)))
 					{
-						if(Util.debugEnabled()) Util.log("Player is in the mine region");
+						if(Util.debugEnabled()) Util.log("Player broke a block in the mine region");
 						if(Util.getConfigBoolean("mines." + mineName + ".protection.breaking.blacklist.enabled"))
 						{
 							List<String> blacklist = Util.getConfigList("mines." + mineName + ".protection.breaking.blacklist.blocks");

@@ -81,9 +81,9 @@ public class Save
 		
 		// - - - Block placement
 		boolean protectionPlacingEnabled = Util.getConfigBoolean("defaults.protection.placing.enabled");
-		boolean protectionPlacingBlacklistEnabled = Util.getConfigBoolean("defaults.protection.placing.blacklist.enabled");
-		boolean protectionPlacingWhitelistEnabled = Util.getConfigBoolean("defaults.protection.placing.blacklist.whitelist");
-		List<String> protectionPlacingBlacklistedBlocks = Util.getConfigList("defaults.protection.placing.blacklist.blocks");
+		boolean protectionPlacingBlacklistEnabled = Util.getConfigBoolean("defaults.protection.placement.blacklist.enabled");
+		boolean protectionPlacingWhitelistEnabled = Util.getConfigBoolean("defaults.protection.placement.blacklist.whitelist");
+		List<String> protectionPlacingBlacklistedBlocks = Util.getConfigList("defaults.protection.placement.blacklist.blocks");
 		
 		// - - - Coordinates
 		
@@ -175,7 +175,7 @@ public class Save
 		Util.setRegionList(baseNode + ".blacklist.blocks", protectionBreakingBlacklistedBlocks);
 		
 		// = = = Block placement
-		baseNode = "mines." + mineName + ".protection.placing";
+		baseNode = "mines." + mineName + ".protection.placement";
 		Util.setRegionBoolean(baseNode + ".enabled", protectionPlacingEnabled);
 		Util.setRegionBoolean(baseNode + ".blacklist.enabled", protectionPlacingBlacklistEnabled);
 		Util.setRegionBoolean(baseNode + ".blacklist.whitelist", protectionPlacingWhitelistEnabled);

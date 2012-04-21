@@ -10,14 +10,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.Util;
 
 public class BlockPlaceListener implements Listener
 {
-	public BlockPlaceListener()
+	public BlockPlaceListener(MineReset plugin)
 	{
-		// does nothing
-	}
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
 	
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event)

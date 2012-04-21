@@ -13,15 +13,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.Reset;
 import com.wolvencraft.MineReset.cmd.Util;
 
 public class PlayerInteractListener implements Listener
 {
-	public PlayerInteractListener()
+	public PlayerInteractListener(MineReset plugin)
 	{
-		// does nothing
-	}
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
 	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event)

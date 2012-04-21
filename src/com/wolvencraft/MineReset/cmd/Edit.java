@@ -33,6 +33,11 @@ public class Edit
 		
 		if(args[0].equalsIgnoreCase("edit"))
 		{
+			if(args.length != 2)
+			{
+				Util.sendInvalid(args);
+				return;
+			}
 			String mineName = args[1];
 			if(!Util.mineExists(mineName))
 			{

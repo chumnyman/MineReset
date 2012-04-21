@@ -1,5 +1,5 @@
 configuration:
-  debug-mode: true
+  debug-mode: false
   default-name: "default"
   teleport-out-of-the-mine-on-reset: true
   broadcast-on-reset: true
@@ -50,4 +50,4 @@ messages:
   invalid-command: "Invalid command! Use /mine help for help."
   access-denied: "You do not have permission to do that"
 data:
-  version: 1.0dev7
+  version: 1.0

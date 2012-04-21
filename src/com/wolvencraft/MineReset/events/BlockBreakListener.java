@@ -28,8 +28,14 @@ public class BlockBreakListener implements Listener
 		
 		Player player = event.getPlayer();
 		
+		if(Util.debugEnabled() && player.isOp()) Util.log("Player is Op");
+		if(Util.debugEnabled() && Util.playerHasPermission(player, "protection")) Util.log("Player has protection permission");
+		if(Util.debugEnabled() && Util.playerHasPermission(player, "protection.break")) Util.log("Player has protection.break permission");
+		
 		if(player.isOp() || Util.playerHasPermission(player, "protection") || Util.playerHasPermission(player, "protection.break"))
+		{
 			return;
+		}
 		
 		if(Util.debugEnabled()) Util.log("Permissions check passed");
 		

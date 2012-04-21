@@ -1,6 +1,6 @@
 name: MineReset
 main: com.wolvencraft.MineReset.MineReset
-version: 1.0dev9
+version: 1.0.0
 commands:
   mine:
     description: MineReset help
@@ -24,8 +24,27 @@ permissions:
   MineReset.warp:
     description: Allows a player to teleport to the mine warp location
     default: true
+  MineReset.protection:
+    description: Allows a player to break and place blocks in all mines
+    children:
+      MineReset.protection.break: true
+      MineReset.protection.place: true
+  MineReset.protection.break:
+    description: Allows a player to break blocks in all mines
+    default: true
+  MineReset.protection.place:
+    description: Allows a player to place blocks in all mines
+    default: true
   MineReset.reset:
     description: Allows a player to reset a mine manually
+    children:
+      MineReset.reset.manual: true
+      MineReset.reset.sign: true
+  MineReset.reset.manual:
+    description: Allows a player to reset a mine manually
+    default: op
+  MineReset.reset.sign:
+    description: Allows a player to reset a mine with a sign
     default: op
   MineReset.edit:
     description: Allows a player to create and edit mines

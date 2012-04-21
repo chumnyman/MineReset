@@ -34,6 +34,7 @@ public class PlayerInteractListener implements Listener
 		Block block = event.getClickedBlock();
 		if (event.getAction().equals(Action.LEFT_CLICK_BLOCK))
 		{
+			if(!Util.playerHasPermission(player, "edit")) return;
 			if(player.getItemInHand().equals(new ItemStack(Material.WOOD_AXE)))
 			{
 				Location loc = block.getLocation();
@@ -43,6 +44,7 @@ public class PlayerInteractListener implements Listener
 		}
 		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
 		{
+			if(!Util.playerHasPermission(player, "edit")) return;
 			if(player.getItemInHand().equals(new ItemStack(Material.WOOD_AXE)))
 			{
 				Location loc = event.getClickedBlock().getLocation();
@@ -52,17 +54,17 @@ public class PlayerInteractListener implements Listener
 			
 			if(block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN_POST)
 			{
+				if(!Util.playerHasPermission(player, "reset.sign")) return;
 				BlockState state = block.getState();
 				if(state instanceof Sign)
 				{
 					Sign sign = (Sign) state;
-		     		String signTitle = Util.getConfigString("message.title-on-signs");
+		     		String signTitle = Util.getConfigString("messages.title-on-signs");
 		     		if(!sign.getLine(0).equalsIgnoreCase("[" + signTitle + "]")) return;
 		     		
-		     		String mineName[] = {sign.getLine(1)};
+		     		String mineName[] = {"reset", sign.getLine(1)};
 		     		Reset.run(mineName, false);
 		     		
-		        	Util.sendSuccess("Mine '" + mineName + "' successfully reset");
 		     		return;
 				}
 			}

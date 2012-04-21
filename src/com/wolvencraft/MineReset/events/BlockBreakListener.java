@@ -17,6 +17,7 @@ public class BlockBreakListener implements Listener
 {
 	public BlockBreakListener(MineReset plugin)
 	{
+		if(Util.debugEnabled()) Util.log("Initiating BlockBreakListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
@@ -67,7 +68,9 @@ public class BlockBreakListener implements Listener
 							{
 								for(String block : blacklist)
 								{
-									if(Integer.parseInt(block) == b.getTypeId())
+									String blockTypeId = b.getTypeId() + "";
+									if(Util.debugEnabled()) Util.log(blockTypeId + " ? " + block);
+									if(!blockTypeId.equals(block))
 									{
 										Util.sendPlayerError(player, "You are not allowed to break " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
 										event.setCancelled(true);
@@ -80,7 +83,9 @@ public class BlockBreakListener implements Listener
 							{
 								for(String block : blacklist)
 								{
-									if(Integer.parseInt(block) != b.getTypeId())
+									String blockTypeId = b.getTypeId() + "";
+									if(Util.debugEnabled()) Util.log(blockTypeId + " ? " + block);
+									if(blockTypeId.equals(block))
 									{
 										Util.sendPlayerError(player, "You are not allowed to break " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
 										event.setCancelled(true);

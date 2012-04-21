@@ -133,7 +133,7 @@ public class Save
 		boolean resetAutoEnabled = Util.getConfigBoolean("defaults.reset.auto.reset");
 		int resetAutoTime = Util.getConfigInt("defaults.reset.auto.reset-time");
 		boolean resetAutoWarnEnabled = Util.getConfigBoolean("defaults.reset.auto.warn");
-		int resetAutoWarnTime = Util.getConfigInt("defaults.reset.auto.warn-time");
+		List<String> resetAutoWarnTime = Util.getConfigList("defaults.reset.auto.warn-times");
 		
 		// - - - Manual
 		boolean resetManualCooldownEnabled = Util.getConfigBoolean("defaults.reset.manual.cooldown-enabled");
@@ -215,7 +215,7 @@ public class Save
 		Util.setRegionBoolean(baseNode + ".reset", resetAutoEnabled);
 		Util.setRegionInt(baseNode + ".reset-time", resetAutoTime);
 		Util.setRegionBoolean(baseNode + ".warn", resetAutoWarnEnabled);
-		Util.setRegionInt(baseNode + ".warn-time", resetAutoWarnTime);
+		Util.setRegionList(baseNode + ".warn-times", resetAutoWarnTime);
 		
 		// = = = = Data
 		baseNode = "mines." + mineName + ".reset.auto.data";

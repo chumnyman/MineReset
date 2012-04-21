@@ -19,7 +19,7 @@ defaults:
         enabled: false
         whitelist: false
         blocks: []
-    placing:
+    placement:
       enabled: true
       blacklist:
         enabled: false
@@ -31,7 +31,8 @@ defaults:
       reset: true
       reset-time: 15
       warn: true
-      warn-time: 5
+      warn-times:
+      - '5'
     manual:
       cooldown-enabled: true
       cooldown-time: 5

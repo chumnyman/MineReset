@@ -21,6 +21,7 @@ public class PlayerInteractListener implements Listener
 {
 	public PlayerInteractListener(MineReset plugin)
 	{
+		if(Util.debugEnabled()) Util.log("Initiating PlayerInteractListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	

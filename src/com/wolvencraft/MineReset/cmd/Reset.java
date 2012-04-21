@@ -11,9 +11,6 @@ import com.wolvencraft.MineReset.util.Pattern;
 
 public class Reset
 {
-	
-	// TODO: Add a check to tp a player outside the mine before a reset
-	// (if a mine spawn point is set)
 	public static void run(String[] args, boolean automatic)
 	{
 		if(!automatic && !Util.senderHasPermission("reset"))
@@ -21,15 +18,21 @@ public class Reset
 			Util.sendDenied(args);
 			return;
 		}
-		String mineName;
+		
 		if(args.length > 2)
 		{
 			Util.sendInvalid(args);
 			return;
 		}
 		if(args.length == 1)
-			mineName = Util.getConfigString("configuration.default-name");
-		else mineName = args[1];
+		{
+			if(automatic) return;
+			Util.sendInvalid(args);
+			//Help.getReset();
+			return;
+		}
+		
+		String mineName = args[1];
 		
 		if(!Util.mineExists(mineName))
 		{
@@ -99,57 +102,51 @@ public class Reset
 		// of blocks is clearly not the best idea ever. Best wishes,
 		// me from the past.
 		
-		if(blacklist)
+		if(blacklist && !whitelist)
 		{
-			if(!whitelist)
+			if(Util.debugEnabled()) Util.log("Blacklist detected");
+			for(int y = point1[1]; y <= point2[1]; y++)
+			{
+				for(int x = point1[0]; x <= point2[0]; x++)
 				{
-				if(Util.debugEnabled()) Util.log("Blacklist detected");
-				for(int y = point1[1]; y <= point2[1]; y++)
-				{
-					if(Util.debugEnabled()) Util.log("Parsing y " + y);
-					for(int x = point1[0]; x <= point2[0]; x++)
+					for(int z = point1[2]; z <= point2[2]; z++ )
 					{
-						if(Util.debugEnabled()) Util.log("Parsing x " + x);
-						for(int z = point1[2]; z <= point2[2]; z++ )
+						Block b = mineWorld.getBlockAt(x, y, z);
+						for(String block : blacklistedBlocks)
 						{
-							Block b = mineWorld.getBlockAt(x, y, z);
-							blockID = pattern.next();
-							for(String block : blacklistedBlocks)
+							String blockTypeId = b.getTypeId() + "";
+							if(blockTypeId.equals(block))
+								if(Util.debugEnabled()) Util.log(blockID + " is blacklisted and thus was not replaced");
+							else
 							{
-								if(blockID == Integer.parseInt(block))
-									if(Util.debugEnabled()) Util.log(blockID + " is blacklisted and thus was not replaced");
-								else
-								{
-									b.setTypeId(blockID);
-								}	
-							}
+								blockID = pattern.next();
+								b.setTypeId(blockID);
+							}	
 						}
 					}
 				}
 			}
-			else
+		}
+		else if(blacklist && whitelist)
+		{
+			if(Util.debugEnabled()) Util.log("Whitelist detected");
+			for(int y = point1[1]; y <= point2[1]; y++)
 			{
-				if(Util.debugEnabled()) Util.log("Whitelist detected");
-				for(int y = point1[1]; y <= point2[1]; y++)
+				for(int x = point1[0]; x <= point2[0]; x++)
 				{
-					if(Util.debugEnabled()) Util.log("Parsing y " + y);
-					for(int x = point1[0]; x <= point2[0]; x++)
+					for(int z = point1[2]; z <= point2[2]; z++ )
 					{
-						if(Util.debugEnabled()) Util.log("Parsing x " + x);
-						for(int z = point1[2]; z <= point2[2]; z++ )
+						Block b = mineWorld.getBlockAt(x, y, z);
+						for(String block : blacklistedBlocks)
 						{
-							Block b = mineWorld.getBlockAt(x, y, z);
-							blockID = pattern.next();
-							for(String block : blacklistedBlocks)
+							String blockTypeId = b.getTypeId() + "";
+							if(blockTypeId.equals(block))
 							{
-								if(blockID == Integer.parseInt(block))
-									b.setTypeId(blockID);
-								else
-								{
-									if(Util.debugEnabled()) Util.log(blockID + " is not whitelisted and thus not replaced");
-								}	
-								
+								blockID = pattern.next();
+								b.setTypeId(blockID);
 							}
+							else
+								if(Util.debugEnabled()) Util.log(blockID + " is not whitelisted and thus not replaced");	
 						}
 					}
 				}

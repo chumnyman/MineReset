@@ -17,10 +17,15 @@ public class Info
 			return;
 		}
 		
-		if(args.length == 1 && CommandManager.getMine() == null)
+		String mineName = null;
+		if(args.length == 1)
 		{
-			Help.getInfo();
-			return;
+			if(CommandManager.getMine() != null) mineName = CommandManager.getMine();
+			else
+			{
+				Help.getInfo();
+				return;
+			}
 		}
 		if(args.length > 2)
 		{
@@ -33,9 +38,8 @@ public class Info
 			Util.sendError("Mine '" + args[1] + "' does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
 			return;
 		}
-		String mineName;
-		if(CommandManager.getMine() == null) mineName = args[1];
-		else mineName = CommandManager.getMine();
+		
+		if(mineName == null) mineName = args[1];
 		
 		
 		
@@ -132,14 +136,13 @@ public class Info
 		{
 			if(Util.getRegionBoolean("mines." + mineName + ".blacklist.whitelist"))
 			{
-				Util.sendMessage(ChatColor.BLUE + " Blacklist:");
+				Util.sendMessage(ChatColor.BLUE + " Whitelist:");
 			}
-			else Util.sendMessage(ChatColor.BLUE + " Whitelist:");
+			else Util.sendMessage(ChatColor.BLUE + " Blacklist:");
 			
 			for(String block : blacklistBlocks)
 			{
-				if(Util.debugEnabled()) Util.log("Blacklisted: " + block);
-				Util.sendMessage(" - " + Material.getMaterial(Integer.parseInt(block)).toString());
+				Util.sendMessage(" - " + Material.getMaterial(Integer.parseInt(block)).toString().toLowerCase().replace("_", " "));
 			}
 		}
 		return;

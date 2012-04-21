@@ -17,13 +17,14 @@ public class BlockPlaceListener implements Listener
 {
 	public BlockPlaceListener(MineReset plugin)
 	{
+		if(Util.debugEnabled()) Util.log("Initiating BlockplaceListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
 	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent event)
+	public void onBlockplace(BlockPlaceEvent event)
 	{
-		if(Util.debugEnabled()) Util.log("BlockPlaceEvent called");
+		if(Util.debugEnabled()) Util.log("BlockplaceEvent called");
 		
 		Player player = event.getPlayer();
 		
@@ -49,15 +50,17 @@ public class BlockPlaceListener implements Listener
 					Location blockLocation = b.getLocation();
 					padding = Util.getRegionInt("mines." + mineName + ".protection.padding");
 					paddingTop = Util.getRegionInt("mines." + mineName + ".protection.padding-top");
+					String mineWorld = Util.getRegionString("mines." + mineName + ".coordinates.world");
 					int[] x = {Util.getRegionInt("mines." + mineName + ".coordinates.pos0.x"), Util.getRegionInt("mines." + mineName + ".coordinates.pos1.x")};
 					int[] y = {Util.getRegionInt("mines." + mineName + ".coordinates.pos0.y"), Util.getRegionInt("mines." + mineName + ".coordinates.pos1.y")};
 					int[] z = {Util.getRegionInt("mines." + mineName + ".coordinates.pos0.z"), Util.getRegionInt("mines." + mineName + ".coordinates.pos1.z")};
 					
-					if((blockLocation.getX() > (x[0] - padding) && blockLocation.getX() < (x[1] + padding))
-							&& (blockLocation.getY() > (y[0] - padding) && blockLocation.getY() < (y[1] + paddingTop))
-							&& (blockLocation.getZ() > (z[0] - padding) && blockLocation.getZ() < (z[1] + padding)))
+					if(mineWorld.equals(blockLocation.getWorld().getName())
+							&& (blockLocation.getX() >= (x[0] - padding) && blockLocation.getX() <= (x[1] + padding))
+							&& (blockLocation.getY() >= (y[0] - padding) && blockLocation.getY() <= (y[1] + paddingTop))
+							&& (blockLocation.getZ() >= (z[0] - padding) && blockLocation.getZ() <= (z[1] + padding)))
 					{
-						if(Util.debugEnabled()) Util.log("Player is in the mine region");
+						if(Util.debugEnabled()) Util.log("Player broke a block in the mine region");
 						if(Util.getConfigBoolean("mines." + mineName + ".protection.placement.blacklist.enabled"))
 						{
 							List<String> blacklist = Util.getConfigList("mines." + mineName + ".protection.placement.blacklist.blocks");
@@ -65,6 +68,7 @@ public class BlockPlaceListener implements Listener
 							{
 								for(String block : blacklist)
 								{
+									if(Util.debugEnabled()) Util.log(Integer.parseInt(block) + " ? " + b.getTypeId());
 									if(Integer.parseInt(block) == b.getTypeId())
 									{
 										Util.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
@@ -78,6 +82,7 @@ public class BlockPlaceListener implements Listener
 							{
 								for(String block : blacklist)
 								{
+									if(Util.debugEnabled()) Util.log(Integer.parseInt(block) + " ? " + b.getTypeId());
 									if(Integer.parseInt(block) != b.getTypeId())
 									{
 										Util.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");

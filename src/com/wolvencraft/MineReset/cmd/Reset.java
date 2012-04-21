@@ -112,15 +112,18 @@ public class Reset
 					for(int z = point1[2]; z <= point2[2]; z++ )
 					{
 						Block b = mineWorld.getBlockAt(x, y, z);
+						String blockTypeId = b.getTypeId() + "";
 						for(String block : blacklistedBlocks)
 						{
-							String blockTypeId = b.getTypeId() + "";
 							if(blockTypeId.equals(block))
+							{
 								if(Util.debugEnabled()) Util.log(blockID + " is blacklisted and thus was not replaced");
+							}
 							else
 							{
 								blockID = pattern.next();
 								b.setTypeId(blockID);
+								if(Util.debugEnabled()) Util.log(blockTypeId + " was replaced with " + blockID);
 							}	
 						}
 					}
@@ -137,16 +140,19 @@ public class Reset
 					for(int z = point1[2]; z <= point2[2]; z++ )
 					{
 						Block b = mineWorld.getBlockAt(x, y, z);
+						String blockTypeId = b.getTypeId() + "";
 						for(String block : blacklistedBlocks)
 						{
-							String blockTypeId = b.getTypeId() + "";
 							if(blockTypeId.equals(block))
 							{
 								blockID = pattern.next();
 								b.setTypeId(blockID);
+								if(Util.debugEnabled()) Util.log(blockTypeId + " was replaced with " + blockID);
 							}
 							else
-								if(Util.debugEnabled()) Util.log(blockID + " is not whitelisted and thus not replaced");	
+							{
+								if(Util.debugEnabled()) Util.log(blockTypeId + " is not whitelisted and thus not replaced");
+							}
 						}
 					}
 				}
@@ -157,10 +163,8 @@ public class Reset
 			if(Util.debugEnabled()) Util.log("No blacklist detected");
 			for(int y = point1[1]; y <= point2[1]; y++)
 			{
-				if(Util.debugEnabled()) Util.log("Parsing y " + y);
 				for(int x = point1[0]; x <= point2[0]; x++)
 				{
-					if(Util.debugEnabled()) Util.log("Parsing x " + x);
 					for(int z = point1[2]; z <= point2[2]; z++ )
 					{
 						Block b = mineWorld.getBlockAt(x, y, z);
@@ -173,7 +177,7 @@ public class Reset
 			
 		int nextReset = Util.getRegionInt("mines." + mineName + ".reset.auto.reset-time");
 		Util.setRegionInt("mines." + mineName + ".reset.auto.data.min", nextReset);
-		Util.setRegionInt("mines." + mineName + ".reset.auto.data.min", 0);
+		Util.setRegionInt("mines." + mineName + ".reset.auto.data.sec", 0);
 		
 		if(broadcastReset)
 		{

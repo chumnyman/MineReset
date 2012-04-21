@@ -1,6 +1,6 @@
 name: MineReset
 main: com.wolvencraft.MineReset.MineReset
-version: 1.0dev6
+version: 1.0dev9
 commands:
   mine:
     description: MineReset help

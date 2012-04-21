@@ -31,7 +31,7 @@ public class Help
 		Util.sendMessage(" You do NOT need these commands. At all. I promise.");
 		formatHelp("config", " save", "Saves the data into a configuration file", "");
 		formatHelp("config", " load", "Loads the configuration from a file", "");
-		formatHelp("config", " update", "Updates the region data from the old format to the new one", "");
+		formatHelp("config", " update", "Updates the region data format", "");
 	}
 	
 	public static void getEdit()

@@ -41,7 +41,7 @@ public class Config
 		}
 		else if(args[1].equalsIgnoreCase("update"))
 		{
-			List<String> mineList = CommandManager.getPlugin().getOldConfig().getStringList("config.debug-mode");
+			List<String> mineList = CommandManager.getPlugin().getOldConfig().getStringList("data.region-list");
 			if(mineList == null)
 			{
 				Util.sendError("Unable to find config.old.yml. Aborting...");

@@ -83,7 +83,7 @@ public class Edit
 				return;
 			}
 		}
-		else if(args[0].equalsIgnoreCase("add"))
+		else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+"))
 		{
 			if(curMine == null)
 			{
@@ -159,7 +159,7 @@ public class Edit
 			Util.sendSuccess("Reset the mine for the changes to take effect");
 			return;
 		}
-		else if(args[0].equalsIgnoreCase("remove"))
+		else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-"))
 		{
 			if(curMine == null)
 			{
@@ -206,7 +206,7 @@ public class Edit
 			Util.sendSuccess(args[1] + " was successfully removed from mine '" + curMine + "'");
 			return;
 		}
-		else if(args[0].equalsIgnoreCase("delete"))
+		else if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del"))
 		{
 			CommandManager.getPlugin().getRegionData().set("mines." + curMine, null);
 			List<String> regionList = Util.getRegionList("data.list-of-mines");

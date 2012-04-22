@@ -196,5 +196,7 @@ public class Reset
 				
 				Util.broadcastSuccess(broadcastMessage);
 		}
+		
+		return;
 	}
 }

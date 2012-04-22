@@ -91,7 +91,7 @@ public class MineReset extends JavaPlugin
 					{
 		               	warnMessage = Util.parseString(warnMessage, "%MINE%", mineName);
 		                warnMessage = Util.parseString(warnMessage, "%TIME%", warnTimes.get(index) + "");
-		                Util.sendSuccess(warnMessage);
+		                Util.broadcastSuccess(warnMessage);
 					}
 					else if(min < 0 || (min == 0 && sec == 0))
 					{

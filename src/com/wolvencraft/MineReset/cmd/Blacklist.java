@@ -34,7 +34,7 @@ public class Blacklist
 			return;
 		}
 		
-		if(args[1].equalsIgnoreCase("toggle"))
+		if(args[1].equalsIgnoreCase("toggle") || args[1].equalsIgnoreCase("tg"))
 		{
 			if(Util.getRegionBoolean("mines." + mineName + ".blacklist.enabled"))
 			{
@@ -49,7 +49,7 @@ public class Blacklist
 			Util.saveRegionData();
 			return;
 		}
-		else if(args[1].equalsIgnoreCase("whitelist"))
+		else if(args[1].equalsIgnoreCase("whitelist") || args[1].equalsIgnoreCase("wl"))
 		{
 			if(Util.getConfigBoolean("mines." + mineName + ".blacklist.whitelist"))
 			{
@@ -64,7 +64,7 @@ public class Blacklist
 			Util.saveRegionData();
 			return;
 		}
-		else if(args[1].equalsIgnoreCase("add"))
+		else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+"))
 		{
 			int blockId = Util.getBlockId(args[2]);
 			if(blockId == -1)
@@ -81,7 +81,7 @@ public class Blacklist
 			Util.sendSuccess("Block " + ChatColor.GREEN + args[2] + ChatColor.WHITE + " is now in the blacklist");
 			return;
 		}
-		else if(args[1].equalsIgnoreCase("remove"))
+		else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-"))
 		{
 			int blockId = Util.getBlockId(args[2]);
 			if(blockId == -1)

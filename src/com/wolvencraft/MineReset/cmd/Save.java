@@ -53,6 +53,7 @@ public class Save
 			Util.sendError("Mine '" + mineName + "' already exists!");
 			return;
 		}
+		
 		if(Util.debugEnabled()) Util.log("Mine existance check passed");
 		
 		if(Util.debugEnabled()) Util.log("Reading default values");

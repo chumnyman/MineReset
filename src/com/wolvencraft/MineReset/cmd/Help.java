@@ -7,14 +7,15 @@ import com.wolvencraft.MineReset.CommandManager;
 
 public class Help
 {	
-	public void getAuto()
+	public static void getAuto()
 	{
 		formatHelp("auto", " toggle", "Toggles the automatic resets on and off", "");
-		formatHelp("auto", " time <time>", "Changes the automatic reset time to the value specified, in minutes", "");
+		formatHelp("auto", " time <time>", "Changes the automatic reset time to the value specified", "");
 		Util.sendMessage(" The value cannot be smaller then 5 minutes");
 		formatHelp("auto", " warning toggle", "Toggles warnings before the reset on and off", "");
-		//formatHelp("auto", " warning <time>", "Changes the warning time to the value specified, in minutes", "");
-		//Util.sendMessage(" The value cannot be larger then the reset time");
+		formatHelp("auto", " warning add <time>", "Adds a warning at time specified", "");
+		formatHelp("auto", " warning remove <time>", "Adds a warning at time specified", "");
+		Util.sendMessage(" The value cannot be larger then the reset time");
 	}
 	
 	public static void getBlacklist()

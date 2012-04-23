@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.util.Pattern;
 
 public class Reset
@@ -24,15 +25,20 @@ public class Reset
 			Util.sendInvalid(args);
 			return;
 		}
+		String mineName = null;
 		if(args.length == 1)
 		{
-			if(automatic) return;
-			Util.sendInvalid(args);
-			//Help.getReset();
-			return;
+			mineName = CommandManager.getMine();
+
+			if(mineName == null)
+			{
+				Help.getReset();
+				return;
+			}
 		}
 		
-		String mineName = args[1];
+		if(mineName == null)
+			mineName = args[1];
 		
 		if(!Util.mineExists(mineName))
 		{
@@ -191,7 +197,9 @@ public class Reset
 				broadcastMessage = Util.getConfigString("messages.manual-mine-reset-successful");
 			}
 			
-				broadcastMessage = Util.parseString(broadcastMessage, "%MINE%", "'" + mineName + "'");
+				String displayName = Util.getRegionString("mines." + mineName + ".display-name");
+				broadcastMessage = Util.parseString(broadcastMessage, "%MINE%", mineName);
+				broadcastMessage = Util.parseString(broadcastMessage, "%MINENAME%", displayName);
 				broadcastMessage = Util.parseString(broadcastMessage, "%TIME%", nextReset+"");
 				
 				Util.broadcastSuccess(broadcastMessage);

@@ -87,9 +87,11 @@ public class MineReset extends JavaPlugin
 					Util.saveRegionData();
 					
 					int index = warnTimes.indexOf(min + "");
-					if(index != -1 && sec == 30)
+					if(index != -1 && sec == 1)
 					{
+						String displayName = Util.getRegionString("mines." + mineName + ".display-name");
 		               	warnMessage = Util.parseString(warnMessage, "%MINE%", mineName);
+		               	warnMessage = Util.parseString(warnMessage, "%MINENAME%", displayName);
 		                warnMessage = Util.parseString(warnMessage, "%TIME%", warnTimes.get(index) + "");
 		                Util.broadcastSuccess(warnMessage);
 					}

@@ -1,5 +1,7 @@
 package com.wolvencraft.MineReset.cmd;
 
+import java.util.List;
+
 import com.wolvencraft.MineReset.CommandManager;
 
 
@@ -15,9 +17,10 @@ public class Auto
 		
 		if(args.length == 1)
 		{
-			Help.getBlacklist();
+			Help.getAuto();
+			return;
 		}
-		else if(args.length < 2 || args.length > 3)
+		else if(args.length < 2 || args.length > 4)
 		{
 			Util.sendInvalid(args);
 			return;
@@ -43,6 +46,7 @@ public class Auto
 				Util.sendSuccess("Automatic resets turned ON for mine '" + mineName + "'");
 				Util.setRegionBoolean(baseNode + ".reset", true);
 			}
+			Util.saveRegionData();
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("time"))
@@ -63,6 +67,7 @@ public class Auto
 				Util.setRegionInt(baseNode + ".warn-time", time);
 			}
 			Util.setRegionInt(baseNode + ".reset-time", time);
+			Util.saveRegionData();
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("warning"))
@@ -79,19 +84,25 @@ public class Auto
 					Util.sendSuccess("Reset warnings turned ON for mine '" + mineName + "'");
 					Util.setRegionBoolean(baseNode + ".reset", true);
 				}
+				Util.saveRegionData();
 				return;
 			}
-			else
+			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+"))
 			{
-				if(!Util.isNumeric(args[2]))
+				if(args.length != 4)
 				{
 					Util.sendInvalid(args);
 					return;
 				}
-				int time = (int)Double.parseDouble(args[2]);
-				if(time < 5)
+				if(!Util.isNumeric(args[3]))
 				{
-					Util.sendError("Time cannot be set to less then 5 minutes");
+					Util.sendInvalid(args);
+					return;
+				}
+				int time = (int)Double.parseDouble(args[3]);
+				if(time <= 0)
+				{
+					Util.sendError("Time cannot be negative, dummy");
 					return;
 				}
 				if(time > Util.getRegionInt(baseNode + ".reset-time"))
@@ -99,7 +110,43 @@ public class Auto
 					Util.sendError("Time cannot be set to a value greater then the reset time");
 					return;
 				}
-				Util.setRegionInt(baseNode + ".warn-time", time);
+				List<String> warnList = Util.getRegionList(baseNode + ".warn-times");
+				warnList.add(time + "");
+				Util.setRegionList(baseNode + ".warn-times", warnList);
+				Util.saveRegionData();
+				Util.sendSuccess(mineName + " will now send warnings " + time + " minute(s) before the reset");
+				return;
+			}
+			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-"))
+			{
+
+				if(args.length != 4)
+				{
+					Util.sendInvalid(args);
+					return;
+				}
+				if(!Util.isNumeric(args[3]))
+				{
+					Util.sendInvalid(args);
+					return;
+				}
+				int time = (int)Double.parseDouble(args[3]);
+				List<String> warnList = Util.getRegionList(baseNode + ".warn-times");
+				int index = warnList.indexOf(time + "");
+				if(index == -1)
+				{
+					Util.sendError("The mine " + mineName + " does not send a warning at " + time);
+					return;
+				}
+				warnList.remove(index);
+				Util.setRegionList(baseNode + ".warn-times", warnList);
+				Util.saveRegionData();
+				Util.sendSuccess(mineName + " will no longer send warnings " + time + " minute(s) before the reset");
+				return;
+			}
+			else
+			{
+				Util.sendInvalid(args);
 				return;
 			}
 		}

@@ -47,6 +47,22 @@ public class Edit
 			CommandManager.setMine(mineName);
 			Util.sendSuccess("Mine '" + mineName + "' has been selected");
 		}
+		else if(args[0].equalsIgnoreCase("none"))
+		{
+			if(args.length != 2)
+			{
+				Util.sendInvalid(args);
+				return;
+			}
+			String mineName = args[1];
+			if(!Util.mineExists(mineName))
+			{
+				Util.sendError("Mine '" + mineName + "' does not exist");
+				return;
+			}
+			CommandManager.setMine(null);
+			Util.sendSuccess("Mine '" + mineName + "' has been de-selected");
+		}
 		else if(args[0].equalsIgnoreCase("cooldown"))
 		{
 			if(curMine == null)
@@ -145,7 +161,8 @@ public class Edit
 			}
 			else
 			{
-				weightList.set(index, weightList.get(index) + percent);
+				String weight = Double.parseDouble(weightList.get(index)) + percent + "";
+				weightList.set(index, weight);
 			}
 			// Writing everything down
 			

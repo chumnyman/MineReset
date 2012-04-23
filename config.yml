@@ -44,9 +44,9 @@ defaults:
 messages:
   title: "Mine Reset"
   title-on-signs: "Reset"
-  manual-mine-reset-successful: "Mine %MINE% was reset!"
-  automatic-mine-reset-successful: "Mine %MINE% was reset! Next reset in %TIME% minute(s)."
-  automatic-mine-reset-warning: "Mine %MINE% resets in %TIME% minute(s)."
+  manual-mine-reset-successful: "Mine %MINENAME% was reset!"
+  automatic-mine-reset-successful: "Mine %MINENAME% was reset! Next reset in %TIME% minute(s)."
+  automatic-mine-reset-warning: "Mine %MINENAME% resets in %TIME% minute(s)."
   invalid-command: "Invalid command! Use /mine help for help."
   access-denied: "You do not have permission to do that"
 data:

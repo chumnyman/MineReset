@@ -20,7 +20,10 @@ public class Info
 		String mineName = null;
 		if(args.length == 1)
 		{
-			if(CommandManager.getMine() != null) mineName = CommandManager.getMine();
+			if(CommandManager.getMine() != null)
+			{
+				mineName = CommandManager.getMine();
+			}
 			else
 			{
 				Help.getInfo();

@@ -428,6 +428,10 @@ public class Util
 			}
 			else
 			{
+				if(blockName.equalsIgnoreCase("iron"))
+					blockName = "iron_ore";
+				else if(blockName.equalsIgnoreCase("gold"))
+					blockName = "gold_ore";
 				material = Material.matchMaterial(blockName);
 			}
 

@@ -107,6 +107,11 @@ public class Edit
 				return;
 			}
 			
+			if(args.length != 3)
+			{
+				Util.sendError("I find your lack of parameters disturbing");
+				return;
+			}
 			String blockName = args[1];
 			int blockId = Util.getBlockId(blockName);
 			
@@ -116,8 +121,16 @@ public class Edit
 				return;
 			}
 			
+			
 			List<String> itemList = Util.getRegionList("mines." + curMine + ".materials.blocks");
 			List<String> weightList = Util.getRegionList("mines." + curMine + ".materials.weights");
+			
+
+			if(blockId == Integer.parseInt(itemList.get(0)))
+			{
+				Util.sendError("You do not need to do this. The weight of the default block is calculated automatically.");
+				return;
+			}
 			
 			double percent;
 			if(Util.isNumeric(args[2]))

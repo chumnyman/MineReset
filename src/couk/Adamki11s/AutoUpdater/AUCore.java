@@ -82,20 +82,16 @@ public class AUCore{
 			subVers = Double.toString(currentSubVersion);
 		}
 		
-		if(versionNO != currentVersion){
-			log.info(prefix + " You are not running the latest version of " + pluginname + "!");
-			log.info(prefix + " Running version : " + currentVersion + "_" + subVers + ". Latest version : " + versionNO + "_" + subVersionNO + ".");
-			log.info(prefix + " Urgency : " + urgency);
-			log.info(prefix + " Reason : " + reason);
-			return false;
-		} else if(subVersionNO != currentSubVersion) {
-			log.info(prefix + " You are not running the latest sub version of " + pluginname + "!");
-			log.info(prefix + " Running version : " + currentVersion + "_" + subVers + ". Latest version : " + versionNO + "_" + subVersionNO + ".");
-			log.info(prefix + " Urgency : " + urgency);
-			log.info(prefix + " Reason : " + reason);
+		if(versionNO != currentVersion || subVersionNO != currentSubVersion) {
+			log.info("-------------------------------");
+			log.info("| " + pluginname + " is not up to date!");
+			log.info("| Running version : " + currentVersion + "." + subVers + "");
+			log.info("| Latest version  : " + versionNO + "." + subVersionNO + "");
+			log.info("| Urgency         : " + urgency);
+			log.info("| Reason          : " + reason);
+			log.info("-------------------------------");
 			return false;
 		} else if(versionNO == currentVersion && subVersionNO == currentSubVersion){
-			log.info(prefix + " You are running the latest version of " + pluginname + ".");
 			return true;
 		}
 		

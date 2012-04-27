@@ -46,7 +46,7 @@ public class MineReset extends JavaPlugin
 		
 		core = new AUCore("http://wolvencraft.com/plugins/MineReset/index.html", log, "[MineReset]");
 		
-		double currentVer = 1.1, currentSubVer = 2;
+		double currentVer = 1.1, currentSubVer = 1;
 
 		core.checkVersion(currentVer, currentSubVer, "MineReset");
 		

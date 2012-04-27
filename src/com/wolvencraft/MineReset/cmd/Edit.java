@@ -63,7 +63,7 @@ public class Edit
 			CommandManager.setMine(null);
 			Util.sendSuccess("Mine '" + mineName + "' has been de-selected");
 		}
-		else if(args[0].equalsIgnoreCase("cooldown"))
+		else if(args[0].equalsIgnoreCase("coolcan'down"))
 		{
 			if(curMine == null)
 			{
@@ -127,7 +127,7 @@ public class Edit
 				percent = (double)(Math.round(percent * 1000)) / 1000;
 			}
 			else {
-				if(Util.debugEnabled()) Util.log("Argument not numeric, attempting to parse");
+				if(Util.debugEnabled()) Util.log("Argument is not numeric, attempting to parse");
 				String awkwardValue = args[2];
 				String[] awkArray = awkwardValue.split("%");
 				try

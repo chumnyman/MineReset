@@ -421,13 +421,25 @@ public class Util
 	{
 		try
 		{
-			if(isNumeric(blockName)) return Integer.parseInt(blockName);
+			Material material;
+			if(isNumeric(blockName))
+			{
+				material = Material.getMaterial(Integer.parseInt(blockName));
+			}
 			else
 			{
-				Material material = Material.matchMaterial(blockName);
-				if(material == null) return -1;
-				return material.getId();
+				material = Material.matchMaterial(blockName);
 			}
+
+			if(material == null) return -1;
+			if(material.equals(Material.DIAMOND))
+				material = Material.DIAMOND_ORE;
+			else if(material.equals(Material.COAL))
+				material = Material.COAL_ORE;
+			else if(material.equals(Material.REDSTONE))
+				material = Material.REDSTONE_ORE;
+			return material.getId();
+			
 		}
 		catch(NumberFormatException nfe) { return -1; }
 	}

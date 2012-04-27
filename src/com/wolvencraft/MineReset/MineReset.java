@@ -90,6 +90,7 @@ public class MineReset extends JavaPlugin
 					if(index != -1 && sec == 1)
 					{
 						String displayName = Util.getRegionString("mines." + mineName + ".display-name");
+						if(displayName.equals("")) displayName = mineName;
 		               	warnMessage = Util.parseString(warnMessage, "%MINE%", mineName);
 		               	warnMessage = Util.parseString(warnMessage, "%MINENAME%", displayName);
 		                warnMessage = Util.parseString(warnMessage, "%TIME%", warnTimes.get(index) + "");

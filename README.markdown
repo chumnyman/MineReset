@@ -22,5 +22,4 @@ Planned Future Features
  * Customize the messages!
  * Teleportation to the mine with a defined "mine spawn" point
  * Teleport players out of the mine before it resets
- * Select regions with World Edit wand!
  * You tell me!

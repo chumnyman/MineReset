@@ -57,15 +57,7 @@ public class Auto
 				return;
 			}
 			int time = (int)Double.parseDouble(args[2]);
-			if(time < 5)
-			{
-				Util.sendError("Time cannot be set to less then 5 minutes");
-				return;
-			}
-			if(time < Util.getRegionInt(baseNode + ".warn-time"))
-			{
-				Util.setRegionInt(baseNode + ".warn-time", time);
-			}
+			Util.sendSuccess("The reset time for mine '" + mineName + "' has been set to " + time);
 			Util.setRegionInt(baseNode + ".reset-time", time);
 			Util.saveRegionData();
 			return;

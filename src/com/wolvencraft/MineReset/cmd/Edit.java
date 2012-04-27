@@ -63,7 +63,7 @@ public class Edit
 			CommandManager.setMine(null);
 			Util.sendSuccess("Mine '" + mineName + "' has been de-selected");
 		}
-		else if(args[0].equalsIgnoreCase("coolcan'down"))
+		else if(args[0].equalsIgnoreCase("cooldown"))
 		{
 			if(curMine == null)
 			{

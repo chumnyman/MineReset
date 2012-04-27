@@ -17,6 +17,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.wolvencraft.MineReset.cmd.*;
 import com.wolvencraft.MineReset.events.*;
 
+import couk.Adamki11s.AutoUpdater.AUCore;
+
 
 /**
  * Mine Reset
@@ -30,16 +32,23 @@ import com.wolvencraft.MineReset.events.*;
 
 public class MineReset extends JavaPlugin
 {
+	Logger log;
+	private AUCore core;
 	public CommandManager manager;
 	private FileConfiguration regionData = null;
 	private File regionDataFile = null;
 	private FileConfiguration oldConfig = null;
 	private File oldConfigFile = null;
-	Logger log;
 	
 	public void onEnable()
 	{
 		log = this.getLogger();
+		
+		core = new AUCore("http://wolvencraft.com/plugins/MineReset/index.html", log, "[MineReset]");
+		
+		double currentVer = 1.1, currentSubVer = 2;
+
+		core.checkVersion(currentVer, currentSubVer, "MineReset");
 		
 		getConfig().options().copyDefaults(true);
 		saveDefaultConfig();
@@ -66,44 +75,49 @@ public class MineReset extends JavaPlugin
 
                	int min;
                 int sec;
+                boolean reset;
                 List<String> warnTimes;
                 String warnMessage = Util.getConfigString("messages.automatic-mine-reset-warning");
                 
 				for(String mineName : mineList)
 				{
-					min = Util.getRegionInt("mines." + mineName + ".reset.auto.data.min");
-					sec = Util.getRegionInt("mines." + mineName + ".reset.auto.data.sec");
-					warnTimes = Util.getRegionList("mines." + mineName + ".reset.auto.warn-times");
-					
-					sec--;
-					if(sec <= 0)
+					reset = Util.getRegionBoolean("mines." + mineName + ".reset.auto.reset");
+					if(reset)
 					{
-						min--;
-						sec = 60 + sec;
-					}
-					
-					Util.setRegionInt("mines." + mineName + ".reset.auto.data.min", min);
-					Util.setRegionInt("mines." + mineName + ".reset.auto.data.sec", sec);
-					Util.saveRegionData();
-					
-					int index = warnTimes.indexOf(min + "");
-					if(index != -1 && sec == 1)
-					{
-						String displayName = Util.getRegionString("mines." + mineName + ".display-name");
-						if(displayName.equals("")) displayName = mineName;
-		               	warnMessage = Util.parseString(warnMessage, "%MINE%", mineName);
-		               	warnMessage = Util.parseString(warnMessage, "%MINENAME%", displayName);
-		                warnMessage = Util.parseString(warnMessage, "%TIME%", warnTimes.get(index) + "");
-		                Util.broadcastSuccess(warnMessage);
-					}
-					else if(min < 0 || (min == 0 && sec == 0))
-					{
-						String[] args = {"reset", mineName};
-						Reset.run(args, true);
-						min = Util.getRegionInt("mines." + mineName + ".reset.auto.reset-time");
+						min = Util.getRegionInt("mines." + mineName + ".reset.auto.data.min");
+						sec = Util.getRegionInt("mines." + mineName + ".reset.auto.data.sec");
+						warnTimes = Util.getRegionList("mines." + mineName + ".reset.auto.warn-times");
+						
+						sec--;
+						if(sec <= 0)
+						{
+							min--;
+							sec = 60 + sec;
+						}
+						
 						Util.setRegionInt("mines." + mineName + ".reset.auto.data.min", min);
-						Util.setRegionInt("mines." + mineName + ".reset.auto.data.sec", 0);
+						Util.setRegionInt("mines." + mineName + ".reset.auto.data.sec", sec);
 						Util.saveRegionData();
+						
+						int index = warnTimes.indexOf(min + "");
+						if(index != -1 && sec == 1)
+						{
+							String displayName = Util.getRegionString("mines." + mineName + ".display-name");
+							if(displayName.equals("")) displayName = mineName;
+			               	warnMessage = Util.parseString(warnMessage, "%MINE%", mineName);
+			               	warnMessage = Util.parseString(warnMessage, "%MINENAME%", displayName);
+			                warnMessage = Util.parseString(warnMessage, "%TIME%", warnTimes.get(index) + "");
+			                Util.broadcastSuccess(warnMessage);
+						}
+						else if(min < 0 || (min == 0 && sec == 0))
+						{
+							String[] args = {"reset", mineName};
+							Reset.run(args, true);
+							min = Util.getRegionInt("mines." + mineName + ".reset.auto.reset-time");
+							Util.setRegionInt("mines." + mineName + ".reset.auto.data.min", min);
+							Util.setRegionInt("mines." + mineName + ".reset.auto.data.sec", 0);
+							Util.saveRegionData();
+					}
 					}
 				}
             }

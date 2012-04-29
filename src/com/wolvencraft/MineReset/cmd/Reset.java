@@ -3,11 +3,15 @@ package com.wolvencraft.MineReset.cmd;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.config.Configuration;
+import com.wolvencraft.MineReset.config.Language;
+import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Pattern;
 
 public class Reset
@@ -45,54 +49,63 @@ public class Reset
 		
 		if(!Util.mineExists(mineName))
 		{
-			Util.sendError("Mine '" + mineName + "' does not exist");
+			String error = Language.getString("general.mine-name-invalid");
+			error = Util.parseString(error, "%MINE%", mineName);
+			Util.sendError(error);
 			return;
 		}
 		
-		List<String> blockList = Util.getRegionList("mines." + mineName + ".materials.blocks");
-		List<String> weightList = Util.getRegionList("mines." + mineName + ".materials.weights");
+		List<String> blockList = Regions.getList("mines." + mineName + ".materials.blocks");
+		List<String> weightList = Regions.getList("mines." + mineName + ".materials.weights");
 		Pattern pattern = new Pattern(blockList, weightList);
-		boolean blacklist = Util.getRegionBoolean("mines." + mineName + ".blacklist.enabled");
-		boolean whitelist = Util.getRegionBoolean("mines." + mineName + ".blacklist.whitelist");
+		boolean blacklist = Regions.getBoolean("mines." + mineName + ".blacklist.enabled");
+		boolean whitelist = Regions.getBoolean("mines." + mineName + ".blacklist.whitelist");
 		List<String> blacklistedBlocks = null;
 		if(blacklist)
-			blacklistedBlocks = Util.getRegionList("mines." + mineName + ".blacklist.blocks");
-		String worldName = Util.getRegionString("mines." + mineName + ".coordinates.world");
+			blacklistedBlocks = Regions.getList("mines." + mineName + ".blacklist.blocks");
+		String worldName = Regions.getString("mines." + mineName + ".coordinates.world");
 		World mineWorld = Bukkit.getServer().getWorld(worldName);
 		
-		boolean broadcastReset = Util.getConfigBoolean("configuration.broadcast-on-reset");
+		boolean broadcastReset = Configuration.getBoolean("configuration.broadcast-on-reset");
 		
 		if(Util.debugEnabled()) Util.log("Determining coordinates");
 		
 		int[] point1 = {
-				Util.getRegionInt("mines." + mineName + ".coordinates.pos0.x"),
-				Util.getRegionInt("mines." + mineName + ".coordinates.pos0.y"),
-				Util.getRegionInt("mines." + mineName + ".coordinates.pos0.z")
+				Regions.getInt("mines." + mineName + ".coordinates.pos0.x"),
+				Regions.getInt("mines." + mineName + ".coordinates.pos0.y"),
+				Regions.getInt("mines." + mineName + ".coordinates.pos0.z")
 		};
 		int[] point2 = {
-				Util.getRegionInt("mines." + mineName + ".coordinates.pos1.x"),
-				Util.getRegionInt("mines." + mineName + ".coordinates.pos1.y"),
-				Util.getRegionInt("mines." + mineName + ".coordinates.pos1.z")
+				Regions.getInt("mines." + mineName + ".coordinates.pos1.x"),
+				Regions.getInt("mines." + mineName + ".coordinates.pos1.y"),
+				Regions.getInt("mines." + mineName + ".coordinates.pos1.z")
 		};
 		
 		int blockID = 0;
 		if(Util.debugEnabled()) Util.log("x " + point1[0] + ", " + point2[0]);
 		if(Util.debugEnabled()) Util.log("y " + point1[1] + ", " + point2[1]);
 		if(Util.debugEnabled()) Util.log("z " + point1[2] + ", " + point2[2]);
-		
-		// TODO I hate the way this is done.
-		
-		if(Util.getConfigBoolean("configuration.teleport-out-of-the-mine-on-reset"))
+				
+		if(Configuration.getBoolean("configuration.teleport-out-of-the-mine-on-reset"))
 		{
 			Player[] onlinePlayers = Bukkit.getOnlinePlayers();
 			for(Player player : onlinePlayers)
 			{
 				if(Util.playerInTheMine(player, mineName))
 				{
-					if(Util.debugEnabled()) Util.log("Player " + player.getName() + " is in the mine");
+					String message = Language.getString("teleportation.mine-teleport");
+					String displayName = Regions.getString("mines." + mineName + ".display-name");
+					int min = Regions.getInt("mines." + mineName + ".reset.auto.data.min");
+					int sec = Regions.getInt("mines." + mineName + ".reset.auto.data.sec");
+					String time = ChatColor.GOLD + "" + min + ChatColor.WHITE + " minutes, " + ChatColor.GOLD + "" + sec + ChatColor.WHITE + " seconds";
+					
+					if(displayName.equals("")) displayName = mineName;
+					message = Util.parseString(message, "%MINENAME%", displayName);
+					message = Util.parseString(message, "%TIME%", time);
 					
 					Util.warpToMine(player, mineName);
-					Util.sendSuccess("You have teleported to mine + '" + args[1] + "'");
+					
+					Util.sendSuccess(message);
 					
 				}
 				if(Util.debugEnabled()) Util.log("Player " + player.getName() + " is not in the mine");
@@ -178,23 +191,24 @@ public class Reset
 			}
 		}
 			
-		int nextReset = Util.getRegionInt("mines." + mineName + ".reset.auto.reset-time");
-		Util.setRegionInt("mines." + mineName + ".reset.auto.data.min", nextReset);
-		Util.setRegionInt("mines." + mineName + ".reset.auto.data.sec", 0);
+		int nextReset = Regions.getInt("mines." + mineName + ".reset.auto.reset-time");
+		Regions.setInt("mines." + mineName + ".reset.auto.data.min", nextReset);
+		Regions.setInt("mines." + mineName + ".reset.auto.data.sec", 0);
+		Regions.saveData();
 		
 		if(broadcastReset)
 		{
 			String broadcastMessage;
 			if(automatic)
 			{
-				broadcastMessage = Util.getConfigString("messages.automatic-mine-reset-successful");
+				broadcastMessage = Language.getString("reset.automatic-reset-successful");
 			}
 			else
 			{
-				broadcastMessage = Util.getConfigString("messages.manual-mine-reset-successful");
+				broadcastMessage = Language.getString("reset.manual-reset-successful");
 			}
 			
-				String displayName = Util.getRegionString("mines." + mineName + ".display-name");
+				String displayName = Regions.getString("mines." + mineName + ".display-name");
 				if(displayName.equals("")) displayName = mineName;
 				broadcastMessage = Util.parseString(broadcastMessage, "%MINE%", mineName);
 				broadcastMessage = Util.parseString(broadcastMessage, "%MINENAME%", displayName);

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.wolvencraft.MineReset.CommandManager;
 
-public class Language
+public class Configuration
 {
 	/**
 	 * Returns configuration data from the node
@@ -13,7 +13,7 @@ public class Language
 	 */
 	public static String getString(String node)
 	{
-		String stringToReturn = CommandManager.getPlugin().getLanguageData().getString(node);
+		String stringToReturn = CommandManager.getPlugin().getConfig().getString(node);
 		return stringToReturn;
 	}
 	
@@ -24,7 +24,7 @@ public class Language
 	 */
 	public static boolean getBoolean(String node)
 	{
-		boolean booleanToReturn = CommandManager.getPlugin().getLanguageData().getBoolean(node);
+		boolean booleanToReturn = CommandManager.getPlugin().getConfig().getBoolean(node);
 		return booleanToReturn;
 	}
 	
@@ -35,7 +35,7 @@ public class Language
 	 */
 	public static int getInt(String node)
 	{
-		int intToReturn = CommandManager.getPlugin().getLanguageData().getInt(node);
+		int intToReturn = CommandManager.getPlugin().getConfig().getInt(node);
 		return intToReturn;
 	}
 	
@@ -46,7 +46,7 @@ public class Language
 	 */
 	public static double getDouble(String node)
 	{
-		double intToReturn = CommandManager.getPlugin().getLanguageData().getDouble(node);
+		double intToReturn = CommandManager.getPlugin().getConfig().getDouble(node);
 		return intToReturn;
 	}
 	
@@ -57,7 +57,7 @@ public class Language
 	 */
 	public static List<String> getList(String node)
 	{
-		List<String> listToReturn = CommandManager.getPlugin().getLanguageData().getStringList(node);
+		List<String> listToReturn = CommandManager.getPlugin().getConfig().getStringList(node);
 		return listToReturn;
 	}
 }

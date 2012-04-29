@@ -1,10 +1,11 @@
 package com.wolvencraft.MineReset.cmd;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.config.Language;
+import com.wolvencraft.MineReset.config.Regions;
 
 
 
@@ -38,28 +39,22 @@ public class Teleport
 			}
 			
 			String baseNode = "mines." + mineName + ".coordinates";
-			Util.setRegionDouble(baseNode + ".pos2.x", loc.getX());
-			Util.setRegionDouble(baseNode + ".pos2.y", loc.getY());
-			Util.setRegionDouble(baseNode + ".pos2.z", loc.getZ());
-			Util.setRegionDouble(baseNode + ".pos2.yaw", loc.getYaw());
-			Util.setRegionDouble(baseNode + ".pos2.pitch", loc.getPitch());
+			Regions.setDouble(baseNode + ".pos2.x", loc.getX());
+			Regions.setDouble(baseNode + ".pos2.y", loc.getY());
+			Regions.setDouble(baseNode + ".pos2.z", loc.getZ());
+			Regions.setDouble(baseNode + ".pos2.yaw", loc.getYaw());
+			Regions.setDouble(baseNode + ".pos2.pitch", loc.getPitch());
 			
-			Util.saveRegionData();
+			Regions.saveData();
 			Util.sendSuccess ("Mine spawn point set (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
 			return;
 		}
 		
 		if(Util.mineExists(args[1]))
 		{
-			String message = Util.getConfigString("messages.mine-teleport");
-			String displayName = Util.getRegionString("mines." + args[1] + ".display-name");
-			int min = Util.getRegionInt("mines." + args[1] + ".reset.auto.data.min");
-			int sec = Util.getRegionInt("mines." + args[1] + ".reset.auto.data.sec");
-			String time = ChatColor.GOLD + "" + min + ChatColor.WHITE + " minutes, " + ChatColor.GOLD + "" + sec + ChatColor.WHITE + " seconds";
+			String message = Language.getString("teleportation.mine-teleport");
 			
-			if(displayName.equals("")) displayName = args[1];
-			message = Util.parseString(message, "%MINENAME%", displayName);
-			message = Util.parseString(message, "%TIME%", time);
+			message = Util.parseVars(message, args[1]);
 			
 			Player player = (Player) CommandManager.getSender();
 			Util.warpToMine(player, args[1]);
@@ -69,7 +64,9 @@ public class Teleport
 		}
 		else
 		{
-			Util.sendError("Mine '" + args[1] + "' does not exist");
+			String error = Language.getString("general.mine-name-invalid");
+			error = Util.parseString(error, "%MINE%", args[1]);
+			Util.sendError(error);
 			return;
 		}
 	}

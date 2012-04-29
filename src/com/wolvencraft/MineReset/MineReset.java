@@ -15,6 +15,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wolvencraft.MineReset.cmd.*;
+import com.wolvencraft.MineReset.config.Configuration;
+import com.wolvencraft.MineReset.config.Language;
+import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.events.*;
 
 import couk.Adamki11s.AutoUpdater.AUCore;
@@ -35,10 +38,8 @@ public class MineReset extends JavaPlugin
 	Logger log;
 	private AUCore core;
 	public CommandManager manager;
-	private FileConfiguration regionData = null;
-	private File regionDataFile = null;
-	private FileConfiguration oldConfig = null;
-	private File oldConfigFile = null;
+	private FileConfiguration regionData = null, languageData = null, signData = null;
+	private File regionDataFile = null, languageDataFile = null, signDataFile = null;
 	
 	public void onEnable()
 	{
@@ -64,7 +65,7 @@ public class MineReset extends JavaPlugin
 		new BlockPlaceListener(this);
 		new PlayerInteractListener(this);
 		
-		List<String> mineList = Util.getRegionList("data.list-of-mines");
+		List<String> mineList = Regions.getList("data.list-of-mines");
 		log.info("MineReset started");
 		log.info(mineList.size() + " mine(s) found");
 		
@@ -72,22 +73,22 @@ public class MineReset extends JavaPlugin
 		{
            	 public void run()
            	 {
-				List<String> mineList = Util.getRegionList("data.list-of-mines");
+				List<String> mineList = Regions.getList("data.list-of-mines");
 
                	int min;
                 int sec;
                 boolean reset;
                 List<String> warnTimes;
-                String warnMessage = Util.getConfigString("messages.automatic-mine-reset-warning");
+                String warnMessage = Language.getString("reset.automatic-reset-warning");
                 
 				for(String mineName : mineList)
 				{
-					reset = Util.getRegionBoolean("mines." + mineName + ".reset.auto.reset");
+					reset = Regions.getBoolean("mines." + mineName + ".reset.auto.reset");
 					if(reset)
 					{
-						min = Util.getRegionInt("mines." + mineName + ".reset.auto.data.min");
-						sec = Util.getRegionInt("mines." + mineName + ".reset.auto.data.sec");
-						warnTimes = Util.getRegionList("mines." + mineName + ".reset.auto.warn-times");
+						min = Regions.getInt("mines." + mineName + ".reset.auto.data.min");
+						sec = Regions.getInt("mines." + mineName + ".reset.auto.data.sec");
+						warnTimes = Regions.getList("mines." + mineName + ".reset.auto.warn-times");
 						
 						sec--;
 						if(sec <= 0)
@@ -96,14 +97,14 @@ public class MineReset extends JavaPlugin
 							sec = 60 + sec;
 						}
 						
-						Util.setRegionInt("mines." + mineName + ".reset.auto.data.min", min);
-						Util.setRegionInt("mines." + mineName + ".reset.auto.data.sec", sec);
-						Util.saveRegionData();
+						Regions.setInt("mines." + mineName + ".reset.auto.data.min", min);
+						Regions.setInt("mines." + mineName + ".reset.auto.data.sec", sec);
+						Regions.saveData();
 						
 						int index = warnTimes.indexOf(min + "");
 						if(index != -1 && sec == 1)
 						{
-							String displayName = Util.getRegionString("mines." + mineName + ".display-name");
+							String displayName = Regions.getString("mines." + mineName + ".display-name");
 							if(displayName.equals("")) displayName = mineName;
 			               	warnMessage = Util.parseString(warnMessage, "%MINE%", mineName);
 			               	warnMessage = Util.parseString(warnMessage, "%MINENAME%", displayName);
@@ -114,11 +115,7 @@ public class MineReset extends JavaPlugin
 						{
 							String[] args = {"reset", mineName};
 							Reset.run(args, true);
-							min = Util.getRegionInt("mines." + mineName + ".reset.auto.reset-time");
-							Util.setRegionInt("mines." + mineName + ".reset.auto.data.min", min);
-							Util.setRegionInt("mines." + mineName + ".reset.auto.data.sec", 0);
-							Util.saveRegionData();
-					}
+						}
 					}
 				}
             }
@@ -157,37 +154,70 @@ public class MineReset extends JavaPlugin
 	    try {
 	        regionData.save(regionDataFile);
 	    } catch (IOException ex) {
-	        Util.logWarning("Could not save config to " + regionDataFile);
+	        Util.log("Could not save config to " + regionDataFile);
 	    }
 	}
 	
-	public void reloadOldConfig() {
-	    if (oldConfigFile == null) {
-	    oldConfigFile = new File(getDataFolder(), "config.old.yml");
+	public void reloadLanguageData() {
+		
+		String lang = Configuration.getString("configuration.language");
+		
+	    if (languageDataFile == null) {
+	    languageDataFile = new File(getDataFolder(), lang + ".yml");
 	    }
-	    oldConfig = YamlConfiguration.loadConfiguration(regionDataFile);
+	    languageData = YamlConfiguration.loadConfiguration(languageDataFile);
 	 
 	    // Look for defaults in the jar
-	    InputStream defConfigStream = getResource("config.old.yml");
+	    InputStream defConfigStream = getResource(lang + ".yml");
 	    if (defConfigStream != null) {
 	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-	        oldConfig.setDefaults(defConfig);
+	        languageData.setDefaults(defConfig);
 	    }
 	}
 	
-	public FileConfiguration getOldConfig() {
-	    if (oldConfig == null) {
-	        reloadOldConfig();
+	public FileConfiguration getLanguageData() {
+	    if (languageData == null) {
+	        reloadLanguageData();
 	    }
-	    return oldConfig;
+	    return languageData;
 	}
 
-	public void saveOldConfig() {
-	    if (oldConfig == null || oldConfigFile == null) return;
+	public void saveLanguageData() {
+	    if (languageData == null || languageDataFile == null) return;
 	    try {
-	        oldConfig.save(oldConfigFile);
+	        languageData.save(languageDataFile);
 	    } catch (IOException ex) {
-	        Util.logWarning("Could not save config to " + oldConfigFile);
+	        Util.log("Could not save config to " + languageDataFile);
+	    }
+	}
+	
+	public void reloadSignData() {
+	    if (signDataFile == null) {
+	    signDataFile = new File(getDataFolder(), "signs.yml");
+	    }
+	    signData = YamlConfiguration.loadConfiguration(languageDataFile);
+	 
+	    // Look for defaults in the jar
+	    InputStream defConfigStream = getResource("signs.yml");
+	    if (defConfigStream != null) {
+	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+	        signData.setDefaults(defConfig);
+	    }
+	}
+	
+	public FileConfiguration getSignData() {
+	    if (signData == null) {
+	        reloadSignData();
+	    }
+	    return signData;
+	}
+
+	public void saveSignData() {
+	    if (signData == null || signDataFile == null) return;
+	    try {
+	        signData.save(signDataFile);
+	    } catch (IOException ex) {
+	        Util.log("Could not save config to " + signDataFile);
 	    }
 	}
 }

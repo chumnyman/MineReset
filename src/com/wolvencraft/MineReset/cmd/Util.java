@@ -11,6 +11,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.config.Configuration;
+import com.wolvencraft.MineReset.config.Language;
+import com.wolvencraft.MineReset.config.Regions;
 
 public class Util
 {
@@ -22,7 +25,7 @@ public class Util
 	public static boolean senderHasPermission(String node)
 	{
 		CommandSender sender = CommandManager.getSender();
-		boolean usePermissions = getConfigBoolean("configuration.use-permissions");
+		boolean usePermissions = Configuration.getBoolean("configuration.use-permissions");
 		
 		// Console always has the permissions
 		Player player;
@@ -50,7 +53,7 @@ public class Util
 	 */
 	public static boolean playerHasPermission(Player player, String node)
 	{
-		boolean usePermissions = getConfigBoolean("configuration.use-permissions");
+		boolean usePermissions = Configuration.getBoolean("configuration.use-permissions");
 		
 		if(!usePermissions)
 		{
@@ -82,7 +85,7 @@ public class Util
 	 */
 	public static boolean debugEnabled()
 	{
-		if(getConfigBoolean("configuration.debug-mode")) return true;
+		if(Configuration.getBoolean("configuration.debug-mode")) return true;
 		else return false;
 	}
 	
@@ -93,7 +96,7 @@ public class Util
 	 */
 	public static boolean nodeIsValid(String node)
 	{
-		if(getConfigString(node) == null)
+		if(Configuration.getString(node) == null)
 			return false;
 		else return true;
 	}
@@ -115,7 +118,7 @@ public class Util
 	public static void sendSuccess(String message)
 	{
 		CommandSender sender = CommandManager.getSender();
-		String title = getConfigString("messages.title");
+		String title = Language.getString("general.title");
 		sender.sendMessage(ChatColor.GREEN + "[" + title + "] " + ChatColor.WHITE + message);
 	}
 	
@@ -125,7 +128,7 @@ public class Util
 	 */
 	public static void sendPlayerSuccess(Player player, String message)
 	{
-		String title = getConfigString("messages.title");
+		String title = Language.getString("general.title");
 		player.sendMessage(ChatColor.GREEN + "[" + title + "] " + ChatColor.WHITE + message);
 	}
 	
@@ -136,7 +139,7 @@ public class Util
 	public static void sendError(String message)
 	{
 		CommandSender sender = CommandManager.getSender();
-		String title = getConfigString("messages.title");
+		String title = Language.getString("general.title");
 		sender.sendMessage(ChatColor.RED + "[" + title + "] " + ChatColor.WHITE + message);
 	}
 	
@@ -146,7 +149,7 @@ public class Util
 	 */
 	public static void sendPlayerError(Player player, String message)
 	{
-		String title = getConfigString("messages.title");
+		String title = Language.getString("general.title");
 		player.sendMessage(ChatColor.RED + "[" + title + "] " + ChatColor.WHITE + message);
 	}
 	
@@ -158,12 +161,12 @@ public class Util
 	public static void sendInvalid(String[] args)
 	{
 		CommandSender sender = CommandManager.getSender();
-		String title = getConfigString("messages.title");
-		String message = getConfigString("messages.invalid-command");
+		String title = Language.getString("general.title");
+		String message = Language.getString("general.invalid-command");
 		String command = "";
 		for(int i = 0; i < args.length; i++)
 			command = command + " " + args[i];
-		log(sender.getName() + " sent an invalid command (" + command + ")");
+		log(sender.getName() + " sent an invalid command (/mine" + command + ")");
 		sender.sendMessage(ChatColor.RED + "[" + title + "] " + ChatColor.WHITE + message);
 	}
 	
@@ -174,12 +177,12 @@ public class Util
 	public static void sendDenied(String[] args)
 	{
 		CommandSender sender = CommandManager.getSender();
-		String title = getConfigString("messages.title");
-		String message = getConfigString("messages.access-denied");
+		String title = Language.getString("general.title");
+		String message = Language.getString("general.access-denied");
 		String command = "";
 		for(int i = 0; i < args.length; i++)
 			command = command + " " + args[i];
-		log(sender.getName() + " was denied to use a command (" + command + ")");
+		log(sender.getName() + " was denied to use a command (/mine" + command + ")");
 		sender.sendMessage(ChatColor.RED + "[" + title + "] " + ChatColor.WHITE + message);
 	}
 	
@@ -191,16 +194,6 @@ public class Util
 	{
 		Logger log = Bukkit.getServer().getLogger();
 		log.info(message);
-	}
-	
-	/**
-	 * Sends a warning message into the server log
-	 * @param message A message to be sent
-	 */
-	public static void logWarning(String message)
-	{
-		Logger log = Bukkit.getServer().getLogger();
-		log.warning(message);
 	}
 	
 	/**
@@ -220,7 +213,7 @@ public class Util
 	 */
 	public static void broadcastSuccess(String message)
 	{
-		String title = CommandManager.getPlugin().getConfig().getString("messages.title");
+		String title = Language.getString("general.title");
 		Bukkit.getServer().broadcastMessage(ChatColor.GREEN + "[" + title + "] " + ChatColor.WHITE + message);
 	}
 	
@@ -231,185 +224,8 @@ public class Util
 	 */
 	public static void broadcastError(String message)
 	{
-		String title = CommandManager.getPlugin().getConfig().getString("messages.title");
+		String title = Language.getString("general.title");
 		Bukkit.getServer().broadcastMessage(ChatColor.RED + "[" + title + "] " + ChatColor.WHITE + message);
-	}
-	
-	/**
-	 * Returns configuration data from the node
-	 * @param node Configuration node
-	 * @return String to be returned
-	 */
-	public static String getConfigString(String node)
-	{
-		String stringToReturn = CommandManager.getPlugin().getConfig().getString(node);
-		if(stringToReturn != null) return stringToReturn;
-		logWarning("Node does not exist: " + node);
-		return "";
-	}
-	
-	/**
-	 * Returns configuration data from the node
-	 * @param node Configuration node
-	 * @return boolean to be returned
-	 */
-	public static boolean getConfigBoolean(String node)
-	{
-		boolean booleanToReturn = CommandManager.getPlugin().getConfig().getBoolean(node);
-		return booleanToReturn;
-	}
-	
-	/**
-	 * Returns configuration data from the node
-	 * @param node Configuration node
-	 * @return int to be returned
-	 */
-	public static int getConfigInt(String node)
-	{
-		int intToReturn = CommandManager.getPlugin().getConfig().getInt(node);
-		return intToReturn;
-	}
-	
-	/**
-	 * Returns configuration data from the node
-	 * @param node Configuration node
-	 * @return double to be returned
-	 */
-	public static double getConfigDouble(String node)
-	{
-		double intToReturn = CommandManager.getPlugin().getConfig().getDouble(node);
-		return intToReturn;
-	}
-	
-	/**
-	 * Returns configuration data from the node
-	 * @param node Configuration node
-	 * @return List<String> to be returned
-	 */
-	public static List<String> getConfigList(String node)
-	{
-		List<String> listToReturn = CommandManager.getPlugin().getConfig().getStringList(node);
-		if(listToReturn != null) return listToReturn;
-		logWarning("Node does not exist: " + node);
-		return null;
-	}
-	
-	/**
-	 * Returns region data from the node
-	 * @param node Configuration node
-	 * @return String to be returned
-	 */
-	public static String getRegionString(String node)
-	{
-		String stringToReturn = CommandManager.getPlugin().getRegionData().getString(node);
-		if(stringToReturn != null) return stringToReturn;
-		logWarning("Node does not exist: " + node);
-		return "";
-	}
-	
-	/**
-	 * Returns region data from the node
-	 * @param node Configuration node
-	 * @return boolean to be returned
-	 */
-	public static boolean getRegionBoolean(String node)
-	{
-		boolean booleanToReturn = CommandManager.getPlugin().getRegionData().getBoolean(node);
-		return booleanToReturn;
-	}
-	
-	/**
-	 * Returns region data from the node
-	 * @param node Configuration node
-	 * @return int to be returned
-	 */
-	public static int getRegionInt(String node)
-	{
-		int intToReturn = CommandManager.getPlugin().getRegionData().getInt(node);
-		return intToReturn;
-	}
-	
-	/**
-	 * Returns region data from the node
-	 * @param node Configuration node
-	 * @return int to be returned
-	 */
-	public static double getRegionDouble(String node)
-	{
-		double intToReturn = CommandManager.getPlugin().getRegionData().getDouble(node);
-		return intToReturn;
-	}
-	
-	/**
-	 * Returns region data from the node
-	 * @param node Configuration node
-	 * @return List<String> to be returned
-	 */
-	public static List<String> getRegionList(String node)
-	{
-		List<String> listToReturn = CommandManager.getPlugin().getRegionData().getStringList(node);
-		if(listToReturn != null) return listToReturn;
-		logWarning("Node does not exist: " + node);
-		return null;
-	}
-	
-	/**
-	 * Sets region data to a designated node
-	 * @param node Configuration node
-	 * @param data Data to be set
-	 */
-	public static void setRegionString(String node, String data)
-	{
-		CommandManager.getPlugin().getRegionData().set(node, data);
-	}
-	
-	/**
-	 * Sets region data to a designated node
-	 * @param node Configuration node
-	 * @param data Data to be set
-	 */
-	public static void setRegionBoolean(String node, boolean data)
-	{
-		CommandManager.getPlugin().getRegionData().set(node, data);
-	}
-	
-	/**
-	 * Sets region data to a designated node
-	 * @param node Configuration node
-	 * @param data Data to be set
-	 */
-	public static void setRegionInt(String node, int data)
-	{
-		CommandManager.getPlugin().getRegionData().set(node, data);
-	}
-	
-	/**
-	 * Sets region data to a designated node
-	 * @param node Configuration node
-	 * @param data Data to be set
-	 */
-	public static void setRegionDouble(String node, double data)
-	{
-		CommandManager.getPlugin().getRegionData().set(node, data);
-	}
-	
-	/**
-	 * Sets region data to a designated node
-	 * @param node Configuration node
-	 * @param data Data to be set
-	 */
-	public static void setRegionList(String node, List<String> data)
-	{
-		CommandManager.getPlugin().getRegionData().set(node, data);
-	}
-	
-	/**
-	 * Saves region data to a file.
-	 * This should not be used too often due to possible server lag
-	 */
-	public static void saveRegionData()
-	{
-		CommandManager.getPlugin().saveRegionData();
 	}
 	
 	/**
@@ -473,7 +289,7 @@ public class Util
 	 */
 	public static boolean mineExists(String name)
 	{
-		List<String> mineList = getRegionList("data.list-of-mines");
+		List<String> mineList = Regions.getList("data.list-of-mines");
 		if(mineList.indexOf(name) == -1) return false;
 		else return true;
 	}
@@ -492,6 +308,35 @@ public class Util
 	}
 	
 	/**
+	 * Replaces the variables in the string with their values
+	 * @param str String to parse
+	 * @param mineName Name of the mine
+	 * @return Parsed string
+	 */
+	public static String parseVars(String str, String mineName)
+	{
+		String displayName = Regions.getString("mines." + mineName + ".display-name");
+		boolean auto = Regions.getBoolean("mines." + mineName + ".reset.auto.reset");
+		
+		if(displayName.equals("")) displayName = mineName;
+		str = parseString(str, "%MINE%", mineName);
+		str = parseString(str, "%MINENAME%", displayName);
+		
+		if(auto)
+		{
+			int min = Regions.getInt("mines." + mineName + ".reset.auto.data.min");
+			int sec = Regions.getInt("mines." + mineName + ".reset.auto.data.sec");
+			String time = ChatColor.GOLD + "" + min + ChatColor.WHITE + " minutes, " + ChatColor.GOLD + "" + sec + ChatColor.WHITE + " seconds";
+			
+			str = parseString(str, "%MIN%", min + "");
+			str = parseString(str, "%SEC%", sec + "");
+			str = parseString(str, "%TIME%", time);
+		}
+		
+		return str;
+	}
+	
+	/**
 	 * Determines if a specific player is in the mine
 	 * @param player Player
 	 * @param mineName Name of the mine
@@ -499,9 +344,9 @@ public class Util
 	 */
 	public static boolean playerInTheMine(Player player, String mineName)
 	{
-		int[] x = {getRegionInt("mines." + mineName + ".coordinates.pos0.x"), getRegionInt("mines." + mineName + ".coordinates.pos1.x")};
-		int[] y = {getRegionInt("mines." + mineName + ".coordinates.pos0.y"), getRegionInt("mines." + mineName + ".coordinates.pos1.y")};
-		int[] z = {getRegionInt("mines." + mineName + ".coordinates.pos0.z"), getRegionInt("mines." + mineName + ".coordinates.pos1.z")};
+		int[] x = {Regions.getInt("mines." + mineName + ".coordinates.pos0.x"), Regions.getInt("mines." + mineName + ".coordinates.pos1.x")};
+		int[] y = {Regions.getInt("mines." + mineName + ".coordinates.pos0.y"), Regions.getInt("mines." + mineName + ".coordinates.pos1.y")};
+		int[] z = {Regions.getInt("mines." + mineName + ".coordinates.pos0.z"), Regions.getInt("mines." + mineName + ".coordinates.pos1.z")};
 		Location loc = player.getLocation();
 		if((loc.getX() > x[0] && loc.getX() < x[1])
 				&& (loc.getY() > y[0] && loc.getY() < y[1])
@@ -519,13 +364,13 @@ public class Util
 	 */
 	public static void warpToMine(Player player, String mineName)
 	{
-		String newLocWorld = Util.getRegionString("mines." + mineName + ".coordinates.world");
+		String newLocWorld = Regions.getString("mines." + mineName + ".coordinates.world");
 		double[] coords = {
-				Util.getRegionDouble("mines." + mineName + ".coordinates.pos2.x"),
-				Util.getRegionDouble("mines." + mineName + ".coordinates.pos2.y"),
-				Util.getRegionDouble("mines." + mineName + ".coordinates.pos2.z"),
-				Util.getRegionDouble("mines." + mineName + ".coordinates.pos2.yaw"),
-				Util.getRegionDouble("mines." + mineName + ".coordinates.pos2.pitch")
+				Regions.getDouble("mines." + mineName + ".coordinates.pos2.x"),
+				Regions.getDouble("mines." + mineName + ".coordinates.pos2.y"),
+				Regions.getDouble("mines." + mineName + ".coordinates.pos2.z"),
+				Regions.getDouble("mines." + mineName + ".coordinates.pos2.yaw"),
+				Regions.getDouble("mines." + mineName + ".coordinates.pos2.pitch")
 		};
 		Location newLoc = new Location(Bukkit.getServer().getWorld(newLocWorld), coords[0], coords[1], coords[2], (float)coords[3], (float)coords[4]);
 		

@@ -3,12 +3,12 @@ package com.wolvencraft.MineReset.cmd;
 import java.util.List;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.config.Language;
+import com.wolvencraft.MineReset.config.Regions;
 
 public class Edit
 {
 	private static String curMine;
-	
-	// TODO Add a method to set up a mine spawn point
 	
 	public static void run(String[] args)
 	{
@@ -41,11 +41,17 @@ public class Edit
 			String mineName = args[1];
 			if(!Util.mineExists(mineName))
 			{
-				Util.sendError("Mine '" + mineName + "' does not exist");
+				String error = Language.getString("general.mine-name-invalid");
+				error = Util.parseString(error, "%MINE%", mineName);
+				Util.sendError(error);
 				return;
 			}
 			CommandManager.setMine(mineName);
-			Util.sendSuccess("Mine '" + mineName + "' has been selected");
+			String message = Language.getString("general.mine-selected-successfully");
+			String displayName = Regions.getString("mines." + mineName + ",display-name");
+			message = Util.parseString(message, "%MINE%", mineName);
+			message = Util.parseString(message, "%MINENAME%", displayName);
+			Util.sendSuccess(message);
 		}
 		else if(args[0].equalsIgnoreCase("none"))
 		{
@@ -57,17 +63,24 @@ public class Edit
 			String mineName = args[1];
 			if(!Util.mineExists(mineName))
 			{
-				Util.sendError("Mine '" + mineName + "' does not exist");
+				String error = Language.getString("general.mine-name-invalid");
+				error = Util.parseString(error, "%MINE%", mineName);
+				Util.sendError(error);
 				return;
 			}
 			CommandManager.setMine(null);
-			Util.sendSuccess("Mine '" + mineName + "' has been de-selected");
+			String message = Language.getString("general.mine-deselected-successfully");
+			String displayName = Regions.getString("mines." + mineName + ",display-name");
+			message = Util.parseString(message, "%MINE%", mineName);
+			message = Util.parseString(message, "%MINENAME%", displayName);
+			Util.sendSuccess(message);
 		}
 		else if(args[0].equalsIgnoreCase("cooldown"))
 		{
 			if(curMine == null)
 			{
-				Util.sendError("Select a mine first with /mine edit <name>");
+				String error = Language.getString("general.mine-not-selected");
+				Util.sendError(error);
 				return;
 			}
 			
@@ -77,20 +90,24 @@ public class Edit
 				return;
 			}
 			
-			if(curMine == null)
-			{
-				Util.sendError("Select a mine first with /mine edit <name>");
-				return;
-			}
-			
 			if(Util.isNumeric(args[2]))
 			{
-				Util.setRegionInt("mines." + curMine + ".reset.manual", Integer.parseInt(args[2]));
+				Regions.setInt("mines." + curMine + ".reset.manual.cooldown-time", Integer.parseInt(args[2]));
 				Util.sendSuccess("The cooldown of mine '" + curMine + "' has been set to " + args[2]);
 				return;
 			}
 			else if(args[2].equalsIgnoreCase("toggle"))
 			{
+				if(Regions.getBoolean("mines." + curMine + ".reset.manual.cooldown-enabled"))
+				{
+					Regions.setBoolean("mines." + curMine + ".reset.manual.cooldown-enabled", false);
+					Util.sendSuccess("Cooldown was disabled for mine '" + curMine + "'");
+				}
+				else
+				{
+					Regions.setBoolean("mines." + curMine + ".reset.manual.cooldown-enabled", true);
+					Util.sendSuccess("Cooldown was enabled for mine '" + curMine + "'");
+				}
 				return;
 			}
 			else
@@ -103,7 +120,8 @@ public class Edit
 		{
 			if(curMine == null)
 			{
-				Util.sendError("Select a mine first with /mine edit <name>");
+				String error = Language.getString("general.mine-not-selected");
+				Util.sendError(error);
 				return;
 			}
 			
@@ -122,8 +140,8 @@ public class Edit
 			}
 			
 			
-			List<String> itemList = Util.getRegionList("mines." + curMine + ".materials.blocks");
-			List<String> weightList = Util.getRegionList("mines." + curMine + ".materials.weights");
+			List<String> itemList = Regions.getList("mines." + curMine + ".materials.blocks");
+			List<String> weightList = Regions.getList("mines." + curMine + ".materials.weights");
 			
 
 			if(blockId == Integer.parseInt(itemList.get(0)))
@@ -180,10 +198,10 @@ public class Edit
 			// Writing everything down
 			
 			weightList.set(0, ""+newStonePercent);
-			Util.setRegionList("mines." + curMine + ".materials.blocks", itemList);
-			Util.setRegionList("mines."+ curMine + ".materials.weights", weightList);
+			Regions.setList("mines." + curMine + ".materials.blocks", itemList);
+			Regions.setList("mines."+ curMine + ".materials.weights", weightList);
 			
-			Util.saveRegionData();
+			Regions.saveData();
 			
 			Util.sendSuccess(percent + "% of " + blockName + " added to " + curMine);
 			Util.sendSuccess("Reset the mine for the changes to take effect");
@@ -193,7 +211,8 @@ public class Edit
 		{
 			if(curMine == null)
 			{
-				Util.sendError("Select a mine first with /mine edit <name>");
+				String error = Language.getString("general.mine-not-selected");
+				Util.sendError(error);
 				return;
 			}
 			
@@ -205,15 +224,14 @@ public class Edit
 				return;
 			}
 			
-			if(blockId == Util.getConfigInt("defaults.materials.default-block"))
+			List<String> itemList = Regions.getList("mines." + curMine + ".materials.blocks");
+			List<String> weightList = Regions.getList("mines." + curMine + ".materials.weights");
+
+			if(blockId == Integer.parseInt(itemList.get(0)))
 			{
 				Util.sendError("You cannot remove the default block from the mine");
 				return;
 			}
-			
-			List<String> itemList = Util.getRegionList("mines." + curMine + ".materials.blocks");
-			List<String> weightList = Util.getRegionList("mines." + curMine + ".materials.weights");
-			
 			
 			int index = itemList.indexOf("" + blockId);
 			if(Util.debugEnabled()) Util.log(blockId + " ? " + index);
@@ -229,29 +247,30 @@ public class Edit
 			weightList.remove(index);
 			
 
-			Util.setRegionList("mines." + curMine + ".materials.blocks", itemList);
-			Util.setRegionList("mines." + curMine + ".materials.weights", weightList);
+			Regions.setList("mines." + curMine + ".materials.blocks", itemList);
+			Regions.setList("mines." + curMine + ".materials.weights", weightList);
 			
-			Util.saveRegionData();
+			Regions.saveData();
 			Util.sendSuccess(args[1] + " was successfully removed from mine '" + curMine + "'");
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del"))
 		{
 			CommandManager.getPlugin().getRegionData().set("mines." + curMine, null);
-			List<String> regionList = Util.getRegionList("data.list-of-mines");
+			List<String> regionList = Regions.getList("data.list-of-mines");
 			regionList.remove(regionList.indexOf(args[1]));
-			Util.setRegionList("data.list-of-mines", regionList);
-			Util.saveRegionData();
+			Regions.setList("data.list-of-mines", regionList);
+			Regions.saveData();
 			CommandManager.setMine(null);
-			Util.sendSuccess("Mine '" + args[1] + "' removed successfully");
+			Util.sendSuccess("Mine '" + args[1] + "' was successfully deleted.");
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("name"))
 		{
 			if(curMine == null)
 			{
-				Util.sendError("Select a mine first with /mine edit <name>");
+				String error = Language.getString("general.mine-not-selected");
+				Util.sendError(error);
 				return;
 			}
 			
@@ -260,9 +279,9 @@ public class Edit
 			{
 				name = name + " " + args[i];
 			}
-			Util.setRegionString("mines." + curMine + ".display-name", name);
+			Regions.setString("mines." + curMine + ".display-name", name);
 			Util.sendSuccess("Mine '" + curMine + "' now has a display name '" + name + "'");
-			Util.saveRegionData();
+			Regions.saveData();
 			return;
 		}
 		else

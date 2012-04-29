@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.Util;
+import com.wolvencraft.MineReset.config.Regions;
 
 public class BlockPlaceListener implements Listener
 {
@@ -36,7 +37,7 @@ public class BlockPlaceListener implements Listener
 		int padding;
 		int paddingTop;
 		
-		List<String> regionList = Util.getRegionList("data.list-of-mines");
+		List<String> regionList = Regions.getList("data.list-of-mines");
 		
 		if(Util.debugEnabled()) Util.log("Retrieved the region list");
 		
@@ -48,12 +49,12 @@ public class BlockPlaceListener implements Listener
 					if(Util.debugEnabled()) Util.log("The player does not have protection.place." + mineName);
 					Block b = event.getBlock();
 					Location blockLocation = b.getLocation();
-					padding = Util.getRegionInt("mines." + mineName + ".protection.padding");
-					paddingTop = Util.getRegionInt("mines." + mineName + ".protection.padding-top");
-					String mineWorld = Util.getRegionString("mines." + mineName + ".coordinates.world");
-					int[] x = {Util.getRegionInt("mines." + mineName + ".coordinates.pos0.x"), Util.getRegionInt("mines." + mineName + ".coordinates.pos1.x")};
-					int[] y = {Util.getRegionInt("mines." + mineName + ".coordinates.pos0.y"), Util.getRegionInt("mines." + mineName + ".coordinates.pos1.y")};
-					int[] z = {Util.getRegionInt("mines." + mineName + ".coordinates.pos0.z"), Util.getRegionInt("mines." + mineName + ".coordinates.pos1.z")};
+					padding = Regions.getInt("mines." + mineName + ".protection.padding");
+					paddingTop = Regions.getInt("mines." + mineName + ".protection.padding-top");
+					String mineWorld = Regions.getString("mines." + mineName + ".coordinates.world");
+					int[] x = {Regions.getInt("mines." + mineName + ".coordinates.pos0.x"), Regions.getInt("mines." + mineName + ".coordinates.pos1.x")};
+					int[] y = {Regions.getInt("mines." + mineName + ".coordinates.pos0.y"), Regions.getInt("mines." + mineName + ".coordinates.pos1.y")};
+					int[] z = {Regions.getInt("mines." + mineName + ".coordinates.pos0.z"), Regions.getInt("mines." + mineName + ".coordinates.pos1.z")};
 					
 					if(mineWorld.equals(blockLocation.getWorld().getName())
 							&& (blockLocation.getX() >= (x[0] - padding) && blockLocation.getX() <= (x[1] + padding))
@@ -61,10 +62,10 @@ public class BlockPlaceListener implements Listener
 							&& (blockLocation.getZ() >= (z[0] - padding) && blockLocation.getZ() <= (z[1] + padding)))
 					{
 						if(Util.debugEnabled()) Util.log("Player broke a block in the mine region");
-						if(Util.getConfigBoolean("mines." + mineName + ".protection.placement.blacklist.enabled"))
+						if(Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.enabled"))
 						{
-							List<String> blacklist = Util.getConfigList("mines." + mineName + ".protection.placement.blacklist.blocks");
-							if(Util.getConfigBoolean("mines." + mineName + ".protection.placement.blacklist.whitelist"))
+							List<String> blacklist = Regions.getList("mines." + mineName + ".protection.placement.blacklist.blocks");
+							if(Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.whitelist"))
 							{
 								for(String block : blacklist)
 								{

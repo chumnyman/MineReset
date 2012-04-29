@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.config.Regions;
 
 public class Info
 {
@@ -47,15 +48,15 @@ public class Info
 		
 		
 		// Title
-		String displayName = Util.getRegionString("mines." + mineName + ".display-name");
+		String displayName = Regions.getString("mines." + mineName + ".display-name");
 		if(displayName.equals("")) displayName = mineName;
 		Util.sendMessage(ChatColor.DARK_RED + "                    -=[ " + displayName + " ]=-");
 		
 		// Reset
-		boolean autoReset = Util.getRegionBoolean("mines." + mineName + ".reset.auto.reset");
-		int autoResetTime = Util.getRegionInt("mines." + mineName + ".reset.auto.reset-time");
-		int nextResetMin = Util.getRegionInt("mines." + mineName + ".reset.auto.data.min");
-		int nextResetSec = Util.getRegionInt("mines." + mineName + ".reset.auto.data.sec");
+		boolean autoReset = Regions.getBoolean("mines." + mineName + ".reset.auto.reset");
+		int autoResetTime = Regions.getInt("mines." + mineName + ".reset.auto.reset-time");
+		int nextResetMin = Regions.getInt("mines." + mineName + ".reset.auto.data.min");
+		int nextResetSec = Regions.getInt("mines." + mineName + ".reset.auto.data.sec");
 		
 		if(autoReset)
 		{
@@ -68,18 +69,18 @@ public class Info
 		
 		// Protection
 		String pvp;
-		if(Util.getRegionBoolean("mines" + mineName + ".protection.pvp.enabled"))
+		if(Regions.getBoolean("mines" + mineName + ".protection.pvp.enabled"))
 			pvp = ChatColor.GREEN + "ON";
 		else
 			pvp = ChatColor.RED + "OFF";
 		
 		String breakingProt;
-		if(Util.getRegionBoolean("mines." + mineName + ".protection.breaking.enabled"))
+		if(Regions.getBoolean("mines." + mineName + ".protection.breaking.enabled"))
 		{
 			
-			if(Util.getRegionBoolean("mines." + mineName + ".protection.breaking.blacklist.enabled"))
+			if(Regions.getBoolean("mines." + mineName + ".protection.breaking.blacklist.enabled"))
 			{
-				if(Util.getRegionBoolean("mines." + mineName + ".protection.breaking.blacklist.whitelist"))
+				if(Regions.getBoolean("mines." + mineName + ".protection.breaking.blacklist.whitelist"))
 					breakingProt = ChatColor.GREEN + "ON" + ChatColor.WHITE + " (W)";
 				else
 					breakingProt = ChatColor.GREEN + "ON" + ChatColor.WHITE + " (B)";
@@ -93,11 +94,11 @@ public class Info
 		}
 
 		String placementProt;
-		if(Util.getRegionBoolean("mines." + mineName + ".protection.placement.enabled"))
+		if(Regions.getBoolean("mines." + mineName + ".protection.placement.enabled"))
 		{
-			if(Util.getRegionBoolean("mines." + mineName + ".protection.placement.blacklist.enabled"))
+			if(Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.enabled"))
 			{
-				if(Util.getRegionBoolean("mines." + mineName + ".protection.placement.blacklist.whitelist"))
+				if(Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.whitelist"))
 					placementProt = ChatColor.GREEN + "ON" + ChatColor.WHITE + " (W)";
 				else
 					placementProt = ChatColor.GREEN + "ON" + ChatColor.WHITE + " (B)";
@@ -114,8 +115,8 @@ public class Info
 		Util.sendMessage(" PVP: " + pvp + ChatColor.WHITE + " | Breaking: " + breakingProt + ChatColor.WHITE + " | Placement: " + placementProt + ChatColor.WHITE + " ");
 		
 		// Composition
-		List<String> itemList = Util.getRegionList("mines." + mineName + ".materials.blocks");
-		List<String> weightList = Util.getRegionList("mines." + mineName + ".materials.weights");
+		List<String> itemList = Regions.getList("mines." + mineName + ".materials.blocks");
+		List<String> weightList = Regions.getList("mines." + mineName + ".materials.weights");
 		
 		String blockName;
 		String blockWeight;
@@ -134,10 +135,10 @@ public class Info
 		}
 		
 		// Blacklist
-		List<String> blacklistBlocks =  Util.getRegionList("mines." + mineName + ".blacklist.blocks");
-		if(Util.getRegionBoolean("mines." + mineName + ".blacklist.enabled") && blacklistBlocks.size() != 0)
+		List<String> blacklistBlocks =  Regions.getList("mines." + mineName + ".blacklist.blocks");
+		if(Regions.getBoolean("mines." + mineName + ".blacklist.enabled") && blacklistBlocks.size() != 0)
 		{
-			if(Util.getRegionBoolean("mines." + mineName + ".blacklist.whitelist"))
+			if(Regions.getBoolean("mines." + mineName + ".blacklist.whitelist"))
 			{
 				Util.sendMessage(ChatColor.BLUE + " Whitelist:");
 			}

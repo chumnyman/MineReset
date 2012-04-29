@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.config.Language;
 
 public class Help
 {	
@@ -32,15 +33,14 @@ public class Help
 		Util.sendMessage(" You do NOT need these commands. At all. I promise.");
 		formatHelp("config", " save", "Saves the data into a configuration file", "");
 		formatHelp("config", " load", "Loads the configuration from a file", "");
-		formatHelp("config", " update", "Updates the region data format", "");
 	}
 	
 	public static void getEdit()
 	{
 		formatHelp("edit", " <name>", "Selects a mine to edit its properties", "");
 		formatHelp("name", " <name>", "Creates a display name for a mine", "");
-		//formatHelp("cooldown", " toggle", "Toggles the reset cooldown in the mine (manual reset)", "");
-		//formatHelp("cooldown", " <time>", "Sets a cooldown time for the manual reset", "");
+		formatHelp("cooldown", " toggle", "Toggles the reset cooldown in the mine (manual reset)", "");
+		formatHelp("cooldown", " <time>", "Sets a cooldown time for the manual reset", "");
 		formatHelp("add", " <block> <percentage>", "Adds another type of block to the mine", "");
 		formatHelp("remove", " <block>", "Removes a block from the mine", "");
 		formatHelp("delete", "", "Completely deletes all the data about the selected mine", "");
@@ -48,7 +48,7 @@ public class Help
 	
 	public static void getHelp()
 	{
-		String title = Util.getConfigString("messages.title");
+		String title = Language.getString("general.title");
 		Util.sendMessage("                    -=[ " + title + " ]=-");
 		
 		formatHelp("info", " <name>", "Returns the information about a mine", "info");	

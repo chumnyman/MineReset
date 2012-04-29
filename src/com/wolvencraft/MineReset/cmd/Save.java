@@ -6,6 +6,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.config.Configuration;
+import com.wolvencraft.MineReset.config.Regions;
 
 public class Save
 {
@@ -46,7 +48,7 @@ public class Save
 		String mineName;
 		if(args.length == 1)
 		{
-			mineName = Util.getConfigString("configuration.default-name");
+			mineName = Configuration.getString("configuration.default-name");
 		}
 		else mineName = args[1];
 		if(Util.mineExists(mineName))
@@ -65,32 +67,32 @@ public class Save
 		
 		// - Fetching the default values
 		// - - Is the mine enabled by default?
-		String displayName = Util.getConfigString("defaults.display-name");
+		String displayName = Configuration.getString("defaults.display-name");
 		
 		// - - Blacklist defaults
-		boolean blacklistEnabled = Util.getConfigBoolean("defaults.blacklist.enabled");
-		boolean whitelistEnabled = Util.getConfigBoolean("defaults.blacklist.whitelist");
-		List<String> blacklistedBlocks = Util.getConfigList("defaults.blacklist.blocks");
+		boolean blacklistEnabled = Configuration.getBoolean("defaults.blacklist.enabled");
+		boolean whitelistEnabled = Configuration.getBoolean("defaults.blacklist.whitelist");
+		List<String> blacklistedBlocks = Configuration.getList("defaults.blacklist.blocks");
 		
 		
 		// - - Protection defaults
-		int protectionPadding = Util.getConfigInt("defaults.protection.padding");
-		int protectionPaddingTop = Util.getConfigInt("defaults.protection.padding-top");
+		int protectionPadding = Configuration.getInt("defaults.protection.padding");
+		int protectionPaddingTop = Configuration.getInt("defaults.protection.padding-top");
 		
 		// - - - PVP
-		boolean protectionPVPEnabled = Util.getConfigBoolean("defaults.protection.pvp");
+		boolean protectionPVPEnabled = Configuration.getBoolean("defaults.protection.pvp");
 		
 		// - - - Block breaking
-		boolean protectionBreakingEnabled = Util.getConfigBoolean("defaults.protection.breaking.enabled");
-		boolean protectionBreakingBlacklistEnabled = Util.getConfigBoolean("defaults.protection.breaking.blacklist.enabled");
-		boolean protectionBreakingWhitelistEnabled = Util.getConfigBoolean("defaults.protection.breaking.blacklist.whitelist");
-		List<String> protectionBreakingBlacklistedBlocks = Util.getConfigList("defaults.protection.breaking.blacklist.blocks");
+		boolean protectionBreakingEnabled = Configuration.getBoolean("defaults.protection.breaking.enabled");
+		boolean protectionBreakingBlacklistEnabled = Configuration.getBoolean("defaults.protection.breaking.blacklist.enabled");
+		boolean protectionBreakingWhitelistEnabled = Configuration.getBoolean("defaults.protection.breaking.blacklist.whitelist");
+		List<String> protectionBreakingBlacklistedBlocks = Configuration.getList("defaults.protection.breaking.blacklist.blocks");
 		
 		// - - - Block placement
-		boolean protectionPlacingEnabled = Util.getConfigBoolean("defaults.protection.placing.enabled");
-		boolean protectionPlacingBlacklistEnabled = Util.getConfigBoolean("defaults.protection.placement.blacklist.enabled");
-		boolean protectionPlacingWhitelistEnabled = Util.getConfigBoolean("defaults.protection.placement.blacklist.whitelist");
-		List<String> protectionPlacingBlacklistedBlocks = Util.getConfigList("defaults.protection.placement.blacklist.blocks");
+		boolean protectionPlacingEnabled = Configuration.getBoolean("defaults.protection.placing.enabled");
+		boolean protectionPlacingBlacklistEnabled = Configuration.getBoolean("defaults.protection.placement.blacklist.enabled");
+		boolean protectionPlacingWhitelistEnabled = Configuration.getBoolean("defaults.protection.placement.blacklist.whitelist");
+		List<String> protectionPlacingBlacklistedBlocks = Configuration.getList("defaults.protection.placement.blacklist.blocks");
 		
 		// - - - Coordinates
 		
@@ -131,20 +133,20 @@ public class Save
 		}
 		
 		// - - Materials
-		List<String> blockList = Util.getConfigList("defaults.materials.blocks");
-		List<String> weightList = Util.getConfigList("defaults.materials.weights");	
+		List<String> blockList = Configuration.getList("defaults.materials.blocks");
+		List<String> weightList = Configuration.getList("defaults.materials.weights");	
 		
 		// - - Reset
 		
 		// - - - Auto
-		boolean resetAutoEnabled = Util.getConfigBoolean("defaults.reset.auto.reset");
-		int resetAutoTime = Util.getConfigInt("defaults.reset.auto.reset-time");
-		boolean resetAutoWarnEnabled = Util.getConfigBoolean("defaults.reset.auto.warn");
-		List<String> resetAutoWarnTime = Util.getConfigList("defaults.reset.auto.warn-times");
+		boolean resetAutoEnabled = Configuration.getBoolean("defaults.reset.auto.reset");
+		int resetAutoTime = Configuration.getInt("defaults.reset.auto.reset-time");
+		boolean resetAutoWarnEnabled = Configuration.getBoolean("defaults.reset.auto.warn");
+		List<String> resetAutoWarnTime = Configuration.getList("defaults.reset.auto.warn-times");
 		
 		// - - - Manual
-		boolean resetManualCooldownEnabled = Util.getConfigBoolean("defaults.reset.manual.cooldown-enabled");
-		int resetManualCooldownTime = Util.getConfigInt("defaults.reset.manual.cooldown-time");
+		boolean resetManualCooldownEnabled = Configuration.getBoolean("defaults.reset.manual.cooldown-enabled");
+		int resetManualCooldownTime = Configuration.getInt("defaults.reset.manual.cooldown-time");
 		
 		
 		
@@ -154,99 +156,99 @@ public class Save
 		// = Setting values to the mine
 		String baseNode = "mines." + mineName;
 		// = = Basic info
-		Util.setRegionString(baseNode + ".display-name", displayName);
+		Regions.setString(baseNode + ".display-name", displayName);
 		
 		if(Util.debugEnabled()) Util.log("Writing blacklist data");
 		
 		// = = Blacklist
 		baseNode = "mines." + mineName + ".blacklist";
-		Util.setRegionBoolean(baseNode + ".enabled", blacklistEnabled);
-		Util.setRegionBoolean(baseNode + ".whitelist", whitelistEnabled);
-		Util.setRegionList(baseNode + ".blocks", blacklistedBlocks);
+		Regions.setBoolean(baseNode + ".enabled", blacklistEnabled);
+		Regions.setBoolean(baseNode + ".whitelist", whitelistEnabled);
+		Regions.setList(baseNode + ".blocks", blacklistedBlocks);
 		
 		if(Util.debugEnabled()) Util.log("Writing protection data");
 		
 		// = = Protection
 		baseNode = "mines." + mineName + ".protection";
-		Util.setRegionInt(baseNode + ".padding", protectionPadding);
-		Util.setRegionInt(baseNode + ".padding-top", protectionPaddingTop);
+		Regions.setInt(baseNode + ".padding", protectionPadding);
+		Regions.setInt(baseNode + ".padding-top", protectionPaddingTop);
 		
 		// = = = PVP
-		Util.setRegionBoolean(baseNode + ".pvp", protectionPVPEnabled);
+		Regions.setBoolean(baseNode + ".pvp", protectionPVPEnabled);
 		
 		// = = = Block breaking
 		baseNode = "mines." + mineName + ".protection.breaking";
-		Util.setRegionBoolean(baseNode + ".enabled", protectionBreakingEnabled);
-		Util.setRegionBoolean(baseNode + ".blacklist.enabled", protectionBreakingBlacklistEnabled);
-		Util.setRegionBoolean(baseNode + ".blacklist.whitelist", protectionBreakingWhitelistEnabled);
-		Util.setRegionList(baseNode + ".blacklist.blocks", protectionBreakingBlacklistedBlocks);
+		Regions.setBoolean(baseNode + ".enabled", protectionBreakingEnabled);
+		Regions.setBoolean(baseNode + ".blacklist.enabled", protectionBreakingBlacklistEnabled);
+		Regions.setBoolean(baseNode + ".blacklist.whitelist", protectionBreakingWhitelistEnabled);
+		Regions.setList(baseNode + ".blacklist.blocks", protectionBreakingBlacklistedBlocks);
 		
 		// = = = Block placement
 		baseNode = "mines." + mineName + ".protection.placement";
-		Util.setRegionBoolean(baseNode + ".enabled", protectionPlacingEnabled);
-		Util.setRegionBoolean(baseNode + ".blacklist.enabled", protectionPlacingBlacklistEnabled);
-		Util.setRegionBoolean(baseNode + ".blacklist.whitelist", protectionPlacingWhitelistEnabled);
-		Util.setRegionList(baseNode + ".blacklist.blocks", protectionPlacingBlacklistedBlocks);
+		Regions.setBoolean(baseNode + ".enabled", protectionPlacingEnabled);
+		Regions.setBoolean(baseNode + ".blacklist.enabled", protectionPlacingBlacklistEnabled);
+		Regions.setBoolean(baseNode + ".blacklist.whitelist", protectionPlacingWhitelistEnabled);
+		Regions.setList(baseNode + ".blacklist.blocks", protectionPlacingBlacklistedBlocks);
 		
 		if(Util.debugEnabled()) Util.log("Writing coordinates");
 		
 		// = = Coordinates
 		baseNode = "mines." + mineName + ".coordinates";
-		Util.setRegionString(baseNode + ".world", loc[0].getWorld().getName());
+		Regions.setString(baseNode + ".world", loc[0].getWorld().getName());
 		
 		// = = = Position 0
-		Util.setRegionInt(baseNode + ".pos0.x", p1[0]);
-		Util.setRegionInt(baseNode + ".pos0.y", p1[1]);
-		Util.setRegionInt(baseNode + ".pos0.z", p1[2]);
+		Regions.setInt(baseNode + ".pos0.x", p1[0]);
+		Regions.setInt(baseNode + ".pos0.y", p1[1]);
+		Regions.setInt(baseNode + ".pos0.z", p1[2]);
 		
 		// = = = Position 1
-		Util.setRegionInt(baseNode + ".pos1.x", p2[0]);
-		Util.setRegionInt(baseNode + ".pos1.y", p2[1]);
-		Util.setRegionInt(baseNode + ".pos1.z", p2[2]);
+		Regions.setInt(baseNode + ".pos1.x", p2[0]);
+		Regions.setInt(baseNode + ".pos1.y", p2[1]);
+		Regions.setInt(baseNode + ".pos1.z", p2[2]);
 				
 		// = = = Position 2 (mine spawn point)
-		Util.setRegionDouble(baseNode + ".pos2.x", player.getLocation().getX());
-		Util.setRegionDouble(baseNode + ".pos2.y", player.getLocation().getY());
-		Util.setRegionDouble(baseNode + ".pos2.z", player.getLocation().getZ());
-		Util.setRegionDouble(baseNode + ".pos2.yaw", player.getLocation().getYaw());
-		Util.setRegionDouble(baseNode + ".pos2.pitch", player.getLocation().getPitch());
+		Regions.setDouble(baseNode + ".pos2.x", player.getLocation().getX());
+		Regions.setDouble(baseNode + ".pos2.y", player.getLocation().getY());
+		Regions.setDouble(baseNode + ".pos2.z", player.getLocation().getZ());
+		Regions.setDouble(baseNode + ".pos2.yaw", player.getLocation().getYaw());
+		Regions.setDouble(baseNode + ".pos2.pitch", player.getLocation().getPitch());
 		
 		if(Util.debugEnabled()) Util.log("Writing reset data");
 		
 		// = = Materials
 		baseNode = "mines." + mineName + ".materials";
-		Util.setRegionList(baseNode + ".blocks", blockList);
-		Util.setRegionList(baseNode + ".weights", weightList);
+		Regions.setList(baseNode + ".blocks", blockList);
+		Regions.setList(baseNode + ".weights", weightList);
 		
 		// = = Reset
 		// = = = Automatic
 		baseNode = "mines." + mineName + ".reset.auto";
-		Util.setRegionBoolean(baseNode + ".reset", resetAutoEnabled);
-		Util.setRegionInt(baseNode + ".reset-time", resetAutoTime);
-		Util.setRegionBoolean(baseNode + ".warn", resetAutoWarnEnabled);
-		Util.setRegionList(baseNode + ".warn-times", resetAutoWarnTime);
+		Regions.setBoolean(baseNode + ".reset", resetAutoEnabled);
+		Regions.setInt(baseNode + ".reset-time", resetAutoTime);
+		Regions.setBoolean(baseNode + ".warn", resetAutoWarnEnabled);
+		Regions.setList(baseNode + ".warn-times", resetAutoWarnTime);
 		
 		// = = = = Data
 		baseNode = "mines." + mineName + ".reset.auto.data";
-		Util.setRegionInt(baseNode + ".min", resetAutoTime);
-		Util.setRegionInt(baseNode + ".sec", 0);
+		Regions.setInt(baseNode + ".min", resetAutoTime);
+		Regions.setInt(baseNode + ".sec", 0);
 		
 		// = = = Manual
 		baseNode = "mines." + mineName + ".reset.manual";
-		Util.setRegionBoolean(baseNode + ".cooldown-enabled", resetManualCooldownEnabled);
-		Util.setRegionInt(baseNode + ".cooldown-time", resetManualCooldownTime);
+		Regions.setBoolean(baseNode + ".cooldown-enabled", resetManualCooldownEnabled);
+		Regions.setInt(baseNode + ".cooldown-time", resetManualCooldownTime);
 		
 		// = = Adding to the mine list
-		List<String> mineList = Util.getRegionList("data.list-of-mines");
+		List<String> mineList = Regions.getList("data.list-of-mines");
 		mineList.add(mineName);
-		Util.setRegionList("data.list-of-mines", mineList);
+		Regions.setList("data.list-of-mines", mineList);
 		
 		if(Util.debugEnabled()) Util.log("Mine creation completed");
 		
 		CommandManager.setLocation(null, 0);
 		CommandManager.setLocation(null, 1);
 		
-		Util.saveRegionData();
+		Regions.saveData();
 		
 		if(Util.debugEnabled()) Util.log("Data saved successfully");
 		CommandManager.setMine(mineName);

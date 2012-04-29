@@ -1,5 +1,6 @@
 configuration:
   debug-mode: false
+  language: "english"
   default-name: "default"
   teleport-out-of-the-mine-on-reset: true
   broadcast-on-reset: true
@@ -38,16 +39,6 @@ defaults:
       cooldown-time: 5
   materials:
     blocks:
-    - '1'
+    - '0'
     weights:
     - '100'
-messages:
-  title: "Mine Reset"
-  title-on-signs: "Reset"
-  manual-mine-reset-successful: "Mine %MINENAME% was reset!"
-  automatic-mine-reset-successful: "Mine %MINENAME% was reset! Next reset in %TIME% minute(s)."
-  automatic-mine-reset-warning: "Mine %MINENAME% resets in %TIME% minute(s)."
-  invalid-command: "Invalid command! Use /mine help for help."
-  access-denied: "You do not have permission to do that"
-data:
-  version: 1.0

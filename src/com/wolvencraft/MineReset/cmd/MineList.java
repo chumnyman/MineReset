@@ -2,6 +2,10 @@ package com.wolvencraft.MineReset.cmd;
 
 import java.util.List;
 
+import org.bukkit.ChatColor;
+
+import com.wolvencraft.MineReset.config.Regions;
+
 public class MineList
 {
 	public static void run(String[] args)
@@ -12,13 +16,13 @@ public class MineList
 			return;
 		}
 		
-		List<String> mineList = Util.getRegionList("data.list-of-mines");
+		List<String> mineList = Regions.getList("data.list-of-mines");
 		
 		Util.sendMessage("                    -=[ Public Mines ]=-");
 		
 		for(String s : mineList)
 		{
-			Util.sendMessage(" - " + s + "");
+			Util.sendMessage(" - " + ChatColor.GREEN + s + "");
 		}
 	}
 }

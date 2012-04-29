@@ -16,6 +16,7 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.Reset;
 import com.wolvencraft.MineReset.cmd.Util;
+import com.wolvencraft.MineReset.config.Configuration;
 
 public class PlayerInteractListener implements Listener
 {
@@ -64,7 +65,7 @@ public class PlayerInteractListener implements Listener
 				if(state instanceof Sign)
 				{
 					Sign sign = (Sign) state;
-		     		String signTitle = Util.getConfigString("messages.title-on-signs");
+		     		String signTitle = Configuration.getString("messages.title-on-signs");
 		     		if(sign.getLine(0).equalsIgnoreCase("[" + signTitle + "]") || sign.getLine(0).equalsIgnoreCase("¤2[" + signTitle + "]"))
 			     	{
 			     		//sign.setLine(0, "¤2[ " + signTitle + "]");

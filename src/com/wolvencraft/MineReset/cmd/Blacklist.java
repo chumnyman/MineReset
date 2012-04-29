@@ -5,6 +5,8 @@ import java.util.List;
 import org.bukkit.ChatColor;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.config.Language;
+import com.wolvencraft.MineReset.config.Regions;
 
 public class Blacklist
 {
@@ -30,38 +32,39 @@ public class Blacklist
 		String mineName = CommandManager.getMine();
 		if(mineName == null)
 		{
-			Util.sendError("Select a mine first with /mine edit <name>");
+			String error = Language.getString("general.mine-not-selected");
+			Util.sendError(error);
 			return;
 		}
 		
 		if(args[1].equalsIgnoreCase("toggle") || args[1].equalsIgnoreCase("tg"))
 		{
-			if(Util.getRegionBoolean("mines." + mineName + ".blacklist.enabled"))
+			if(Regions.getBoolean("mines." + mineName + ".blacklist.enabled"))
 			{
-				Util.setRegionBoolean("mines." + mineName + ".blacklist.enabled", false);
+				Regions.setBoolean("mines." + mineName + ".blacklist.enabled", false);
 				Util.sendSuccess("Blacklist turned OFF for mine '" + mineName + "'");
 			}
 			else
 			{
-				Util.setRegionBoolean("mines." + mineName + ".blacklist.enabled", true);
+				Regions.setBoolean("mines." + mineName + ".blacklist.enabled", true);
 				Util.sendSuccess("Blacklist turned ON for mine '" + mineName + "'");
 			}
-			Util.saveRegionData();
+			Regions.saveData();
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("whitelist") || args[1].equalsIgnoreCase("wl"))
 		{
-			if(Util.getConfigBoolean("mines." + mineName + ".blacklist.whitelist"))
+			if(Regions.getBoolean("mines." + mineName + ".blacklist.whitelist"))
 			{
-				Util.setRegionBoolean("mines." + mineName + ".blacklist.whitelist", false);
+				Regions.setBoolean("mines." + mineName + ".blacklist.whitelist", false);
 				Util.sendSuccess("Blacklist is no longer treated as a whitelist for mine '" + mineName);
 			}
 			else
 			{
-				Util.setRegionBoolean("mines." + mineName + ".blacklist.whitelist", true);
+				Regions.setBoolean("mines." + mineName + ".blacklist.whitelist", true);
 				Util.sendSuccess("Blacklist is now treated as a whitelist for mine '" + mineName + "'");
 			}
-			Util.saveRegionData();
+			Regions.saveData();
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+"))
@@ -73,11 +76,11 @@ public class Blacklist
 				return;
 			}
 			
-			List<String> blacklist = Util.getRegionList("mines." + mineName + ".blacklist.blocks");
+			List<String> blacklist = Regions.getList("mines." + mineName + ".blacklist.blocks");
 			blacklist.add(blockId + "");
-			Util.setRegionList("mines." + mineName + ".blacklist.blocks", blacklist);
+			Regions.setList("mines." + mineName + ".blacklist.blocks", blacklist);
 
-			Util.saveRegionData();
+			Regions.saveData();
 			Util.sendSuccess("Block " + ChatColor.GREEN + args[2] + ChatColor.WHITE + " is now in the blacklist");
 			return;
 		}
@@ -90,7 +93,7 @@ public class Blacklist
 				return;
 			}
 			
-			List<String> blacklist = Util.getRegionList("mines." + mineName + ".blacklist.blocks");
+			List<String> blacklist = Regions.getList("mines." + mineName + ".blacklist.blocks");
 			
 			int index = blacklist.indexOf(blockId);
 			if(index == -1)
@@ -99,8 +102,8 @@ public class Blacklist
 				return;
 			}
 			blacklist.remove(index);
-			Util.setRegionList("mines." + mineName + ".blacklist.blocks", blacklist);
-			Util.saveRegionData();
+			Regions.setList("mines." + mineName + ".blacklist.blocks", blacklist);
+			Regions.saveData();
 			Util.sendSuccess("Block " + args[2] + " has been removed from the blacklist");
 			return;
 		}

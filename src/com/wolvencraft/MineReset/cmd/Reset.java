@@ -14,10 +14,13 @@ public class Reset
 {
 	public static void run(String[] args, boolean automatic)
 	{
-		if(!automatic && !Util.senderHasPermission("reset"))
+		if(!automatic)
 		{
-			Util.sendDenied(args);
-			return;
+			if(!Util.senderHasPermission("reset.manual"))
+			{
+				Util.sendDenied(args);
+				return;
+			}
 		}
 		
 		if(args.length > 2)

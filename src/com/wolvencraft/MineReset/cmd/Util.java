@@ -24,12 +24,12 @@ public class Util
 		CommandSender sender = CommandManager.getSender();
 		boolean usePermissions = getConfigBoolean("configuration.use-permissions");
 		
-		// If a command is sent from the console, it is
-		// automatically allowed
+		// Console always has the permissions
 		Player player;
 		if (isPlayer()) player = (Player) sender;
 		else return true;
 		
+		// If permissions are not used, check for op
 		if(!usePermissions)
 		{
 			if(player.isOp()) return true;

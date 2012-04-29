@@ -44,9 +44,9 @@ public class PlayerInteractListener implements Listener
 		}
 		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
 		{
-			if(!Util.playerHasPermission(player, "edit")) return;
 			if(player.getItemInHand().equals(new ItemStack(Material.WOOD_AXE)))
 			{
+				if(!Util.playerHasPermission(player, "edit")) return;
 				Location loc = event.getClickedBlock().getLocation();
 				CommandManager.setLocation(loc, 1);
 				return;
@@ -54,16 +54,23 @@ public class PlayerInteractListener implements Listener
 			
 			if(block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN_POST)
 			{
-				if(!Util.playerHasPermission(player, "reset.sign")) return;
+				if(!Util.playerHasPermission(player, "reset.sign"))
+				{
+					if(!Util.playerHasPermission(player, "reset")) Util.log("!minereset.reset");
+					if(!Util.playerHasPermission(player, "reset.sign")) Util.log("!minereset.reset.sign");
+					return;
+				}
 				BlockState state = block.getState();
 				if(state instanceof Sign)
 				{
 					Sign sign = (Sign) state;
 		     		String signTitle = Util.getConfigString("messages.title-on-signs");
-		     		if(!sign.getLine(0).equalsIgnoreCase("[" + signTitle + "]")) return;
-		     		
-		     		String mineName[] = {"reset", sign.getLine(1)};
-		     		Reset.run(mineName, false);
+		     		if(sign.getLine(0).equalsIgnoreCase("[" + signTitle + "]") || sign.getLine(0).equalsIgnoreCase("¤2[" + signTitle + "]"))
+			     	{
+			     		//sign.setLine(0, "¤2[ " + signTitle + "]");
+			     		String mineName[] = {"reset", sign.getLine(1)};
+			     		Reset.run(mineName, true);
+		     		}
 		     		
 		     		return;
 				}

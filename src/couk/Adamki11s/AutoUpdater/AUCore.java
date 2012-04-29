@@ -24,10 +24,6 @@
 
 package couk.Adamki11s.AutoUpdater;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
@@ -35,7 +31,8 @@ import java.util.logging.Logger;
 
 public class AUCore{
 
-	private double versionNO, subVersionNO;
+	private double versionNO;
+	private int subVersionNO;
 	private String reason, source, prefix, urgency;
 	private Logger log;
 	
@@ -65,13 +62,13 @@ public class AUCore{
 	
 	
 	/**
-	 * Check the current version against te latest one.
+	 * Check the current version against the latest one.
 	 * @param currentVersion - Double
 	 * @param currentSubVersion - Double
 	 * @param pluginname - String
 	 * @return
 	 */
-	public boolean checkVersion(double currentVersion, double currentSubVersion, String pluginname){
+	public boolean checkVersion(double currentVersion, int currentSubVersion, String pluginname){
 		source = FetchSource.fetchSource(uri, log, prefix);
 		formatSource(source);
 		
@@ -79,7 +76,7 @@ public class AUCore{
 		if(currentSubVersion == 0){
 			subVers = "";
 		} else {
-			subVers = Double.toString(currentSubVersion);
+			subVers = Integer.toString(currentSubVersion);
 		}
 		
 		if(versionNO != currentVersion || subVersionNO != currentSubVersion) {
@@ -99,51 +96,15 @@ public class AUCore{
 		
 	}
 	
-	/**
-	 * Force a download of the newest version
-	 * 
-	 * @param downloadLink - String
-	 * @param pluginName - String
-	 */
-	public void forceDownload(String downloadLink, String pluginName){
-		new File("plugins/AutoUpdater").mkdir();
-		if(new File("plugins/AutoUpdater/" + pluginName + ".jar").exists()){
-			new File("plugins/AutoUpdater/" + pluginName + ".jar").delete();
-		}
-		log.info("[AU]" + prefix + " Downloading newest version of " + pluginName + "..."); 
-		try{
-			BufferedInputStream in = new java.io.BufferedInputStream(new 
-					 
-			URL(downloadLink).openStream());
-			FileOutputStream fos = new java.io.FileOutputStream("plugins/AutoUpdater/" + pluginName + ".jar");
-			BufferedOutputStream bout = new BufferedOutputStream(fos,1024);
-			byte[] data = new byte[1024];
-			int x=0;
-			
-			while((x=in.read(data,0,1024))>=0){
-				bout.write(data,0,x);
-			}
-			
-			bout.close();
-			in.close();
-		} catch (Exception ex){
-			ex.printStackTrace();
-			log.info("[AU]" + prefix + " Error whilst downloading update!"); 
-		}
-		log.info("[AU]" + prefix + " Download completed successfully!"); 
-		log.info("[AU]" + prefix + " Newest version of " + pluginName + " has been downloaded to : '/plugins/AutoUpdater/" + pluginName + ".jar. Please stop your server and move the newest version into your plugins folder."); 
-		
-	}
-	
 	private void formatSource(String source){
 		String parts[] = source.split("\\@");
 		
 		try{
 			versionNO = Double.parseDouble(parts[1]);
-			subVersionNO = Double.parseDouble(parts[2]);
+			subVersionNO = Integer.parseInt(parts[2]);
 		} catch (NumberFormatException ex){
 			ex.printStackTrace();
-			log.info("[AU]" + prefix + " Error while parsing version number!");
+			log.info("Error while parsing version number!");
 		}
 		
 		urgency = parts[3];

@@ -499,9 +499,9 @@ public class Util
 	 */
 	public static boolean playerInTheMine(Player player, String mineName)
 	{
-		int[] x = {Util.getRegionInt("mines." + mineName + ".coordinates.pos1.x"), Util.getConfigInt("mines." + mineName + ".coordinates.pos2.x")};
-		int[] y = {Util.getRegionInt("mines." + mineName + ".coordinates.pos1.y"), Util.getConfigInt("mines." + mineName + ".coordinates.pos2.y")};
-		int[] z = {Util.getRegionInt("mines." + mineName + ".coordinates.pos1.z"), Util.getConfigInt("mines." + mineName + ".coordinates.pos2.z")};
+		int[] x = {getRegionInt("mines." + mineName + ".coordinates.pos0.x"), getRegionInt("mines." + mineName + ".coordinates.pos1.x")};
+		int[] y = {getRegionInt("mines." + mineName + ".coordinates.pos0.y"), getRegionInt("mines." + mineName + ".coordinates.pos1.y")};
+		int[] z = {getRegionInt("mines." + mineName + ".coordinates.pos0.z"), getRegionInt("mines." + mineName + ".coordinates.pos1.z")};
 		Location loc = player.getLocation();
 		if((loc.getX() > x[0] && loc.getX() < x[1])
 				&& (loc.getY() > y[0] && loc.getY() < y[1])

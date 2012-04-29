@@ -46,7 +46,7 @@ public class FetchSource {
 			is = website.openStream();
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			l.info("[AU]" + prefix + " Error opening URL input stream!");
+			l.info("Error opening URL input stream!");
 		}
 		
 	    dis = new DataInputStream(new BufferedInputStream(is));
@@ -58,14 +58,14 @@ public class FetchSource {
 			 }
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			l.info("[AU]" + prefix + " Error reading input stream!");
+			l.info("Error reading input stream!");
 		}
 		
 		try {
             is.close();
          } catch (IOException ioe) {
         	 ioe.printStackTrace();
-        	 l.info("[AU]" + prefix + " Error closing URL input stream!");
+        	 l.info("Error closing URL input stream!");
          }
          
 		return source;

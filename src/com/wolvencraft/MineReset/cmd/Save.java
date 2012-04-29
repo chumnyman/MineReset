@@ -3,6 +3,7 @@ package com.wolvencraft.MineReset.cmd;
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.CommandManager;
 
@@ -57,6 +58,11 @@ public class Save
 		if(Util.debugEnabled()) Util.log("Mine existance check passed");
 		
 		if(Util.debugEnabled()) Util.log("Reading default values");
+		
+		// - Fetching the command sender
+		
+		Player player = (Player) CommandManager.getSender();
+		
 		// - Fetching the default values
 		// - - Is the mine enabled by default?
 		String displayName = Util.getConfigString("defaults.display-name");
@@ -199,9 +205,11 @@ public class Save
 		Util.setRegionInt(baseNode + ".pos1.z", p2[2]);
 				
 		// = = = Position 2 (mine spawn point)
-		Util.setRegionInt(baseNode + ".pos2.x", 0);
-		Util.setRegionInt(baseNode + ".pos2.y", 0);
-		Util.setRegionInt(baseNode + ".pos2.z", 0);
+		Util.setRegionDouble(baseNode + ".pos2.x", player.getLocation().getX());
+		Util.setRegionDouble(baseNode + ".pos2.y", player.getLocation().getY());
+		Util.setRegionDouble(baseNode + ".pos2.z", player.getLocation().getZ());
+		Util.setRegionDouble(baseNode + ".pos2.yaw", player.getLocation().getYaw());
+		Util.setRegionDouble(baseNode + ".pos2.pitch", player.getLocation().getPitch());
 		
 		if(Util.debugEnabled()) Util.log("Writing reset data");
 		

@@ -88,15 +88,9 @@ public class Reset
 				{
 					if(Util.debugEnabled()) Util.log("Player " + player.getName() + " is in the mine");
 					
-					if(!Util.nodeIsValid("mines." + mineName + ".coordinates.pos2.x"))
-					{
-						if(Util.debugEnabled()) Util.log("Coordinates of the mine spawn point are not set");
-					}
-					else
-					{
-						Util.warpToMine(player, mineName);
-						Util.sendSuccess("You have teleported to mine + '" + args[1] + "'");
-					}
+					Util.warpToMine(player, mineName);
+					Util.sendSuccess("You have teleported to mine + '" + args[1] + "'");
+					
 				}
 				if(Util.debugEnabled()) Util.log("Player " + player.getName() + " is not in the mine");
 			}

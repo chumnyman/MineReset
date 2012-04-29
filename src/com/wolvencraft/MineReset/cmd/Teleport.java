@@ -41,6 +41,8 @@ public class Teleport
 			Util.setRegionDouble(baseNode + ".pos2.x", loc.getX());
 			Util.setRegionDouble(baseNode + ".pos2.y", loc.getY());
 			Util.setRegionDouble(baseNode + ".pos2.z", loc.getZ());
+			Util.setRegionDouble(baseNode + ".pos2.yaw", loc.getYaw());
+			Util.setRegionDouble(baseNode + ".pos2.pitch", loc.getPitch());
 			
 			Util.saveRegionData();
 			Util.sendSuccess ("Mine spawn point set (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");

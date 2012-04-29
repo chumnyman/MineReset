@@ -432,16 +432,18 @@ public class Util
 					blockName = "iron_ore";
 				else if(blockName.equalsIgnoreCase("gold"))
 					blockName = "gold_ore";
+				else if(blockName.equalsIgnoreCase("lapis"))
+					blockName = "lapis_ore";
+				else if(blockName.equalsIgnoreCase("diamond"))
+					blockName = "diamond_ore";
+				else if(blockName.equalsIgnoreCase("coal"))
+					blockName = "coal_ore";
+				else if(blockName.equalsIgnoreCase("redstone"))
+					blockName = "redstone_ore";
+				
 				material = Material.matchMaterial(blockName);
 			}
-
-			if(material == null) return -1;
-			if(material.equals(Material.DIAMOND))
-				material = Material.DIAMOND_ORE;
-			else if(material.equals(Material.COAL))
-				material = Material.COAL_ORE;
-			else if(material.equals(Material.REDSTONE))
-				material = Material.REDSTONE_ORE;
+			
 			return material.getId();
 			
 		}
@@ -497,9 +499,9 @@ public class Util
 	 */
 	public static boolean playerInTheMine(Player player, String mineName)
 	{
-		int[] x = {Util.getConfigInt("regions." + mineName + ".coords.p1.x"), Util.getConfigInt("regions." + mineName + ".coords.p2.x")};
-		int[] y = {Util.getConfigInt("regions." + mineName + ".coords.p1.y"), Util.getConfigInt("regions." + mineName + ".coords.p2.y")};
-		int[] z = {Util.getConfigInt("regions." + mineName + ".coords.p1.z"), Util.getConfigInt("regions." + mineName + ".coords.p2.z")};
+		int[] x = {Util.getRegionInt("mines." + mineName + ".coordinates.pos1.x"), Util.getConfigInt("mines." + mineName + ".coordinates.pos2.x")};
+		int[] y = {Util.getRegionInt("mines." + mineName + ".coordinates.pos1.y"), Util.getConfigInt("mines." + mineName + ".coordinates.pos2.y")};
+		int[] z = {Util.getRegionInt("mines." + mineName + ".coordinates.pos1.z"), Util.getConfigInt("mines." + mineName + ".coordinates.pos2.z")};
 		Location loc = player.getLocation();
 		if((loc.getX() > x[0] && loc.getX() < x[1])
 				&& (loc.getY() > y[0] && loc.getY() < y[1])
@@ -522,8 +524,10 @@ public class Util
 				Util.getRegionDouble("mines." + mineName + ".coordinates.pos2.x"),
 				Util.getRegionDouble("mines." + mineName + ".coordinates.pos2.y"),
 				Util.getRegionDouble("mines." + mineName + ".coordinates.pos2.z"),
+				Util.getRegionDouble("mines." + mineName + ".coordinates.pos2.yaw"),
+				Util.getRegionDouble("mines." + mineName + ".coordinates.pos2.pitch")
 		};
-		Location newLoc = new Location(Bukkit.getServer().getWorld(newLocWorld), coords[0], coords[1], coords[2]);
+		Location newLoc = new Location(Bukkit.getServer().getWorld(newLocWorld), coords[0], coords[1], coords[2], (float)coords[3], (float)coords[4]);
 		
 		player.teleport(newLoc);
 	}

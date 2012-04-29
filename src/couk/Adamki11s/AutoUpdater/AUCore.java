@@ -33,7 +33,7 @@ public class AUCore{
 
 	private double versionNO;
 	private int subVersionNO;
-	private String reason, source, prefix, urgency;
+	private String reason, source, urgency;
 	private Logger log;
 	
 	private URL uri;
@@ -49,13 +49,12 @@ public class AUCore{
 	public AUCore(String website, Logger l, String pref){
 		
 		log = l;
-		prefix = pref;
 		
 		try{
 			uri = new URL(website);
 		} catch(MalformedURLException ex){
 			ex.printStackTrace();
-			log.info("[AU]" + prefix + " Malformed URL Exception. Make sure the URL is in the form 'http://www.website.domain'");
+			log.info("Malformed URL Exception. Make sure the URL is in the form 'http://www.website.domain'");
 		}	
 		
 	}
@@ -69,7 +68,7 @@ public class AUCore{
 	 * @return
 	 */
 	public boolean checkVersion(double currentVersion, int currentSubVersion, String pluginname){
-		source = FetchSource.fetchSource(uri, log, prefix);
+		source = FetchSource.fetchSource(uri, log);
 		formatSource(source);
 		
 		String subVers;

@@ -37,7 +37,7 @@ public class FetchSource {
 	
 	
 
-	protected static String fetchSource(URL website, Logger l, String prefix){
+	protected static String fetchSource(URL website, Logger l){
 	    InputStream is = null;
 	    DataInputStream dis = null;
 	    String s, source = "";

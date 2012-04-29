@@ -519,9 +519,9 @@ public class Util
 	{
 		String newLocWorld = Util.getRegionString("mines." + mineName + ".coordinates.world");
 		double[] coords = {
-				Util.getRegionInt("mines." + mineName + ".coordinates.pos2.x"),
-				Util.getRegionInt("mines." + mineName + ".coordinates.pos2.y"),
-				Util.getRegionInt("mines." + mineName + ".coordinates.pos2.z"),
+				Util.getRegionDouble("mines." + mineName + ".coordinates.pos2.x"),
+				Util.getRegionDouble("mines." + mineName + ".coordinates.pos2.y"),
+				Util.getRegionDouble("mines." + mineName + ".coordinates.pos2.z"),
 		};
 		Location newLoc = new Location(Bukkit.getServer().getWorld(newLocWorld), coords[0], coords[1], coords[2]);
 		

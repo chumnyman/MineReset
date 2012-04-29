@@ -60,6 +60,8 @@ public class CommandManager implements CommandExecutor
 			Save.run(args);
 		else if(args[0].equalsIgnoreCase("select") || args[0].equalsIgnoreCase("sel"))
 			Select.run(args);
+		else if(args[0].equalsIgnoreCase("sign") || args[0].equalsIgnoreCase("signs"))
+			SignCmd.run(args);
 		else if(args[0].equalsIgnoreCase("warp") || args[0].equalsIgnoreCase("tp"))
 			Teleport.run(args);
 		else Util.sendInvalid(args);

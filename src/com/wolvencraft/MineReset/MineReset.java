@@ -99,7 +99,10 @@ public class MineReset extends JavaPlugin
 						
 						Regions.setInt("mines." + mineName + ".reset.auto.data.min", min);
 						Regions.setInt("mines." + mineName + ".reset.auto.data.sec", sec);
+						
 						Regions.saveData();
+						
+						SignCmd.updateAll(mineName);
 						
 						int index = warnTimes.indexOf(min + "");
 						if(index != -1 && sec == 1)

@@ -116,6 +116,15 @@ public class Help
 		return;
 	}
 	
+	public static void getSign()
+	{
+		formatHelp("sign", " create", "Saves the targeted sign into a file", "");
+		formatHelp("sign", " reset", "Marks the targeted sign as mine-resetting", "");
+		formatHelp("sign", " remove", "Removes the targeted sign from data", "");
+		
+		return;
+	}
+	
 	public static void getTeleport()
 	{
 		formatHelp("warp", " <name>", "Teleports you to the mine warp location", "");

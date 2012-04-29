@@ -2,6 +2,8 @@ package com.wolvencraft.MineReset.config;
 
 import java.util.List;
 
+import org.bukkit.block.Block;
+
 import com.wolvencraft.MineReset.CommandManager;
 
 public class Signs
@@ -118,5 +120,51 @@ public class Signs
 	public static void saveData()
 	{
 		CommandManager.getPlugin().saveSignData();
+	}
+	
+	/**
+	 * Checks if a sign exists
+	 * @param String Name of the mine
+	 * @param String Name of a sign
+	 * @return true if exists, false if it does not
+	 */
+	public static boolean signExists(Block b)
+	{
+		List<String> mineList = Regions.getList("data.list-of-mines");
+		for(String mineName : mineList)
+		{
+			int num = Signs.getInt(mineName + ".num");
+			for(int i = 0; i < num; i++)
+			{
+				if(b.getWorld().getName().equals(getString(mineName + "." + i + ".world")))
+				{
+					if(b.getLocation().getBlockX() == getInt(mineName + "." + i + ".x") ||
+							b.getLocation().getBlockY() == getInt(mineName + "." + i + ".y") ||
+							b.getLocation().getBlockZ() == getInt(mineName + "." + i + ".z"))
+					{
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static int getId(String mineName, Block b)
+	{
+		int num = Signs.getInt(mineName + ".num");
+		for(int i = 0; i < num; i++)
+		{
+			if(b.getWorld().getName().equals(getString(mineName + "." + i + ".world")))
+			{
+				if(b.getLocation().getBlockX() == getInt(mineName + "." + i + ".x") ||
+						b.getLocation().getBlockY() == getInt(mineName + "." + i + ".y") ||
+						b.getLocation().getBlockZ() == getInt(mineName + "." + i + ".z"))
+				{
+					return i;
+				}
+			}
+		}
+		return -1;
 	}
 }

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.config.Signs;
 
 public class Save
 {
@@ -242,6 +243,11 @@ public class Save
 		List<String> mineList = Regions.getList("data.list-of-mines");
 		mineList.add(mineName);
 		Regions.setList("data.list-of-mines", mineList);
+		
+		// = = Adding to the sign list
+		Signs.setBoolean(mineName + ".enabled", true);
+		Signs.setInt(mineName + ".num", 0);
+		Signs.saveData();
 		
 		if(Util.debugEnabled()) Util.log("Mine creation completed");
 		

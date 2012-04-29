@@ -93,35 +93,35 @@ public class Save
 		
 		if((int)loc[0].getX() < (int)loc[1].getX())
 		{
-			p1[0] = (int) Math.round(loc[0].getX());
-			p2[0] = (int) Math.round(loc[1].getX());
+			p1[0] = loc[0].getBlockX();
+			p2[0] = loc[1].getBlockX();
 		}
 		else
 		{
-			p2[0] = (int) Math.round(loc[0].getX());
-			p1[0] = (int) Math.round(loc[1].getX());
+			p2[0] = loc[0].getBlockX();
+			p1[0] = loc[1].getBlockX();
 		}
 		
 		if((int)loc[0].getY() < (int)loc[1].getY())
 		{
-			p1[1] = (int) Math.round(loc[0].getY());
-			p2[1] = (int) Math.round(loc[1].getY());
+			p1[1] = loc[0].getBlockY();
+			p2[1] = loc[1].getBlockY();
 		}
 		else
 		{
-			p2[1] = (int) Math.round(loc[0].getY());
-			p1[1] = (int) Math.round(loc[1].getY());
+			p2[1] = loc[0].getBlockY();
+			p1[1] = loc[1].getBlockY();
 		}
 		
 		if((int)loc[0].getZ() < (int)loc[1].getZ())
 		{
-			p1[2] = (int) Math.round(loc[0].getZ());
-			p2[2] = (int) Math.round(loc[1].getZ());
+			p1[2] = loc[0].getBlockZ();
+			p2[2] = loc[1].getBlockZ();
 		}
 		else
 		{
-			p2[2] = (int) Math.round(loc[0].getZ());
-			p1[2] = (int) Math.round(loc[1].getZ());
+			p2[2] = loc[0].getBlockZ();
+			p1[2] = loc[1].getBlockZ();
 		}
 		
 		// - - Materials

@@ -32,25 +32,25 @@ public class Select
 		if(args[1].equalsIgnoreCase("hpos1"))
 		{
 			loc = player.getTargetBlock(null, 100).getLocation();
-			Util.sendSuccess ("First point selected (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
+			Util.sendSuccess ("First point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 			CommandManager.setLocation(loc, 0);
 		}
 		else if(args[1].equalsIgnoreCase("pos1"))
 		{
 			loc = player.getLocation();
-			Util.sendSuccess ("First point selected (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
+			Util.sendSuccess ("First point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 			CommandManager.setLocation(loc, 0);
 		}
 		else if(args[1].equalsIgnoreCase("hpos2"))
 		{
 			loc = player.getTargetBlock(null, 100).getLocation();
-			Util.sendSuccess ("Second point selected (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
+			Util.sendSuccess ("First point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 			CommandManager.setLocation(loc, 1);
 		}
 		else if(args[1].equalsIgnoreCase("pos2"))
 		{
 			loc = player.getLocation();
-			Util.sendSuccess ("Second point selected (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
+			Util.sendSuccess ("First point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 			CommandManager.setLocation(loc, 1);
 		}
 		else

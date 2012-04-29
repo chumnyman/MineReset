@@ -523,7 +523,7 @@ public class Util
 				Util.getRegionInt("mines." + mineName + ".coordinates.pos2.y"),
 				Util.getRegionInt("mines." + mineName + ".coordinates.pos2.z"),
 		};
-		Location newLoc = new Location(Bukkit.getServer().getWorld(newLocWorld), coords[0], coords[1], coords[1]);
+		Location newLoc = new Location(Bukkit.getServer().getWorld(newLocWorld), coords[0], coords[1], coords[2]);
 		
 		player.teleport(newLoc);
 	}

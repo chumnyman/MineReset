@@ -44,13 +44,13 @@ public class Select
 		else if(args[1].equalsIgnoreCase("hpos2"))
 		{
 			loc = player.getTargetBlock(null, 100).getLocation();
-			Util.sendSuccess ("First point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+			Util.sendSuccess ("Second point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 			CommandManager.setLocation(loc, 1);
 		}
 		else if(args[1].equalsIgnoreCase("pos2"))
 		{
 			loc = player.getLocation();
-			Util.sendSuccess ("First point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+			Util.sendSuccess ("Second point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 			CommandManager.setLocation(loc, 1);
 		}
 		else

@@ -1,5 +1,6 @@
 package com.wolvencraft.MineReset.cmd;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -37,9 +38,9 @@ public class Teleport
 			}
 			
 			String baseNode = "mines." + mineName + ".coordinates";
-			Util.setRegionInt(baseNode + ".pos2.x", 0);
-			Util.setRegionInt(baseNode + ".pos2.y", 0);
-			Util.setRegionInt(baseNode + ".pos2.z", 0);
+			Util.setRegionDouble(baseNode + ".pos2.x", loc.getX());
+			Util.setRegionDouble(baseNode + ".pos2.y", loc.getY());
+			Util.setRegionDouble(baseNode + ".pos2.z", loc.getZ());
 			
 			Util.saveRegionData();
 			Util.sendSuccess ("Mine spawn point set (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
@@ -48,10 +49,20 @@ public class Teleport
 		
 		if(Util.mineExists(args[1]))
 		{
+			String message = Util.getConfigString("messages.mine-teleport");
+			String displayName = Util.getRegionString("mines." + args[1] + ".display-name");
+			int min = Util.getRegionInt("mines." + args[1] + ".reset.auto.data.min");
+			int sec = Util.getRegionInt("mines." + args[1] + ".reset.auto.data.sec");
+			String time = ChatColor.GOLD + "" + min + ChatColor.WHITE + " minutes, " + ChatColor.GOLD + "" + sec + ChatColor.WHITE + " seconds";
+			
+			if(displayName.equals("")) displayName = args[1];
+			message = Util.parseString(message, "%MINENAME%", displayName);
+			message = Util.parseString(message, "%TIME%", time);
+			
 			Player player = (Player) CommandManager.getSender();
 			Util.warpToMine(player, args[1]);
 			
-			Util.sendSuccess("You have teleported to mine + '" + args[1] + "'");
+			Util.sendSuccess(message);
 			return;
 		}
 		else

@@ -14,12 +14,13 @@ Features
  * Easy region selection and setup
  * Custom block ratios support - customize your mine to whatever you want
  * Ability to set up multiple mines, each with its own custom settings
+ * Teleportation to the mine with a defined "mine spawn" point
+ * Teleport players out of the mine before it resets
+ * Customize the messages broadcasted to the server
  * Permissions support, including per-mine support
 
 Planned Future Features
 -----------------------
 
- * Customize the messages!
- * Teleportation to the mine with a defined "mine spawn" point
- * Teleport players out of the mine before it resets
+ * Customize ALL the messages!
  * You tell me!

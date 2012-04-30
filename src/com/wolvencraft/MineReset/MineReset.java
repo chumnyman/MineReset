@@ -36,10 +36,13 @@ import couk.Adamki11s.AutoUpdater.AUCore;
 public class MineReset extends JavaPlugin
 {
 	Logger log;
-	private AUCore core;
+	private static AUCore core;
 	public CommandManager manager;
 	private FileConfiguration regionData = null, languageData = null, signData = null;
 	private File regionDataFile = null, languageDataFile = null, signDataFile = null;
+	
+	public final static double curVer = 1.1;
+	public final static int curSubVer = 2;
 	
 	public void onEnable()
 	{
@@ -47,10 +50,8 @@ public class MineReset extends JavaPlugin
 		
 		core = new AUCore("http://wolvencraft.com/plugins/MineReset/index.html", log);
 		
-		double currentVer = 1.1;
-		int currentSubVer = 2;
 
-		core.checkVersion(currentVer, currentSubVer, "MineReset");
+		core.checkVersion(curVer, curSubVer, "MineReset");
 		
 		getConfig().options().copyDefaults(true);
 		saveDefaultConfig();
@@ -67,6 +68,7 @@ public class MineReset extends JavaPlugin
 		new BlockBreakListener(this);
 		new BlockPlaceListener(this);
 		new PlayerInteractListener(this);
+		new PlayerLoginListener(this);
 		
 		List<String> mineList = Regions.getList("data.list-of-mines");
 		log.info("MineReset started");

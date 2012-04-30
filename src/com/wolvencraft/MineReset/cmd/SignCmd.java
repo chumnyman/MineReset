@@ -73,6 +73,8 @@ public class SignCmd
 				Sign sign = (Sign) state;
 				update(sign, mineName);
 			}
+			
+			Util.sendSuccess("A new sign was defined successfully");
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("reset"))

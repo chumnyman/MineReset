@@ -17,16 +17,7 @@ import com.wolvencraft.MineReset.util.Pattern;
 public class Reset
 {
 	public static void run(String[] args, boolean automatic)
-	{
-		if(!automatic)
-		{
-			if(!Util.senderHasPermission("reset.manual"))
-			{
-				Util.sendDenied(args);
-				return;
-			}
-		}
-		
+	{	
 		if(args.length > 2)
 		{
 			Util.sendInvalid(args);
@@ -53,6 +44,17 @@ public class Reset
 			error = Util.parseString(error, "%MINE%", mineName);
 			Util.sendError(error);
 			return;
+		}
+		
+		if(!automatic)
+		{
+			boolean manPerm = Util.senderHasPermission("reset.manual");
+			boolean minPerm = Util.senderHasPermission("reset.manual." + mineName);
+			if(!manPerm && !minPerm)
+			{
+				Util.sendDenied(args);
+				return;
+			}
 		}
 		
 		List<String> blockList = Regions.getList("mines." + mineName + ".materials.blocks");

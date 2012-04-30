@@ -6,6 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.block.Sign;
+import org.bukkit.World;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
@@ -44,7 +45,7 @@ public class SignCmd
 		{
 			Player player = (Player) CommandManager.getSender();
 			Block b = player.getTargetBlock(null, 100);
-			if(b.getType() != Material.WALL_SIGN || b.getType() != Material.SIGN_POST)
+			if(b.getType() != Material.WALL_SIGN && b.getType() != Material.SIGN_POST)
 			{
 				Util.sendError("The targeted block is not a sign");
 				return;
@@ -59,9 +60,9 @@ public class SignCmd
 			int id = Signs.getInt(mineName + ".num");
 			Signs.setBoolean(mineName + "." + id + ".reset", false);
 			Signs.setString(mineName + "." + id + ".world", b.getLocation().getWorld().getName());
-			Signs.setInt(mineName + "." + id + ".x", b.getLocation().getBlockX());
-			Signs.setInt(mineName + "." + id + ".y", b.getLocation().getBlockY());
-			Signs.setInt(mineName + "." + id + ".z", b.getLocation().getBlockZ());
+			Signs.setDouble(mineName + "." + id + ".x", b.getLocation().getBlockX());
+			Signs.setDouble(mineName + "." + id + ".y", b.getLocation().getBlockY());
+			Signs.setDouble(mineName + "." + id + ".z", b.getLocation().getBlockZ());
 			id++;
 			Signs.setInt(mineName + ".num", id);
 			Signs.saveData();
@@ -128,11 +129,12 @@ public class SignCmd
 		int id = Signs.getInt(mineName + ".num");
 		for (int i = 0; i < id; i++)
 		{
+			World world = CommandManager.getPlugin().getServer().getWorld(mineName + "." + i + ".world");
 			Block b = new Location(
-					CommandManager.getPlugin().getServer().getWorld(mineName + "." + i + ".world"),
-					Signs.getInt(mineName + "." + i + ".x"),
-					Signs.getInt(mineName + "." + i + ".y"),
-					Signs.getInt(mineName + "." + i + ".z")).getBlock();
+					world,
+					Signs.getDouble(mineName + "." + i + ".x"),
+					Signs.getDouble(mineName + "." + i + ".y"),
+					Signs.getDouble(mineName + "." + i + ".z")).getBlock();
 			
 			if(b.getState() instanceof Sign)
 			{

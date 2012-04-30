@@ -210,9 +210,7 @@ public class Reset
 			
 				String displayName = Regions.getString("mines." + mineName + ".display-name");
 				if(displayName.equals("")) displayName = mineName;
-				broadcastMessage = Util.parseString(broadcastMessage, "%MINE%", mineName);
-				broadcastMessage = Util.parseString(broadcastMessage, "%MINENAME%", displayName);
-				broadcastMessage = Util.parseString(broadcastMessage, "%TIME%", nextReset+"");
+				broadcastMessage = Util.parseVars(broadcastMessage, mineName);
 				
 				Util.broadcastSuccess(broadcastMessage);
 		}

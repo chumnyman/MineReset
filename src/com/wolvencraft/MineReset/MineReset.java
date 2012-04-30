@@ -45,7 +45,7 @@ public class MineReset extends JavaPlugin
 	{
 		log = this.getLogger();
 		
-		core = new AUCore("http://wolvencraft.com/plugins/MineReset/index.html", log, "[MineReset]");
+		core = new AUCore("http://wolvencraft.com/plugins/MineReset/index.html", log);
 		
 		double currentVer = 1.1;
 		int currentSubVer = 2;
@@ -57,6 +57,9 @@ public class MineReset extends JavaPlugin
 		
 		getRegionData().options().copyDefaults(true);
 		saveRegionData();
+		
+		getLanguageData().options().copyDefaults(true);
+		saveLanguageData();
 
 		manager = new CommandManager(this);
 		getCommand("mine").setExecutor(manager);
@@ -107,11 +110,7 @@ public class MineReset extends JavaPlugin
 						int index = warnTimes.indexOf(min + "");
 						if(index != -1 && sec == 1)
 						{
-							String displayName = Regions.getString("mines." + mineName + ".display-name");
-							if(displayName.equals("")) displayName = mineName;
-			               	warnMessage = Util.parseString(warnMessage, "%MINE%", mineName);
-			               	warnMessage = Util.parseString(warnMessage, "%MINENAME%", displayName);
-			                warnMessage = Util.parseString(warnMessage, "%TIME%", warnTimes.get(index) + "");
+			               	warnMessage = Util.parseVars(warnMessage, mineName);
 			                Util.broadcastSuccess(warnMessage);
 						}
 						else if(min < 0 || (min == 0 && sec == 0))

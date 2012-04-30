@@ -20,9 +20,13 @@ public class MineList
 		
 		Util.sendMessage("                    -=[ Public Mines ]=-");
 		
-		for(String s : mineList)
+		for(String mineName : mineList)
 		{
-			Util.sendMessage(" - " + ChatColor.GREEN + s + "");
+			String displayName = Regions.getString("mines." + mineName + ".display-name");
+			if(displayName.equals(""))
+				Util.sendMessage(" - " + ChatColor.GREEN + mineName + "");
+			else
+				Util.sendMessage(" - " + ChatColor.GREEN + displayName + ChatColor.WHITE + " (" + mineName + ")");
 		}
 	}
 }

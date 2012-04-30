@@ -42,11 +42,10 @@ public class AUCore{
 	 * Constructor for variables needed for the AutoUpdaterCore.
 	 * @param website
 	 * @param l
-	 * @param pref
 	 * @param plugin
 	 * @param serv
 	 */
-	public AUCore(String website, Logger l, String pref){
+	public AUCore(String website, Logger l){
 		
 		log = l;
 		

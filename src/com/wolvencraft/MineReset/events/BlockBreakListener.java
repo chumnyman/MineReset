@@ -33,7 +33,7 @@ public class BlockBreakListener implements Listener
 		if(Util.debugEnabled() && Util.playerHasPermission(player, "protection")) Util.log("Player has protection permission");
 		if(Util.debugEnabled() && Util.playerHasPermission(player, "protection.break")) Util.log("Player has protection.break permission");
 		
-		if(player.isOp() || Util.playerHasPermission(player, "protection") || Util.playerHasPermission(player, "protection.break"))
+		if(Util.playerHasPermission(player, "protection.break"))
 		{
 			return;
 		}
@@ -50,7 +50,9 @@ public class BlockBreakListener implements Listener
 		for(String mineName : regionList )
 		{
 			if(Util.debugEnabled()) Util.log("For mine " + mineName);
-				if(!Util.playerHasPermission(player, "protection.break." + mineName))
+			if(Regions.getBoolean("mines." + mineName + ".protection.breaking.enabled"))
+			{
+				if(!Util.playerHasPermission(player, "protection.break." + mineName) && !Util.playerHasPermission(player, "protection.break"))
 				{
 					if(Util.debugEnabled()) Util.log("The player does not have protection.break." + mineName);
 					Block b = event.getBlock();
@@ -63,51 +65,36 @@ public class BlockBreakListener implements Listener
 					int[] z = {Regions.getInt("mines." + mineName + ".coordinates.pos0.z"), Regions.getInt("mines." + mineName + ".coordinates.pos1.z")};
 					
 					if(mineWorld.equals(blockLocation.getWorld().getName())
-							&& (blockLocation.getX() >= (x[0] - padding) && blockLocation.getX() <= (x[1] + padding))
-							&& (blockLocation.getY() >= (y[0] - padding) && blockLocation.getY() <= (y[1] + paddingTop))
-							&& (blockLocation.getZ() >= (z[0] - padding) && blockLocation.getZ() <= (z[1] + padding)))
+							&& (blockLocation.getBlockX() >= (x[0] - padding) && blockLocation.getBlockX() <= (x[1] + padding))
+							&& (blockLocation.getBlockY() >= (y[0] - padding) && blockLocation.getBlockY() <= (y[1] + paddingTop))
+							&& (blockLocation.getBlockZ() >= (z[0] - padding) && blockLocation.getBlockZ() <= (z[1] + padding)))
 					{
 						if(Util.debugEnabled()) Util.log("Player broke a block in the mine region");
 						if(Regions.getBoolean("mines." + mineName + ".protection.breaking.blacklist.enabled"))
 						{
 							List<String> blacklist = Regions.getList("mines." + mineName + ".protection.breaking.blacklist.blocks");
-							if(Regions.getBoolean("mines." + mineName + ".protection.breaking.blacklist.whitelist"))
+							boolean whitelist = Regions.getBoolean("mines." + mineName + ".protection.breaking.blacklist.whitelist");
+							
+							for(String block : blacklist)
 							{
-								for(String block : blacklist)
+								String blockTypeId = b.getTypeId() + "";
+								if(Util.debugEnabled()) Util.log(blockTypeId + " ? " + block);
+								if((whitelist && !blockTypeId.equals(block)) || (!whitelist && blockTypeId.equals(block)))
 								{
-									String blockTypeId = b.getTypeId() + "";
-									if(Util.debugEnabled()) Util.log(blockTypeId + " ? " + block);
-									if(!blockTypeId.equals(block))
-									{
-										Util.sendPlayerError(player, "You are not allowed to break " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
-										event.setCancelled(true);
-										return;
-									}
-									else return;
-								}
-							}
-							else
-							{
-								for(String block : blacklist)
-								{
-									String blockTypeId = b.getTypeId() + "";
-									if(Util.debugEnabled()) Util.log(blockTypeId + " ? " + block);
-									if(blockTypeId.equals(block))
-									{
-										Util.sendPlayerError(player, "You are not allowed to break " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
-										event.setCancelled(true);
-										return;
-									}
-									else return;
+									Util.sendPlayerError(player, "You are not allowed to break " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
+									event.setCancelled(true);
+									return;
 								}
 							}
 						}
-					
-						Util.sendPlayerError(player, "You are not allowed to break blocks in this mine");
-						event.setCancelled(true);
+						else
+						{
+							Util.sendPlayerError(player, "You are not allowed to break blocks in this mine");
+							event.setCancelled(true);
+						}
 					}
-					else return;
 				}
+			}
 		}
 		
 		return;

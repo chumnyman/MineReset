@@ -18,19 +18,25 @@ public class BlockPlaceListener implements Listener
 {
 	public BlockPlaceListener(MineReset plugin)
 	{
-		if(Util.debugEnabled()) Util.log("Initiating BlockplaceListener");
+		if(Util.debugEnabled()) Util.log("Initiating BlockPlaceListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
 	@EventHandler
-	public void onBlockplace(BlockPlaceEvent event)
+	public void onBlockPlace(BlockPlaceEvent event)
 	{
-		if(Util.debugEnabled()) Util.log("BlockplaceEvent called");
+		if(Util.debugEnabled()) Util.log("BlockPlaceEvent called");
 		
 		Player player = event.getPlayer();
 		
-		if(player.isOp() || Util.playerHasPermission(player, "protection") || Util.playerHasPermission(player, "protection.place"))
+		if(Util.debugEnabled() && player.isOp()) Util.log("Player is Op");
+		if(Util.debugEnabled() && Util.playerHasPermission(player, "protection")) Util.log("Player has protection permission");
+		if(Util.debugEnabled() && Util.playerHasPermission(player, "protection.place")) Util.log("Player has protection.place permission");
+		
+		if(Util.playerHasPermission(player, "protection.place"))
+		{
 			return;
+		}
 		
 		if(Util.debugEnabled()) Util.log("Permissions check passed");
 		
@@ -44,7 +50,9 @@ public class BlockPlaceListener implements Listener
 		for(String mineName : regionList )
 		{
 			if(Util.debugEnabled()) Util.log("For mine " + mineName);
-				if(!Util.playerHasPermission(player, "protection.place." + mineName))
+			if(Regions.getBoolean("mines." + mineName + ".protection.placement.enabled"))
+			{
+				if(!Util.playerHasPermission(player, "protection.place." + mineName) && !Util.playerHasPermission(player, "protection.place"))
 				{
 					if(Util.debugEnabled()) Util.log("The player does not have protection.place." + mineName);
 					Block b = event.getBlock();
@@ -57,49 +65,36 @@ public class BlockPlaceListener implements Listener
 					int[] z = {Regions.getInt("mines." + mineName + ".coordinates.pos0.z"), Regions.getInt("mines." + mineName + ".coordinates.pos1.z")};
 					
 					if(mineWorld.equals(blockLocation.getWorld().getName())
-							&& (blockLocation.getX() >= (x[0] - padding) && blockLocation.getX() <= (x[1] + padding))
-							&& (blockLocation.getY() >= (y[0] - padding) && blockLocation.getY() <= (y[1] + paddingTop))
-							&& (blockLocation.getZ() >= (z[0] - padding) && blockLocation.getZ() <= (z[1] + padding)))
+							&& (blockLocation.getBlockX() >= (x[0] - padding) && blockLocation.getBlockX() <= (x[1] + padding))
+							&& (blockLocation.getBlockY() >= (y[0] - padding) && blockLocation.getBlockY() <= (y[1] + paddingTop))
+							&& (blockLocation.getBlockZ() >= (z[0] - padding) && blockLocation.getBlockZ() <= (z[1] + padding)))
 					{
-						if(Util.debugEnabled()) Util.log("Player broke a block in the mine region");
+						if(Util.debugEnabled()) Util.log("Player placed a block in the mine region");
 						if(Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.enabled"))
 						{
 							List<String> blacklist = Regions.getList("mines." + mineName + ".protection.placement.blacklist.blocks");
-							if(Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.whitelist"))
+							boolean whitelist = Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.whitelist");
+							
+							for(String block : blacklist)
 							{
-								for(String block : blacklist)
+								String blockTypeId = b.getTypeId() + "";
+								if(Util.debugEnabled()) Util.log(blockTypeId + " ? " + block);
+								if((whitelist && !blockTypeId.equals(block)) || (!whitelist && blockTypeId.equals(block)))
 								{
-									if(Util.debugEnabled()) Util.log(Integer.parseInt(block) + " ? " + b.getTypeId());
-									if(Integer.parseInt(block) == b.getTypeId())
-									{
-										Util.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
-										event.setCancelled(true);
-										return;
-									}
-									else return;
-								}
-							}
-							else
-							{
-								for(String block : blacklist)
-								{
-									if(Util.debugEnabled()) Util.log(Integer.parseInt(block) + " ? " + b.getTypeId());
-									if(Integer.parseInt(block) != b.getTypeId())
-									{
-										Util.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
-										event.setCancelled(true);
-										return;
-									}
-									else return;
+									Util.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
+									event.setCancelled(true);
+									return;
 								}
 							}
 						}
-					
-						Util.sendPlayerError(player, "You are not allowed to place blocks in this mine");
-						event.setCancelled(true);
+						else
+						{
+							Util.sendPlayerError(player, "You are not allowed to place blocks in this mine");
+							event.setCancelled(true);
+						}
 					}
-					else return;
 				}
+			}
 		}
 		
 		return;

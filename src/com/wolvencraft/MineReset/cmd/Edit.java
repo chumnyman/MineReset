@@ -154,7 +154,11 @@ public class Edit
 			if(Util.isNumeric(args[2]))
 			{
 				percent = Double.parseDouble(args[2]);
-				if(percent <= 0) Util.sendInvalid(args);
+				if(percent <= 0)
+				{
+					Util.sendInvalid(args);
+					return;
+				}
 				percent = (double)(Math.round(percent * 1000)) / 1000;
 			}
 			else {

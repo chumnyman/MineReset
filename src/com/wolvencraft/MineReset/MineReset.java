@@ -55,12 +55,6 @@ public class MineReset extends JavaPlugin
 		
 		getConfig().options().copyDefaults(true);
 		saveDefaultConfig();
-		
-		getRegionData().options().copyDefaults(true);
-		saveRegionData();
-		
-		getLanguageData().options().copyDefaults(true);
-		saveLanguageData();
 
 		manager = new CommandManager(this);
 		getCommand("mine").setExecutor(manager);
@@ -164,15 +158,16 @@ public class MineReset extends JavaPlugin
 	
 	public void reloadLanguageData() {
 		
-		String lang = Configuration.getString("configuration.language");
+		String lang = Configuration.getString("configuration.language") + ".yml";
+		Util.log("Language file used: " + lang);
 		
 	    if (languageDataFile == null) {
-	    languageDataFile = new File(getDataFolder(), lang + ".yml");
+	    languageDataFile = new File(getDataFolder(), lang);
 	    }
 	    languageData = YamlConfiguration.loadConfiguration(languageDataFile);
 	 
 	    // Look for defaults in the jar
-	    InputStream defConfigStream = getResource(lang + ".yml");
+	    InputStream defConfigStream = getResource(lang);
 	    if (defConfigStream != null) {
 	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
 	        languageData.setDefaults(defConfig);

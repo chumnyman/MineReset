@@ -60,9 +60,9 @@ public class SignCmd
 			int id = Signs.getInt(mineName + ".num");
 			Signs.setBoolean(mineName + "." + id + ".reset", false);
 			Signs.setString(mineName + "." + id + ".world", b.getLocation().getWorld().getName());
-			Signs.setDouble(mineName + "." + id + ".x", b.getLocation().getBlockX());
-			Signs.setDouble(mineName + "." + id + ".y", b.getLocation().getBlockY());
-			Signs.setDouble(mineName + "." + id + ".z", b.getLocation().getBlockZ());
+			Signs.setInt(mineName + "." + id + ".x", b.getLocation().getBlockX());
+			Signs.setInt(mineName + "." + id + ".y", b.getLocation().getBlockY());
+			Signs.setInt(mineName + "." + id + ".z", b.getLocation().getBlockZ());
 			id++;
 			Signs.setInt(mineName + ".num", id);
 			Signs.saveData();
@@ -104,6 +104,14 @@ public class SignCmd
 		else if(args[1].equalsIgnoreCase("remove"))
 		{
 			// Check if a sign exists
+			
+			// Get the id of a sign
+			
+			// Remove the sign data
+			
+			// Update all the sign ids
+			
+			// Decrement the sign count
 			return;
 		}
 		else
@@ -129,14 +137,18 @@ public class SignCmd
 	public static void updateAll(String mineName)
 	{
 		int id = Signs.getInt(mineName + ".num");
+		World world;
 		for (int i = 0; i < id; i++)
 		{
-			World world = CommandManager.getPlugin().getServer().getWorld(mineName + "." + i + ".world");
-			Block b = new Location(
+			String worldName = Signs.getString(mineName + "." + i + ".world");
+			world = CommandManager.getPlugin().getServer().getWorld(worldName);
+			
+			Location loc = new Location(
 					world,
-					Signs.getDouble(mineName + "." + i + ".x"),
-					Signs.getDouble(mineName + "." + i + ".y"),
-					Signs.getDouble(mineName + "." + i + ".z")).getBlock();
+					(double) Signs.getInt(mineName + "." + i + ".x"),
+					(double) Signs.getInt(mineName + "." + i + ".y"),
+					(double) Signs.getInt(mineName + "." + i + ".z"));
+			Block b = loc.getBlock();
 			
 			if(b.getState() instanceof Sign)
 			{

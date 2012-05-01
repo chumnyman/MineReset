@@ -57,8 +57,6 @@ public class PlayerInteractListener implements Listener
 			{
 				if(!Util.playerHasPermission(player, "reset.sign"))
 				{
-					if(!Util.playerHasPermission(player, "reset")) Util.log("!minereset.reset");
-					if(!Util.playerHasPermission(player, "reset.sign")) Util.log("!minereset.reset.sign");
 					return;
 				}
 				BlockState state = block.getState();
@@ -66,9 +64,9 @@ public class PlayerInteractListener implements Listener
 				{
 					Sign sign = (Sign) state;
 		     		String signTitle = Language.getString("general.title-on-signs");
-		     		if(sign.getLine(0).equalsIgnoreCase("[" + signTitle + "]") || sign.getLine(0).equalsIgnoreCase("¤2[" + signTitle + "]"))
+		     		if(sign.getLine(0).equalsIgnoreCase("[" + signTitle + "]") || sign.getLine(0).equalsIgnoreCase("ï¿½2[" + signTitle + "]"))
 			     	{
-			     		//sign.setLine(0, "¤2[ " + signTitle + "]");
+			     		//sign.setLine(0, "ï¿½2[ " + signTitle + "]");
 			     		String mineName[] = {"reset", sign.getLine(1)};
 			     		Reset.run(mineName, true);
 		     		}

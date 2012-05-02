@@ -1,12 +1,14 @@
 package com.wolvencraft.MineReset.cmd;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.block.Sign;
-import org.bukkit.World;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
@@ -32,22 +34,23 @@ public class SignCmd
 			Util.sendInvalid(args);
 			return;
 		}
-
-		String mineName = CommandManager.getMine();
-		if(mineName == null)
+		
+		Player player = (Player) CommandManager.getSender();
+		Block b = player.getTargetBlock(null, 100);
+		if(b.getType() != Material.WALL_SIGN && b.getType() != Material.SIGN_POST)
 		{
-			String error = Language.getString("general.mine-not-selected");
-			Util.sendError(error);
+			Util.sendError("The targeted block is not a sign");
 			return;
 		}
 		
+		
 		if(args[1].equalsIgnoreCase("create"))
 		{
-			Player player = (Player) CommandManager.getSender();
-			Block b = player.getTargetBlock(null, 100);
-			if(b.getType() != Material.WALL_SIGN && b.getType() != Material.SIGN_POST)
+			String mineName = CommandManager.getMine();
+			if(mineName == null)
 			{
-				Util.sendError("The targeted block is not a sign");
+				String error = Language.getString("general.mine-not-selected");
+				Util.sendError(error);
 				return;
 			}
 			
@@ -57,61 +60,92 @@ public class SignCmd
 				return;
 			}
 			
-			int id = Signs.getInt(mineName + ".num");
-			Signs.setBoolean(mineName + "." + id + ".reset", false);
-			Signs.setString(mineName + "." + id + ".world", b.getLocation().getWorld().getName());
-			Signs.setInt(mineName + "." + id + ".x", b.getLocation().getBlockX());
-			Signs.setInt(mineName + "." + id + ".y", b.getLocation().getBlockY());
-			Signs.setInt(mineName + "." + id + ".z", b.getLocation().getBlockZ());
-			id++;
-			Signs.setInt(mineName + ".num", id);
-			Signs.saveData();
-			
-			BlockState state = b.getState();
-			if(state instanceof Sign)
+			List<String> signList = Signs.getList("data.list-of-signs");
+			String id;
+			if(signList.size() == 0)
 			{
-				Sign sign = (Sign) state;
-				update(sign, mineName);
+				id = "00001";
 			}
+			else
+			{
+				id = ((Integer.parseInt(signList.get(signList.size() - 1))) + 1) + "";
+			}
+			Signs.setString("signs." + id + ".mine", mineName);
+			Signs.setBoolean("signs." + id + ".reset", false);
+			Signs.setString("signs." + id + ".world", b.getLocation().getWorld().getName());
+			Signs.setInt("signs." + id + ".x", b.getLocation().getBlockX());
+			Signs.setInt("signs." + id + ".y", b.getLocation().getBlockY());
+			Signs.setInt("signs." + id + ".z", b.getLocation().getBlockZ());
+			
+			if(b.getState() instanceof Sign)
+			{
+				Sign sign = (Sign) b.getState();
+				for(int i = 0; i < 4; i++)
+				{
+					Signs.setString("signs." + id + ".lines." + i, sign.getLine(i));
+				}
+			}
+			
+			signList.add(id);
+			Signs.setList("data.list-of-signs", signList);
+			Signs.saveData();
 			
 			Util.sendSuccess("A new sign was defined successfully");
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("reset"))
 		{
-			Player player = (Player) CommandManager.getSender();
-			Block b = player.getTargetBlock(null, 100);
-			if(b.getType() != Material.WALL_SIGN || b.getType() != Material.SIGN_POST)
+			String mineName = CommandManager.getMine();
+			if(mineName == null)
 			{
-				Util.sendError("The targeted block is not a sign");
+				String error = Language.getString("general.mine-not-selected");
+				Util.sendError(error);
 				return;
 			}
 			
-			int id = Signs.getId(mineName, b);
-			
-			if(Signs.getBoolean(mineName + "." + id + ".reset"))
+			if(!Signs.signExists(b))
 			{
-				Util.sendMessage("Right-clicking on this sign will no longer result in a reset of " + mineName);
-				Signs.setBoolean(mineName + "." + id + ".reset", false);
+				Util.sendError("This sign has not been defined for this mine yet");
+				return;
+			}
+			String id = Signs.getId(b);
+			
+			if(Signs.getBoolean("signs." + id + ".reset"))
+			{
+				Util.sendSuccess("Right-clicking on this sign will no longer result in a reset of " + mineName);
+				Signs.setBoolean("signs." + id + ".reset", false);
 			}
 			else
 			{
-				Util.sendMessage("Right-clicking on this sign will now result in a reset of " + mineName);
-				Signs.setBoolean(mineName + "." + id + ".reset", true);
+				Util.sendSuccess("Right-clicking on this sign will now result in a reset of " + mineName);
+				Signs.setBoolean("signs." + id + ".reset", true);
 			}
+			
+			Signs.saveData();
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("remove"))
 		{
-			// Check if a sign exists
+			if(!Signs.signExists(b))
+			{
+				Util.sendError("This sign has not yet been defined");
+				return;
+			}
 			
-			// Get the id of a sign
+			String id = Signs.getId(b);
 			
-			// Remove the sign data
+			Signs.remove("signs." + id);
+			List<String> signList = Signs.getList("data.list-of-signs");
+			signList.remove(signList.indexOf(id));
+			Signs.setList("data.list-of-signs", signList);
 			
-			// Update all the sign ids
-			
-			// Decrement the sign count
+			Signs.saveData();
+			return;
+		}
+		else if(args[1].equalsIgnoreCase("update"))
+		{
+			updateAll(null);
+			Util.sendSuccess("All signs were forced to update");
 			return;
 		}
 		else
@@ -121,39 +155,66 @@ public class SignCmd
 		}
 	}
 	
-	public static void update(Sign sign, String mineName)
+	public static Sign update(Sign sign, String id, String mineName)
 	{
 		for(int i = 0; i < 4; i++)
 		{
-			String line = sign.getLine(i);
+			String line = Signs.getString("signs." + id + ".lines." + i);
 			if(!line.equals(""))
 			{
 				line = Util.parseVars(line, mineName);
 				sign.setLine(i, line);
+				if(Util.debugEnabled()) Util.log(i + " : " + line);
 			}
 		}
+		
+		return sign;
 	}
 	
 	public static void updateAll(String mineName)
 	{
-		int id = Signs.getInt(mineName + ".num");
-		World world;
-		for (int i = 0; i < id; i++)
+		List<String> signList = Signs.getList("data.list-of-signs");
+
+		if(mineName != null)
 		{
-			String worldName = Signs.getString(mineName + "." + i + ".world");
-			world = CommandManager.getPlugin().getServer().getWorld(worldName);
-			
-			Location loc = new Location(
-					world,
-					(double) Signs.getInt(mineName + "." + i + ".x"),
-					(double) Signs.getInt(mineName + "." + i + ".y"),
-					(double) Signs.getInt(mineName + "." + i + ".z"));
-			Block b = loc.getBlock();
-			
-			if(b.getState() instanceof Sign)
+			for(String id : signList)
 			{
-				update((Sign) b.getState(), mineName);
+				if(Signs.getString("signs." + id + ".mine").equalsIgnoreCase(mineName))
+				{
+					Location loc = new Location(
+							Bukkit.getWorld(Signs.getString("signs." + id + ".world")),
+							(double) Signs.getInt("signs." + id + ".x"),
+							(double) Signs.getInt("signs." + id + ".y"),
+							(double) Signs.getInt("signs." + id + ".z"));
+					BlockState b = loc.getBlock().getState();
+					if(b instanceof Sign)
+					{
+						Sign sign = (Sign) b;
+						sign = update(sign, id, Signs.getString("signs." + id + ".mine"));
+						sign.update(true);
+					}
+				}
 			}
 		}
+		else
+		{
+			if(Util.debugEnabled()) Util.log("Updating everything");
+			for(String id : signList)
+			{
+				Location loc = new Location(
+						Bukkit.getWorld(Signs.getString("signs." + id + ".world")),
+						(double) Signs.getInt("signs." + id + ".x"),
+						(double) Signs.getInt("signs." + id + ".y"),
+						(double) Signs.getInt("signs." + id + ".z"));
+				BlockState b = loc.getBlock().getState();
+				if(b instanceof Sign)
+				{
+					Sign sign = (Sign) b;
+					sign = update(sign, id, Signs.getString("signs." + id + ".mine"));
+					sign.update(true);
+				}
+			}
+		}
+		return;
 	}
 }

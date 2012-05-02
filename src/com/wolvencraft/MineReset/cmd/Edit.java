@@ -143,7 +143,18 @@ public class Edit
 			List<String> itemList = Regions.getList("mines." + curMine + ".materials.blocks");
 			List<String> weightList = Regions.getList("mines." + curMine + ".materials.weights");
 			
-
+			if(itemList.size() != weightList.size())
+			{
+				Util.sendError("Your regions.yml file has been corrupted");
+				return;
+			}
+			
+			if(itemList.size() == 0)
+			{
+				itemList.add("0");
+				weightList.add("100");
+			}
+			
 			if(blockId == Integer.parseInt(itemList.get(0)))
 			{
 				Util.sendError("You do not need to do this. The weight of the default block is calculated automatically.");
@@ -287,6 +298,26 @@ public class Edit
 			Util.sendSuccess("Mine '" + curMine + "' now has a display name '" + name + "'");
 			Regions.saveData();
 			return;
+		}
+		else if(args[0].equalsIgnoreCase("silent"))
+		{
+			if(curMine == null)
+			{
+				String error = Language.getString("general.mine-not-selected");
+				Util.sendError(error);
+				return;
+			}
+			
+			if(Regions.getBoolean("mines." + curMine + ".silent"))
+			{
+				Util.sendSuccess("Silent mode has been turned off for mine '" + curMine + "'");
+				Regions.setBoolean("mines." + curMine + ".silent", false);
+			}
+			else
+			{
+				Util.sendSuccess("'" + curMine + "' will no longer broadcast any notifications");
+				Regions.setBoolean("mines." + curMine + ".silent", true);
+			}
 		}
 		else
 		{

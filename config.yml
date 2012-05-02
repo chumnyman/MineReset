@@ -7,6 +7,7 @@ configuration:
   use-permissions: true
 defaults:
   display-name: ""
+  silent: false
   blacklist:
     enabled: false
     whitelist: false
@@ -15,13 +16,13 @@ defaults:
     padding: 0
     padding-top: 0
     breaking:
-      enabled: true
+      enabled: false
       blacklist:
         enabled: false
         whitelist: false
         blocks: []
     placement:
-      enabled: true
+      enabled: false
       blacklist:
         enabled: false
         whitelist: false

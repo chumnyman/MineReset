@@ -3,8 +3,6 @@ package com.wolvencraft.MineReset.events;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,7 +14,7 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.Reset;
 import com.wolvencraft.MineReset.cmd.Util;
-import com.wolvencraft.MineReset.config.Language;
+import com.wolvencraft.MineReset.config.Signs;
 
 public class PlayerInteractListener implements Listener
 {
@@ -59,20 +57,18 @@ public class PlayerInteractListener implements Listener
 				{
 					return;
 				}
-				BlockState state = block.getState();
-				if(state instanceof Sign)
+				
+				if(!Signs.signExists(block))
 				{
-					Sign sign = (Sign) state;
-		     		String signTitle = Language.getString("general.title-on-signs");
-		     		if(sign.getLine(0).equalsIgnoreCase("[" + signTitle + "]") || sign.getLine(0).equalsIgnoreCase("�2[" + signTitle + "]"))
-			     	{
-			     		//sign.setLine(0, "�2[ " + signTitle + "]");
-			     		String mineName[] = {"reset", sign.getLine(1)};
-			     		Reset.run(mineName, true);
-		     		}
-		     		
-		     		return;
+					return;
 				}
+		     	String id = Signs.getId(block);
+		     	String mineName = Signs.getString("signs." + id + ".mine");
+		     	if(Signs.getBoolean("signs." + id + ".reset"))
+		     	{
+		     		String[] args = {"reset", mineName};
+		     		Reset.run(args, true);
+		     	}
 			}
 			
 			return;

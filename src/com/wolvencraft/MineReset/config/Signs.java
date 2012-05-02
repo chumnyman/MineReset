@@ -112,6 +112,15 @@ public class Signs
 	{
 		CommandManager.getPlugin().getSignData().set(node, data);
 	}
+
+	/**
+	 * Removes the node specified
+	 * @param node
+	 */
+	public static void remove(String node)
+	{
+		CommandManager.getPlugin().getSignData().set(node, null);
+	}
 	
 	/**
 	 * Saves region data to a file.
@@ -130,41 +139,39 @@ public class Signs
 	 */
 	public static boolean signExists(Block b)
 	{
-		List<String> mineList = Regions.getList("data.list-of-mines");
-		for(String mineName : mineList)
+		List<String> signList = Signs.getList("data.list-of-signs");
+		for(String signName : signList)
 		{
-			int num = Signs.getInt(mineName + ".num");
-			for(int i = 0; i < num; i++)
+			if(Signs.getString("signs." + signName + ".world") == b.getLocation().getWorld().getName() &&
+				Signs.getInt("signs." + signName + ".x") == b.getLocation().getBlockX() &&
+				Signs.getInt("signs." + signName + ".y") == b.getLocation().getBlockY() &&
+				Signs.getInt("signs." + signName + ".z") == b.getLocation().getBlockZ())
 			{
-				if(b.getWorld().getName().equals(getString(mineName + "." + i + ".world")))
-				{
-					if(b.getLocation().getBlockX() == getInt(mineName + "." + i + ".x") ||
-							b.getLocation().getBlockY() == getInt(mineName + "." + i + ".y") ||
-							b.getLocation().getBlockZ() == getInt(mineName + "." + i + ".z"))
-					{
-						return true;
-					}
-				}
+				return true;
 			}
 		}
 		return false;
 	}
 	
-	public static int getId(String mineName, Block b)
+	/**
+	 * Determines the id of a sign for a particular mine
+	 * @param mineName Mine to check against
+	 * @param b Block to check
+	 * @return Id if a sign is defined, -1 if not
+	 */
+	public static String getId(Block b)
 	{
-		int num = Signs.getInt(mineName + ".num");
-		for(int i = 0; i < num; i++)
+		List<String> signList = Signs.getList("data.list-of-signs");
+		for(String signName : signList)
 		{
-			if(b.getWorld().getName().equals(getString(mineName + "." + i + ".world")))
+			if(Signs.getString("signs." + signName + ".world") == b.getLocation().getWorld().getName() &&
+				Signs.getInt("signs." + signName + ".x") == b.getLocation().getBlockX() &&
+				Signs.getInt("signs." + signName + ".y") == b.getLocation().getBlockY() &&
+				Signs.getInt("signs." + signName + ".z") == b.getLocation().getBlockZ())
 			{
-				if(b.getLocation().getBlockX() == getInt(mineName + "." + i + ".x") ||
-						b.getLocation().getBlockY() == getInt(mineName + "." + i + ".y") ||
-						b.getLocation().getBlockZ() == getInt(mineName + "." + i + ".z"))
-				{
-					return i;
-				}
+				return signName;
 			}
 		}
-		return -1;
+		return null;
 	}
 }

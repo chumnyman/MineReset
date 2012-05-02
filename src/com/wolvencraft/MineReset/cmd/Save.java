@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Regions;
-import com.wolvencraft.MineReset.config.Signs;
 
 public class Save
 {
@@ -69,6 +68,7 @@ public class Save
 		// - Fetching the default values
 		// - - Is the mine enabled by default?
 		String displayName = Configuration.getString("defaults.display-name");
+		boolean silent = Configuration.getBoolean("defaults.silent");
 		
 		// - - Blacklist defaults
 		boolean blacklistEnabled = Configuration.getBoolean("defaults.blacklist.enabled");
@@ -158,6 +158,7 @@ public class Save
 		String baseNode = "mines." + mineName;
 		// = = Basic info
 		Regions.setString(baseNode + ".display-name", displayName);
+		Regions.setBoolean(baseNode + ".silent", silent);
 		
 		if(Util.debugEnabled()) Util.log("Writing blacklist data");
 		
@@ -243,11 +244,6 @@ public class Save
 		List<String> mineList = Regions.getList("data.list-of-mines");
 		mineList.add(mineName);
 		Regions.setList("data.list-of-mines", mineList);
-		
-		// = = Adding to the sign list
-		Signs.setBoolean(mineName + ".enabled", true);
-		Signs.setInt(mineName + ".num", 0);
-		Signs.saveData();
 		
 		if(Util.debugEnabled()) Util.log("Mine creation completed");
 		

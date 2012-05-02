@@ -55,7 +55,7 @@ public class BlockPlaceListener implements Listener
 				if(!Util.playerHasPermission(player, "protection.place." + mineName) && !Util.playerHasPermission(player, "protection.place"))
 				{
 					if(Util.debugEnabled()) Util.log("The player does not have protection.place." + mineName);
-					Block b = event.getBlock();
+					Block b = event.getBlockPlaced();
 					Location blockLocation = b.getLocation();
 					padding = Regions.getInt("mines." + mineName + ".protection.padding");
 					paddingTop = Regions.getInt("mines." + mineName + ".protection.padding-top");

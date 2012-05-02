@@ -15,7 +15,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wolvencraft.MineReset.cmd.*;
-import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.events.*;
@@ -55,7 +54,10 @@ public class MineReset extends JavaPlugin
 		
 		getConfig().options().copyDefaults(true);
 		saveDefaultConfig();
-
+		
+		getLanguageData().options().copyDefaults(true);
+		saveLanguageData();
+		
 		manager = new CommandManager(this);
 		getCommand("mine").setExecutor(manager);
 		
@@ -106,8 +108,11 @@ public class MineReset extends JavaPlugin
 						int index = warnTimes.indexOf(min + "");
 						if(index != -1 && sec == 1)
 						{
-			               	warnMessage = Util.parseVars(warnMessage, mineName);
-			                Util.broadcastSuccess(warnMessage);
+							if(Regions.getBoolean("mines." + mineName + ".reset.auto.warn"))
+							{
+				               	warnMessage = Util.parseVars(warnMessage, mineName);
+				                Util.broadcastSuccess(warnMessage);
+							}
 						}
 						else if(min < 0 || (min == 0 && sec == 0))
 						{
@@ -158,7 +163,7 @@ public class MineReset extends JavaPlugin
 	
 	public void reloadLanguageData() {
 		
-		String lang = Configuration.getString("configuration.language") + ".yml";
+		String lang = this.getConfig().getString("configuration.language") + ".yml";
 		Util.log("Language file used: " + lang);
 		
 	    if (languageDataFile == null) {
@@ -194,7 +199,7 @@ public class MineReset extends JavaPlugin
 	    if (signDataFile == null) {
 	    signDataFile = new File(getDataFolder(), "signs.yml");
 	    }
-	    signData = YamlConfiguration.loadConfiguration(languageDataFile);
+	    signData = YamlConfiguration.loadConfiguration(signDataFile);
 	 
 	    // Look for defaults in the jar
 	    InputStream defConfigStream = getResource("signs.yml");

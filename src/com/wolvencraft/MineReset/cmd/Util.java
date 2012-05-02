@@ -39,7 +39,7 @@ public class Util
 			else return false;
 		}
 		
-		if(player.hasPermission("minereset." + node))
+		if(player.hasPermission("ffa." + node))
 			return true;
 		
 		return false;
@@ -61,7 +61,7 @@ public class Util
 			else return false;
 		}
 		
-		if(player.hasPermission("minereset." + node))
+		if(player.hasPermission("ffa." + node))
 			return true;
 		
 		return false;
@@ -87,18 +87,6 @@ public class Util
 	{
 		if(Configuration.getBoolean("configuration.debug-mode")) return true;
 		else return false;
-	}
-	
-	/**
-	 * Checks if the node specified exists
-	 * @param node Node to check
-	 * @return True if the node exists, false if it does not
-	 */
-	public static boolean nodeIsValid(String node)
-	{
-		if(Configuration.getString(node) == null)
-			return false;
-		else return true;
 	}
 	
 	/**
@@ -327,9 +315,11 @@ public class Util
 			int min = Regions.getInt("mines." + mineName + ".reset.auto.data.min");
 			int sec = Regions.getInt("mines." + mineName + ".reset.auto.data.sec");
 			String time = ChatColor.GOLD + "" + min + ChatColor.WHITE + " minutes, " + ChatColor.GOLD + "" + sec + ChatColor.WHITE + " seconds";
+			int next = Regions.getInt("mines." + mineName + ".reset.auto.reset-time");
 			
 			str = parseString(str, "%MIN%", min + "");
 			str = parseString(str, "%SEC%", sec + "");
+			str = parseString(str, "%NEXT%", next + "");
 			str = parseString(str, "%TIME%", time);
 		}
 		

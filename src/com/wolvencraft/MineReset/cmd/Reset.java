@@ -192,7 +192,8 @@ public class Reset
 				}
 			}
 		}
-			
+		
+		boolean silent = Regions.getBoolean("mines." + mineName + ".silent");
 		int nextReset = Regions.getInt("mines." + mineName + ".reset.auto.reset-time");
 		Regions.setInt("mines." + mineName + ".reset.auto.data.min", nextReset);
 		Regions.setInt("mines." + mineName + ".reset.auto.data.sec", 0);
@@ -214,9 +215,15 @@ public class Reset
 				if(displayName.equals("")) displayName = mineName;
 				broadcastMessage = Util.parseVars(broadcastMessage, mineName);
 				
-				Util.broadcastSuccess(broadcastMessage);
+				if(!silent)
+				{
+					Util.broadcastSuccess(broadcastMessage);
+				}
+				else if(!automatic)
+				{
+					Util.sendSuccess(broadcastMessage);
+				}
 		}
-		
 		return;
 	}
 }

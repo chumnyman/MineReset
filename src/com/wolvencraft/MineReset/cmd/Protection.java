@@ -102,7 +102,7 @@ public class Protection
 				}
 				else if(args[3].equalsIgnoreCase("add"))
 				{
-					String blockName = args[2];
+					String blockName = args[4];
 					int blockId = Util.getBlockId(args[4]);
 					
 					if(blockId == -1)
@@ -211,7 +211,7 @@ public class Protection
 				}
 				else if(args[3].equalsIgnoreCase("add"))
 				{
-					String blockName = args[2];
+					String blockName = args[4];
 					int blockID = Util.getBlockId(args[4]);
 					
 					if(blockID == -1)

@@ -8,24 +8,24 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.Util;
 import com.wolvencraft.MineReset.config.Regions;
 
-public class BlockPlaceListener implements Listener
+public class BucketEmptyListener implements Listener
 {
-	public BlockPlaceListener(MineReset plugin)
+	public BucketEmptyListener(MineReset plugin)
 	{
-		if(Util.debugEnabled()) Util.log("Initiating BlockPlaceListener");
+		if(Util.debugEnabled()) Util.log("Initiating BucketEmptyListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
 	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent event)
+	public void onBucketEmpty(PlayerBucketEmptyEvent  event)
 	{
-		if(Util.debugEnabled()) Util.log("BlockPlaceEvent called");
+		if(Util.debugEnabled()) Util.log("PlayerBucketEmptyEvent called");
 		
 		Player player = event.getPlayer();
 		
@@ -51,7 +51,7 @@ public class BlockPlaceListener implements Listener
 				if(!Util.playerHasPermission(player, "protection.place." + mineName) && !Util.playerHasPermission(player, "protection.place"))
 				{
 					if(Util.debugEnabled()) Util.log("The player does not have protection.place." + mineName);
-					Block b = event.getBlockPlaced();
+					Block b = event.getBlockClicked();
 					Location blockLocation = b.getLocation();
 					padding = Regions.getInt("mines." + mineName + ".protection.padding");
 					paddingTop = Regions.getInt("mines." + mineName + ".protection.padding-top");
@@ -65,7 +65,7 @@ public class BlockPlaceListener implements Listener
 							&& (blockLocation.getBlockY() >= (y[0] - padding) && blockLocation.getBlockY() <= (y[1] + paddingTop))
 							&& (blockLocation.getBlockZ() >= (z[0] - padding) && blockLocation.getBlockZ() <= (z[1] + padding)))
 					{
-						if(Util.debugEnabled()) Util.log("Player placed a block in the mine region");
+						if(Util.debugEnabled()) Util.log("Player emptied a bucket in the mine region");
 						if(Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.enabled"))
 						{
 							List<String> blacklist = Regions.getList("mines." + mineName + ".protection.placement.blacklist.blocks");
@@ -74,12 +74,15 @@ public class BlockPlaceListener implements Listener
 							for(String block : blacklist)
 							{
 								String blockTypeId = b.getTypeId() + "";
-								if(Util.debugEnabled()) Util.log(blockTypeId + " ? " + block);
-								if((whitelist && !blockTypeId.equals(block)) || (!whitelist && blockTypeId.equals(block)))
+								if(blockTypeId.equals("326") || blockTypeId.equals("327") || blockTypeId.equals("8") || blockTypeId.equals("9") || blockTypeId.equals("10") || blockTypeId.equals("11"))
 								{
-									Util.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
-									event.setCancelled(true);
-									return;
+									if(Util.debugEnabled()) Util.log(blockTypeId + " ? " + block);
+									if((whitelist && !blockTypeId.equals(block)) || (!whitelist && blockTypeId.equals(block)))
+									{
+										Util.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
+										event.setCancelled(true);
+										return;
+									}
 								}
 							}
 						}

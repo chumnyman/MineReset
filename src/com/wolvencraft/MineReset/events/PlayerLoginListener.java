@@ -32,7 +32,7 @@ public class PlayerLoginListener implements Listener
 	{
 		if(Util.playerHasPermission(event.getPlayer(), "edit"))
 		{
-			if(core.checkVersion())
+			if(!core.checkVersion())
 			{
 				Player player = event.getPlayer();
 				player.sendMessage("Update MineReset to " + MineReset.curVer + "." + MineReset.curSubVer);

@@ -40,8 +40,8 @@ public class MineReset extends JavaPlugin
 	private FileConfiguration regionData = null, languageData = null, signData = null;
 	private File regionDataFile = null, languageDataFile = null, signDataFile = null;
 	
-	public final static double curVer = 1.1;
-	public final static int curSubVer = 2;
+	public static double curVer = 1.1;
+	public static int curSubVer = 5;
 	
 	public void onEnable()
 	{
@@ -50,13 +50,7 @@ public class MineReset extends JavaPlugin
 		core = new AUCore("http://wolvencraft.com/plugins/MineReset/index.html", log);
 		
 
-		core.checkVersion(curVer, curSubVer, "MineReset");
-		
-		getConfig().options().copyDefaults(true);
-		saveDefaultConfig();
-		
-		getLanguageData().options().copyDefaults(true);
-		saveLanguageData();
+		core.checkVersion();
 		
 		manager = new CommandManager(this);
 		getCommand("mine").setExecutor(manager);

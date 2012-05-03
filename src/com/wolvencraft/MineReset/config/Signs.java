@@ -142,7 +142,7 @@ public class Signs
 		List<String> signList = Signs.getList("data.list-of-signs");
 		for(String signName : signList)
 		{
-			if(Signs.getString("signs." + signName + ".world") == b.getLocation().getWorld().getName() &&
+			if(Signs.getString("signs." + signName + ".world").equals(b.getLocation().getWorld().getName()) &&
 				Signs.getInt("signs." + signName + ".x") == b.getLocation().getBlockX() &&
 				Signs.getInt("signs." + signName + ".y") == b.getLocation().getBlockY() &&
 				Signs.getInt("signs." + signName + ".z") == b.getLocation().getBlockZ())
@@ -164,7 +164,7 @@ public class Signs
 		List<String> signList = Signs.getList("data.list-of-signs");
 		for(String signName : signList)
 		{
-			if(Signs.getString("signs." + signName + ".world") == b.getLocation().getWorld().getName() &&
+			if(Signs.getString("signs." + signName + ".world").equals(b.getLocation().getWorld().getName()) &&
 				Signs.getInt("signs." + signName + ".x") == b.getLocation().getBlockX() &&
 				Signs.getInt("signs." + signName + ".y") == b.getLocation().getBlockY() &&
 				Signs.getInt("signs." + signName + ".z") == b.getLocation().getBlockZ())

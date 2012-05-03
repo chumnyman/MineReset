@@ -3,6 +3,7 @@ package com.wolvencraft.MineReset.events;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -30,6 +31,13 @@ public class PlayerLoginListener implements Listener
 	public void onPlayerInteract(PlayerLoginEvent event)
 	{
 		if(Util.playerHasPermission(event.getPlayer(), "edit"))
-			core.checkVersion(MineReset.curVer, MineReset.curSubVer, "MineReset");
+		{
+			if(core.checkVersion())
+			{
+				Player player = event.getPlayer();
+				player.sendMessage("Update MineReset to " + MineReset.curVer + "." + MineReset.curSubVer);
+				player.sendMessage("Urgency: " + core.getUrgency() + "(" + core.getReason() + ")");
+			}
+		}
 	}
 }

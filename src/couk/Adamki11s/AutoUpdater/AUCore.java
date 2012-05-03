@@ -28,6 +28,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
 
+import com.wolvencraft.MineReset.MineReset;
+
 
 public class AUCore{
 
@@ -63,30 +65,34 @@ public class AUCore{
 	 * Check the current version against the latest one.
 	 * @param currentVersion - Double
 	 * @param currentSubVersion - Double
-	 * @param pluginname - String
 	 * @return
 	 */
-	public boolean checkVersion(double currentVersion, int currentSubVersion, String pluginname){
+	public boolean checkVersion()
+	{
 		source = FetchSource.fetchSource(uri, log);
 		formatSource(source);
 		
 		String subVers;
-		if(currentSubVersion == 0){
+		if(MineReset.curSubVer == 0)
+		{
 			subVers = "";
-		} else {
-			subVers = Integer.toString(currentSubVersion);
+		}
+		else
+		{
+			subVers = Integer.toString(MineReset.curSubVer);
 		}
 		
-		if(versionNO != currentVersion || subVersionNO != currentSubVersion) {
+		if(versionNO != MineReset.curVer || subVersionNO != MineReset.curSubVer)
+		{
 			log.info("-------------------------------");
-			log.info("| " + pluginname + " is not up to date!");
-			log.info("| Running version : " + currentVersion + "." + subVers + "");
+			log.info("| MineReset is not up to date!");
+			log.info("| Running version : " + MineReset.curVer + "." + subVers + "");
 			log.info("| Latest version  : " + versionNO + "." + subVersionNO + "");
 			log.info("| Urgency         : " + urgency);
 			log.info("| Reason          : " + reason);
 			log.info("-------------------------------");
 			return false;
-		} else if(versionNO == currentVersion && subVersionNO == currentSubVersion){
+		} else if(versionNO == MineReset.curVer && subVersionNO == MineReset.curSubVer){
 			return true;
 		}
 		
@@ -94,13 +100,16 @@ public class AUCore{
 		
 	}
 	
-	private void formatSource(String source){
+	private void formatSource(String source)
+	{
 		String parts[] = source.split("\\@");
 		
-		try{
+		try
+		{
 			versionNO = Double.parseDouble(parts[1]);
 			subVersionNO = Integer.parseInt(parts[2]);
-		} catch (NumberFormatException ex){
+		} catch (NumberFormatException ex)
+		{
 			ex.printStackTrace();
 			log.info("Error while parsing version number!");
 		}
@@ -110,5 +119,13 @@ public class AUCore{
 		reason = parts[4];
 	}
 	
+	public String getUrgency()
+	{
+		return urgency;
+	}
 	
+	public String getReason()
+	{
+		return reason;
+	}
 }

@@ -25,20 +25,28 @@ public class Config
 		
 		if(args[1].equalsIgnoreCase("save"))
 		{
-			CommandManager.getPlugin().saveConfig();
 			CommandManager.getPlugin().saveRegionData();
-			CommandManager.getPlugin().saveLanguageData();
 			CommandManager.getPlugin().saveSignData();
 			Util.sendSuccess("Configuration saved to disc");
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("load"))
 		{
-			CommandManager.getPlugin().getConfig();
-			CommandManager.getPlugin().getRegionData();
-			CommandManager.getPlugin().getLanguageData();
-			CommandManager.getPlugin().getSignData();
+			CommandManager.getPlugin().reloadConfig();
+			CommandManager.getPlugin().reloadRegionData();
+			CommandManager.getPlugin().reloadLanguageData();
+			CommandManager.getPlugin().reloadSignData();
 			Util.sendSuccess("Configuration loaded from disc");
+			return;
+		}
+		else if(args[1].equalsIgnoreCase("generate"))
+		{
+			CommandManager.getPlugin().getConfig().options().copyDefaults(true);
+			CommandManager.getPlugin().saveDefaultConfig();
+			
+			CommandManager.getPlugin().getLanguageData().options().copyDefaults(true);
+			CommandManager.getPlugin().saveLanguageData();
+			Util.sendSuccess("Configuration and language files generated successfully");
 			return;
 		}
 		else

@@ -96,21 +96,14 @@ public class Reset
 				if(Util.playerInTheMine(player, mineName))
 				{
 					String message = Language.getString("teleportation.mine-teleport");
-					String displayName = Regions.getString("mines." + mineName + ".display-name");
-					int min = Regions.getInt("mines." + mineName + ".reset.auto.data.min");
-					int sec = Regions.getInt("mines." + mineName + ".reset.auto.data.sec");
-					String time = ChatColor.GOLD + "" + min + ChatColor.WHITE + " minutes, " + ChatColor.GOLD + "" + sec + ChatColor.WHITE + " seconds";
-					
-					if(displayName.equals("")) displayName = mineName;
-					message = Util.parseString(message, "%MINENAME%", displayName);
-					message = Util.parseString(message, "%TIME%", time);
+					message = Util.parseVars(message, mineName);
 					
 					Util.warpToMine(player, mineName);
 					
-					Util.sendSuccess(message);
+					String title = Language.getString("general.title");
+					player.sendMessage(ChatColor.GREEN + "[" + title + "] " + ChatColor.WHITE + message);
 					
 				}
-				if(Util.debugEnabled()) Util.log("Player " + player.getName() + " is not in the mine");
 			}
 		}
 		

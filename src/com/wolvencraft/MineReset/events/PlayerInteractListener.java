@@ -53,19 +53,24 @@ public class PlayerInteractListener implements Listener
 			
 			if(block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN_POST)
 			{
+				if(Util.debugEnabled()) Util.log("Resetting a mine with a sign");
 				if(!Util.playerHasPermission(player, "reset.sign"))
 				{
 					return;
 				}
-				
-				if(!Signs.signExists(block))
+				if(Util.debugEnabled()) Util.log("Permissions check passed!");
+
+		     	String id = Signs.getId(block);
+				if(id == null)
 				{
 					return;
 				}
-		     	String id = Signs.getId(block);
+				if(Util.debugEnabled()) Util.log("All checks passed!");
+		     	if(Util.debugEnabled()) Util.log("Sign found! (id " + id + ")");
 		     	String mineName = Signs.getString("signs." + id + ".mine");
 		     	if(Signs.getBoolean("signs." + id + ".reset"))
 		     	{
+		     		if(Util.debugEnabled()) Util.log("Resetting!");
 		     		String[] args = {"reset", mineName};
 		     		Reset.run(args, true);
 		     	}

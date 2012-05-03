@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +13,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.Util;
+import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.config.Signs;
 
 public class BlockBreakListener implements Listener
 {
@@ -27,12 +30,19 @@ public class BlockBreakListener implements Listener
 	{
 		if(Util.debugEnabled()) Util.log("BlockBreakEvent called");
 		
+		if(event.getBlock().getType().equals(Material.WALL_SIGN) || event.getBlock().getType().equals(Material.SIGN_POST))
+		{
+			if(Signs.signExists(event.getBlock()))
+			{
+				String title = Language.getString("general.title");
+				event.getPlayer().sendMessage(ChatColor.GREEN + "[" + title + "] " + ChatColor.WHITE + "You cannot remove this sign without deleting it first.");
+				event.setCancelled(true);
+				return;
+			}
+		}
+		
 		Player player = event.getPlayer();
-		
-		if(Util.debugEnabled() && player.isOp()) Util.log("Player is Op");
-		if(Util.debugEnabled() && Util.playerHasPermission(player, "protection")) Util.log("Player has protection permission");
-		if(Util.debugEnabled() && Util.playerHasPermission(player, "protection.break")) Util.log("Player has protection.break permission");
-		
+				
 		if(Util.playerHasPermission(player, "protection.break"))
 		{
 			return;

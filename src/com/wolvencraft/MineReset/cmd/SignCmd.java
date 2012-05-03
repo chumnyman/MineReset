@@ -64,7 +64,7 @@ public class SignCmd
 			String id;
 			if(signList.size() == 0)
 			{
-				id = "00001";
+				id = "1";
 			}
 			else
 			{
@@ -134,6 +134,22 @@ public class SignCmd
 			
 			String id = Signs.getId(b);
 			
+			if(b.getState() instanceof Sign)
+			{
+				Sign sign = (Sign) b.getState();
+
+				for(int i = 0; i < 4; i++)
+				{
+					String line = Signs.getString("signs." + id + ".lines." + i);
+					if(!line.equals(""))
+					{
+						sign.setLine(i, line);
+					}
+				}
+				sign.update(true);
+			}
+			
+
 			Signs.remove("signs." + id);
 			List<String> signList = Signs.getList("data.list-of-signs");
 			signList.remove(signList.indexOf(id));
@@ -164,7 +180,6 @@ public class SignCmd
 			{
 				line = Util.parseVars(line, mineName);
 				sign.setLine(i, line);
-				if(Util.debugEnabled()) Util.log(i + " : " + line);
 			}
 		}
 		

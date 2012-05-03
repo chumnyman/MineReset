@@ -72,12 +72,12 @@ public class Auto
 				if(Regions.getBoolean(baseNode + ".warn"))
 				{
 					Util.sendSuccess("Players will NOT be warned before '" + mineName + "' resets");
-					Regions.setBoolean(baseNode + ".reset", false);
+					Regions.setBoolean(baseNode + ".warn", false);
 				}
 				else
 				{
 					Util.sendSuccess("Players WILL be warned before '" + mineName + "' resets");
-					Regions.setBoolean(baseNode + ".reset", true);
+					Regions.setBoolean(baseNode + ".warn", true);
 				}
 				Regions.saveData();
 				return;

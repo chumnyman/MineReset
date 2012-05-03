@@ -44,7 +44,7 @@ public class CommandManager implements CommandExecutor
 			Blacklist.run(args);
 		else if(args[0].equalsIgnoreCase("config") || args[0].equalsIgnoreCase("cf"))
 			Config.run(args);
-		else if(args[0].equalsIgnoreCase("edit") || args[0].equalsIgnoreCase("none") || args[0].equalsIgnoreCase("cooldown") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+") || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-") || args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del") || args[0].equalsIgnoreCase("name"))
+		else if(args[0].equalsIgnoreCase("edit") || args[0].equalsIgnoreCase("none") || args[0].equalsIgnoreCase("cooldown") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+") || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-") || args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del") || args[0].equalsIgnoreCase("name") || args[0].equalsIgnoreCase("silent"))
 			Edit.run(args);
 		else if(args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?"))
 			Help.getHelp();

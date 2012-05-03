@@ -75,47 +75,6 @@ public class Edit
 			message = Util.parseString(message, "%MINENAME%", displayName);
 			Util.sendSuccess(message);
 		}
-		else if(args[0].equalsIgnoreCase("cooldown"))
-		{
-			if(curMine == null)
-			{
-				String error = Language.getString("general.mine-not-selected");
-				Util.sendError(error);
-				return;
-			}
-			
-			if(args.length != 3)
-			{
-				Util.sendInvalid(args);
-				return;
-			}
-			
-			if(Util.isNumeric(args[2]))
-			{
-				Regions.setInt("mines." + curMine + ".reset.manual.cooldown-time", Integer.parseInt(args[2]));
-				Util.sendSuccess("The cooldown of mine '" + curMine + "' has been set to " + args[2]);
-				return;
-			}
-			else if(args[2].equalsIgnoreCase("toggle"))
-			{
-				if(Regions.getBoolean("mines." + curMine + ".reset.manual.cooldown-enabled"))
-				{
-					Regions.setBoolean("mines." + curMine + ".reset.manual.cooldown-enabled", false);
-					Util.sendSuccess("Cooldown was disabled for mine '" + curMine + "'");
-				}
-				else
-				{
-					Regions.setBoolean("mines." + curMine + ".reset.manual.cooldown-enabled", true);
-					Util.sendSuccess("Cooldown was enabled for mine '" + curMine + "'");
-				}
-				return;
-			}
-			else
-			{
-				Util.sendInvalid(args);
-				return;
-			}
-		}
 		else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+"))
 		{
 			if(curMine == null)

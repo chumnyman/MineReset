@@ -13,7 +13,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.Util;
-import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.config.Signs;
 
@@ -30,18 +29,17 @@ public class BlockBreakListener implements Listener
 	{
 		if(Util.debugEnabled()) Util.log("BlockBreakEvent called");
 		
+		Player player = event.getPlayer();
+		
 		if(event.getBlock().getType().equals(Material.WALL_SIGN) || event.getBlock().getType().equals(Material.SIGN_POST))
 		{
 			if(Signs.signExists(event.getBlock()))
 			{
-				String title = Language.getString("general.title");
-				event.getPlayer().sendMessage(ChatColor.GREEN + "[" + title + "] " + ChatColor.WHITE + "You cannot remove this sign without deleting it first.");
+				Util.sendPlayerError(player, "You cannot destroy this sign unless you remove it first");
 				event.setCancelled(true);
 				return;
 			}
 		}
-		
-		Player player = event.getPlayer();
 				
 		if(Util.playerHasPermission(player, "protection.break"))
 		{

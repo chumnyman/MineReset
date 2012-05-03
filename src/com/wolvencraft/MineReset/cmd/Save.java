@@ -20,7 +20,7 @@ public class Save
 		}
 		
 		if(Util.debugEnabled()) Util.log("Intitiating the creation of a new mine");
-		if(args.length > 2)
+		if(args.length != 2)
 		{
 			Util.sendInvalid(args);
 			return;
@@ -45,12 +45,7 @@ public class Save
 		
 		if(Util.debugEnabled()) Util.log("Selections checks passed");
 		
-		String mineName;
-		if(args.length == 1)
-		{
-			mineName = Configuration.getString("configuration.default-name");
-		}
-		else mineName = args[1];
+		String mineName = args[1];
 		if(Util.mineExists(mineName))
 		{
 			Util.sendError("Mine '" + mineName + "' already exists!");
@@ -145,10 +140,6 @@ public class Save
 		boolean resetAutoWarnEnabled = Configuration.getBoolean("defaults.reset.auto.warn");
 		List<String> resetAutoWarnTime = Configuration.getList("defaults.reset.auto.warn-times");
 		
-		// - - - Manual
-		boolean resetManualCooldownEnabled = Configuration.getBoolean("defaults.reset.manual.cooldown-enabled");
-		int resetManualCooldownTime = Configuration.getInt("defaults.reset.manual.cooldown-time");
-		
 		
 		
 		
@@ -234,11 +225,6 @@ public class Save
 		baseNode = "mines." + mineName + ".reset.auto.data";
 		Regions.setInt(baseNode + ".min", resetAutoTime);
 		Regions.setInt(baseNode + ".sec", 0);
-		
-		// = = = Manual
-		baseNode = "mines." + mineName + ".reset.manual";
-		Regions.setBoolean(baseNode + ".cooldown-enabled", resetManualCooldownEnabled);
-		Regions.setInt(baseNode + ".cooldown-time", resetManualCooldownTime);
 		
 		// = = Adding to the mine list
 		List<String> mineList = Regions.getList("data.list-of-mines");

@@ -103,7 +103,7 @@ public class MineReset extends JavaPlugin
 						int index = warnTimes.indexOf(min + "");
 						if(index != -1 && sec == 1)
 						{
-							if(Regions.getBoolean("mines." + mineName + ".reset.auto.warn"))
+							if(Regions.getBoolean("mines." + mineName + ".reset.auto.warn") && !Regions.getBoolean("mines." + mineName + ".silent"))
 							{
 				               	warnMessage = Util.parseVars(warnMessage, mineName);
 				                Util.broadcastSuccess(warnMessage);

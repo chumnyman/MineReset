@@ -1,9 +1,7 @@
 configuration:
   debug-mode: false
   language: "english"
-  default-name: "default"
   teleport-out-of-the-mine-on-reset: true
-  broadcast-on-reset: true
   use-permissions: true
 defaults:
   display-name: ""
@@ -35,9 +33,6 @@ defaults:
       warn: true
       warn-times:
       - '5'
-    manual:
-      cooldown-enabled: true
-      cooldown-time: 5
   materials:
     blocks:
     - '0'

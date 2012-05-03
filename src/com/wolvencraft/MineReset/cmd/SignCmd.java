@@ -156,6 +156,7 @@ public class SignCmd
 			signList.remove(signList.indexOf(id));
 			Signs.setList("data.list-of-signs", signList);
 			
+			Util.sendSuccess("The sign is no longer defined. You can destroy it now.");
 			Signs.saveData();
 			return;
 		}

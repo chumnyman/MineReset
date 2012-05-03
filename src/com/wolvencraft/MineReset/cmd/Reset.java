@@ -68,8 +68,6 @@ public class Reset
 		String worldName = Regions.getString("mines." + mineName + ".coordinates.world");
 		World mineWorld = Bukkit.getServer().getWorld(worldName);
 		
-		boolean broadcastReset = Configuration.getBoolean("configuration.broadcast-on-reset");
-		
 		if(Util.debugEnabled()) Util.log("Determining coordinates");
 		
 		int[] point1 = {
@@ -192,30 +190,27 @@ public class Reset
 		Regions.setInt("mines." + mineName + ".reset.auto.data.sec", 0);
 		Regions.saveData();
 		
-		if(broadcastReset)
+		String broadcastMessage;
+		if(automatic)
 		{
-			String broadcastMessage;
-			if(automatic)
-			{
-				broadcastMessage = Language.getString("reset.automatic-reset-successful");
-			}
-			else
-			{
-				broadcastMessage = Language.getString("reset.manual-reset-successful");
-			}
-			
-				String displayName = Regions.getString("mines." + mineName + ".display-name");
-				if(displayName.equals("")) displayName = mineName;
-				broadcastMessage = Util.parseVars(broadcastMessage, mineName);
-				
-				if(!silent)
-				{
-					Util.broadcastSuccess(broadcastMessage);
-				}
-				else if(!automatic)
-				{
-					Util.sendSuccess(broadcastMessage);
-				}
+			broadcastMessage = Language.getString("reset.automatic-reset-successful");
+		}
+		else
+		{
+			broadcastMessage = Language.getString("reset.manual-reset-successful");
+		}
+	
+		String displayName = Regions.getString("mines." + mineName + ".display-name");
+		if(displayName.equals("")) displayName = mineName;
+		broadcastMessage = Util.parseVars(broadcastMessage, mineName);
+		
+		if(!silent)
+		{
+			Util.broadcastSuccess(broadcastMessage);
+		}
+		else if(!automatic)
+		{
+			Util.sendSuccess(broadcastMessage);
 		}
 		return;
 	}

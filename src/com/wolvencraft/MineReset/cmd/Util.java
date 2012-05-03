@@ -39,7 +39,7 @@ public class Util
 			else return false;
 		}
 		
-		if(player.hasPermission("ffa." + node))
+		if(player.hasPermission("minereset." + node))
 			return true;
 		
 		return false;
@@ -61,7 +61,7 @@ public class Util
 			else return false;
 		}
 		
-		if(player.hasPermission("ffa." + node))
+		if(player.hasPermission("minereset." + node))
 			return true;
 		
 		return false;
@@ -106,8 +106,9 @@ public class Util
 	public static void sendSuccess(String message)
 	{
 		CommandSender sender = CommandManager.getSender();
-		String title = Language.getString("general.title");
-		sender.sendMessage(ChatColor.GREEN + "[" + title + "] " + ChatColor.WHITE + message);
+		String title = Language.getString("general.title-success");
+		title = parseColors(title);
+		sender.sendMessage(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
 	}
 	
 	/**
@@ -116,8 +117,9 @@ public class Util
 	 */
 	public static void sendPlayerSuccess(Player player, String message)
 	{
-		String title = Language.getString("general.title");
-		player.sendMessage(ChatColor.GREEN + "[" + title + "] " + ChatColor.WHITE + message);
+		String title = Language.getString("general.title-success");
+		title = parseColors(title);
+		player.sendMessage(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
 	}
 	
 	/**
@@ -127,8 +129,9 @@ public class Util
 	public static void sendError(String message)
 	{
 		CommandSender sender = CommandManager.getSender();
-		String title = Language.getString("general.title");
-		sender.sendMessage(ChatColor.RED + "[" + title + "] " + ChatColor.WHITE + message);
+		String title = Language.getString("general.title-error");
+		title = parseColors(title);
+		sender.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 	
 	/**
@@ -137,8 +140,9 @@ public class Util
 	 */
 	public static void sendPlayerError(Player player, String message)
 	{
-		String title = Language.getString("general.title");
-		player.sendMessage(ChatColor.RED + "[" + title + "] " + ChatColor.WHITE + message);
+		String title = Language.getString("general.title-error");
+		title = parseColors(title);
+		player.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 	
 	/**
@@ -149,13 +153,14 @@ public class Util
 	public static void sendInvalid(String[] args)
 	{
 		CommandSender sender = CommandManager.getSender();
-		String title = Language.getString("general.title");
+		String title = Language.getString("general.title-error");
 		String message = Language.getString("general.invalid-command");
 		String command = "";
 		for(int i = 0; i < args.length; i++)
 			command = command + " " + args[i];
 		log(sender.getName() + " sent an invalid command (/mine" + command + ")");
-		sender.sendMessage(ChatColor.RED + "[" + title + "] " + ChatColor.WHITE + message);
+		title = parseColors(title);
+		sender.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 	
 	/**
@@ -165,13 +170,14 @@ public class Util
 	public static void sendDenied(String[] args)
 	{
 		CommandSender sender = CommandManager.getSender();
-		String title = Language.getString("general.title");
+		String title = Language.getString("general.title-error");
 		String message = Language.getString("general.access-denied");
 		String command = "";
 		for(int i = 0; i < args.length; i++)
 			command = command + " " + args[i];
 		log(sender.getName() + " was denied to use a command (/mine" + command + ")");
-		sender.sendMessage(ChatColor.RED + "[" + title + "] " + ChatColor.WHITE + message);
+		title = parseColors(title);
+		sender.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 	
 	/**
@@ -201,8 +207,9 @@ public class Util
 	 */
 	public static void broadcastSuccess(String message)
 	{
-		String title = Language.getString("general.title");
-		Bukkit.getServer().broadcastMessage(ChatColor.GREEN + "[" + title + "] " + ChatColor.WHITE + message);
+		String title = Language.getString("general.title-success");
+		title = parseColors(title);
+		Bukkit.getServer().broadcastMessage(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
 	}
 	
 	/**
@@ -212,8 +219,9 @@ public class Util
 	 */
 	public static void broadcastError(String message)
 	{
-		String title = Language.getString("general.title");
-		Bukkit.getServer().broadcastMessage(ChatColor.RED + "[" + title + "] " + ChatColor.WHITE + message);
+		String title = Language.getString("general.title-error");
+		title = parseColors(title);
+		Bukkit.getServer().broadcastMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 	
 	/**
@@ -307,7 +315,7 @@ public class Util
 	
 	/**
 	 * Replaces the variables in the string with their values
-	 * @param str String to parse
+	 * @param str String to be parsed
 	 * @param mineName Name of the mine
 	 * @return Parsed string
 	 */
@@ -333,6 +341,42 @@ public class Util
 			str = parseString(str, "%TIME%", time);
 		}
 		
+		str = parseColors(str);
+		
+		return str;
+	}
+	
+	/**
+	 * Replaces the color codes with colors
+	 * @param str String to be parsed
+	 * @return Parsed string
+	 */
+	public static String parseColors(String str)
+	{
+		str = parseString(str, "&0", "" + ChatColor.BLACK);
+		str = parseString(str, "&1", "" + ChatColor.DARK_BLUE);
+		str = parseString(str, "&2", "" + ChatColor.DARK_GREEN);
+		str = parseString(str, "&3", "" + ChatColor.DARK_AQUA);
+		str = parseString(str, "&4", "" + ChatColor.DARK_RED);
+		str = parseString(str, "&5", "" + ChatColor.DARK_PURPLE);
+		str = parseString(str, "&6", "" + ChatColor.GOLD);
+		str = parseString(str, "&7", "" + ChatColor.GRAY);
+		str = parseString(str, "&8", "" + ChatColor.DARK_GRAY);
+		str = parseString(str, "&9", "" + ChatColor.BLUE);
+		str = parseString(str, "&a", "" + ChatColor.GREEN);
+		str = parseString(str, "&b", "" + ChatColor.AQUA);
+		str = parseString(str, "&c", "" + ChatColor.RED);
+		str = parseString(str, "&d", "" + ChatColor.LIGHT_PURPLE);
+		str = parseString(str, "&e", "" + ChatColor.YELLOW);
+		str = parseString(str, "&f", "" + ChatColor.WHITE);
+		
+
+		str = parseString(str, "&k", "" + ChatColor.MAGIC);
+		str = parseString(str, "&l", "" + ChatColor.BOLD);
+		str = parseString(str, "&m", "" + ChatColor.STRIKETHROUGH);
+		str = parseString(str, "&n", "" + ChatColor.UNDERLINE);
+		str = parseString(str, "&o", "" + ChatColor.ITALIC);
+		str = parseString(str, "&r", "" + ChatColor.RESET);
 		return str;
 	}
 	

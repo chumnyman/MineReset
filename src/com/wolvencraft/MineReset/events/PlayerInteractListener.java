@@ -72,7 +72,7 @@ public class PlayerInteractListener implements Listener
 		     	{
 		     		if(Util.debugEnabled()) Util.log("Resetting!");
 		     		String[] args = {"reset", mineName};
-		     		Reset.run(args, true);
+		     		Reset.run(args, false);
 		     	}
 			}
 			

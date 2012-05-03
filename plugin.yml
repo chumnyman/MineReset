@@ -1,6 +1,6 @@
 name: MineReset
 main: com.wolvencraft.MineReset.MineReset
-version: 1.1.2
+version: 1.1.5
 commands:
   mine:
     description: MineReset help
@@ -12,6 +12,19 @@ permissions:
       MineReset.list: true
       MineReset.warp: true
       MineReset.protection: true
+      MineReset.reset: true
+      MineReset.edit: true
+      MineReset.secret: true
+  MineReset.user:
+    description: Gives access to basic MineReset commands
+      MineReset.info: true
+      MineReset.list: true
+      MineReset.warp: true
+      MineReset.protection: true
+  MineReset.admin:
+    description: Gives access to advanced MineReset commands
+    children:
+      MineReset.user: true
       MineReset.reset: true
       MineReset.edit: true
       MineReset.secret: true

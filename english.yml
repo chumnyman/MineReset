@@ -1,6 +1,7 @@
 general:
-  title: "Mine Reset"
-  title-on-signs: "Reset"
+  title: "[Mine Reset]"
+  title-success: "&a[Mine Reset]"
+  title-error: "&4[Mine Reset]"
   invalid-command: "Invalid command! Use /mine help for help."
   access-denied: "You do not have permission to do that"
   mine-not-selected: "Select a mine first with /mine edit <name>"
@@ -11,7 +12,6 @@ reset:
   manual-reset-successful: "Mine %MINENAME% has been reset!"
   automatic-reset-warning: "Mine %MINENAME% will reset in %MIN% minute(s)."
   automatic-reset-successful: "Mine %MINENAME% has been reset! Next reset in %MIN% minute(s)."
-  sign-reset-successful: "Mine %MINENAME% has been reset!"
   mine-cooldown: "Mine %MINENAME% can be reset in %MIN% minute(s)."
 teleportation:
   mine-teleport: "You have been teleported to %MINENAME%"

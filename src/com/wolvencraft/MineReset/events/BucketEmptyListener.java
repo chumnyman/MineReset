@@ -74,7 +74,7 @@ public class BucketEmptyListener implements Listener
 							for(String block : blacklist)
 							{
 								String blockTypeId = b.getTypeId() + "";
-								if(blockTypeId.equals("326") || blockTypeId.equals("327") || blockTypeId.equals("8") || blockTypeId.equals("9") || blockTypeId.equals("10") || blockTypeId.equals("11"))
+								if(block.equals("326") || block.equals("327"))
 								{
 									if(Util.debugEnabled()) Util.log(blockTypeId + " ? " + block);
 									if((whitelist && !blockTypeId.equals(block)) || (!whitelist && blockTypeId.equals(block)))

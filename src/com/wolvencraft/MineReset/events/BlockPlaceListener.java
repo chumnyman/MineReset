@@ -73,6 +73,9 @@ public class BlockPlaceListener implements Listener
 							
 							for(String block : blacklist)
 							{
+								if(block.equals("326")) block = 8 + "";
+								if(block.equals("329")) block = 10 + "";
+								
 								String blockTypeId = b.getTypeId() + "";
 								if(Util.debugEnabled()) Util.log(blockTypeId + " ? " + block);
 								if((whitelist && !blockTypeId.equals(block)) || (!whitelist && blockTypeId.equals(block)))

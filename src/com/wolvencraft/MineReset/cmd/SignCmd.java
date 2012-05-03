@@ -121,6 +121,7 @@ public class SignCmd
 				Signs.setBoolean("signs." + id + ".reset", true);
 			}
 			
+			Util.sendSuccess("The sign was successfully deleted");
 			Signs.saveData();
 			return;
 		}

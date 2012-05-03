@@ -228,24 +228,34 @@ public class Util
 			Material material;
 			if(isNumeric(blockName))
 			{
-				material = Material.getMaterial(Integer.parseInt(blockName));
+				if(Integer.parseInt(blockName) == 10 || Integer.parseInt(blockName) == 11 || Integer.parseInt(blockName) == 326)
+					material = Material.WATER_BUCKET;
+				else if(Integer.parseInt(blockName) == 10 || Integer.parseInt(blockName) == 11 || Integer.parseInt(blockName) == 327)
+					material = Material.LAVA_BUCKET;
+				else
+					material = Material.getMaterial(Integer.parseInt(blockName));
 			}
 			else
 			{
-				if(blockName.equalsIgnoreCase("iron"))
+				if(blockName.equalsIgnoreCase("iron") || blockName.equalsIgnoreCase("ironore"))
 					blockName = "iron_ore";
-				else if(blockName.equalsIgnoreCase("gold"))
+				else if(blockName.equalsIgnoreCase("gold") || blockName.equalsIgnoreCase("goldore"))
 					blockName = "gold_ore";
-				else if(blockName.equalsIgnoreCase("lapis"))
+				else if(blockName.equalsIgnoreCase("lapis") || blockName.equalsIgnoreCase("lapisore"))
 					blockName = "lapis_ore";
-				else if(blockName.equalsIgnoreCase("diamond"))
+				else if(blockName.equalsIgnoreCase("diamond") || blockName.equalsIgnoreCase("diamondore"))
 					blockName = "diamond_ore";
-				else if(blockName.equalsIgnoreCase("coal"))
+				else if(blockName.equalsIgnoreCase("coal") || blockName.equalsIgnoreCase("coalore"))
 					blockName = "coal_ore";
-				else if(blockName.equalsIgnoreCase("redstone"))
+				else if(blockName.equalsIgnoreCase("redstone") || blockName.equalsIgnoreCase("redstoneore"))
 					blockName = "redstone_ore";
 				
-				material = Material.matchMaterial(blockName);
+				if(blockName.equalsIgnoreCase("lava") || blockName.equalsIgnoreCase("lava_bucket") || blockName.equalsIgnoreCase("lavabucket"))
+					material = Material.WATER_BUCKET;
+				else if(blockName.equalsIgnoreCase("water") || blockName.equalsIgnoreCase("water_bucket") || blockName.equalsIgnoreCase("waterbucket"))
+					material = Material.LAVA_BUCKET;
+				else
+					material = Material.matchMaterial(blockName);
 			}
 			
 			return material.getId();

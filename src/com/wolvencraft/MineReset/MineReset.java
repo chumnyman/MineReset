@@ -41,7 +41,7 @@ public class MineReset extends JavaPlugin
 	private File regionDataFile = null, languageDataFile = null, signDataFile = null;
 	
 	public static double curVer = 1.1;
-	public static int curSubVer = 5;
+	public static int curSubVer = 6;
 	
 	public void onEnable()
 	{

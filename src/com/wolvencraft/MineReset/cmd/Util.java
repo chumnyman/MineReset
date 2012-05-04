@@ -1,5 +1,6 @@
 package com.wolvencraft.MineReset.cmd;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -419,5 +420,48 @@ public class Util
 		Location newLoc = new Location(Bukkit.getServer().getWorld(newLocWorld), coords[0], coords[1], coords[2], (float)coords[3], (float)coords[4]);
 		
 		player.teleport(newLoc);
+	}
+	
+	public static List<String> getSortedList(String mineName)
+	{
+		List<String> itemList = Regions.getList("mines." + mineName + ".materials.blocks");
+		List<String> weightList = Regions.getList("mines." + mineName + ".materials.weights");
+		List<String> finalList = new ArrayList<String>(itemList.size());
+		
+		String tempItem = null, tempWeight = null;
+		for(int j = weightList.size() - 1; j > 0 ; j--)
+		{
+			for(int i = 0; i < j; i++)
+			{
+				if(Double.parseDouble(weightList.get(i + 1)) > Double.parseDouble(weightList.get(i)))
+				{
+					tempItem = itemList.get(i);
+					tempWeight = weightList.get(i);
+	
+					itemList.set(i, itemList.get(i + 1));
+					weightList.set(i, weightList.get(i + 1));
+	
+					itemList.set(i + 1, tempItem);
+					weightList.set(i + 1, tempWeight);
+				}
+				
+			}
+		}
+		
+		for(int i = 0; i < itemList.size(); i++)
+		{
+			String blockName = Material.getMaterial(Integer.parseInt(itemList.get(i))).toString().toLowerCase().replace("_", " ");
+			String blockWeight = null;
+			if(Double.parseDouble(weightList.get(i)) < 10)
+				blockWeight = " " + weightList.get(i) + "%";
+			else
+				blockWeight = weightList.get(i) + "%";
+			
+			if(Double.parseDouble(weightList.get(i)) != 0)
+				finalList.add(" - " + blockWeight + " " + ChatColor.GREEN + blockName);
+		}
+		
+		return finalList;
+		
 	}
 }

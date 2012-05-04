@@ -82,17 +82,43 @@ public class AUCore{
 			subVers = Integer.toString(MineReset.curSubVer);
 		}
 		
-		if(versionNO != MineReset.curVer || subVersionNO != MineReset.curSubVer)
+		if(versionNO > MineReset.curVer || (versionNO == MineReset.curVer && subVersionNO > MineReset.curSubVer))
 		{
-			log.info("-------------------------------");
-			log.info("| MineReset is not up to date!");
-			log.info("| Running version : " + MineReset.curVer + "." + subVers + "");
-			log.info("| Latest version  : " + versionNO + "." + subVersionNO + "");
-			log.info("| Urgency         : " + urgency);
-			log.info("| Reason          : " + reason);
-			log.info("-------------------------------");
+			String extraOne = "";
+			String extraTwo = "";
+			String extraAll = "";
+			String extraDash = "";
+			if(urgency.equalsIgnoreCase("LOW"))
+				extraOne = "   ";
+			else if(urgency.equalsIgnoreCase("MEDIUM"))
+				extraOne = "";
+			else if(urgency.equalsIgnoreCase("HIGH"))
+				extraOne = "  ";
+			
+			if(reason.length() < 9)
+			{
+				for(int i = reason.length(); i < 9; i++)
+					extraTwo = extraTwo + " ";
+			}
+			else if(reason.length() > 9)
+			{
+				for(int i = 9; i < reason.length(); i++)
+				{
+					extraAll = extraAll + " ";
+					extraDash = extraDash + "-";
+				}
+			}
+			log.info("+------------------------------" + extraDash + "+");
+			log.info("| MineReset is not up to date! " + extraAll + "|");
+			log.info("| Running version : " + MineReset.curVer + "." + subVers + "      " + extraAll + "|");
+			log.info("| Latest version  : " + versionNO + "." + subVersionNO + "      " + extraAll + "|");
+			log.info("| Urgency         : " + urgency + extraOne + "     " + extraAll + "|");
+			log.info("| Reason          : " + reason + "  " + extraTwo + "|");
+			log.info("+------------------------------" + extraDash + "+");
 			return false;
-		} else if(versionNO == MineReset.curVer && subVersionNO == MineReset.curSubVer){
+		}
+		else if(versionNO <= MineReset.curVer || (versionNO == MineReset.curVer && subVersionNO <= MineReset.curSubVer))
+		{
 			return true;
 		}
 		
@@ -127,5 +153,15 @@ public class AUCore{
 	public String getReason()
 	{
 		return reason;
+	}
+	
+	public double getVersion()
+	{
+		return versionNO;
+	}
+	
+	public int getSubVersion()
+	{
+		return subVersionNO;
 	}
 }

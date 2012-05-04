@@ -50,7 +50,7 @@ public class Info
 		// Title
 		String displayName = Regions.getString("mines." + mineName + ".display-name");
 		if(displayName.equals("")) displayName = mineName;
-		Util.sendMessage(ChatColor.DARK_RED + "                    -=[ " + displayName + " ]=-");
+		Util.sendMessage(ChatColor.DARK_RED + "                    -=[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.RED + " ]=-");
 		
 		// Reset
 		boolean autoReset = Regions.getBoolean("mines." + mineName + ".reset.auto.reset");
@@ -68,12 +68,6 @@ public class Info
 		}
 		
 		// Protection
-		String pvp;
-		if(Regions.getBoolean("mines" + mineName + ".protection.pvp.enabled"))
-			pvp = ChatColor.GREEN + "ON";
-		else
-			pvp = ChatColor.RED + "OFF";
-		
 		String breakingProt;
 		if(Regions.getBoolean("mines." + mineName + ".protection.breaking.enabled"))
 		{
@@ -112,26 +106,13 @@ public class Info
 		}
 		
 		Util.sendMessage(ChatColor.BLUE + " Protection:");
-		Util.sendMessage(" PVP: " + pvp + ChatColor.WHITE + " | Breaking: " + breakingProt + ChatColor.WHITE + " | Placement: " + placementProt + ChatColor.WHITE + " ");
+		Util.sendMessage("Breaking: " + breakingProt + ChatColor.WHITE + " | Placement: " + placementProt + ChatColor.WHITE + " ");
 		
-		// Composition
-		List<String> itemList = Regions.getList("mines." + mineName + ".materials.blocks");
-		List<String> weightList = Regions.getList("mines." + mineName + ".materials.weights");
-		
-		String blockName;
-		String blockWeight;
-		int blockID;
+		List<String> finalList = Util.getSortedList(mineName);
 		
 		Util.sendMessage(ChatColor.BLUE + " Composition:");
-		for(int i = 0; i < itemList.size(); i ++)
-		{
-			blockID = Integer.parseInt(itemList.get(i));
-			blockName = Material.getMaterial(blockID).toString();
-			if(Double.parseDouble(weightList.get(i)) < 10)
-				blockWeight = " " + weightList.get(i);
-			else
-				blockWeight = weightList.get(i);
-			Util.sendMessage(" - " + blockWeight + "% " + ChatColor.GREEN + blockName.toLowerCase().replace("_", " "));
+		for(String message : finalList)
+		{			Util.sendMessage(message);
 		}
 		
 		// Blacklist

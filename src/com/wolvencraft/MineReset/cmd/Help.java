@@ -73,7 +73,7 @@ public class Help
 	
 	public static void getProtection()
 	{
-		formatHelp("protection", " pvp", "Toggles the PVP on and off for the current mine", "");
+		//formatHelp("protection", " pvp", "Toggles the PVP on and off for the current mine", "");
 		
 		formatHelp("protection", " breaking toggle", "Enables or disables the block breaking protection", "");
 		formatHelp("protection", " breaking blacklist toggle", "Enables or disables the block breaking blacklist", "");

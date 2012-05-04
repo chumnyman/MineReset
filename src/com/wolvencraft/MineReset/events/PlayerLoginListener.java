@@ -3,10 +3,12 @@ package com.wolvencraft.MineReset.events;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.Util;
@@ -27,16 +29,15 @@ public class PlayerLoginListener implements Listener
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
-	@EventHandler
-	public void onPlayerInteract(PlayerLoginEvent event)
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerInteract(PlayerJoinEvent event)
 	{
 		if(Util.playerHasPermission(event.getPlayer(), "edit"))
 		{
 			if(!core.checkVersion())
 			{
 				Player player = event.getPlayer();
-				player.sendMessage("Update MineReset to " + MineReset.curVer + "." + MineReset.curSubVer);
-				player.sendMessage("Urgency: " + core.getUrgency() + "(" + core.getReason() + ")");
+				player.sendMessage(ChatColor.BLUE + "Update for MineReset (" + core.getVersion() + "." + core.getSubVersion() + ") is available! Urgency: " + core.getUrgency());
 			}
 		}
 	}

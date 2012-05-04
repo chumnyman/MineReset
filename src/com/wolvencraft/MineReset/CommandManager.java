@@ -71,7 +71,7 @@ public class CommandManager implements CommandExecutor
 		{
 			argString = argString + " " + args[i];
 		}
-		if(Util.debugEnabled() && Util.isPlayer()) Util.log(player.getName() + " sent a command: " + argString);
+		if(Util.debugEnabled() && Util.isPlayer()) Util.log(player.getName() + ": " + argString);
 		
 		return true;
 	}

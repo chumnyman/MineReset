@@ -12,7 +12,7 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
-import com.wolvencraft.MineReset.util.Pattern;
+import com.wolvencraft.MineReset.generation.RandomBlockGenerator;
 
 public class Reset
 {
@@ -59,7 +59,7 @@ public class Reset
 		
 		List<String> blockList = Regions.getList("mines." + mineName + ".materials.blocks");
 		List<String> weightList = Regions.getList("mines." + mineName + ".materials.weights");
-		Pattern pattern = new Pattern(blockList, weightList);
+		RandomBlockGenerator pattern = new RandomBlockGenerator(blockList, weightList);
 		boolean blacklist = Regions.getBoolean("mines." + mineName + ".blacklist.enabled");
 		boolean whitelist = Regions.getBoolean("mines." + mineName + ".blacklist.whitelist");
 		List<String> blacklistedBlocks = null;

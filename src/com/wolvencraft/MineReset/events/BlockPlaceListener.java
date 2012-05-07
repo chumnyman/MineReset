@@ -43,6 +43,8 @@ public class BlockPlaceListener implements Listener
 		
 		if(Util.debugEnabled()) Util.log("Retrieved the region list");
 		
+		if(regionList.size() == 0) return;
+		
 		for(String mineName : regionList )
 		{
 			if(Util.debugEnabled()) Util.log("For mine " + mineName);

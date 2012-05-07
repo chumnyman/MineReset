@@ -21,7 +21,6 @@ import com.wolvencraft.MineReset.events.*;
 
 import couk.Adamki11s.AutoUpdater.AUCore;
 
-
 /**
  * Mine Reset
  * Copyright (C) 2012 bitWolfy
@@ -40,8 +39,8 @@ public class MineReset extends JavaPlugin
 	private FileConfiguration regionData = null, languageData = null, signData = null;
 	private File regionDataFile = null, languageDataFile = null, signDataFile = null;
 	
-	public static double curVer = 1.1;
-	public static int curSubVer = 6;
+	public static double curVer = 1.2;
+	public static int curSubVer = 1;
 	
 	public void onEnable()
 	{
@@ -65,59 +64,60 @@ public class MineReset extends JavaPlugin
 		log.info("MineReset started");
 		log.info(mineList.size() + " mine(s) found");
 		
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
+		if(getConfig().getBoolean("automatic-resets-enabled"))
 		{
-           	 public void run()
-           	 {
-				List<String> mineList = Regions.getList("data.list-of-mines");
-
-               	int min;
-                int sec;
-                boolean reset;
-                List<String> warnTimes;
-                String warnMessage = Language.getString("reset.automatic-reset-warning");
-                
-				for(String mineName : mineList)
-				{
-					reset = Regions.getBoolean("mines." + mineName + ".reset.auto.reset");
-					if(reset)
+			Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable()
+			{
+	           	 public void run()
+	           	 {
+					List<String> mineList = Regions.getList("data.list-of-mines");
+					
+					if(mineList.size() != 0)
 					{
-						min = Regions.getInt("mines." + mineName + ".reset.auto.data.min");
-						sec = Regions.getInt("mines." + mineName + ".reset.auto.data.sec");
-						warnTimes = Regions.getList("mines." + mineName + ".reset.auto.warn-times");
-						
-						sec--;
-						if(sec <= 0)
+		               	int min;
+		                int sec;
+		                List<String> warnTimes;
+		                String warnMessage = Language.getString("reset.automatic-reset-warning");
+		                
+						for(String mineName : mineList)
 						{
-							min--;
-							sec = 60 + sec;
-						}
-						
-						Regions.setInt("mines." + mineName + ".reset.auto.data.min", min);
-						Regions.setInt("mines." + mineName + ".reset.auto.data.sec", sec);
-						
-						Regions.saveData();
-						
-						SignCmd.updateAll(mineName);
-						
-						int index = warnTimes.indexOf(min + "");
-						if(index != -1 && sec == 1)
-						{
-							if(Regions.getBoolean("mines." + mineName + ".reset.auto.warn") && !Regions.getBoolean("mines." + mineName + ".silent"))
+							if(Regions.getBoolean("mines." + mineName + ".reset.auto.reset"))
 							{
-				               	warnMessage = Util.parseVars(warnMessage, mineName);
-				                Util.broadcastSuccess(warnMessage);
+								min = Regions.getInt("mines." + mineName + ".reset.auto.data.min");
+								sec = Regions.getInt("mines." + mineName + ".reset.auto.data.sec");
+								warnTimes = Regions.getList("mines." + mineName + ".reset.auto.warn-times");
+								
+								sec--;
+								if(sec < 0)
+								{
+									min--;
+									sec = 60 + sec;
+								}
+								
+								Regions.setInt("mines." + mineName + ".reset.auto.data.min", min);
+								Regions.setInt("mines." + mineName + ".reset.auto.data.sec", sec);
+								
+								Regions.saveData();
+								
+								SignCmd.updateAll(mineName);
+								
+								int index = warnTimes.indexOf(min + "");
+								if((index != -1 && sec == 0) && Regions.getBoolean("mines." + mineName + ".reset.auto.warn") && !Regions.getBoolean("mines." + mineName + ".silent"))
+								{
+									warnMessage = Util.parseVars(warnMessage, mineName);
+									Util.broadcastSuccess(warnMessage);
+								}
+								else if(min < 0 || (min == 0 && sec == 0))
+								{
+									String[] args = {"reset", mineName};
+									Reset.run(args, true);
+								}
 							}
 						}
-						else if(min < 0 || (min == 0 && sec == 0))
-						{
-							String[] args = {"reset", mineName};
-							Reset.run(args, true);
-						}
-					}
-				}
-            }
-        }, 0, 20L);
+		            }
+	           	}
+	        }, 0, 20L);
+		}
     }
 	
 	

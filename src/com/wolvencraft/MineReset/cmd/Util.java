@@ -96,6 +96,7 @@ public class Util
 	 */
 	public static void sendMessage(String message)
 	{
+		message = parseColors(message);
 		CommandSender sender = CommandManager.getSender();
 		sender.sendMessage(message);
 	}
@@ -109,6 +110,7 @@ public class Util
 		CommandSender sender = CommandManager.getSender();
 		String title = Language.getString("general.title-success");
 		title = parseColors(title);
+		message = parseColors(message);
 		sender.sendMessage(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
 	}
 	
@@ -120,6 +122,7 @@ public class Util
 	{
 		String title = Language.getString("general.title-success");
 		title = parseColors(title);
+		message = parseColors(message);
 		player.sendMessage(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
 	}
 	
@@ -132,6 +135,7 @@ public class Util
 		CommandSender sender = CommandManager.getSender();
 		String title = Language.getString("general.title-error");
 		title = parseColors(title);
+		message = parseColors(message);
 		sender.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 	
@@ -143,6 +147,7 @@ public class Util
 	{
 		String title = Language.getString("general.title-error");
 		title = parseColors(title);
+		message = parseColors(message);
 		player.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 	
@@ -161,6 +166,7 @@ public class Util
 			command = command + " " + args[i];
 		log(sender.getName() + " sent an invalid command (/mine" + command + ")");
 		title = parseColors(title);
+		message = parseColors(message);
 		sender.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 	
@@ -178,6 +184,7 @@ public class Util
 			command = command + " " + args[i];
 		log(sender.getName() + " was denied to use a command (/mine" + command + ")");
 		title = parseColors(title);
+		message = parseColors(message);
 		sender.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 	
@@ -197,6 +204,7 @@ public class Util
 	 */
 	public static void broadcastMessage(String message)
 	{
+		message = parseColors(message);
 		Bukkit.getServer().broadcastMessage(message);
 		return;
 	}
@@ -210,6 +218,7 @@ public class Util
 	{
 		String title = Language.getString("general.title-success");
 		title = parseColors(title);
+		message = parseColors(message);
 		Bukkit.getServer().broadcastMessage(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
 	}
 	
@@ -222,6 +231,7 @@ public class Util
 	{
 		String title = Language.getString("general.title-error");
 		title = parseColors(title);
+		message = parseColors(message);
 		Bukkit.getServer().broadcastMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 	
@@ -315,6 +325,26 @@ public class Util
 	}
 	
 	/**
+	 * Replace a list of specified values in the string with the new values
+	 * @param str String to parse
+	 * @param replaceFrom Values to be replaced
+	 * @param replaceTo Values to be substituted
+	 * @return
+	 */
+	public static String parseStringMultiple(String str, List<String> replaceFrom, List<String> replaceTo)
+	{
+		if(replaceFrom.size() != replaceTo.size())
+			return null;
+		
+		for(int i = 0; i < replaceFrom.size(); i++)
+		{
+			str = str.replaceAll(replaceFrom.get(i), replaceTo.get(i));
+		}
+		
+		return str;
+	}
+	
+	/**
 	 * Replaces the variables in the string with their values
 	 * @param str String to be parsed
 	 * @param mineName Name of the mine
@@ -393,9 +423,9 @@ public class Util
 		int[] y = {Regions.getInt("mines." + mineName + ".coordinates.pos0.y"), Regions.getInt("mines." + mineName + ".coordinates.pos1.y")};
 		int[] z = {Regions.getInt("mines." + mineName + ".coordinates.pos0.z"), Regions.getInt("mines." + mineName + ".coordinates.pos1.z")};
 		Location loc = player.getLocation();
-		if((loc.getX() > x[0] && loc.getX() < x[1])
-				&& (loc.getY() > y[0] && loc.getY() < y[1])
-				&& (loc.getZ() > z[0] && loc.getZ() < z[1]))
+		if((loc.getBlockX() > x[0] && loc.getBlockX() < x[1])
+				&& (loc.getBlockY() > y[0] && loc.getBlockY() < y[1])
+				&& (loc.getBlockZ() > z[0] && loc.getBlockZ() < z[1]))
 				{
 					return true;
 				}

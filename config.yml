@@ -1,8 +1,12 @@
 configuration:
   debug-mode: false
   language: "english"
-  teleport-out-of-the-mine-on-reset: true
   use-permissions: true
+lag:
+  automatic-resets-enabled: true
+  check-time-every: 1
+  protection-checks-enabled: true
+  teleport-out-of-the-mine-on-reset: true
 defaults:
   display-name: ""
   silent: false

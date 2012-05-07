@@ -67,6 +67,9 @@ public class Info
 			Util.sendMessage("The mine has to be reset manually");
 		}
 		
+		// generator
+		Util.sendMessage(" Generator: " + ChatColor.GOLD + "DEFAULT");
+		
 		// Protection
 		String breakingProt;
 		if(Regions.getBoolean("mines." + mineName + ".protection.breaking.enabled"))

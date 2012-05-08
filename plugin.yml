@@ -1,6 +1,6 @@
 name: MineReset
 main: com.wolvencraft.MineReset.MineReset
-version: 1.1.5
+version: 1.2.1
 commands:
   mine:
     description: MineReset help
@@ -17,6 +17,7 @@ permissions:
       MineReset.secret: true
   MineReset.user:
     description: Gives access to basic MineReset commands
+    children:
       MineReset.info: true
       MineReset.list: true
       MineReset.warp: true
@@ -42,12 +43,15 @@ permissions:
     children:
       MineReset.protection.break: true
       MineReset.protection.place: true
+  MineReset.protection.bypass:
+    description: Allows a player to bypass all checks, blacklists and whitelists
+    default: op
   MineReset.protection.break:
     description: Allows a player to break blocks in all mines
-    default: true
+    default: op
   MineReset.protection.place:
     description: Allows a player to place blocks in all mines
-    default: true
+    default: op
   MineReset.reset:
     description: Allows a player to reset a mine manually
     children:

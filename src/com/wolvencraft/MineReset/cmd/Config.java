@@ -41,10 +41,10 @@ public class Config
 		}
 		else if(args[1].equalsIgnoreCase("generate"))
 		{
-			CommandManager.getPlugin().getConfig().options().copyDefaults(true);
+			CommandManager.getPlugin().getConfig().options().copyDefaults(false);
 			CommandManager.getPlugin().saveDefaultConfig();
 			
-			CommandManager.getPlugin().getLanguageData().options().copyDefaults(true);
+			CommandManager.getPlugin().getLanguageData().options().copyDefaults(false);
 			CommandManager.getPlugin().saveLanguageData();
 			Util.sendSuccess("Configuration and language files generated successfully");
 			return;

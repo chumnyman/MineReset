@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.wolvencraft.MineReset;
 
 import java.io.File;
@@ -40,16 +38,11 @@ public class MineReset extends JavaPlugin
 	private File regionDataFile = null, languageDataFile = null, signDataFile = null;
 	
 	public static double curVer = 1.2;
-	public static int curSubVer = 1;
+	public static int curSubVer = 0;
 	
 	public void onEnable()
 	{
 		log = this.getLogger();
-		
-		core = new AUCore("http://wolvencraft.com/plugins/MineReset/index.html", log);
-		
-
-		core.checkVersion();
 		
 		manager = new CommandManager(this);
 		getCommand("mine").setExecutor(manager);
@@ -64,7 +57,19 @@ public class MineReset extends JavaPlugin
 		log.info("MineReset started");
 		log.info(mineList.size() + " mine(s) found");
 		
-		if(getConfig().getBoolean("automatic-resets-enabled"))
+		getConfig().options().copyDefaults(true);
+		saveConfig();
+		
+		getLanguageData().options().copyDefaults(true);
+		saveLanguageData();
+		
+		core = new AUCore("http://wolvencraft.com/plugins/MineReset/debug/index.html", log);
+		core.checkVersion();
+		
+		long checkEvery = getConfig().getLong("lag.check-time-every");
+		
+		
+		if(getConfig().getBoolean("lag.automatic-resets-enabled"))
 		{
 			Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable()
 			{
@@ -102,12 +107,12 @@ public class MineReset extends JavaPlugin
 								SignCmd.updateAll(mineName);
 								
 								int index = warnTimes.indexOf(min + "");
-								if((index != -1 && sec == 0) && Regions.getBoolean("mines." + mineName + ".reset.auto.warn") && !Regions.getBoolean("mines." + mineName + ".silent"))
+								if((index != -1 && sec <= 0) && Regions.getBoolean("mines." + mineName + ".reset.auto.warn") && !Regions.getBoolean("mines." + mineName + ".silent"))
 								{
 									warnMessage = Util.parseVars(warnMessage, mineName);
 									Util.broadcastSuccess(warnMessage);
 								}
-								else if(min < 0 || (min == 0 && sec == 0))
+								else if(min < 0 || (min == 0 && sec <= 0))
 								{
 									String[] args = {"reset", mineName};
 									Reset.run(args, true);
@@ -116,7 +121,7 @@ public class MineReset extends JavaPlugin
 						}
 		            }
 	           	}
-	        }, 0, 20L);
+	        }, 0, (long)(checkEvery * 20));
 		}
     }
 	

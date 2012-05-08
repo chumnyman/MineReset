@@ -86,7 +86,7 @@ public class Reset
 		if(Util.debugEnabled()) Util.log("y " + point1[1] + ", " + point2[1]);
 		if(Util.debugEnabled()) Util.log("z " + point1[2] + ", " + point2[2]);
 				
-		if(Configuration.getBoolean("configuration.teleport-out-of-the-mine-on-reset"))
+		if(Configuration.getBoolean("lag.teleport-out-of-the-mine-on-reset"))
 		{
 			Player[] onlinePlayers = Bukkit.getOnlinePlayers();
 			for(Player player : onlinePlayers)

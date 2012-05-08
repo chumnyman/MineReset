@@ -29,33 +29,30 @@ import java.net.URL;
 import java.util.logging.Logger;
 
 import com.wolvencraft.MineReset.MineReset;
+import com.wolvencraft.MineReset.cmd.Config;
+import com.wolvencraft.MineReset.config.Configuration;
 
 
-public class AUCore{
+public class AUCore
+{
 
-	private double versionNO;
-	private int subVersionNO;
+	private double version;
+	private int subVersion;
 	private String reason, source, urgency;
 	private Logger log;
+	private URL url;
 	
-	private URL uri;
-	
-	/**
-	 * Constructor for variables needed for the AutoUpdaterCore.
-	 * @param website
-	 * @param l
-	 * @param plugin
-	 * @param serv
-	 */
-	public AUCore(String website, Logger l){
+	public AUCore(String address, Logger log)
+	{
+		this.log = log;
 		
-		log = l;
-		
-		try{
-			uri = new URL(website);
-		} catch(MalformedURLException ex){
+		try
+		{
+			url = new URL(address);
+		}
+		catch(MalformedURLException ex)
+		{
 			ex.printStackTrace();
-			log.info("Malformed URL Exception. Make sure the URL is in the form 'http://www.website.domain'");
 		}	
 		
 	}
@@ -69,20 +66,46 @@ public class AUCore{
 	 */
 	public boolean checkVersion()
 	{
-		source = FetchSource.fetchSource(uri, log);
+		try
+		{
+		if(!Configuration.getBoolean("versions.check-for-new-versions"))
+			return true;
+		}
+		catch(NullPointerException npe)
+		{
+			String[] args = {"config", "generate"};
+			Config.run(args);
+		}
+		
+		source = FetchSource.fetchSource(url, log);
 		formatSource(source);
 		
-		String subVers;
-		if(MineReset.curSubVer == 0)
+		String subVers = Integer.toString(MineReset.curSubVer);
+		
+		boolean verUpToDate;
+		
+		if(Configuration.getBoolean("versions.check-for-development-builds"))
 		{
-			subVers = "";
+			if(version > MineReset.curVer)
+				verUpToDate = false;
+			else if(version == MineReset.curVer && subVersion > MineReset.curSubVer)
+				verUpToDate = false;
+			else
+				verUpToDate = true;
+		}
+		else if(Configuration.getBoolean("versions.check-for-recommended-builds"))
+		{
+			if(version > MineReset.curVer)
+				verUpToDate = false;
+			else verUpToDate = true;
 		}
 		else
 		{
-			subVers = Integer.toString(MineReset.curSubVer);
+			verUpToDate = true;
 		}
 		
-		if(versionNO > MineReset.curVer || (versionNO == MineReset.curVer && subVersionNO > MineReset.curSubVer))
+		
+		if(!verUpToDate)
 		{
 			String extraOne = "";
 			String extraTwo = "";
@@ -111,38 +134,34 @@ public class AUCore{
 			log.info("+------------------------------" + extraDash + "+");
 			log.info("| MineReset is not up to date! " + extraAll + "|");
 			log.info("| Running version : " + MineReset.curVer + "." + subVers + "      " + extraAll + "|");
-			log.info("| Latest version  : " + versionNO + "." + subVersionNO + "      " + extraAll + "|");
+			log.info("| Latest version  : " + version + "." + subVersion + "      " + extraAll + "|");
 			log.info("| Urgency         : " + urgency + extraOne + "     " + extraAll + "|");
-			log.info("| Reason          : " + reason + "  " + extraTwo + "|");
+			log.info("| Description     : " + reason + "  " + extraTwo + "|");
 			log.info("+------------------------------" + extraDash + "+");
 			return false;
 		}
-		else if(versionNO <= MineReset.curVer || (versionNO == MineReset.curVer && subVersionNO <= MineReset.curSubVer))
-		{
-			return true;
-		}
-		
-		return false;
+		else return true;
 		
 	}
 	
 	private void formatSource(String source)
 	{
-		String parts[] = source.split("\\@");
+		String str[] = source.split("\\@");
 		
 		try
 		{
-			versionNO = Double.parseDouble(parts[1]);
-			subVersionNO = Integer.parseInt(parts[2]);
-		} catch (NumberFormatException ex)
+			version = Double.parseDouble(str[1]);
+			subVersion = Integer.parseInt(str[2]);
+		}
+		catch (NumberFormatException ex)
 		{
 			ex.printStackTrace();
 			log.info("Error while parsing version number!");
 		}
 		
-		urgency = parts[3];
+		urgency = str[3];
 			
-		reason = parts[4];
+		reason = str[4];
 	}
 	
 	public String getUrgency()
@@ -157,11 +176,11 @@ public class AUCore{
 	
 	public double getVersion()
 	{
-		return versionNO;
+		return version;
 	}
 	
 	public int getSubVersion()
 	{
-		return subVersionNO;
+		return subVersion;
 	}
 }

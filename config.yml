@@ -7,6 +7,12 @@ lag:
   check-time-every: 1
   protection-checks-enabled: true
   teleport-out-of-the-mine-on-reset: true
+versions:
+  check-for-new-versions: true
+  check-for-recommended-builds: true
+  check-for-development-builds: false
+  remind-on-login: true
+  permission-node: "minereset.edit"
 defaults:
   display-name: ""
   silent: false

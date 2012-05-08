@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.Util;
+import com.wolvencraft.MineReset.config.Configuration;
 
 import couk.Adamki11s.AutoUpdater.AUCore;
 
@@ -32,7 +33,12 @@ public class PlayerLoginListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerInteract(PlayerJoinEvent event)
 	{
-		if(Util.playerHasPermission(event.getPlayer(), "edit"))
+		if(!Configuration.getBoolean("versions.remind-on-login"))
+			return;
+		
+		String perm = Configuration.getString("versions.permission-node");
+		
+		if(event.getPlayer().hasPermission(perm));
 		{
 			if(!core.checkVersion())
 			{

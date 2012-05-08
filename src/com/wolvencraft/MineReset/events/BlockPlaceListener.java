@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.Util;
+import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Regions;
 
 public class BlockPlaceListener implements Listener
@@ -29,12 +30,13 @@ public class BlockPlaceListener implements Listener
 		
 		Player player = event.getPlayer();
 		
-		if(Util.playerHasPermission(player, "protection.place"))
+		if(Util.playerHasPermission(player, "protection.bypass") || !Configuration.getBoolean("lag.protection-checks-enabled"))
 		{
+			if(Util.debugEnabled()) Util.log("Bypass permission check passed");
 			return;
 		}
 		
-		if(Util.debugEnabled()) Util.log("Permissions check passed");
+		if(Util.debugEnabled()) Util.log("Bypass permission check failed");
 		
 		int padding;
 		int paddingTop;
@@ -45,54 +47,67 @@ public class BlockPlaceListener implements Listener
 		
 		if(regionList.size() == 0) return;
 		
+		Block b = event.getBlockPlaced();
+		
 		for(String mineName : regionList )
 		{
 			if(Util.debugEnabled()) Util.log("For mine " + mineName);
+			
 			if(Regions.getBoolean("mines." + mineName + ".protection.placement.enabled"))
 			{
-				if(!Util.playerHasPermission(player, "protection.place." + mineName) && !Util.playerHasPermission(player, "protection.place"))
+				if(Util.debugEnabled()) Util.log(mineName + " has protection enabled");
+				Location blockLocation = b.getLocation();
+				padding = Regions.getInt("mines." + mineName + ".protection.padding");
+				paddingTop = Regions.getInt("mines." + mineName + ".protection.padding-top");
+				String mineWorld = Regions.getString("mines." + mineName + ".coordinates.world");
+				int[] x = {Regions.getInt("mines." + mineName + ".coordinates.pos0.x"), Regions.getInt("mines." + mineName + ".coordinates.pos1.x")};
+				int[] y = {Regions.getInt("mines." + mineName + ".coordinates.pos0.y"), Regions.getInt("mines." + mineName + ".coordinates.pos1.y")};
+				int[] z = {Regions.getInt("mines." + mineName + ".coordinates.pos0.z"), Regions.getInt("mines." + mineName + ".coordinates.pos1.z")};
+				
+				if(mineWorld.equals(blockLocation.getWorld().getName())
+						&& (blockLocation.getBlockX() >= (x[0] - padding) && blockLocation.getBlockX() <= (x[1] + padding))
+						&& (blockLocation.getBlockY() >= (y[0] - padding) && blockLocation.getBlockY() <= (y[1] + paddingTop))
+						&& (blockLocation.getBlockZ() >= (z[0] - padding) && blockLocation.getBlockZ() <= (z[1] + padding)))
 				{
-					if(Util.debugEnabled()) Util.log("The player does not have protection.place." + mineName);
-					Block b = event.getBlockPlaced();
-					Location blockLocation = b.getLocation();
-					padding = Regions.getInt("mines." + mineName + ".protection.padding");
-					paddingTop = Regions.getInt("mines." + mineName + ".protection.padding-top");
-					String mineWorld = Regions.getString("mines." + mineName + ".coordinates.world");
-					int[] x = {Regions.getInt("mines." + mineName + ".coordinates.pos0.x"), Regions.getInt("mines." + mineName + ".coordinates.pos1.x")};
-					int[] y = {Regions.getInt("mines." + mineName + ".coordinates.pos0.y"), Regions.getInt("mines." + mineName + ".coordinates.pos1.y")};
-					int[] z = {Regions.getInt("mines." + mineName + ".coordinates.pos0.z"), Regions.getInt("mines." + mineName + ".coordinates.pos1.z")};
-					
-					if(mineWorld.equals(blockLocation.getWorld().getName())
-							&& (blockLocation.getBlockX() >= (x[0] - padding) && blockLocation.getBlockX() <= (x[1] + padding))
-							&& (blockLocation.getBlockY() >= (y[0] - padding) && blockLocation.getBlockY() <= (y[1] + paddingTop))
-							&& (blockLocation.getBlockZ() >= (z[0] - padding) && blockLocation.getBlockZ() <= (z[1] + padding)))
+					if(Util.debugEnabled()) Util.log("Player placed a block in the mine region");
+
+					if(!Util.playerHasPermission(player, "protection.place." + mineName) && !Util.playerHasPermission(player, "protection.place"))
 					{
-						if(Util.debugEnabled()) Util.log("Player placed a block in the mine region");
-						if(Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.enabled"))
-						{
-							List<String> blacklist = Regions.getList("mines." + mineName + ".protection.placement.blacklist.blocks");
-							boolean whitelist = Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.whitelist");
-							
-							for(String block : blacklist)
+						if(Util.debugEnabled()) Util.log("Second permissions check passed");
+						Util.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
+						event.setCancelled(true);
+						return;
+					}
+					
+					if(Util.debugEnabled()) Util.log("Second permissions check failed");
+					
+					if(Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.enabled"))
+					{
+						List<String> blacklist = Regions.getList("mines." + mineName + ".protection.placement.blacklist.blocks");
+						boolean whitelist = Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.whitelist");
+						boolean found = false;
+						
+						for(String block : blacklist)
+						{	
+							String blockTypeId = b.getTypeId() + "";
+							if(Util.debugEnabled()) Util.log(blockTypeId + " ? " + block);
+							if(blockTypeId.equals(block))
 							{
-								if(block.equals("326")) block = 8 + "";
-								if(block.equals("329")) block = 10 + "";
-								
-								String blockTypeId = b.getTypeId() + "";
-								if(Util.debugEnabled()) Util.log(blockTypeId + " ? " + block);
-								if((whitelist && !blockTypeId.equals(block)) || (!whitelist && blockTypeId.equals(block)))
-								{
-									Util.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
-									event.setCancelled(true);
-									return;
-								}
+								found = true;
 							}
 						}
-						else
+						
+						if((whitelist && !found) || (!whitelist && found))
 						{
-							Util.sendPlayerError(player, "You are not allowed to place blocks in this mine");
+							Util.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
 							event.setCancelled(true);
+							return;
 						}
+					}
+					else
+					{
+						Util.sendPlayerError(player, "You are not allowed to place blocks in this mine");
+						event.setCancelled(true);
 					}
 				}
 			}

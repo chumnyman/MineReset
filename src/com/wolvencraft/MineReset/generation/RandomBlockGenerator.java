@@ -2,39 +2,52 @@ package com.wolvencraft.MineReset.generation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.wolvencraft.MineReset.cmd.Util;
 
 public class RandomBlockGenerator {
  
-    List<String> bin;
+    List<MineBlock> blocks;
     
     public RandomBlockGenerator (List<String> blockList, List<String> weightList)
     {
-    	bin = new ArrayList<String>(100000);
-    	
-    	int counter = 0;
-    	if(Util.debugEnabled()) Util.log(blockList.size() + " blocks in a queue");
-    	for(int i = 0; i < blockList.size(); i++)
-    	{
-    		for(int j = 0; j < (Double.parseDouble(weightList.get(i)) * 1000); j++)
-    		{
-    			bin.add(blockList.get(i));
-    			counter++;
-    		}
-			if(Util.debugEnabled()) Util.log("Added " + counter + " "+ blockList.get(i) + " to the bin");
-			counter = 0;
+    	blocks = new ArrayList<MineBlock>();
+    	double total = 0;
+    	for (String weight : weightList) {
+    	    total += Double.parseDouble(weight);
     	}
-    	
-		if(Util.debugEnabled()) Util.log(bin.size() + " blocks in the bin");
+    	double tally = 0;
+    	for (int i = 0; i < blockList.size(); i++) {
+    	    tally += Double.parseDouble(weightList.get(i)) / total;
+    	    blocks.add(new MineBlock(Integer.parseInt(blockList.get(i)), Double.parseDouble(weightList.get(i))));
+    	    if (Util.debugEnabled()) Util.log("Block " + Integer.parseInt(blockList.get(i)) + " was assigned the tally weight of " + tally);
+    	}
     }
     
     public int next()
     {
-    	Random seed = new Random();
-    	
-    	int rand = Integer.parseInt(bin.get(seed.nextInt(bin.size())));
-    	return rand;
+    	double r = Math.random();
+    	for (MineBlock block : blocks) {
+    	    if (r <= block.getChance()) {
+    	        return block.getBlockId();
+    	    }
+    	}
+    	//At this point, we've got a problem folks.
+    	return -1;
+    }
+    
+    private static class MineBlock {
+        private int blockId;
+        private double chance;
+        public MineBlock(int blockId, double chance) {
+            this.blockId = blockId;
+            this.chance = chance;
+        }
+        public int getBlockId() {
+            return blockId;
+        }
+        public double getChance() {
+            return chance;
+        }
     }
 }

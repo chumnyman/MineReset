@@ -3,7 +3,8 @@ package com.wolvencraft.MineReset.generation;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wolvencraft.MineReset.cmd.Util;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Util;
 
 public class RandomBlockGenerator {
  
@@ -20,7 +21,7 @@ public class RandomBlockGenerator {
     	for (int i = 0; i < blockList.size(); i++) {
     	    tally += Double.parseDouble(weightList.get(i)) / total;
     	    blocks.add(new MineBlock(Integer.parseInt(blockList.get(i)), Double.parseDouble(weightList.get(i))));
-    	    if (Util.debugEnabled()) Util.log("Block " + Integer.parseInt(blockList.get(i)) + " was assigned the tally weight of " + tally);
+    	    if (Util.debugEnabled()) Message.log("Block " + Integer.parseInt(blockList.get(i)) + " was assigned the tally weight of " + tally);
     	}
     }
     

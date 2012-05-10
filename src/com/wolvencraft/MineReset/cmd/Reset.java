@@ -12,10 +12,10 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.generation.RandomBlockGenerator;
 import com.wolvencraft.MineReset.util.Broadcast;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Mine;
-import com.wolvencraft.MineReset.util.RandomBlockGenerator;
 import com.wolvencraft.MineReset.util.Util;
 
 public class Reset

@@ -281,6 +281,10 @@ public class Edit
 				Regions.setBoolean("mines." + curMine + ".silent", true);
 			}
 		}
+		else if(args[0].equalsIgnoreCase("generator"))
+		{
+			
+		}
 		else
 		{
 			Message.sendInvalid(args);

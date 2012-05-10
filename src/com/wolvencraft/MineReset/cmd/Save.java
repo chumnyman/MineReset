@@ -8,6 +8,9 @@ import org.bukkit.entity.Player;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Mine;
+import com.wolvencraft.MineReset.util.Util;
 
 public class Save
 {
@@ -15,46 +18,46 @@ public class Save
 	{
 		if(!Util.senderHasPermission("edit"))
 		{
-			Util.sendDenied(args);
+			Message.sendDenied(args);
 			return;
 		}
 		
-		if(Util.debugEnabled()) Util.log("Intitiating the creation of a new mine");
+		if(Util.debugEnabled()) Message.log("Intitiating the creation of a new mine");
 		if(args.length != 2)
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 			return;
 		}
 		
-		if(Util.debugEnabled()) Util.log("Argument check passed");
+		if(Util.debugEnabled()) Message.log("Argument check passed");
 		
 		Location[] loc = CommandManager.getLocation();
 		if(loc == null || loc[0] == null || loc[1] == null)
 		{
-			Util.sendError("Make a selection first");
+			Message.sendError("Make a selection first");
 			return;
 		}
 		
-		if(Util.debugEnabled()) Util.log(loc[0].getWorld().getName() + " ?= " + loc[1].getWorld().getName());
+		if(Util.debugEnabled()) Message.log(loc[0].getWorld().getName() + " ?= " + loc[1].getWorld().getName());
 		
 		if(!loc[0].getWorld().getName().equalsIgnoreCase(loc[1].getWorld().getName()))
 		{
-			Util.sendError("Your selection points are in different worlds");
+			Message.sendError("Your selection points are in different worlds");
 			return;
 		}
 		
-		if(Util.debugEnabled()) Util.log("Selections checks passed");
+		if(Util.debugEnabled()) Message.log("Selections checks passed");
 		
 		String mineName = args[1];
-		if(Util.mineExists(mineName))
+		if(Mine.exists(mineName))
 		{
-			Util.sendError("Mine '" + mineName + "' already exists!");
+			Message.sendError("Mine '" + mineName + "' already exists!");
 			return;
 		}
 		
-		if(Util.debugEnabled()) Util.log("Mine existance check passed");
+		if(Util.debugEnabled()) Message.log("Mine existance check passed");
 		
-		if(Util.debugEnabled()) Util.log("Reading default values");
+		if(Util.debugEnabled()) Message.log("Reading default values");
 		
 		// - Fetching the command sender
 		
@@ -143,7 +146,7 @@ public class Save
 		
 		
 		
-		if(Util.debugEnabled()) Util.log("Finished reading defaults");
+		if(Util.debugEnabled()) Message.log("Finished reading defaults");
 		
 		// = Setting values to the mine
 		String baseNode = "mines." + mineName;
@@ -151,7 +154,7 @@ public class Save
 		Regions.setString(baseNode + ".display-name", displayName);
 		Regions.setBoolean(baseNode + ".silent", silent);
 		
-		if(Util.debugEnabled()) Util.log("Writing blacklist data");
+		if(Util.debugEnabled()) Message.log("Writing blacklist data");
 		
 		// = = Blacklist
 		baseNode = "mines." + mineName + ".blacklist";
@@ -159,7 +162,7 @@ public class Save
 		Regions.setBoolean(baseNode + ".whitelist", whitelistEnabled);
 		Regions.setList(baseNode + ".blocks", blacklistedBlocks);
 		
-		if(Util.debugEnabled()) Util.log("Writing protection data");
+		if(Util.debugEnabled()) Message.log("Writing protection data");
 		
 		// = = Protection
 		baseNode = "mines." + mineName + ".protection";
@@ -183,7 +186,7 @@ public class Save
 		Regions.setBoolean(baseNode + ".blacklist.whitelist", protectionPlacingWhitelistEnabled);
 		Regions.setList(baseNode + ".blacklist.blocks", protectionPlacingBlacklistedBlocks);
 		
-		if(Util.debugEnabled()) Util.log("Writing coordinates");
+		if(Util.debugEnabled()) Message.log("Writing coordinates");
 		
 		// = = Coordinates
 		baseNode = "mines." + mineName + ".coordinates";
@@ -206,7 +209,7 @@ public class Save
 		Regions.setDouble(baseNode + ".pos2.yaw", player.getLocation().getYaw());
 		Regions.setDouble(baseNode + ".pos2.pitch", player.getLocation().getPitch());
 		
-		if(Util.debugEnabled()) Util.log("Writing reset data");
+		if(Util.debugEnabled()) Message.log("Writing reset data");
 		
 		// = = Materials
 		baseNode = "mines." + mineName + ".materials";
@@ -231,16 +234,16 @@ public class Save
 		mineList.add(mineName);
 		Regions.setList("data.list-of-mines", mineList);
 		
-		if(Util.debugEnabled()) Util.log("Mine creation completed");
+		if(Util.debugEnabled()) Message.log("Mine creation completed");
 		
 		CommandManager.setLocation(null, 0);
 		CommandManager.setLocation(null, 1);
 		
 		Regions.saveData();
 		
-		if(Util.debugEnabled()) Util.log("Data saved successfully");
+		if(Util.debugEnabled()) Message.log("Data saved successfully");
 		CommandManager.setMine(mineName);
-		Util.sendSuccess("Mine '" + mineName + "' created successfully!");
+		Message.sendSuccess("Mine '" + mineName + "' created successfully!");
 		return;
 	}
 }

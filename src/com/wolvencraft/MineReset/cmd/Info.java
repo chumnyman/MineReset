@@ -7,6 +7,9 @@ import org.bukkit.Material;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Mine;
+import com.wolvencraft.MineReset.util.Util;
 
 public class Info
 {
@@ -14,7 +17,7 @@ public class Info
 	{
 		if(!Util.senderHasPermission("info"))
 		{
-			Util.sendDenied(args);
+			Message.sendDenied(args);
 			return;
 		}
 		
@@ -33,13 +36,13 @@ public class Info
 		}
 		if(args.length > 2)
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 			return;
 		}
 		
-		if(args.length != 1 && !Util.mineExists(args[1]))
+		if(args.length != 1 && !Mine.exists(args[1]))
 		{
-			Util.sendError("Mine '" + args[1] + "' does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
+			Message.sendError("Mine '" + args[1] + "' does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
 			return;
 		}
 		
@@ -50,7 +53,7 @@ public class Info
 		// Title
 		String displayName = Regions.getString("mines." + mineName + ".display-name");
 		if(displayName.equals("")) displayName = mineName;
-		Util.sendMessage(ChatColor.DARK_RED + "                    -=[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.RED + " ]=-");
+		Message.sendMessage(ChatColor.DARK_RED + "                    -=[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.RED + " ]=-");
 		
 		// Reset
 		boolean autoReset = Regions.getBoolean("mines." + mineName + ".reset.auto.reset");
@@ -60,15 +63,15 @@ public class Info
 		
 		if(autoReset)
 		{
-			Util.sendMessage(" Resets every " + ChatColor.GOLD +  autoResetTime + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetMin + ChatColor.WHITE + " minutes " + ChatColor.GOLD + nextResetSec + ChatColor.WHITE + " seconds");
+			Message.sendMessage(" Resets every " + ChatColor.GOLD +  autoResetTime + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetMin + ChatColor.WHITE + " minutes " + ChatColor.GOLD + nextResetSec + ChatColor.WHITE + " seconds");
 		}
 		else
 		{
-			Util.sendMessage("The mine has to be reset manually");
+			Message.sendMessage("The mine has to be reset manually");
 		}
 		
 		// generator
-		Util.sendMessage(" Generator: " + ChatColor.GOLD + "DEFAULT");
+		Message.sendMessage(" Generator: " + ChatColor.GOLD + "DEFAULT");
 		
 		// Protection
 		String breakingProt;
@@ -108,14 +111,14 @@ public class Info
 			placementProt = ChatColor.RED + "OFF";
 		}
 		
-		Util.sendMessage(ChatColor.BLUE + " Protection:");
-		Util.sendMessage("Breaking: " + breakingProt + ChatColor.WHITE + " | Placement: " + placementProt + ChatColor.WHITE + " ");
+		Message.sendMessage(ChatColor.BLUE + " Protection:");
+		Message.sendMessage("Breaking: " + breakingProt + ChatColor.WHITE + " | Placement: " + placementProt + ChatColor.WHITE + " ");
 		
-		List<String> finalList = Util.getSortedList(mineName);
+		List<String> finalList = Mine.getSortedList(mineName);
 		
-		Util.sendMessage(ChatColor.BLUE + " Composition:");
+		Message.sendMessage(ChatColor.BLUE + " Composition:");
 		for(String message : finalList)
-		{			Util.sendMessage(message);
+		{			Message.sendMessage(message);
 		}
 		
 		// Blacklist
@@ -124,13 +127,13 @@ public class Info
 		{
 			if(Regions.getBoolean("mines." + mineName + ".blacklist.whitelist"))
 			{
-				Util.sendMessage(ChatColor.BLUE + " Whitelist:");
+				Message.sendMessage(ChatColor.BLUE + " Whitelist:");
 			}
-			else Util.sendMessage(ChatColor.BLUE + " Blacklist:");
+			else Message.sendMessage(ChatColor.BLUE + " Blacklist:");
 			
 			for(String block : blacklistBlocks)
 			{
-				Util.sendMessage(" - " + Material.getMaterial(Integer.parseInt(block)).toString().toLowerCase().replace("_", " "));
+				Message.sendMessage(" - " + Material.getMaterial(Integer.parseInt(block)).toString().toLowerCase().replace("_", " "));
 			}
 		}
 		return;

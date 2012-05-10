@@ -14,6 +14,8 @@ public class Configuration
 	public static String getString(String node)
 	{
 		String stringToReturn = CommandManager.getPlugin().getConfig().getString(node);
+		if(!CommandManager.getPlugin().getConfig().isSet(node))
+			CommandManager.getPlugin().getConfig().set(node, stringToReturn);
 		return stringToReturn;
 	}
 	
@@ -25,6 +27,8 @@ public class Configuration
 	public static boolean getBoolean(String node)
 	{
 		boolean booleanToReturn = CommandManager.getPlugin().getConfig().getBoolean(node);
+		if(!CommandManager.getPlugin().getConfig().isSet(node))
+			CommandManager.getPlugin().getConfig().set(node, booleanToReturn);
 		return booleanToReturn;
 	}
 	
@@ -36,6 +40,8 @@ public class Configuration
 	public static int getInt(String node)
 	{
 		int intToReturn = CommandManager.getPlugin().getConfig().getInt(node);
+		if(!CommandManager.getPlugin().getConfig().isSet(node))
+			CommandManager.getPlugin().getConfig().set(node, intToReturn);
 		return intToReturn;
 	}
 	
@@ -46,8 +52,10 @@ public class Configuration
 	 */
 	public static double getDouble(String node)
 	{
-		double intToReturn = CommandManager.getPlugin().getConfig().getDouble(node);
-		return intToReturn;
+		double doubleToReturn = CommandManager.getPlugin().getConfig().getDouble(node);
+		if(!CommandManager.getPlugin().getConfig().isSet(node))
+			CommandManager.getPlugin().getConfig().set(node, doubleToReturn);
+		return doubleToReturn;
 	}
 	
 	/**
@@ -58,6 +66,8 @@ public class Configuration
 	public static List<String> getList(String node)
 	{
 		List<String> listToReturn = CommandManager.getPlugin().getConfig().getStringList(node);
+		if(!CommandManager.getPlugin().getConfig().isSet(node))
+			CommandManager.getPlugin().getConfig().set(node, listToReturn);
 		return listToReturn;
 	}
 }

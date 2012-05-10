@@ -4,6 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Util;
 
 public class Select
 {
@@ -11,7 +13,7 @@ public class Select
 	{
 		if(!Util.isPlayer() || !Util.senderHasPermission("edit"))
 		{
-			Util.sendDenied(args);
+			Message.sendDenied(args);
 			return;
 		}
 		
@@ -22,7 +24,7 @@ public class Select
 		}
 		if(args.length > 2)
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 			return;
 		}
 		
@@ -32,30 +34,30 @@ public class Select
 		if(args[1].equalsIgnoreCase("hpos1"))
 		{
 			loc = player.getTargetBlock(null, 100).getLocation();
-			Util.sendSuccess ("First point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+			Message.sendSuccess ("First point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 			CommandManager.setLocation(loc, 0);
 		}
 		else if(args[1].equalsIgnoreCase("pos1"))
 		{
 			loc = player.getLocation();
-			Util.sendSuccess ("First point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+			Message.sendSuccess ("First point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 			CommandManager.setLocation(loc, 0);
 		}
 		else if(args[1].equalsIgnoreCase("hpos2"))
 		{
 			loc = player.getTargetBlock(null, 100).getLocation();
-			Util.sendSuccess ("Second point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+			Message.sendSuccess ("Second point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 			CommandManager.setLocation(loc, 1);
 		}
 		else if(args[1].equalsIgnoreCase("pos2"))
 		{
 			loc = player.getLocation();
-			Util.sendSuccess ("Second point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+			Message.sendSuccess ("Second point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 			CommandManager.setLocation(loc, 1);
 		}
 		else
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 			return;
 		}
 		

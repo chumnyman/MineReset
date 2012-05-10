@@ -13,6 +13,8 @@ import org.bukkit.block.Sign;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Signs;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Util;
 
 public class SignCmd
 {
@@ -20,7 +22,7 @@ public class SignCmd
 	{
 		if(!Util.senderHasPermission("edit"))
 		{
-			Util.sendDenied(args);
+			Message.sendDenied(args);
 			return;
 		}
 		
@@ -31,7 +33,7 @@ public class SignCmd
 		}
 		else if(args.length != 2)
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 			return;
 		}
 		
@@ -39,7 +41,7 @@ public class SignCmd
 		Block b = player.getTargetBlock(null, 100);
 		if(b.getType() != Material.WALL_SIGN && b.getType() != Material.SIGN_POST)
 		{
-			Util.sendError("The targeted block is not a sign");
+			Message.sendError("The targeted block is not a sign");
 			return;
 		}
 		
@@ -50,13 +52,13 @@ public class SignCmd
 			if(mineName == null)
 			{
 				String error = Language.getString("general.mine-not-selected");
-				Util.sendError(error);
+				Message.sendError(error);
 				return;
 			}
 			
 			if(Signs.signExists(b))
 			{
-				Util.sendError("This sign has been already defined");
+				Message.sendError("This sign has been already defined");
 				return;
 			}
 			
@@ -90,7 +92,7 @@ public class SignCmd
 			Signs.setList("data.list-of-signs", signList);
 			Signs.saveData();
 			
-			Util.sendSuccess("A new sign was defined successfully");
+			Message.sendSuccess("A new sign was defined successfully");
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("reset"))
@@ -99,29 +101,29 @@ public class SignCmd
 			if(mineName == null)
 			{
 				String error = Language.getString("general.mine-not-selected");
-				Util.sendError(error);
+				Message.sendError(error);
 				return;
 			}
 			
 			if(!Signs.signExists(b))
 			{
-				Util.sendError("This sign has not been defined for this mine yet");
+				Message.sendError("This sign has not been defined for this mine yet");
 				return;
 			}
 			String id = Signs.getId(b);
 			
 			if(Signs.getBoolean("signs." + id + ".reset"))
 			{
-				Util.sendSuccess("Right-clicking on this sign will no longer result in a reset of " + mineName);
+				Message.sendSuccess("Right-clicking on this sign will no longer result in a reset of " + mineName);
 				Signs.setBoolean("signs." + id + ".reset", false);
 			}
 			else
 			{
-				Util.sendSuccess("Right-clicking on this sign will now result in a reset of " + mineName);
+				Message.sendSuccess("Right-clicking on this sign will now result in a reset of " + mineName);
 				Signs.setBoolean("signs." + id + ".reset", true);
 			}
 			
-			Util.sendSuccess("The sign was successfully deleted");
+			Message.sendSuccess("The sign was successfully deleted");
 			Signs.saveData();
 			return;
 		}
@@ -129,7 +131,7 @@ public class SignCmd
 		{
 			if(!Signs.signExists(b))
 			{
-				Util.sendError("This sign has not yet been defined");
+				Message.sendError("This sign has not yet been defined");
 				return;
 			}
 			
@@ -156,19 +158,19 @@ public class SignCmd
 			signList.remove(signList.indexOf(id));
 			Signs.setList("data.list-of-signs", signList);
 			
-			Util.sendSuccess("The sign is no longer defined. You can destroy it now.");
+			Message.sendSuccess("The sign is no longer defined. You can destroy it now.");
 			Signs.saveData();
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("update"))
 		{
 			updateAll(null);
-			Util.sendSuccess("All signs were forced to update");
+			Message.sendSuccess("All signs were forced to update");
 			return;
 		}
 		else
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 			return;
 		}
 	}
@@ -215,7 +217,7 @@ public class SignCmd
 		}
 		else
 		{
-			if(Util.debugEnabled()) Util.log("Updating everything");
+			if(Util.debugEnabled()) Message.log("Updating everything");
 			for(String id : signList)
 			{
 				Location loc = new Location(

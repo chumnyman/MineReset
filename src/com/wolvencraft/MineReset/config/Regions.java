@@ -14,6 +14,8 @@ public class Regions
 	public static String getString(String node)
 	{
 		String stringToReturn = CommandManager.getPlugin().getRegionData().getString(node);
+		if(stringToReturn == null)
+			stringToReturn = Configuration.getString(node);
 		return stringToReturn;
 	}
 	
@@ -35,8 +37,10 @@ public class Regions
 	 */
 	public static int getInt(String node)
 	{
-		int intToReturn = CommandManager.getPlugin().getRegionData().getInt(node);
-		return intToReturn;
+		Integer intToReturn = CommandManager.getPlugin().getRegionData().getInt(node);
+		if(intToReturn == null)
+			intToReturn = Configuration.getInt(node);
+		return intToReturn.intValue();
 	}
 	
 	/**
@@ -46,8 +50,10 @@ public class Regions
 	 */
 	public static double getDouble(String node)
 	{
-		double intToReturn = CommandManager.getPlugin().getRegionData().getDouble(node);
-		return intToReturn;
+		Double doubleToReturn = CommandManager.getPlugin().getRegionData().getDouble(node);
+		if(doubleToReturn == null)
+			doubleToReturn = Configuration.getDouble(node);
+		return doubleToReturn.doubleValue();
 	}
 	
 	/**
@@ -58,6 +64,8 @@ public class Regions
 	public static List<String> getList(String node)
 	{
 		List<String> listToReturn = CommandManager.getPlugin().getRegionData().getStringList(node);
+		if(listToReturn == null)
+			listToReturn = Configuration.getList(node);
 		return listToReturn;
 	}
 	

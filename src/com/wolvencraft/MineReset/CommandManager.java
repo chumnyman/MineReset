@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.cmd.*;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Util;
 
 public class CommandManager implements CommandExecutor
 {
@@ -56,22 +58,26 @@ public class CommandManager implements CommandExecutor
 			Protection.run(args);
 		else if(args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("fill"))
 			Reset.run(args, false);
+		else if(args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("empty"))
+			Clear.run(args, false);
 		else if(args[0].equalsIgnoreCase("save") || args[0].equalsIgnoreCase("s"))
 			Save.run(args);
 		else if(args[0].equalsIgnoreCase("select") || args[0].equalsIgnoreCase("sel"))
 			Select.run(args);
 		else if(args[0].equalsIgnoreCase("sign") || args[0].equalsIgnoreCase("signs"))
 			SignCmd.run(args);
+		else if(args[0].equalsIgnoreCase("time"))
+			Time.run(args);
 		else if(args[0].equalsIgnoreCase("warp") || args[0].equalsIgnoreCase("tp"))
 			Teleport.run(args);
-		else Util.sendInvalid(args);
+		else Message.sendInvalid(args);
 			
 		String argString = "/mine";
 		for(int i = 0; i < args.length; i++)
 		{
 			argString = argString + " " + args[i];
 		}
-		if(Util.debugEnabled() && Util.isPlayer()) Util.log(player.getName() + ": " + argString);
+		if(Util.debugEnabled() && Util.isPlayer()) Message.log(player.getName() + ": " + argString);
 		
 		return true;
 	}

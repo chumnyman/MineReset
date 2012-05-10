@@ -5,6 +5,8 @@ import java.util.List;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Util;
 
 
 public class Auto
@@ -13,7 +15,7 @@ public class Auto
 	{
 		if(!Util.senderHasPermission("edit"))
 		{
-			Util.sendDenied(args);
+			Message.sendDenied(args);
 			return;
 		}
 		
@@ -24,7 +26,7 @@ public class Auto
 		}
 		else if(args.length < 2 || args.length > 4)
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 			return;
 		}
 
@@ -32,7 +34,7 @@ public class Auto
 		if(mineName == null)
 		{
 			String error = Language.getString("general.mine-not-selected");
-			Util.sendError(error);
+			Message.sendError(error);
 			return;
 		}
 		
@@ -41,12 +43,12 @@ public class Auto
 		{
 			if(Regions.getBoolean(baseNode + ".reset"))
 			{
-				Util.sendSuccess("'" + mineName + "' will no longer reset automatically.");
+				Message.sendSuccess("'" + mineName + "' will no longer reset automatically.");
 				Regions.setBoolean(baseNode + ".reset", false);
 			}
 			else
 			{
-				Util.sendSuccess("'" + mineName + "' will now reset automatically.");
+				Message.sendSuccess("'" + mineName + "' will now reset automatically.");
 				Regions.setBoolean(baseNode + ".reset", true);
 			}
 			Regions.saveData();
@@ -56,11 +58,11 @@ public class Auto
 		{
 			if(!Util.isNumeric(args[2]))
 			{
-				Util.sendInvalid(args);
+				Message.sendInvalid(args);
 				return;
 			}
 			int time = (int)Double.parseDouble(args[2]);
-			Util.sendSuccess("'" + mineName + "' will now reset every " + time + " minute(s).");
+			Message.sendSuccess("'" + mineName + "' will now reset every " + time + " minute(s).");
 			Regions.setInt(baseNode + ".reset-time", time);
 			Regions.saveData();
 			return;
@@ -71,12 +73,12 @@ public class Auto
 			{
 				if(Regions.getBoolean(baseNode + ".warn"))
 				{
-					Util.sendSuccess("Players will NOT be warned before '" + mineName + "' resets");
+					Message.sendSuccess("Players will NOT be warned before '" + mineName + "' resets");
 					Regions.setBoolean(baseNode + ".warn", false);
 				}
 				else
 				{
-					Util.sendSuccess("Players WILL be warned before '" + mineName + "' resets");
+					Message.sendSuccess("Players WILL be warned before '" + mineName + "' resets");
 					Regions.setBoolean(baseNode + ".warn", true);
 				}
 				Regions.saveData();
@@ -86,30 +88,30 @@ public class Auto
 			{
 				if(args.length != 4)
 				{
-					Util.sendInvalid(args);
+					Message.sendInvalid(args);
 					return;
 				}
 				if(!Util.isNumeric(args[3]))
 				{
-					Util.sendInvalid(args);
+					Message.sendInvalid(args);
 					return;
 				}
 				int time = (int)Double.parseDouble(args[3]);
 				if(time <= 0)
 				{
-					Util.sendError("Time cannot be negative, dummy");
+					Message.sendError("Time cannot be negative, dummy");
 					return;
 				}
 				if(time > Regions.getInt(baseNode + ".reset-time"))
 				{
-					Util.sendError("Time cannot be set to a value greater then the reset time");
+					Message.sendError("Time cannot be set to a value greater then the reset time");
 					return;
 				}
 				List<String> warnList = Regions.getList(baseNode + ".warn-times");
 				warnList.add(time + "");
 				Regions.setList(baseNode + ".warn-times", warnList);
 				Regions.saveData();
-				Util.sendSuccess(mineName + " will now send warnings " + time + " minute(s) before the reset");
+				Message.sendSuccess(mineName + " will now send warnings " + time + " minute(s) before the reset");
 				return;
 			}
 			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-"))
@@ -117,12 +119,12 @@ public class Auto
 
 				if(args.length != 4)
 				{
-					Util.sendInvalid(args);
+					Message.sendInvalid(args);
 					return;
 				}
 				if(!Util.isNumeric(args[3]))
 				{
-					Util.sendInvalid(args);
+					Message.sendInvalid(args);
 					return;
 				}
 				int time = (int)Double.parseDouble(args[3]);
@@ -130,24 +132,24 @@ public class Auto
 				int index = warnList.indexOf(time + "");
 				if(index == -1)
 				{
-					Util.sendError("'" + mineName + "' does not send a warning " + time + " minute(s) before the reset");
+					Message.sendError("'" + mineName + "' does not send a warning " + time + " minute(s) before the reset");
 					return;
 				}
 				warnList.remove(index);
 				Regions.setList(baseNode + ".warn-times", warnList);
 				Regions.saveData();
-				Util.sendSuccess(mineName + " will no longer send a warning " + time + " minute(s) before the reset");
+				Message.sendSuccess(mineName + " will no longer send a warning " + time + " minute(s) before the reset");
 				return;
 			}
 			else
 			{
-				Util.sendInvalid(args);
+				Message.sendInvalid(args);
 				return;
 			}
 		}
 		else
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 			return;
 		}
 	}

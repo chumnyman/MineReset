@@ -16,8 +16,11 @@ import com.wolvencraft.MineReset.cmd.*;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.events.*;
+import com.wolvencraft.MineReset.util.Broadcast;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Util;
 
-import couk.Adamki11s.AutoUpdater.AUCore;
+import couk.Adamki11s.AutoUpdater.Updater;
 
 /**
  * Mine Reset
@@ -32,13 +35,12 @@ import couk.Adamki11s.AutoUpdater.AUCore;
 public class MineReset extends JavaPlugin
 {
 	Logger log;
-	private static AUCore core;
 	public CommandManager manager;
 	private FileConfiguration regionData = null, languageData = null, signData = null;
 	private File regionDataFile = null, languageDataFile = null, signDataFile = null;
 	
 	public static double curVer = 1.2;
-	public static int curSubVer = 0;
+	public static int curSubVer = 2;
 	
 	public void onEnable()
 	{
@@ -62,11 +64,9 @@ public class MineReset extends JavaPlugin
 		
 		getLanguageData().options().copyDefaults(true);
 		saveLanguageData();
+		Updater.checkVersion();
 		
-		core = new AUCore("http://wolvencraft.com/plugins/MineReset/debug/index.html", log);
-		core.checkVersion();
-		
-		long checkEvery = getConfig().getLong("lag.check-time-every");
+		final long checkEvery = getConfig().getLong("lag.check-time-every");
 		
 		
 		if(getConfig().getBoolean("lag.automatic-resets-enabled"))
@@ -79,24 +79,21 @@ public class MineReset extends JavaPlugin
 					
 					if(mineList.size() != 0)
 					{
-		               	int min;
-		                int sec;
-		                List<String> warnTimes;
 		                String warnMessage = Language.getString("reset.automatic-reset-warning");
 		                
 						for(String mineName : mineList)
 						{
 							if(Regions.getBoolean("mines." + mineName + ".reset.auto.reset"))
 							{
-								min = Regions.getInt("mines." + mineName + ".reset.auto.data.min");
-								sec = Regions.getInt("mines." + mineName + ".reset.auto.data.sec");
-								warnTimes = Regions.getList("mines." + mineName + ".reset.auto.warn-times");
+								int min = Regions.getInt("mines." + mineName + ".reset.auto.data.min");
+								int sec = Regions.getInt("mines." + mineName + ".reset.auto.data.sec");
+								List<String> warnTimes = Regions.getList("mines." + mineName + ".reset.auto.warn-times");
 								
 								sec--;
 								if(sec < 0)
 								{
 									min--;
-									sec = 60 + sec;
+									sec = 60 + (int)checkEvery;
 								}
 								
 								Regions.setInt("mines." + mineName + ".reset.auto.data.min", min);
@@ -106,11 +103,9 @@ public class MineReset extends JavaPlugin
 								
 								SignCmd.updateAll(mineName);
 								
-								int index = warnTimes.indexOf(min + "");
-								if((index != -1 && sec <= 0) && Regions.getBoolean("mines." + mineName + ".reset.auto.warn") && !Regions.getBoolean("mines." + mineName + ".silent"))
+								if((warnTimes.indexOf(min + "") != -1 && sec <= 0) && Regions.getBoolean("mines." + mineName + ".reset.auto.warn") && !Regions.getBoolean("mines." + mineName + ".silent"))
 								{
-									warnMessage = Util.parseVars(warnMessage, mineName);
-									Util.broadcastSuccess(warnMessage);
+									Broadcast.sendSuccess(Util.parseVars(warnMessage, mineName));
 								}
 								else if(min < 0 || (min == 0 && sec <= 0))
 								{
@@ -157,14 +152,14 @@ public class MineReset extends JavaPlugin
 	    try {
 	        regionData.save(regionDataFile);
 	    } catch (IOException ex) {
-	        Util.log("Could not save config to " + regionDataFile);
+	        Message.log("Could not save config to " + regionDataFile);
 	    }
 	}
 	
 	public void reloadLanguageData() {
 		
 		String lang = this.getConfig().getString("configuration.language") + ".yml";
-		Util.log("Language file used: " + lang);
+		Message.log("Language file used: " + lang);
 		
 	    if (languageDataFile == null) {
 	    languageDataFile = new File(getDataFolder(), lang);
@@ -191,7 +186,7 @@ public class MineReset extends JavaPlugin
 	    try {
 	        languageData.save(languageDataFile);
 	    } catch (IOException ex) {
-	        Util.log("Could not save config to " + languageDataFile);
+	        Message.log("Could not save config to " + languageDataFile);
 	    }
 	}
 	
@@ -221,7 +216,7 @@ public class MineReset extends JavaPlugin
 	    try {
 	        signData.save(signDataFile);
 	    } catch (IOException ex) {
-	        Util.log("Could not save config to " + signDataFile);
+	        Message.log("Could not save config to " + signDataFile);
 	    }
 	}
 }

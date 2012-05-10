@@ -13,21 +13,22 @@ import org.bukkit.inventory.ItemStack;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.Reset;
-import com.wolvencraft.MineReset.cmd.Util;
 import com.wolvencraft.MineReset.config.Signs;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Util;
 
 public class PlayerInteractListener implements Listener
 {
 	public PlayerInteractListener(MineReset plugin)
 	{
-		if(Util.debugEnabled()) Util.log("Initiating PlayerInteractListener");
+		if(Util.debugEnabled()) Message.log("Initiating PlayerInteractListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
-		if(Util.debugEnabled()) Util.log("PlayerInteractEvent passed");
+		if(Util.debugEnabled()) Message.log("PlayerInteractEvent passed");
 		
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();
@@ -53,24 +54,23 @@ public class PlayerInteractListener implements Listener
 			
 			if(block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN_POST)
 			{
-				if(Util.debugEnabled()) Util.log("Resetting a mine with a sign");
+				if(Util.debugEnabled()) Message.log("Resetting a mine with a sign");
 				if(!Util.playerHasPermission(player, "reset.sign"))
 				{
 					return;
 				}
-				if(Util.debugEnabled()) Util.log("Permissions check passed!");
+				if(Util.debugEnabled()) Message.log("Permissions check passed!");
 
 		     	String id = Signs.getId(block);
 				if(id == null)
 				{
 					return;
 				}
-				if(Util.debugEnabled()) Util.log("All checks passed!");
-		     	if(Util.debugEnabled()) Util.log("Sign found! (id " + id + ")");
+				if(Util.debugEnabled()) Message.log("All checks passed!");
+		     	if(Util.debugEnabled()) Message.log("Sign found! (id " + id + ")");
 		     	String mineName = Signs.getString("signs." + id + ".mine");
 		     	if(Signs.getBoolean("signs." + id + ".reset"))
 		     	{
-		     		if(Util.debugEnabled()) Util.log("Resetting!");
 		     		String[] args = {"reset", mineName};
 		     		Reset.run(args, false);
 		     	}

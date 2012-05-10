@@ -15,10 +15,9 @@ import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Broadcast;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Mine;
-import com.wolvencraft.MineReset.util.RandomBlockGenerator;
 import com.wolvencraft.MineReset.util.Util;
 
-public class Reset
+public class Clear
 {
 	public static void run(String[] args, boolean automatic)
 	{	
@@ -61,9 +60,6 @@ public class Reset
 			}
 		}
 		
-		List<String> blockList = Regions.getList("mines." + mineName + ".materials.blocks");
-		List<String> weightList = Regions.getList("mines." + mineName + ".materials.weights");
-		RandomBlockGenerator pattern = new RandomBlockGenerator(blockList, weightList);
 		boolean blacklist = Regions.getBoolean("mines." + mineName + ".blacklist.enabled");
 		boolean whitelist = Regions.getBoolean("mines." + mineName + ".blacklist.whitelist");
 		List<String> blacklistedBlocks = null;
@@ -134,8 +130,7 @@ public class Reset
 							}
 							else
 							{
-								blockID = pattern.next();
-								b.setTypeId(blockID);
+								b.setTypeId(0);
 								if(Util.debugEnabled()) Message.log(blockTypeId + " was replaced with " + blockID);
 							}	
 						}
@@ -158,8 +153,7 @@ public class Reset
 						{
 							if(blockTypeId.equals(block))
 							{
-								blockID = pattern.next();
-								b.setTypeId(blockID);
+								b.setTypeId(0);
 								if(Util.debugEnabled()) Message.log(blockTypeId + " was replaced with " + blockID);
 							}
 							else
@@ -181,8 +175,7 @@ public class Reset
 					for(int z = point1[2]; z <= point2[2]; z++ )
 					{
 						Block b = mineWorld.getBlockAt(x, y, z);
-						blockID = pattern.next();
-						b.setTypeId(blockID);
+						b.setTypeId(0);
 					}
 				}
 			}

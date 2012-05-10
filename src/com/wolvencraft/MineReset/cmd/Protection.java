@@ -5,6 +5,8 @@ import java.util.List;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Util;
 
 public class Protection
 {
@@ -12,7 +14,7 @@ public class Protection
 	{
 		if(!Util.senderHasPermission("edit"))
 		{
-			Util.sendDenied(args);
+			Message.sendDenied(args);
 			return;
 		}
 		
@@ -23,7 +25,7 @@ public class Protection
 		}
 		if(args.length > 5)
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 		}
 		
 		String curMine = CommandManager.getMine();
@@ -31,7 +33,7 @@ public class Protection
 		if(curMine == null)
 		{
 			String error = Language.getString("general.mine-not-selected");
-			Util.sendError(error);
+			Message.sendError(error);
 			return;
 		}
 		
@@ -41,12 +43,12 @@ public class Protection
 			if(Regions.getBoolean(baseNode + ".enabled"))
 			{
 				Regions.setBoolean(baseNode + ".enabled", false);
-				Util.sendSuccess("PVP has been turned OFF for mine '" + curMine + "'");
+				Message.sendSuccess("PVP has been turned OFF for mine '" + curMine + "'");
 			}
 			else
 			{
 				Regions.setBoolean(baseNode + ".enabled", true);
-				Util.sendSuccess("PVP has been turned ON for mine '" + curMine + "'");
+				Message.sendSuccess("PVP has been turned ON for mine '" + curMine + "'");
 			}
 			Regions.saveData();
 		}
@@ -54,7 +56,7 @@ public class Protection
 		{
 			if(args.length < 3)
 			{
-				Util.sendInvalid(args);
+				Message.sendInvalid(args);
 				return;
 			}
 			String baseNode = "mines." + curMine + ".protection.breaking";
@@ -63,12 +65,12 @@ public class Protection
 				if(Regions.getBoolean(baseNode + ".enabled"))
 				{
 					Regions.setBoolean(baseNode + ".enabled", false);
-					Util.sendSuccess("Mine protection has been turned OFF for mine '" + curMine + "'");
+					Message.sendSuccess("Mine protection has been turned OFF for mine '" + curMine + "'");
 				}
 				else
 				{
 					Regions.setBoolean(baseNode + ".enabled", true);
-					Util.sendSuccess("Mine breaking protection has been turned ON for mine '" + curMine + "'");
+					Message.sendSuccess("Mine breaking protection has been turned ON for mine '" + curMine + "'");
 				}
 			}
 			else if(args[2].equalsIgnoreCase("blacklist"))
@@ -78,12 +80,12 @@ public class Protection
 					if(Regions.getBoolean(baseNode + ".blacklist.enabled"))
 					{
 						Regions.setBoolean(baseNode + ".blacklist.enabled", false);
-						Util.sendSuccess("Block breaking protection blacklist has been turned OFF for mine '" + curMine + "'");
+						Message.sendSuccess("Block breaking protection blacklist has been turned OFF for mine '" + curMine + "'");
 					}
 					else
 					{
 						Regions.setBoolean(baseNode + ".blacklist.enabled", true);
-						Util.sendSuccess("Block breaking protection blacklist has been turned ON for mine '" + curMine + "'");
+						Message.sendSuccess("Block breaking protection blacklist has been turned ON for mine '" + curMine + "'");
 					}
 					
 				}
@@ -92,12 +94,12 @@ public class Protection
 					if(Regions.getBoolean(baseNode + ".blacklist.whitelist"))
 					{
 						Regions.setBoolean(baseNode + ".blacklist.whitelist", false);
-						Util.sendSuccess("Block breaking blacklist is no longer treated as a whitelist for mine '" + curMine + "'");
+						Message.sendSuccess("Block breaking blacklist is no longer treated as a whitelist for mine '" + curMine + "'");
 					}
 					else
 					{
 						Regions.setBoolean(baseNode + ".blacklist.whitelist", true);
-						Util.sendSuccess("Block breaking blacklist is now treated as a whitelist for mine '" + curMine + "'");
+						Message.sendSuccess("Block breaking blacklist is now treated as a whitelist for mine '" + curMine + "'");
 					}
 				}
 				else if(args[3].equalsIgnoreCase("add"))
@@ -107,7 +109,7 @@ public class Protection
 					
 					if(blockId == -1)
 					{
-						Util.sendError("Block '"+ args[4] + "' does not exist");
+						Message.sendError("Block '"+ args[4] + "' does not exist");
 						return;
 					}
 					
@@ -120,7 +122,7 @@ public class Protection
 					
 					Regions.saveData();
 					
-					Util.sendSuccess(blockName + " was added to the block breaking protection blacklist of '" + curMine + "'");
+					Message.sendSuccess(blockName + " was added to the block breaking protection blacklist of '" + curMine + "'");
 					return;
 				}
 				else if(args[3].equalsIgnoreCase("remove"))
@@ -129,7 +131,7 @@ public class Protection
 					
 					if(blockId == -1)
 					{
-						Util.sendError("Block '"+ args[4] + "' does not exist");
+						Message.sendError("Block '"+ args[4] + "' does not exist");
 						return;
 					}
 					
@@ -139,7 +141,7 @@ public class Protection
 					int index = blockList.indexOf("" + blockId);
 					if(index == -1)
 					{
-						Util.sendError("There is no '" + args[4] + "' in protection blacklist of mine '" + curMine + "'");
+						Message.sendError("There is no '" + args[4] + "' in protection blacklist of mine '" + curMine + "'");
 						return;
 					}
 					blockList.remove(index);
@@ -148,12 +150,12 @@ public class Protection
 					Regions.setList(baseNode + ".blacklist.blocks", blockList);
 					
 					Regions.saveData();
-					Util.sendSuccess(args[4] + " was successfully removed from block breaking protection of mine '" + curMine + "'");
+					Message.sendSuccess(args[4] + " was successfully removed from block breaking protection of mine '" + curMine + "'");
 					return;
 				}
 				else
 				{
-					Util.sendInvalid(args);
+					Message.sendInvalid(args);
 					return;
 				}
 				Regions.saveData();
@@ -161,7 +163,7 @@ public class Protection
 			}
 			else
 			{
-				Util.sendInvalid(args);
+				Message.sendInvalid(args);
 			}
 		}
 		else if(args[1].equalsIgnoreCase("placement"))
@@ -172,12 +174,12 @@ public class Protection
 				if(Regions.getBoolean(baseNode + ".enabled"))
 				{
 					Regions.setBoolean(baseNode + ".enabled", false);
-					Util.sendSuccess("Block placement protection has been turned OFF for mine '" + curMine + "'");
+					Message.sendSuccess("Block placement protection has been turned OFF for mine '" + curMine + "'");
 				}
 				else
 				{
 					Regions.setBoolean(baseNode + ".enabled", true);
-					Util.sendSuccess("Block placement protection has been turned ON for mine '" + curMine + "'");
+					Message.sendSuccess("Block placement protection has been turned ON for mine '" + curMine + "'");
 				}
 			}
 			else if(args[2].equalsIgnoreCase("blacklist"))
@@ -187,12 +189,12 @@ public class Protection
 					if(Regions.getBoolean(baseNode + ".blacklist.enabled"))
 					{
 						Regions.setBoolean(baseNode + ".blacklist.enabled", false);
-						Util.sendSuccess("Block placement protection blacklist has been turned OFF for mine '" + curMine + "'");
+						Message.sendSuccess("Block placement protection blacklist has been turned OFF for mine '" + curMine + "'");
 					}
 					else
 					{
 						Regions.setBoolean(baseNode + ".blacklist.enabled", true);
-						Util.sendSuccess("Block placement protection blacklist has been turned ON for mine '" + curMine + "'");
+						Message.sendSuccess("Block placement protection blacklist has been turned ON for mine '" + curMine + "'");
 					}
 					
 				}
@@ -201,12 +203,12 @@ public class Protection
 					if(Regions.getBoolean(baseNode + ".blacklist.whitelist"))
 					{
 						Regions.setBoolean(baseNode + ".blacklist.whitelist", false);
-						Util.sendSuccess("Block breaking blacklist is no longer treated as a whitelist for mine '" + curMine + "'");
+						Message.sendSuccess("Block breaking blacklist is no longer treated as a whitelist for mine '" + curMine + "'");
 					}
 					else
 					{
 						Regions.setBoolean(baseNode + ".blacklist.whitelist", true);
-						Util.sendSuccess("Block breaking blacklist is now treated as a whitelist for mine '" + curMine + "'");
+						Message.sendSuccess("Block breaking blacklist is now treated as a whitelist for mine '" + curMine + "'");
 					}
 				}
 				else if(args[3].equalsIgnoreCase("add"))
@@ -216,7 +218,7 @@ public class Protection
 					
 					if(blockID == -1)
 					{
-						Util.sendError("Block '"+ args[4] + "' does not exist");
+						Message.sendError("Block '"+ args[4] + "' does not exist");
 						return;
 					}
 					
@@ -229,7 +231,7 @@ public class Protection
 					
 					Regions.saveData();
 					
-					Util.sendSuccess(blockName + " was added to the block placement protection blacklist of '" + curMine + "'");
+					Message.sendSuccess(blockName + " was added to the block placement protection blacklist of '" + curMine + "'");
 					return;
 				}
 				else if(args[3].equalsIgnoreCase("remove"))
@@ -238,7 +240,7 @@ public class Protection
 					
 					if(blockID == -1)
 					{
-						Util.sendError("Block '"+ args[4] + "' does not exist");
+						Message.sendError("Block '"+ args[4] + "' does not exist");
 						return;
 					}
 					
@@ -248,7 +250,7 @@ public class Protection
 					int index = blockList.indexOf("" + blockID);
 					if(index == -1)
 					{
-						Util.sendError("There is no '" + args[4] + "' in protection blacklist of mine '" + curMine + "'");
+						Message.sendError("There is no '" + args[4] + "' in protection blacklist of mine '" + curMine + "'");
 						return;
 					}
 					blockList.remove(index);
@@ -257,12 +259,12 @@ public class Protection
 					Regions.setList(baseNode + ".blacklist.blocks", blockList);
 					
 					Regions.saveData();
-					Util.sendSuccess(args[4] + " was successfully removed from block placement protection of mine '" + curMine + "'");
+					Message.sendSuccess(args[4] + " was successfully removed from block placement protection of mine '" + curMine + "'");
 					return;
 				}
 				else
 				{
-					Util.sendInvalid(args);
+					Message.sendInvalid(args);
 					return;
 				}
 
@@ -271,13 +273,13 @@ public class Protection
 			}
 			else
 			{
-				Util.sendInvalid(args);
+				Message.sendInvalid(args);
 				return;
 			}
 		}
 		else
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 			return;
 		}
 	}

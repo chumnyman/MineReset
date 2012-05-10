@@ -6,6 +6,9 @@ import org.bukkit.entity.Player;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Mine;
+import com.wolvencraft.MineReset.util.Util;
 
 
 
@@ -15,7 +18,7 @@ public class Teleport
 	{
 		if(!Util.senderHasPermission("warp"))
 		{
-			Util.sendDenied(args);
+			Message.sendDenied(args);
 			return;
 		}
 		
@@ -23,7 +26,7 @@ public class Teleport
 			Help.getTeleport();
 		else if(args.length != 2)
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 			return;
 		}
 		
@@ -34,7 +37,7 @@ public class Teleport
 			String mineName = CommandManager.getMine();
 			if(mineName == null)
 			{
-				Util.sendError("Select a mine first with /mine edit <name>");
+				Message.sendError("Select a mine first with /mine edit <name>");
 				return;
 			}
 			
@@ -46,27 +49,27 @@ public class Teleport
 			Regions.setDouble(baseNode + ".pos2.pitch", loc.getPitch());
 			
 			Regions.saveData();
-			Util.sendSuccess ("Mine spawn point set (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
+			Message.sendSuccess ("Mine spawn point set (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
 			return;
 		}
 		
-		if(Util.mineExists(args[1]))
+		if(Mine.exists(args[1]))
 		{
 			String message = Language.getString("teleportation.mine-teleport");
 			
 			message = Util.parseVars(message, args[1]);
 			
 			Player player = (Player) CommandManager.getSender();
-			Util.warpToMine(player, args[1]);
+			Mine.warpToMine(player, args[1]);
 			
-			Util.sendSuccess(message);
+			Message.sendSuccess(message);
 			return;
 		}
 		else
 		{
 			String error = Language.getString("general.mine-name-invalid");
 			error = Util.parseString(error, "%MINE%", args[1]);
-			Util.sendError(error);
+			Message.sendError(error);
 			return;
 		}
 	}

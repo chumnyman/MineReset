@@ -11,39 +11,40 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import com.wolvencraft.MineReset.MineReset;
-import com.wolvencraft.MineReset.cmd.Util;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Util;
 
 public class BlockBreakListener implements Listener
 {
 	public BlockBreakListener(MineReset plugin)
 	{
-		if(Util.debugEnabled()) Util.log("Initiating BlockBreakListener");
+		if(Util.debugEnabled()) Message.log("Initiating BlockBreakListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event)
 	{
-		if(Util.debugEnabled()) Util.log("BlockBreakEvent called");
+		if(Util.debugEnabled()) Message.log("BlockBreakEvent called");
 		
 		Player player = event.getPlayer();
 		
 		if(Util.playerHasPermission(player, "protection.bypass") || !Configuration.getBoolean("lag.protection-checks-enabled"))
 		{
-			if(Util.debugEnabled()) Util.log("Bypass permission check passed");
+			if(Util.debugEnabled()) Message.log("Bypass permission check passed");
 			return;
 		}
 		
-		if(Util.debugEnabled()) Util.log("Bypass permission check failed");
+		if(Util.debugEnabled()) Message.log("Bypass permission check failed");
 		
 		int padding;
 		int paddingTop;
 		
 		List<String> regionList = Regions.getList("data.list-of-mines");
 		
-		if(Util.debugEnabled()) Util.log("Retrieved the region list");
+		if(Util.debugEnabled()) Message.log("Retrieved the region list");
 		
 		if(regionList.size() == 0) return;
 		
@@ -51,11 +52,11 @@ public class BlockBreakListener implements Listener
 		
 		for(String mineName : regionList )
 		{
-			if(Util.debugEnabled()) Util.log("For mine " + mineName);
+			if(Util.debugEnabled()) Message.log("For mine " + mineName);
 			
 			if(Regions.getBoolean("mines." + mineName + ".protection.breaking.enabled"))
 			{
-				if(Util.debugEnabled()) Util.log(mineName + " has protection enabled");
+				if(Util.debugEnabled()) Message.log(mineName + " has protection enabled");
 				Location blockLocation = b.getLocation();
 				padding = Regions.getInt("mines." + mineName + ".protection.padding");
 				paddingTop = Regions.getInt("mines." + mineName + ".protection.padding-top");
@@ -69,17 +70,17 @@ public class BlockBreakListener implements Listener
 						&& (blockLocation.getBlockY() >= (y[0] - padding) && blockLocation.getBlockY() <= (y[1] + paddingTop))
 						&& (blockLocation.getBlockZ() >= (z[0] - padding) && blockLocation.getBlockZ() <= (z[1] + padding)))
 				{
-					if(Util.debugEnabled()) Util.log("Player breakd a block in the mine region");
+					if(Util.debugEnabled()) Message.log("Player breakd a block in the mine region");
 
 					if(!Util.playerHasPermission(player, "protection.break." + mineName) && !Util.playerHasPermission(player, "protection.break"))
 					{
-						if(Util.debugEnabled()) Util.log("Second permissions check passed");
-						Util.sendPlayerError(player, "You are not allowed to break " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
+						if(Util.debugEnabled()) Message.log("Second permissions check passed");
+						Message.sendPlayerError(player, "You are not allowed to break " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
 						event.setCancelled(true);
 						return;
 					}
 					
-					if(Util.debugEnabled()) Util.log("Second permissions check failed");
+					if(Util.debugEnabled()) Message.log("Second permissions check failed");
 					
 					if(Regions.getBoolean("mines." + mineName + ".protection.breaking.blacklist.enabled"))
 					{
@@ -90,7 +91,7 @@ public class BlockBreakListener implements Listener
 						for(String block : blacklist)
 						{	
 							String blockTypeId = b.getTypeId() + "";
-							if(Util.debugEnabled()) Util.log(blockTypeId + " ? " + block);
+							if(Util.debugEnabled()) Message.log(blockTypeId + " ? " + block);
 							if(blockTypeId.equals(block))
 							{
 								found = true;
@@ -99,14 +100,14 @@ public class BlockBreakListener implements Listener
 						
 						if((whitelist && !found) || (!whitelist && found))
 						{
-							Util.sendPlayerError(player, "You are not allowed to break " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
+							Message.sendPlayerError(player, "You are not allowed to break " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
 							event.setCancelled(true);
 							return;
 						}
 					}
 					else
 					{
-						Util.sendPlayerError(player, "You are not allowed to break blocks in this mine");
+						Message.sendPlayerError(player, "You are not allowed to break blocks in this mine");
 						event.setCancelled(true);
 					}
 				}

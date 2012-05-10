@@ -5,6 +5,9 @@ import java.util.List;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Mine;
+import com.wolvencraft.MineReset.util.Util;
 
 public class Edit
 {
@@ -15,7 +18,7 @@ public class Edit
 		if(Util.isPlayer())
 			if(!Util.senderHasPermission("edit"))
 			{
-				Util.sendDenied(args);
+				Message.sendDenied(args);
 				return;
 			}
 		
@@ -26,7 +29,7 @@ public class Edit
 		}
 		if(args.length > 3)
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 		}
 		
 		curMine = CommandManager.getMine();
@@ -35,15 +38,15 @@ public class Edit
 		{
 			if(args.length != 2)
 			{
-				Util.sendInvalid(args);
+				Message.sendInvalid(args);
 				return;
 			}
 			String mineName = args[1];
-			if(!Util.mineExists(mineName))
+			if(!Mine.exists(mineName))
 			{
 				String error = Language.getString("general.mine-name-invalid");
 				error = Util.parseString(error, "%MINE%", mineName);
-				Util.sendError(error);
+				Message.sendError(error);
 				return;
 			}
 			CommandManager.setMine(mineName);
@@ -51,21 +54,21 @@ public class Edit
 			String displayName = Regions.getString("mines." + mineName + ",display-name");
 			message = Util.parseString(message, "%MINE%", mineName);
 			message = Util.parseString(message, "%MINENAME%", displayName);
-			Util.sendSuccess(message);
+			Message.sendSuccess(message);
 		}
 		else if(args[0].equalsIgnoreCase("none"))
 		{
 			if(args.length != 2)
 			{
-				Util.sendInvalid(args);
+				Message.sendInvalid(args);
 				return;
 			}
 			String mineName = args[1];
-			if(!Util.mineExists(mineName))
+			if(!Mine.exists(mineName))
 			{
 				String error = Language.getString("general.mine-name-invalid");
 				error = Util.parseString(error, "%MINE%", mineName);
-				Util.sendError(error);
+				Message.sendError(error);
 				return;
 			}
 			CommandManager.setMine(null);
@@ -73,20 +76,20 @@ public class Edit
 			String displayName = Regions.getString("mines." + mineName + ",display-name");
 			message = Util.parseString(message, "%MINE%", mineName);
 			message = Util.parseString(message, "%MINENAME%", displayName);
-			Util.sendSuccess(message);
+			Message.sendSuccess(message);
 		}
 		else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+"))
 		{
 			if(curMine == null)
 			{
 				String error = Language.getString("general.mine-not-selected");
-				Util.sendError(error);
+				Message.sendError(error);
 				return;
 			}
 			
 			if(args.length != 3)
 			{
-				Util.sendError("I find your lack of parameters disturbing");
+				Message.sendError("I find your lack of parameters disturbing");
 				return;
 			}
 			String blockName = args[1];
@@ -94,7 +97,7 @@ public class Edit
 			
 			if(blockId == -1)
 			{
-				Util.sendError("Block '"+ args[1] + "' does not exist");
+				Message.sendError("Block '"+ args[1] + "' does not exist");
 				return;
 			}
 			
@@ -104,7 +107,7 @@ public class Edit
 			
 			if(itemList.size() != weightList.size())
 			{
-				Util.sendError("Your regions.yml file has been corrupted");
+				Message.sendError("Your regions.yml file has been corrupted");
 				return;
 			}
 			
@@ -116,7 +119,7 @@ public class Edit
 			
 			if(blockId == Integer.parseInt(itemList.get(0)))
 			{
-				Util.sendError("You do not need to do this. The weight of the default block is calculated automatically.");
+				Message.sendError("You do not need to do this. The weight of the default block is calculated automatically.");
 				return;
 			}
 			
@@ -126,13 +129,13 @@ public class Edit
 				percent = Double.parseDouble(args[2]);
 				if(percent <= 0)
 				{
-					Util.sendInvalid(args);
+					Message.sendInvalid(args);
 					return;
 				}
 				percent = (double)(Math.round(percent * 1000)) / 1000;
 			}
 			else {
-				if(Util.debugEnabled()) Util.log("Argument is not numeric, attempting to parse");
+				if(Util.debugEnabled()) Message.log("Argument is not numeric, attempting to parse");
 				String awkwardValue = args[2];
 				String[] awkArray = awkwardValue.split("%");
 				try
@@ -141,24 +144,24 @@ public class Edit
 				}
 				catch(NumberFormatException nfe)
 				{
-					Util.sendInvalid(args);
+					Message.sendInvalid(args);
 					return;
 				}
 			}
-			if(Util.debugEnabled()) Util.log("Percent value is " + percent);
+			if(Util.debugEnabled()) Message.log("Percent value is " + percent);
 			
 			double percentAvailable = Double.parseDouble(weightList.get(0));
 			double newStonePercent;
 			if((percentAvailable - percent) < 0)
 			{
-				Util.sendError("Invalid percentage. Use /mine info " + curMine + " to review the percentages");
+				Message.sendError("Invalid percentage. Use /mine info " + curMine + " to review the percentages");
 				return;
 			}
 			else newStonePercent = percentAvailable - percent;
 			
 			newStonePercent = (double)(Math.round(newStonePercent * 1000)) / 1000;
 			int index = itemList.indexOf("" + blockId);
-			if(Util.debugEnabled()) Util.log(blockId + " ? " + index);
+			if(Util.debugEnabled()) Message.log(blockId + " ? " + index);
 			if(index == -1)
 			{
 				itemList.add(blockId + "");
@@ -177,8 +180,8 @@ public class Edit
 			
 			Regions.saveData();
 			
-			Util.sendSuccess(percent + "% of " + blockName + " added to " + curMine);
-			Util.sendSuccess("Reset the mine for the changes to take effect");
+			Message.sendSuccess(percent + "% of " + blockName + " added to " + curMine);
+			Message.sendSuccess("Reset the mine for the changes to take effect");
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-"))
@@ -186,7 +189,7 @@ public class Edit
 			if(curMine == null)
 			{
 				String error = Language.getString("general.mine-not-selected");
-				Util.sendError(error);
+				Message.sendError(error);
 				return;
 			}
 			
@@ -194,7 +197,7 @@ public class Edit
 			
 			if(blockId == -1)
 			{
-				Util.sendError("Block '"+ args[1] + "' does not exist");
+				Message.sendError("Block '"+ args[1] + "' does not exist");
 				return;
 			}
 			
@@ -203,15 +206,15 @@ public class Edit
 
 			if(blockId == Integer.parseInt(itemList.get(0)))
 			{
-				Util.sendError("You cannot remove the default block from the mine");
+				Message.sendError("You cannot remove the default block from the mine");
 				return;
 			}
 			
 			int index = itemList.indexOf("" + blockId);
-			if(Util.debugEnabled()) Util.log(blockId + " ? " + index);
+			if(Util.debugEnabled()) Message.log(blockId + " ? " + index);
 			if(index == -1)
 			{
-				Util.sendError("There is no '" + args[2] + "' in mine '" + curMine + "'");
+				Message.sendError("There is no '" + args[2] + "' in mine '" + curMine + "'");
 				return;
 			}
 			double oldStoneWeight = Double.parseDouble(weightList.get(0));
@@ -225,7 +228,7 @@ public class Edit
 			Regions.setList("mines." + curMine + ".materials.weights", weightList);
 			
 			Regions.saveData();
-			Util.sendSuccess(args[1] + " was successfully removed from mine '" + curMine + "'");
+			Message.sendSuccess(args[1] + " was successfully removed from mine '" + curMine + "'");
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del"))
@@ -236,7 +239,7 @@ public class Edit
 			Regions.setList("data.list-of-mines", regionList);
 			Regions.saveData();
 			CommandManager.setMine(null);
-			Util.sendSuccess("Mine '" + args[1] + "' was successfully deleted.");
+			Message.sendSuccess("Mine '" + args[1] + "' was successfully deleted.");
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("name"))
@@ -244,7 +247,7 @@ public class Edit
 			if(curMine == null)
 			{
 				String error = Language.getString("general.mine-not-selected");
-				Util.sendError(error);
+				Message.sendError(error);
 				return;
 			}
 			
@@ -254,7 +257,7 @@ public class Edit
 				name = name + " " + args[i];
 			}
 			Regions.setString("mines." + curMine + ".display-name", name);
-			Util.sendSuccess("Mine '" + curMine + "' now has a display name '" + name + "'");
+			Message.sendSuccess("Mine '" + curMine + "' now has a display name '" + name + "'");
 			Regions.saveData();
 			return;
 		}
@@ -263,24 +266,24 @@ public class Edit
 			if(curMine == null)
 			{
 				String error = Language.getString("general.mine-not-selected");
-				Util.sendError(error);
+				Message.sendError(error);
 				return;
 			}
 			
 			if(Regions.getBoolean("mines." + curMine + ".silent"))
 			{
-				Util.sendSuccess("Silent mode has been turned off for mine '" + curMine + "'");
+				Message.sendSuccess("Silent mode has been turned off for mine '" + curMine + "'");
 				Regions.setBoolean("mines." + curMine + ".silent", false);
 			}
 			else
 			{
-				Util.sendSuccess("'" + curMine + "' will no longer broadcast any notifications");
+				Message.sendSuccess("'" + curMine + "' will no longer broadcast any notifications");
 				Regions.setBoolean("mines." + curMine + ".silent", true);
 			}
 		}
 		else
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 			return;
 		}
 	}

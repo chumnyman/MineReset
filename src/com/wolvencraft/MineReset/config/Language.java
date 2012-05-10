@@ -14,6 +14,8 @@ public class Language
 	public static String getString(String node)
 	{
 		String stringToReturn = CommandManager.getPlugin().getLanguageData().getString(node);
+		if(!CommandManager.getPlugin().getLanguageData().isSet(node))
+			CommandManager.getPlugin().getLanguageData().set(node, stringToReturn);
 		return stringToReturn;
 	}
 	
@@ -25,6 +27,8 @@ public class Language
 	public static boolean getBoolean(String node)
 	{
 		boolean booleanToReturn = CommandManager.getPlugin().getLanguageData().getBoolean(node);
+		if(!CommandManager.getPlugin().getLanguageData().isSet(node))
+			CommandManager.getPlugin().getLanguageData().set(node, booleanToReturn);
 		return booleanToReturn;
 	}
 	
@@ -36,6 +40,8 @@ public class Language
 	public static int getInt(String node)
 	{
 		int intToReturn = CommandManager.getPlugin().getLanguageData().getInt(node);
+		if(!CommandManager.getPlugin().getLanguageData().isSet(node))
+			CommandManager.getPlugin().getLanguageData().set(node, intToReturn);
 		return intToReturn;
 	}
 	
@@ -46,8 +52,10 @@ public class Language
 	 */
 	public static double getDouble(String node)
 	{
-		double intToReturn = CommandManager.getPlugin().getLanguageData().getDouble(node);
-		return intToReturn;
+		double doubleToReturn = CommandManager.getPlugin().getLanguageData().getDouble(node);
+		if(!CommandManager.getPlugin().getLanguageData().isSet(node))
+			CommandManager.getPlugin().getLanguageData().set(node, doubleToReturn);
+		return doubleToReturn;
 	}
 	
 	/**
@@ -58,6 +66,8 @@ public class Language
 	public static List<String> getList(String node)
 	{
 		List<String> listToReturn = CommandManager.getPlugin().getLanguageData().getStringList(node);
+		if(!CommandManager.getPlugin().getLanguageData().isSet(node))
+			CommandManager.getPlugin().getLanguageData().set(node, listToReturn);
 		return listToReturn;
 	}
 }

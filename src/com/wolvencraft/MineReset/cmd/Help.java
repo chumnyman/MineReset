@@ -5,6 +5,8 @@ import org.bukkit.command.CommandSender;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Util;
 
 public class Help
 {	
@@ -12,25 +14,25 @@ public class Help
 	{
 		formatHelp("auto", " toggle", "Toggles the automatic resets on and off", "");
 		formatHelp("auto", " time <time>", "Changes the automatic reset time to the value specified", "");
-		Util.sendMessage(" The value cannot be smaller then 5 minutes");
+		Message.sendMessage(" The value cannot be smaller then 5 minutes");
 		formatHelp("auto", " warning toggle", "Toggles warnings before the reset on and off", "");
 		formatHelp("auto", " warning add <time>", "Adds a warning at time specified", "");
 		formatHelp("auto", " warning remove <time>", "Adds a warning at time specified", "");
-		Util.sendMessage(" The value cannot be larger then the reset time");
+		Message.sendMessage(" The value cannot be larger then the reset time");
 	}
 	
 	public static void getBlacklist()
 	{
 		formatHelp("blacklist", " toggle", "Enables the use of blacklist for the mine", "");
 		formatHelp("blacklist", " whitelist", "Makes the blacklist be treated as a whitelist", "");
-		Util.sendMessage(" Blacklist should be enabled");
+		Message.sendMessage(" Blacklist should be enabled");
 		formatHelp("blacklist", " add <block>", "Adds a block to the blacklist", "");
 		formatHelp("blacklist", " remove <block>", "Removes a block from the whitelist", "");
 	}
 	
 	public static void getConfig()
 	{
-		Util.sendMessage(" You do NOT need these commands. At all. I promise.");
+		Message.sendMessage(" You do NOT need these commands. At all. I promise.");
 		formatHelp("config", " save", "Saves the data into a configuration file", "");
 		formatHelp("config", " load", "Loads the configuration from a file", "");
 	}
@@ -49,7 +51,7 @@ public class Help
 	public static void getHelp()
 	{
 		String title = Language.getString("general.title");
-		Util.sendMessage("                    -=[ " + title + " ]=-");
+		Message.sendMessage("                    -=[ " + title + " ]=-");
 		
 		formatHelp("info", " <name>", "Returns the information about a mine", "info");	
 		formatHelp("list", "", "Lists all the available mines", "list");
@@ -98,8 +100,8 @@ public class Help
 	public static void getSave()
 	{
 		formatHelp("save", " <name>", "Saves the region for future use", "");
-		Util.sendMessage(" If no name is provided, the default name will be used");
-		Util.sendMessage(" The default name is defined in the configuration file");
+		Message.sendMessage(" If no name is provided, the default name will be used");
+		Message.sendMessage(" The default name is defined in the configuration file");
 		
 		return;
 	}
@@ -108,10 +110,10 @@ public class Help
 	{
 		formatHelp("select", " hpos1", "Creates a reference point 1 at the block you are looking at", "");
 		formatHelp("select", " hpos2", "Creates a reference point 2 at the block you are looking at", "");
-		Util.sendMessage(" Your field of view is limited to 100 blocks");
+		Message.sendMessage(" Your field of view is limited to 100 blocks");
 		formatHelp("select", " pos1", "Creates a reference point 1 at your immediate location", "");
 		formatHelp("select", " pos2", "Creates a reference point 2 at your immediate location", "");
-		Util.sendMessage(" You can also select a region with your normal World Edit tool");
+		Message.sendMessage(" You can also select a region with your normal World Edit tool");
 		
 		return;
 	}

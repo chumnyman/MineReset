@@ -1,27 +1,3 @@
-/**
- * LICENSING
- * 
- * This software is copyright by Adamki11s <adam@adamki11s.co.uk> and is
- * distributed under a dual license:
- * 
- * Non-Commercial Use:
- *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
- *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Commercial Use:
- *    Please contact adam@adamki11s.co.uk
- */
-
 package couk.Adamki11s.AutoUpdater;
 
 import java.io.BufferedInputStream;
@@ -30,43 +6,63 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Logger;
 
-public class FetchSource {
-	
-	
+import com.wolvencraft.MineReset.util.Message;
 
-	protected static String fetchSource(URL website, Logger l){
-	    InputStream is = null;
-	    DataInputStream dis = null;
+public class FetchSource
+{
+	
+	protected static String fetchSource()
+	{
+		URL url = null;
+		try
+		{
+			url = new URL("http://wolvencraft.com/plugins/MineReset/index.html");
+		}
+		catch(MalformedURLException ex)
+		{
+			ex.printStackTrace();
+		}	
+		
+		InputStream is = null;
 	    String s, source = "";
 
-		try {
-			is = website.openStream();
-		} catch (IOException ex) {
+		try
+		{
+			is = url.openStream();
+		}
+		catch (IOException ex)
+		{
 			ex.printStackTrace();
-			l.info("Error opening URL input stream!");
+			Message.log("Error opening URL input stream!");
 		}
 		
-	    dis = new DataInputStream(new BufferedInputStream(is));
-		BufferedReader br = new BufferedReader(new InputStreamReader(dis));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new DataInputStream(new BufferedInputStream(is))));
 		
-		try {
-			while ((s = br.readLine()) != null) {
-			    source += s;
-			 }
-		} catch (IOException ex) {
+		try
+		{
+			while ((s = reader.readLine()) != null)
+			{
+				source += s;
+			}
+		}
+		catch (IOException ex)
+		{
 			ex.printStackTrace();
-			l.info("Error reading input stream!");
+			Message.log("Error reading input stream!");
 		}
 		
-		try {
-            is.close();
-         } catch (IOException ioe) {
-        	 ioe.printStackTrace();
-        	 l.info("Error closing URL input stream!");
-         }
+		try
+		{
+			is.close();
+		}
+		catch (IOException ioe)
+		{
+			ioe.printStackTrace();
+			Message.log("Error closing URL input stream!");
+		}
          
 		return source;
 	}

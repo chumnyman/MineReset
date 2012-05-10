@@ -1,6 +1,8 @@
 package com.wolvencraft.MineReset.cmd;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Util;
 
 public class Config
 {
@@ -8,7 +10,7 @@ public class Config
 	{
 		if(!Util.senderHasPermission("secret"))
 		{
-			Util.sendDenied(args);
+			Message.sendDenied(args);
 			return;
 		}
 		
@@ -19,7 +21,7 @@ public class Config
 		}
 		else if(args.length != 2)
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 			return;
 		}
 		
@@ -27,7 +29,7 @@ public class Config
 		{
 			CommandManager.getPlugin().saveRegionData();
 			CommandManager.getPlugin().saveSignData();
-			Util.sendSuccess("Configuration saved to disc");
+			Message.sendSuccess("Configuration saved to disc");
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("load"))
@@ -36,7 +38,7 @@ public class Config
 			CommandManager.getPlugin().reloadRegionData();
 			CommandManager.getPlugin().reloadLanguageData();
 			CommandManager.getPlugin().reloadSignData();
-			Util.sendSuccess("Configuration loaded from disc");
+			Message.sendSuccess("Configuration loaded from disc");
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("generate"))
@@ -46,12 +48,12 @@ public class Config
 			
 			CommandManager.getPlugin().getLanguageData().options().copyDefaults(false);
 			CommandManager.getPlugin().saveLanguageData();
-			Util.sendSuccess("Configuration and language files generated successfully");
+			Message.sendSuccess("Configuration and language files generated successfully");
 			return;
 		}
 		else
 		{
-			Util.sendInvalid(args);
+			Message.sendInvalid(args);
 			return;
 		}
 	}

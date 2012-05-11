@@ -72,7 +72,7 @@ public class PlayerInteractListener implements Listener
 		     	if(Signs.getBoolean("signs." + id + ".reset"))
 		     	{
 		     		String[] args = {"reset", mineName};
-		     		Reset.run(args, false);
+		     		Reset.run(args, false, null);
 		     	}
 			}
 			

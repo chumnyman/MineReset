@@ -71,7 +71,8 @@ public class Info
 		}
 		
 		// generator
-		Message.sendMessage(" Generator: " + ChatColor.GOLD + "DEFAULT");
+		String generator = Regions.getString("mines." + mineName + ".reset.generator").toUpperCase();
+		Message.sendMessage(" Generator: " + ChatColor.GOLD + generator);
 		
 		// Protection
 		String breakingProt;

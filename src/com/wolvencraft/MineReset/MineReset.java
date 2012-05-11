@@ -110,7 +110,7 @@ public class MineReset extends JavaPlugin
 								else if(min < 0 || (min == 0 && sec <= 0))
 								{
 									String[] args = {"reset", mineName};
-									Reset.run(args, true);
+									Reset.run(args, true, null);
 								}
 							}
 						}

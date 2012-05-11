@@ -37,6 +37,7 @@ defaults:
         blocks: []
     pvp: true
   reset:
+    generator: "random"
     auto:
       reset: true
       reset-time: 15

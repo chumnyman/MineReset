@@ -283,7 +283,21 @@ public class Edit
 		}
 		else if(args[0].equalsIgnoreCase("generator"))
 		{
+			if(args.length != 2)
+			{
+				Message.sendInvalid(args);
+				return;
+			}
 			
+			if(curMine == null)
+			{
+				String error = Language.getString("general.mine-not-selected");
+				Message.sendError(error);
+				return;
+			}
+			
+			String generator = args[1];
+			Regions.setString("mines." + curMine + ".reset.generator", generator.toUpperCase());
 		}
 		else
 		{

@@ -15,8 +15,7 @@ public class Signs
 	 */
 	public static String getString(String node)
 	{
-		String stringToReturn = CommandManager.getPlugin().getSignData().getString(node);
-		return stringToReturn;
+		return CommandManager.getPlugin().getSignData().getString(node);
 	}
 	
 	/**
@@ -26,8 +25,7 @@ public class Signs
 	 */
 	public static boolean getBoolean(String node)
 	{
-		boolean booleanToReturn = CommandManager.getPlugin().getSignData().getBoolean(node);
-		return booleanToReturn;
+		return CommandManager.getPlugin().getSignData().getBoolean(node);
 	}
 	
 	/**
@@ -37,8 +35,7 @@ public class Signs
 	 */
 	public static int getInt(String node)
 	{
-		int intToReturn = CommandManager.getPlugin().getSignData().getInt(node);
-		return intToReturn;
+		return CommandManager.getPlugin().getSignData().getInt(node);
 	}
 	
 	/**
@@ -48,8 +45,7 @@ public class Signs
 	 */
 	public static double getDouble(String node)
 	{
-		double intToReturn = CommandManager.getPlugin().getSignData().getDouble(node);
-		return intToReturn;
+		return CommandManager.getPlugin().getSignData().getDouble(node);
 	}
 	
 	/**
@@ -59,8 +55,7 @@ public class Signs
 	 */
 	public static List<String> getList(String node)
 	{
-		List<String> listToReturn = CommandManager.getPlugin().getSignData().getStringList(node);
-		return listToReturn;
+		return CommandManager.getPlugin().getSignData().getStringList(node);
 	}
 	
 	/**

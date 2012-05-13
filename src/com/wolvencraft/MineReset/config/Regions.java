@@ -26,8 +26,7 @@ public class Regions
 	 */
 	public static boolean getBoolean(String node)
 	{
-		boolean booleanToReturn = CommandManager.getPlugin().getRegionData().getBoolean(node);
-		return booleanToReturn;
+		return CommandManager.getPlugin().getRegionData().getBoolean(node);
 	}
 	
 	/**

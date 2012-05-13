@@ -80,8 +80,9 @@ public class Message
 		String title = Language.getString("general.title-error");
 		String message = Language.getString("general.invalid-command");
 		String command = "";
-		for(int i = 0; i < args.length; i++)
-			command = command + " " + args[i];
+        for (String arg : args) {
+            command = command + " " + arg;
+        }
 		log(sender.getName() + " sent an invalid command (/mine" + command + ")");
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
@@ -98,8 +99,9 @@ public class Message
 		String title = Language.getString("general.title-error");
 		String message = Language.getString("general.access-denied");
 		String command = "";
-		for(int i = 0; i < args.length; i++)
-			command = command + " " + args[i];
+        for (String arg : args) {
+            command = command + " " + arg;
+        }
 		log(sender.getName() + " was denied to use a command (/mine" + command + ")");
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);

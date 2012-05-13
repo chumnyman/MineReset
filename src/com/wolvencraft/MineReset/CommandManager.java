@@ -73,10 +73,9 @@ public class CommandManager implements CommandExecutor
 		else Message.sendInvalid(args);
 			
 		String argString = "/mine";
-		for(int i = 0; i < args.length; i++)
-		{
-			argString = argString + " " + args[i];
-		}
+        for (String arg : args) {
+            argString = argString + " " + arg;
+        }
 		if(Util.debugEnabled() && Util.isPlayer()) Message.log(player.getName() + ": " + argString);
 		
 		return true;

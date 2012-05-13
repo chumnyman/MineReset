@@ -77,7 +77,7 @@ public class AUCore
 			Config.run(args);
 		}
 		
-		source = FetchSource.fetchSource(url, log);
+		source = FetchSource.fetchSource();
 		formatSource(source);
 		
 		String subVers = Integer.toString(MineReset.curSubVer);

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.wolvencraft.MineReset.cmd.Util;
-
 public class Pattern {
  
     List<String> bin;
@@ -15,7 +13,7 @@ public class Pattern {
     	bin = new ArrayList<String>(100000);
     	
     	int counter = 0;
-    	if(Util.debugEnabled()) Util.log(blockList.size() + " blocks in a queue");
+    	if(Util.debugEnabled()) Message.log(blockList.size() + " blocks in a queue");
     	for(int i = 0; i < blockList.size(); i++)
     	{
     		for(int j = 0; j < (Double.parseDouble(weightList.get(i)) * 1000); j++)
@@ -23,11 +21,11 @@ public class Pattern {
     			bin.add(blockList.get(i));
     			counter++;
     		}
-			if(Util.debugEnabled()) Util.log("Added " + counter + " "+ blockList.get(i) + " to the bin");
+			if(Util.debugEnabled()) Message.log("Added " + counter + " "+ blockList.get(i) + " to the bin");
 			counter = 0;
     	}
     	
-		if(Util.debugEnabled()) Util.log(bin.size() + " blocks in the bin");
+		if(Util.debugEnabled()) Message.log(bin.size() + " blocks in the bin");
     }
     
     public int next()

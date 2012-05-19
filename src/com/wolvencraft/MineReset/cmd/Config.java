@@ -79,14 +79,19 @@ public class Config
 		
 		for(String mineName : mineList)
 		{
-			baseNode = "mines." + mineName + ".reset.auto.data";
-			if(Regions.exists(baseNode + ".min"))
+			baseNode = "mines." + mineName + ".reset.auto";
+			if(Regions.exists(baseNode + ".reset-time"))
 			{
-				int min = Regions.getInt(baseNode + ".min");
-				int sec = Regions.getInt(baseNode + ".sec");
-				Regions.setInt(baseNode + ".next", min * 60 + sec);
-				Regions.remove(baseNode + ".min");
-				Regions.remove(baseNode + ".sec");
+				Regions.setInt(baseNode + ".reset-every", Regions.getInt(baseNode + ".reset-time") * 60);
+				Regions.remove(baseNode + ".reset-time");
+			}
+			if(Regions.exists(baseNode + ".auto.min"))
+			{
+				int min = Regions.getInt(baseNode + ".auto.min");
+				int sec = Regions.getInt(baseNode + ".auto.sec");
+				Regions.setInt(baseNode + ".auto.next", min * 60 + sec);
+				Regions.remove(baseNode + ".auto.min");
+				Regions.remove(baseNode + ".auto.sec");
 				updated = true;
 			}
 		}

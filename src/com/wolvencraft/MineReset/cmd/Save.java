@@ -137,6 +137,8 @@ public class Save
 		
 		// - - Reset
 		
+		String generator = Configuration.getString("defaults.reset.generator");
+		
 		// - - - Auto
 		boolean resetAutoEnabled = Configuration.getBoolean("defaults.reset.auto.reset");
 		int resetAutoTime = Configuration.getInt("defaults.reset.auto.reset-every");
@@ -217,6 +219,10 @@ public class Save
 		Regions.setList(baseNode + ".weights", weightList);
 		
 		// = = Reset
+		
+		baseNode = "mines." + mineName + ".reset";
+		Regions.setString(baseNode + ".generator", generator);
+		
 		// = = = Automatic
 		baseNode = "mines." + mineName + ".reset.auto";
 		Regions.setBoolean(baseNode + ".reset", resetAutoEnabled);

@@ -232,4 +232,42 @@ public class Util
 		str = parseString(str, "&r", "" + ChatColor.RESET);
 		return str;
 	}
+	
+	/**
+	 * Parses the message for time and returns it in seconds
+	 * @param message Input in the MINmSECs format
+	 * @return
+	 */
+	public static int parseTime(String message)
+	{
+		int minPos = message.indexOf("m");
+		int secPos = message.indexOf("s");
+		int time = 0;
+		
+		if(minPos == -1 && secPos == -1)
+		{
+			try
+			{
+				time = Integer.parseInt(message);
+				return -1;
+			}
+			catch(NumberFormatException nfe)
+			{
+				return -1;
+			}
+		}
+		
+		if(minPos != -1)
+		{
+			time += Integer.parseInt(message.substring(0, minPos));
+			if(secPos != -1)
+				time += Integer.parseInt(message.substring(minPos + 1, secPos));
+		}
+		else if(secPos != 1)
+		{
+			time += Integer.parseInt(message.substring(0, secPos));
+		}
+		else time = -1;
+		return time;
+	}
 }

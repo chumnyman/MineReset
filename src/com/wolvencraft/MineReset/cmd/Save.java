@@ -137,9 +137,11 @@ public class Save
 		
 		// - - Reset
 		
+		String generator = Configuration.getString("defaults.reset.generator");
+		
 		// - - - Auto
 		boolean resetAutoEnabled = Configuration.getBoolean("defaults.reset.auto.reset");
-		int resetAutoTime = Configuration.getInt("defaults.reset.auto.reset-time");
+		int resetAutoTime = Configuration.getInt("defaults.reset.auto.reset-every");
 		boolean resetAutoWarnEnabled = Configuration.getBoolean("defaults.reset.auto.warn");
 		List<String> resetAutoWarnTime = Configuration.getList("defaults.reset.auto.warn-times");
 		
@@ -217,17 +219,20 @@ public class Save
 		Regions.setList(baseNode + ".weights", weightList);
 		
 		// = = Reset
+		
+		baseNode = "mines." + mineName + ".reset";
+		Regions.setString(baseNode + ".generator", generator);
+		
 		// = = = Automatic
 		baseNode = "mines." + mineName + ".reset.auto";
 		Regions.setBoolean(baseNode + ".reset", resetAutoEnabled);
-		Regions.setInt(baseNode + ".reset-time", resetAutoTime);
+		Regions.setInt(baseNode + ".reset-every", resetAutoTime);
 		Regions.setBoolean(baseNode + ".warn", resetAutoWarnEnabled);
 		Regions.setList(baseNode + ".warn-times", resetAutoWarnTime);
 		
 		// = = = = Data
 		baseNode = "mines." + mineName + ".reset.auto.data";
-		Regions.setInt(baseNode + ".min", resetAutoTime);
-		Regions.setInt(baseNode + ".sec", 0);
+		Regions.setInt(baseNode + ".next", resetAutoTime);
 		
 		// = = Adding to the mine list
 		List<String> mineList = Regions.getList("data.list-of-mines");

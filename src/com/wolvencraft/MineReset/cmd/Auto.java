@@ -56,14 +56,14 @@ public class Auto
 		}
 		else if(args[1].equalsIgnoreCase("time"))
 		{
-			if(!Util.isNumeric(args[2]))
+			int time = Util.parseTime(args[2]);
+			if(time <= 0)
 			{
-				Message.sendInvalid(args);
+				Message.sendError("Time cannot be negative, dummy");
 				return;
 			}
-			int time = (int)Double.parseDouble(args[2]);
-			Message.sendSuccess("'" + mineName + "' will now reset every " + time + " minute(s).");
-			Regions.setInt(baseNode + ".reset-time", time);
+			Message.sendSuccess("'" + mineName + "' will now reset every " + time / 60 + " minute(s) " + time % 60 + " second(s)");
+			Regions.setInt(baseNode + ".reset-every", time);
 			Regions.saveData();
 			return;
 		}
@@ -91,18 +91,13 @@ public class Auto
 					Message.sendInvalid(args);
 					return;
 				}
-				if(!Util.isNumeric(args[3]))
-				{
-					Message.sendInvalid(args);
-					return;
-				}
-				int time = (int)Double.parseDouble(args[3]);
+				int time = Util.parseTime(args[3]);
 				if(time <= 0)
 				{
 					Message.sendError("Time cannot be negative, dummy");
 					return;
 				}
-				if(time > Regions.getInt(baseNode + ".reset-time"))
+				if(time > Regions.getInt(baseNode + ".reset-every"))
 				{
 					Message.sendError("Time cannot be set to a value greater then the reset time");
 					return;
@@ -111,7 +106,7 @@ public class Auto
 				warnList.add(time + "");
 				Regions.setList(baseNode + ".warn-times", warnList);
 				Regions.saveData();
-				Message.sendSuccess(mineName + " will now send warnings " + time + " minute(s) before the reset");
+				Message.sendSuccess(mineName + " will now send warnings " + time / 60 + " minute(s) " + time % 60 + " second(s) before the reset");
 				return;
 			}
 			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-"))
@@ -122,12 +117,7 @@ public class Auto
 					Message.sendInvalid(args);
 					return;
 				}
-				if(!Util.isNumeric(args[3]))
-				{
-					Message.sendInvalid(args);
-					return;
-				}
-				int time = (int)Double.parseDouble(args[3]);
+				int time = Util.parseTime(args[3]);
 				List<String> warnList = Regions.getList(baseNode + ".warn-times");
 				int index = warnList.indexOf(time + "");
 				if(index == -1)

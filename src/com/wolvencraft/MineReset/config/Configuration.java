@@ -70,4 +70,26 @@ public class Configuration
 			CommandManager.getPlugin().getConfig().set(node, listToReturn);
 		return listToReturn;
 	}
+	
+	/**
+	 * Checks if the node exists
+	 * @param node Node to check
+	 * @return Returns true if the node exists, false if it does not
+	 */
+	public static boolean exists(String node)
+	{
+		if(CommandManager.getPlugin().getConfig().isSet(node))
+			return true;
+		else return false;
+	}
+	
+	/**
+	 * Removes the data from the node
+	 * @param node Node to be cleared
+	 */
+	public static void remove(String node)
+	{
+		CommandManager.getPlugin().getConfig().set(node, null);
+		return;
+	}
 }

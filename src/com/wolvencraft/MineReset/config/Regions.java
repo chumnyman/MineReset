@@ -126,4 +126,26 @@ public class Regions
 	{
 		CommandManager.getPlugin().saveRegionData();
 	}
+	
+	/**
+	 * Checks if the node exists
+	 * @param node Node to check
+	 * @return Returns true if the node exists, false if it does not
+	 */
+	public static boolean exists(String node)
+	{
+		if(CommandManager.getPlugin().getRegionData().isSet(node))
+			return true;
+		else return false;
+	}
+	
+	/**
+	 * Removes the data from the node
+	 * @param node Node to be cleared
+	 */
+	public static void remove(String node)
+	{
+		CommandManager.getPlugin().getRegionData().set(node, null);
+		return;
+	}
 }

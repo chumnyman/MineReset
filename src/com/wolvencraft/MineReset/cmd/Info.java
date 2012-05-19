@@ -53,17 +53,16 @@ public class Info
 		// Title
 		String displayName = Regions.getString("mines." + mineName + ".display-name");
 		if(displayName.equals("")) displayName = mineName;
-		Message.sendMessage(ChatColor.DARK_RED + "                    -=[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.RED + " ]=-");
+		Message.sendMessage(ChatColor.DARK_RED + "                             -=[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.RED + " ]=-");
 		
 		// Reset
 		boolean autoReset = Regions.getBoolean("mines." + mineName + ".reset.auto.reset");
-		int autoResetTime = Regions.getInt("mines." + mineName + ".reset.auto.reset-time");
-		int nextResetMin = Regions.getInt("mines." + mineName + ".reset.auto.data.min");
-		int nextResetSec = Regions.getInt("mines." + mineName + ".reset.auto.data.sec");
+		int autoResetTime = Regions.getInt("mines." + mineName + ".reset.auto.reset-every");
+		int nextResetTime = Regions.getInt("mines." + mineName + ".reset.auto.data.next");
 		
 		if(autoReset)
 		{
-			Message.sendMessage(" Resets every " + ChatColor.GOLD +  autoResetTime + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetMin + ChatColor.WHITE + " minutes " + ChatColor.GOLD + nextResetSec + ChatColor.WHITE + " seconds");
+			Message.sendMessage(" Resets every " + ChatColor.GOLD +  autoResetTime / 60 + ChatColor.WHITE + ":" + ChatColor.GOLD + autoResetTime % 60 + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetTime / 60 + ChatColor.WHITE + ":" + ChatColor.GOLD + nextResetTime % 60 + ChatColor.WHITE + " minutes");
 		}
 		else
 		{

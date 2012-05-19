@@ -55,16 +55,19 @@ public class MineReset extends JavaPlugin
 		new PlayerInteractListener(this);
 		new PlayerLoginListener(this);
 		
-		List<String> mineList = Regions.getList("data.list-of-mines");
-		log.info("MineReset started");
-		log.info(mineList.size() + " mine(s) found");
-		
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		
 		getLanguageData().options().copyDefaults(true);
 		saveLanguageData();
 		Updater.checkVersion();
+		
+
+		List<String> mineList = Regions.getList("data.list-of-mines");
+		log.info("MineReset started");
+		log.info(mineList.size() + " mine(s) found");
+		if(Config.update())
+			log.info("Configuration successufully updated to the new data format");
 		
 		final long checkEvery = getConfig().getLong("lag.check-time-every");
 		
@@ -85,29 +88,22 @@ public class MineReset extends JavaPlugin
 						{
 							if(Regions.getBoolean("mines." + mineName + ".reset.auto.reset"))
 							{
-								int min = Regions.getInt("mines." + mineName + ".reset.auto.data.min");
-								int sec = Regions.getInt("mines." + mineName + ".reset.auto.data.sec");
+								int nextReset = Regions.getInt("mines." + mineName + ".reset.auto.data.next");
 								List<String> warnTimes = Regions.getList("mines." + mineName + ".reset.auto.warn-times");
 								
-								sec--;
-								if(sec < 0)
-								{
-									min--;
-									sec = 60 + (int)checkEvery;
-								}
+								nextReset -= (int)checkEvery;
 								
-								Regions.setInt("mines." + mineName + ".reset.auto.data.min", min);
-								Regions.setInt("mines." + mineName + ".reset.auto.data.sec", sec);
+								Regions.setInt("mines." + mineName + ".reset.auto.data.next", nextReset);
 								
 								Regions.saveData();
 								
 								SignCmd.updateAll(mineName);
 								
-								if((warnTimes.indexOf(min + "") != -1 && sec <= 0) && Regions.getBoolean("mines." + mineName + ".reset.auto.warn") && !Regions.getBoolean("mines." + mineName + ".silent"))
+								if((warnTimes.indexOf(nextReset + "") != -1) && Regions.getBoolean("mines." + mineName + ".reset.auto.warn") && !Regions.getBoolean("mines." + mineName + ".silent"))
 								{
 									Broadcast.sendSuccess(Util.parseVars(warnMessage, mineName));
 								}
-								else if(min < 0 || (min == 0 && sec <= 0))
+								else if(nextReset <= 0)
 								{
 									String[] args = {"reset", mineName};
 									Reset.run(args, true, null);

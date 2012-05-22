@@ -299,6 +299,41 @@ public class Edit
 			String generator = args[1];
 			Regions.setString("mines." + curMine + ".reset.generator", generator.toUpperCase());
 		}
+		else if(args[0].equalsIgnoreCase("link"))
+		{
+			if(args.length != 2)
+			{
+				Message.sendInvalid(args);
+				return;
+			}
+			
+			if(curMine == null)
+			{
+				String error = Language.getString("general.mine-not-selected");
+				Message.sendError(error);
+				return;
+			}
+			
+			if(!args[1].equalsIgnoreCase("none") && !Regions.exists(args[1]))
+			{
+				String error = Language.getString("general.mine-name-invalid");
+				error = Util.parseString(error, "%MINE%", args[1]);
+				error = Util.parseString(error, "%MINENAME%", args[1]);
+				Message.sendError(error);
+				return;
+			}
+			
+			if(args[1].equalsIgnoreCase("none"))
+			{
+				Regions.remove("mines." + curMine + ".link");
+				Message.sendSuccess("Mine '" + curMine + "' is no longer linked to any mine");
+				return;
+			}
+			
+			Regions.setString("mines." + curMine + ".link", args[1]);
+			Message.sendSuccess("Mines '" + curMine + "' will now reset with '" + args[1] + "'");
+			return;
+		}
 		else
 		{
 			Message.sendInvalid(args);

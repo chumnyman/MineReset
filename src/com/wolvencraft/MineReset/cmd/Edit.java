@@ -18,13 +18,15 @@ public class Edit
 	public static void run(String[] args)
 	{
 		if(Util.isPlayer())
+		{
 			if(!Util.senderHasPermission("edit"))
 			{
 				Message.sendDenied(args);
 				return;
 			}
+		}
 		
-		if(args.length == 1)
+		if(args.length == 1 && !args[0].equalsIgnoreCase("none"))
 		{
 			Help.getEdit();
 			return;

@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.material.MaterialData;
+
 
 public class RandomBlock {
  
     List<MineBlock> blocks;
     
-    public RandomBlock (List<String> blockList, List<String> weightList)
+    public RandomBlock (List<MaterialData> blockList, List<String> weightList)
     {
     	blocks = new ArrayList<MineBlock>();
     	double total = 0;
@@ -19,32 +21,32 @@ public class RandomBlock {
     	double tally = 0;
     	for (int i = 0; i < blockList.size(); i++) {
     	    tally += Double.parseDouble(weightList.get(i)) / total;
-    	    blocks.add(new MineBlock(Integer.parseInt(blockList.get(i)), tally));
-            Message.debug("Block " + Integer.parseInt(blockList.get(i)) + " was assigned the tally weight of " + tally);
+    	    blocks.add(new MineBlock(blockList.get(i), tally));
+            Message.debug("Block " + blockList.get(i).getItemTypeId() + " was assigned the tally weight of " + tally);
     	}
     }
     
-    public int next()
+    public MaterialData next()
     {
     	double r = new Random().nextDouble();
     	for (MineBlock block : blocks) {
     	    if (r <= block.getChance()) {
-    	        return block.getBlockId();
+    	        return block.getBlock();
     	    }
     	}
     	//At this point, we've got a problem folks.
-    	return -1;
+    	return null;
     }
     
     private static class MineBlock {
-        private int blockId;
+        private MaterialData block;
         private double chance;
-        public MineBlock(int blockId, double chance) {
-            this.blockId = blockId;
+        public MineBlock(MaterialData block, double chance) {
+            this.block = block;
             this.chance = chance;
         }
-        public int getBlockId() {
-            return blockId;
+        public MaterialData getBlock() {
+            return block;
         }
         public double getChance() {
             return chance;

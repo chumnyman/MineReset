@@ -1,12 +1,15 @@
 package com.wolvencraft.MineReset.generation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
@@ -20,7 +23,14 @@ public class RandomGenerator
 {
 	public static void run(String mineName)
 	{
-		List<String> blockList = Regions.getList("mines." + mineName + ".materials.blocks");
+		List<String> tempBlockList = Regions.getList("mines." + mineName + ".materials.blocks");
+		List<MaterialData> blockList = new ArrayList<MaterialData>();
+		for(String tempBlock : tempBlockList)
+		{
+			MaterialData block = new MaterialData(Material.getMaterial(Integer.parseInt(tempBlock.split(":")[0])));
+			block.setData(Byte.parseByte(tempBlock.split(":")[1]));
+			blockList.add(block);
+		}
 		List<String> weightList = Regions.getList("mines." + mineName + ".materials.weights");
 		RandomBlock pattern = new RandomBlock(blockList, weightList);
 		boolean blacklist = Regions.getBoolean("mines." + mineName + ".blacklist.enabled");
@@ -44,7 +54,7 @@ public class RandomGenerator
 				Regions.getInt("mines." + mineName + ".coordinates.pos1.z")
 		};
 		
-		int blockID = 0;
+		MaterialData blockId = null;
         Message.debug("x " + point1[0] + ", " + point2[0]);
         Message.debug("y " + point1[1] + ", " + point2[1]);
         Message.debug("z " + point1[2] + ", " + point2[2]);
@@ -89,13 +99,14 @@ public class RandomGenerator
 						{
 							if(blockTypeId.equals(block))
 							{
-								if(Util.debugEnabled()) Message.log(blockID + " is blacklisted and thus was not replaced");
+								Message.debug(blockId.getItemTypeId() + " is blacklisted and thus was not replaced");
 							}
 							else
 							{
-								blockID = pattern.next();
-								b.setTypeId(blockID);
-								if(Util.debugEnabled()) Message.log(blockTypeId + " was replaced with " + blockID);
+								blockId = pattern.next();
+								b.setType(blockId.getItemType());
+								b.setData(blockId.getData());
+								Message.debug(blockTypeId + " was replaced with " + blockId.getItemTypeId());
 							}	
 						}
 					}
@@ -117,13 +128,14 @@ public class RandomGenerator
 						{
 							if(blockTypeId.equals(block))
 							{
-								blockID = pattern.next();
-								b.setTypeId(blockID);
-								if(Util.debugEnabled()) Message.log(blockTypeId + " was replaced with " + blockID);
+								blockId = pattern.next();
+								b.setType(blockId.getItemType());
+								b.setData(blockId.getData());
+								Message.debug(blockTypeId + " was replaced with " + blockId.getItemTypeId());
 							}
 							else
 							{
-								if(Util.debugEnabled()) Message.log(blockTypeId + " is not whitelisted and thus not replaced");
+								Message.debug(blockTypeId + " is not whitelisted and thus not replaced");
 							}
 						}
 					}
@@ -140,8 +152,9 @@ public class RandomGenerator
 					for(int z = point1[2]; z <= point2[2]; z++ )
 					{
 						Block b = mineWorld.getBlockAt(x, y, z);
-						blockID = pattern.next();
-						b.setTypeId(blockID);
+						blockId = pattern.next();
+						b.setType(blockId.getItemType());
+						b.setData(blockId.getData());
 					}
 				}
 			}

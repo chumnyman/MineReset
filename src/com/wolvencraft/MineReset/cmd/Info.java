@@ -86,8 +86,10 @@ public class Info
 		}
 		
 		// generator
-		String generator = Regions.getString("mines." + mineName + ".reset.generator").toUpperCase();
-		Message.sendMessage(" Generator: " + ChatColor.GOLD + generator);
+		String generatorString = " Generator: " + ChatColor.GOLD + Regions.getString("mines." + mineName + ".reset.generator").toUpperCase();
+		if(parentMine != mineName)
+			generatorString = generatorString + ChatColor.WHITE + " | Linked to " + ChatColor.GOLD + parentMine;
+		Message.sendMessage(generatorString);
 		
 		// Protection
 		String breakingProt;

@@ -95,7 +95,11 @@ public class Mine
 		
 		for(int i = 0; i < itemList.size(); i++)
 		{
-			String blockName = Material.getMaterial(Integer.parseInt(itemList.get(i))).toString().toLowerCase().replace("_", " ");
+			String blockName = Material.getMaterial(Integer.parseInt(itemList.get(i).split(":")[0])).toString().toLowerCase().replace("_", " ");
+			if(!itemList.get(i).split(":")[1].equalsIgnoreCase("0"))
+			{
+				blockName = blockName + ":" + itemList.get(i).split(":")[1];
+			}
 			String blockWeight = null;
 			if(Double.parseDouble(weightList.get(i)) < 10)
 				blockWeight = " " + weightList.get(i) + "%";

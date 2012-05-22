@@ -37,7 +37,7 @@ public class Protection
 			return;
 		}
 		
-		/*if(args[1].equalsIgnoreCase("pvp"))
+		if(args[1].equalsIgnoreCase("pvp"))
 		{
 			String baseNode = "mines." + curMine + ".protection.pvp";
 			if(Regions.getBoolean(baseNode + ".enabled"))
@@ -52,7 +52,7 @@ public class Protection
 			}
 			Regions.saveData();
 		}
-		else */if(args[1].equalsIgnoreCase("breaking"))
+		else if(args[1].equalsIgnoreCase("breaking"))
 		{
 			if(args.length < 3)
 			{

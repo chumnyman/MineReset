@@ -54,6 +54,7 @@ public class MineReset extends JavaPlugin
 		//new BucketEmptyListener(this);
 		new PlayerInteractListener(this);
 		new PlayerLoginListener(this);
+        new PVPListener(this);
 		
 		getConfig().options().copyDefaults(true);
 		saveConfig();

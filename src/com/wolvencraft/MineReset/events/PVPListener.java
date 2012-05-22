@@ -6,6 +6,7 @@ import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Mine;
 import com.wolvencraft.MineReset.util.Util;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,11 +23,21 @@ public class PVPListener implements Listener {
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Message.debug("Entity was damaged by another Entity!");
-        if (!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player)) {
+        if (!(event.getDamager() instanceof Player || event.getDamager() instanceof Arrow) || !(event.getEntity() instanceof Player)) {
             Message.debug("Entities weren't players");
             return;
         }
-        Player attacker = (Player) event.getDamager();
+        Player attacker;
+        if (event.getDamager() instanceof Arrow) {
+            if ((((Arrow) event.getDamager()).getShooter() instanceof Player)) {
+                attacker = (Player) ((Arrow) event.getDamager()).getShooter();
+            } else {
+                Message.debug("Attacking entity (an arrow) wasn't shot by a player.");
+                return;
+            }
+        } else {
+            attacker = (Player) event.getDamager();
+        }
         Player victim = (Player) event.getEntity();
         if (Util.playerHasPermission(attacker, "protection.bypass") || !Configuration.getBoolean("lag.protection-checks-enabled")) {
             Message.debug("Attacker had perms or protection is disabled");

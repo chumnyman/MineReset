@@ -87,6 +87,11 @@ public class MineReset extends JavaPlugin
 		                
 						for(String mineName : mineList)
 						{
+							if(Regions.getString("mines." + mineName + ".link") != null)
+							{
+								mineName = Regions.getString("mines." + mineName + ".link");
+							}
+							
 							if(Regions.getBoolean("mines." + mineName + ".reset.auto.reset"))
 							{
 								int nextReset = Regions.getInt("mines." + mineName + ".reset.auto.data.next");

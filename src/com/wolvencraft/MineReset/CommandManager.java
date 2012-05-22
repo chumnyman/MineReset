@@ -76,7 +76,7 @@ public class CommandManager implements CommandExecutor
         for (String arg : args) {
             argString = argString + " " + arg;
         }
-		if(Util.debugEnabled() && Util.isPlayer()) Message.log(player.getName() + ": " + argString);
+		if (Util.isPlayer()) Message.debug(player.getName() + ": " + argString);
 		
 		return true;
 	}

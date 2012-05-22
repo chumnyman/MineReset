@@ -117,4 +117,15 @@ public class Message
 		Logger log = Bukkit.getServer().getLogger();
 		log.info(message);
 	}
+
+    /**
+     * Sends a message into the server log if debug is enabled
+     * @param message A message to be sent
+     */
+    public static void debug(String message)
+    {
+        if (Util.debugEnabled()) {
+            Message.log(message);
+        }
+    }
 }

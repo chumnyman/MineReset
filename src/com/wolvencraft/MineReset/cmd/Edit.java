@@ -135,7 +135,7 @@ public class Edit
 				percent = (double)(Math.round(percent * 1000)) / 1000;
 			}
 			else {
-				if(Util.debugEnabled()) Message.log("Argument is not numeric, attempting to parse");
+				Message.debug("Argument is not numeric, attempting to parse");
 				String awkwardValue = args[2];
 				String[] awkArray = awkwardValue.split("%");
 				try
@@ -148,7 +148,7 @@ public class Edit
 					return;
 				}
 			}
-			if(Util.debugEnabled()) Message.log("Percent value is " + percent);
+			Message.debug("Percent value is " + percent);
 			
 			double percentAvailable = Double.parseDouble(weightList.get(0));
 			double newStonePercent;
@@ -161,7 +161,7 @@ public class Edit
 			
 			newStonePercent = (double)(Math.round(newStonePercent * 1000)) / 1000;
 			int index = itemList.indexOf("" + blockId);
-			if(Util.debugEnabled()) Message.log(blockId + " ? " + index);
+			Message.debug(blockId + " ? " + index);
 			if(index == -1)
 			{
 				itemList.add(blockId + "");
@@ -211,7 +211,7 @@ public class Edit
 			}
 			
 			int index = itemList.indexOf("" + blockId);
-			if(Util.debugEnabled()) Message.log(blockId + " ? " + index);
+			Message.debug(blockId + " ? " + index);
 			if(index == -1)
 			{
 				Message.sendError("There is no '" + args[2] + "' in mine '" + curMine + "'");

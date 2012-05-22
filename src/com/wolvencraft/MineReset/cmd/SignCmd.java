@@ -217,7 +217,7 @@ public class SignCmd
 		}
 		else
 		{
-			if(Util.debugEnabled()) Message.log("Updating everything");
+            Message.debug("Updating everything");
 			for(String id : signList)
 			{
 				Location loc = new Location(

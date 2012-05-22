@@ -20,7 +20,7 @@ public class RandomBlock {
     	for (int i = 0; i < blockList.size(); i++) {
     	    tally += Double.parseDouble(weightList.get(i)) / total;
     	    blocks.add(new MineBlock(Integer.parseInt(blockList.get(i)), tally));
-    	    if (Util.debugEnabled()) Message.log("Block " + Integer.parseInt(blockList.get(i)) + " was assigned the tally weight of " + tally);
+            Message.debug("Block " + Integer.parseInt(blockList.get(i)) + " was assigned the tally weight of " + tally);
     	}
     }
     

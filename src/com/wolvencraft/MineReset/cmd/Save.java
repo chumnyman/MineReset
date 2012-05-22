@@ -22,14 +22,14 @@ public class Save
 			return;
 		}
 		
-		if(Util.debugEnabled()) Message.log("Intitiating the creation of a new mine");
+		Message.debug("Intitiating the creation of a new mine");
 		if(args.length != 2)
 		{
 			Message.sendInvalid(args);
 			return;
 		}
-		
-		if(Util.debugEnabled()) Message.log("Argument check passed");
+
+        Message.debug("Argument check passed");
 		
 		Location[] loc = CommandManager.getLocation();
 		if(loc == null || loc[0] == null || loc[1] == null)
@@ -37,16 +37,16 @@ public class Save
 			Message.sendError("Make a selection first");
 			return;
 		}
-		
-		if(Util.debugEnabled()) Message.log(loc[0].getWorld().getName() + " ?= " + loc[1].getWorld().getName());
+
+        Message.debug(loc[0].getWorld().getName() + " ?= " + loc[1].getWorld().getName());
 		
 		if(!loc[0].getWorld().getName().equalsIgnoreCase(loc[1].getWorld().getName()))
 		{
 			Message.sendError("Your selection points are in different worlds");
 			return;
 		}
-		
-		if(Util.debugEnabled()) Message.log("Selections checks passed");
+
+        Message.debug("Selections checks passed");
 		
 		String mineName = args[1];
 		if(Mine.exists(mineName))
@@ -54,10 +54,10 @@ public class Save
 			Message.sendError("Mine '" + mineName + "' already exists!");
 			return;
 		}
-		
-		if(Util.debugEnabled()) Message.log("Mine existance check passed");
-		
-		if(Util.debugEnabled()) Message.log("Reading default values");
+
+        Message.debug("Mine existance check passed");
+
+        Message.debug("Reading default values");
 		
 		// - Fetching the command sender
 		
@@ -144,27 +144,27 @@ public class Save
 		int resetAutoTime = Configuration.getInt("defaults.reset.auto.reset-every");
 		boolean resetAutoWarnEnabled = Configuration.getBoolean("defaults.reset.auto.warn");
 		List<String> resetAutoWarnTime = Configuration.getList("defaults.reset.auto.warn-times");
-		
-		
-		
-		
-		if(Util.debugEnabled()) Message.log("Finished reading defaults");
+
+
+
+
+        Message.debug("Finished reading defaults");
 		
 		// = Setting values to the mine
 		String baseNode = "mines." + mineName;
 		// = = Basic info
 		Regions.setString(baseNode + ".display-name", displayName);
 		Regions.setBoolean(baseNode + ".silent", silent);
-		
-		if(Util.debugEnabled()) Message.log("Writing blacklist data");
+
+        Message.debug("Writing blacklist data");
 		
 		// = = Blacklist
 		baseNode = "mines." + mineName + ".blacklist";
 		Regions.setBoolean(baseNode + ".enabled", blacklistEnabled);
 		Regions.setBoolean(baseNode + ".whitelist", whitelistEnabled);
 		Regions.setList(baseNode + ".blocks", blacklistedBlocks);
-		
-		if(Util.debugEnabled()) Message.log("Writing protection data");
+
+        Message.debug("Writing protection data");
 		
 		// = = Protection
 		baseNode = "mines." + mineName + ".protection";
@@ -187,8 +187,8 @@ public class Save
 		Regions.setBoolean(baseNode + ".blacklist.enabled", protectionPlacingBlacklistEnabled);
 		Regions.setBoolean(baseNode + ".blacklist.whitelist", protectionPlacingWhitelistEnabled);
 		Regions.setList(baseNode + ".blacklist.blocks", protectionPlacingBlacklistedBlocks);
-		
-		if(Util.debugEnabled()) Message.log("Writing coordinates");
+
+        Message.debug("Writing coordinates");
 		
 		// = = Coordinates
 		baseNode = "mines." + mineName + ".coordinates";
@@ -210,8 +210,8 @@ public class Save
 		Regions.setDouble(baseNode + ".pos2.z", player.getLocation().getZ());
 		Regions.setDouble(baseNode + ".pos2.yaw", player.getLocation().getYaw());
 		Regions.setDouble(baseNode + ".pos2.pitch", player.getLocation().getPitch());
-		
-		if(Util.debugEnabled()) Message.log("Writing reset data");
+
+        Message.debug("Writing reset data");
 		
 		// = = Materials
 		baseNode = "mines." + mineName + ".materials";
@@ -238,15 +238,15 @@ public class Save
 		List<String> mineList = Regions.getList("data.list-of-mines");
 		mineList.add(mineName);
 		Regions.setList("data.list-of-mines", mineList);
-		
-		if(Util.debugEnabled()) Message.log("Mine creation completed");
+
+        Message.debug("Mine creation completed");
 		
 		CommandManager.setLocation(null, 0);
 		CommandManager.setLocation(null, 1);
 		
 		Regions.saveData();
-		
-		if(Util.debugEnabled()) Message.log("Data saved successfully");
+
+        Message.debug("Data saved successfully");
 		CommandManager.setMine(mineName);
 		Message.sendSuccess("Mine '" + mineName + "' created successfully!");
 		return;

@@ -21,14 +21,14 @@ public class PlayerInteractListener implements Listener
 {
 	public PlayerInteractListener(MineReset plugin)
 	{
-		if(Util.debugEnabled()) Message.log("Initiating PlayerInteractListener");
+        Message.debug("Initiating PlayerInteractListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
-		if(Util.debugEnabled()) Message.log("PlayerInteractEvent passed");
+        Message.debug("PlayerInteractEvent passed");
 		
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();
@@ -54,20 +54,20 @@ public class PlayerInteractListener implements Listener
 			
 			if(block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN_POST)
 			{
-				if(Util.debugEnabled()) Message.log("Resetting a mine with a sign");
+                Message.debug("Resetting a mine with a sign");
 				if(!Util.playerHasPermission(player, "reset.sign"))
 				{
 					return;
 				}
-				if(Util.debugEnabled()) Message.log("Permissions check passed!");
+                Message.debug("Permissions check passed!");
 
 		     	String id = Signs.getId(block);
 				if(id == null)
 				{
 					return;
 				}
-				if(Util.debugEnabled()) Message.log("All checks passed!");
-		     	if(Util.debugEnabled()) Message.log("Sign found! (id " + id + ")");
+                Message.debug("All checks passed!");
+                Message.debug("Sign found! (id " + id + ")");
 		     	String mineName = Signs.getString("signs." + id + ".mine");
 		     	if(Signs.getBoolean("signs." + id + ".reset"))
 		     	{

@@ -26,8 +26,8 @@ public class EmptyGenerator
 			blacklistedBlocks = Regions.getList("mines." + mineName + ".blacklist.blocks");
 		String worldName = Regions.getString("mines." + mineName + ".coordinates.world");
 		World mineWorld = Bukkit.getServer().getWorld(worldName);
-		
-		if(Util.debugEnabled()) Message.log("Determining coordinates");
+
+        Message.debug("Determining coordinates");
 		
 		int[] point1 = {
 				Regions.getInt("mines." + mineName + ".coordinates.pos0.x"),
@@ -41,9 +41,9 @@ public class EmptyGenerator
 		};
 		
 		int blockID = 0;
-		if(Util.debugEnabled()) Message.log("x " + point1[0] + ", " + point2[0]);
-		if(Util.debugEnabled()) Message.log("y " + point1[1] + ", " + point2[1]);
-		if(Util.debugEnabled()) Message.log("z " + point1[2] + ", " + point2[2]);
+        Message.debug("x " + point1[0] + ", " + point2[0]);
+        Message.debug("y " + point1[1] + ", " + point2[1]);
+        Message.debug("z " + point1[2] + ", " + point2[2]);
 				
 		if(Configuration.getBoolean("lag.teleport-out-of-the-mine-on-reset"))
 		{
@@ -72,7 +72,7 @@ public class EmptyGenerator
 		
 		if(blacklist && !whitelist)
 		{
-			if(Util.debugEnabled()) Message.log("Blacklist detected");
+            Message.debug("Blacklist detected");
 			for(int y = point1[1]; y <= point2[1]; y++)
 			{
 				for(int x = point1[0]; x <= point2[0]; x++)
@@ -99,7 +99,7 @@ public class EmptyGenerator
 		}
 		else if(blacklist && whitelist)
 		{
-			if(Util.debugEnabled()) Message.log("Whitelist detected");
+            Message.debug("Whitelist detected");
 			for(int y = point1[1]; y <= point2[1]; y++)
 			{
 				for(int x = point1[0]; x <= point2[0]; x++)
@@ -126,7 +126,7 @@ public class EmptyGenerator
 		}
 		else
 		{
-			if(Util.debugEnabled()) Message.log("No blacklist detected");
+            Message.debug("No blacklist detected");
 			for(int y = point1[1]; y <= point2[1]; y++)
 			{
 				for(int x = point1[0]; x <= point2[0]; x++)

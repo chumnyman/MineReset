@@ -13,7 +13,7 @@ public class Pattern {
     	bin = new ArrayList<String>(100000);
     	
     	int counter = 0;
-    	if(Util.debugEnabled()) Message.log(blockList.size() + " blocks in a queue");
+        Message.debug(blockList.size() + " blocks in a queue");
     	for(int i = 0; i < blockList.size(); i++)
     	{
     		for(int j = 0; j < (Double.parseDouble(weightList.get(i)) * 1000); j++)
@@ -21,11 +21,11 @@ public class Pattern {
     			bin.add(blockList.get(i));
     			counter++;
     		}
-			if(Util.debugEnabled()) Message.log("Added " + counter + " "+ blockList.get(i) + " to the bin");
+            Message.debug("Added " + counter + " "+ blockList.get(i) + " to the bin");
 			counter = 0;
     	}
-    	
-		if(Util.debugEnabled()) Message.log(bin.size() + " blocks in the bin");
+
+        Message.debug(bin.size() + " blocks in the bin");
     }
     
     public int next()

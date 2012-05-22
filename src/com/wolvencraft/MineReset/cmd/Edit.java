@@ -2,6 +2,8 @@ package com.wolvencraft.MineReset.cmd;
 
 import java.util.List;
 
+import org.bukkit.material.MaterialData;
+
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
@@ -93,9 +95,9 @@ public class Edit
 				return;
 			}
 			String blockName = args[1];
-			int blockId = Util.getBlockId(blockName);
+			MaterialData block = Util.getBlock(blockName);
 			
-			if(blockId == -1)
+			if(block == null)
 			{
 				Message.sendError("Block '"+ args[1] + "' does not exist");
 				return;
@@ -117,7 +119,7 @@ public class Edit
 				weightList.add("100");
 			}
 			
-			if(blockId == Integer.parseInt(itemList.get(0)))
+			if(block.getItemTypeId() == Integer.parseInt(itemList.get(0)))
 			{
 				Message.sendError("You do not need to do this. The weight of the default block is calculated automatically.");
 				return;
@@ -160,11 +162,11 @@ public class Edit
 			else newStonePercent = percentAvailable - percent;
 			
 			newStonePercent = (double)(Math.round(newStonePercent * 1000)) / 1000;
-			int index = itemList.indexOf("" + blockId);
-			Message.debug(blockId + " ? " + index);
+			int index = itemList.indexOf(block.getItemTypeId() + ":" + block.getData());
+			Message.debug(block.getItemTypeId() + " ? " + index);
 			if(index == -1)
 			{
-				itemList.add(blockId + "");
+				itemList.add(block.getItemTypeId() + ":" + block.getData());
 				weightList.add(""+percent);
 			}
 			else
@@ -193,9 +195,9 @@ public class Edit
 				return;
 			}
 			
-			int blockId = Util.getBlockId(args[1]);
+			MaterialData block = Util.getBlock(args[1]);
 			
-			if(blockId == -1)
+			if(block == null)
 			{
 				Message.sendError("Block '"+ args[1] + "' does not exist");
 				return;
@@ -204,14 +206,14 @@ public class Edit
 			List<String> itemList = Regions.getList("mines." + curMine + ".materials.blocks");
 			List<String> weightList = Regions.getList("mines." + curMine + ".materials.weights");
 
-			if(blockId == Integer.parseInt(itemList.get(0)))
+			if(block.getItemTypeId() == Integer.parseInt(itemList.get(0)))
 			{
 				Message.sendError("You cannot remove the default block from the mine");
 				return;
 			}
 			
-			int index = itemList.indexOf("" + blockId);
-			Message.debug(blockId + " ? " + index);
+			int index = itemList.indexOf(block.getItemTypeId() + ":" + block.getData());
+			Message.debug(block.getItemTypeId() + " ? " + index);
 			if(index == -1)
 			{
 				Message.sendError("There is no '" + args[2] + "' in mine '" + curMine + "'");

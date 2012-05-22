@@ -3,6 +3,7 @@ package com.wolvencraft.MineReset.cmd;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
@@ -71,15 +72,15 @@ public class Blacklist
 		}
 		else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+"))
 		{
-			int blockId = Util.getBlockId(args[2]);
-			if(blockId == -1)
+			MaterialData block = Util.getBlock(args[2]);
+			if(block == null)
 			{
 				Message.sendError("Block '"+ args[2] + "' does not exist");
 				return;
 			}
 			
 			List<String> blacklist = Regions.getList("mines." + mineName + ".blacklist.blocks");
-			blacklist.add(blockId + "");
+			blacklist.add(block.getItemTypeId() + ":" + block.getData());
 			Regions.setList("mines." + mineName + ".blacklist.blocks", blacklist);
 
 			Regions.saveData();
@@ -88,8 +89,8 @@ public class Blacklist
 		}
 		else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-"))
 		{
-			int blockId = Util.getBlockId(args[2]);
-			if(blockId == -1)
+			MaterialData block = Util.getBlock(args[2]);
+			if(block == null)
 			{
 				Message.sendError("Block '" + ChatColor.GREEN + args[2] + ChatColor.WHITE + "' does not exist");
 				return;
@@ -97,7 +98,7 @@ public class Blacklist
 			
 			List<String> blacklist = Regions.getList("mines." + mineName + ".blacklist.blocks");
 			
-			int index = blacklist.indexOf(blockId);
+			int index = blacklist.indexOf(block.getItemTypeId() + ":" + block.getData());
 			if(index == -1)
 			{
 				Message.sendError("Block " + args[2] + " is not in the blacklist");

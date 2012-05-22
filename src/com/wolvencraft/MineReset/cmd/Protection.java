@@ -2,6 +2,8 @@ package com.wolvencraft.MineReset.cmd;
 
 import java.util.List;
 
+import org.bukkit.material.MaterialData;
+
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
@@ -105,9 +107,9 @@ public class Protection
 				else if(args[3].equalsIgnoreCase("add"))
 				{
 					String blockName = args[4];
-					int blockId = Util.getBlockId(args[4]);
+					MaterialData block = Util.getBlock(args[4]);
 					
-					if(blockId == -1)
+					if(block == null)
 					{
 						Message.sendError("Block '"+ args[4] + "' does not exist");
 						return;
@@ -117,7 +119,7 @@ public class Protection
 					
 					
 					// Writing everything down
-					blockList.add(""+blockId);
+					blockList.add(block.getItemTypeId() + ":" + block.getData());
 					Regions.setList(baseNode + ".blacklist.blocks", blockList);
 					
 					Regions.saveData();
@@ -127,9 +129,9 @@ public class Protection
 				}
 				else if(args[3].equalsIgnoreCase("remove"))
 				{
-					int blockId = Util.getBlockId(args[4]);
+					MaterialData block = Util.getBlock(args[4]);
 					
-					if(blockId == -1)
+					if(block == null)
 					{
 						Message.sendError("Block '"+ args[4] + "' does not exist");
 						return;
@@ -138,7 +140,7 @@ public class Protection
 					List<String> blockList = Regions.getList(baseNode + ".blacklist.blocks");
 					
 					
-					int index = blockList.indexOf("" + blockId);
+					int index = blockList.indexOf(block.getItemTypeId() + ":" + block.getData());
 					if(index == -1)
 					{
 						Message.sendError("There is no '" + args[4] + "' in protection blacklist of mine '" + curMine + "'");
@@ -214,9 +216,9 @@ public class Protection
 				else if(args[3].equalsIgnoreCase("add"))
 				{
 					String blockName = args[4];
-					int blockID = Util.getBlockId(args[4]);
+					MaterialData block = Util.getBlock(args[4]);
 					
-					if(blockID == -1)
+					if(block == null)
 					{
 						Message.sendError("Block '"+ args[4] + "' does not exist");
 						return;
@@ -226,7 +228,7 @@ public class Protection
 					
 					
 					// Writing everything down
-					blockList.add(""+blockID);
+					blockList.add(block.getItemTypeId() + ":" + block.getData());
 					Regions.setList(baseNode + ".blacklist.blocks", blockList);
 					
 					Regions.saveData();
@@ -236,9 +238,9 @@ public class Protection
 				}
 				else if(args[3].equalsIgnoreCase("remove"))
 				{
-					int blockID = Util.getBlockId(args[4]);
+					MaterialData block = Util.getBlock(args[4]);
 					
-					if(blockID == -1)
+					if(block == null)
 					{
 						Message.sendError("Block '"+ args[4] + "' does not exist");
 						return;
@@ -247,7 +249,7 @@ public class Protection
 					List<String> blockList = Regions.getList(baseNode + ".blacklist.blocks");
 					
 					
-					int index = blockList.indexOf("" + blockID);
+					int index = blockList.indexOf(block.getItemTypeId() + ":" + block.getData());
 					if(index == -1)
 					{
 						Message.sendError("There is no '" + args[4] + "' in protection blacklist of mine '" + curMine + "'");

@@ -1,4 +1,5 @@
 configuration:
+  version: "1.2.2"
   debug-mode: false
   language: "english"
   use-permissions: true
@@ -40,12 +41,12 @@ defaults:
     generator: "random"
     auto:
       reset: true
-      reset-time: 15
+      reset-every: 900
       warn: true
       warn-times:
-      - '5'
+      - '300'
   materials:
     blocks:
-    - '0'
+    - '0:0'
     weights:
     - '100'

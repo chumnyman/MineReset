@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Configuration;
@@ -94,48 +95,52 @@ public class Util
 	 * @param blockName Name of a block
 	 * @return Block material if it exists, null if it does not.
 	 */
-	public static int getBlockId(String blockName)
+	public static MaterialData getBlock(String blockName)
 	{
+		Message.debug("Parsing block: " + blockName);
 		try
 		{
-			Material material;
-			if(isNumeric(blockName))
+			MaterialData block;
+			String[] parts = blockName.split(":");
+			if(parts.length > 2)
 			{
-				if(Integer.parseInt(blockName) == 10 || Integer.parseInt(blockName) == 11 || Integer.parseInt(blockName) == 326)
-					material = Material.WATER_BUCKET;
-				else if(Integer.parseInt(blockName) == 10 || Integer.parseInt(blockName) == 11 || Integer.parseInt(blockName) == 327)
-					material = Material.LAVA_BUCKET;
-				else
-					material = Material.getMaterial(Integer.parseInt(blockName));
+				return null;
+			}
+			
+			if(isNumeric(parts[0]))
+			{
+				block = new MaterialData (Material.getMaterial(Integer.parseInt(blockName)));
+				if(parts.length == 2)
+				{
+					block.setData(Byte.parseByte(parts[1]));
+				}
 			}
 			else
 			{
-				if(blockName.equalsIgnoreCase("iron") || blockName.equalsIgnoreCase("ironore"))
-					blockName = "iron_ore";
-				else if(blockName.equalsIgnoreCase("gold") || blockName.equalsIgnoreCase("goldore"))
-					blockName = "gold_ore";
-				else if(blockName.equalsIgnoreCase("lapis") || blockName.equalsIgnoreCase("lapisore"))
-					blockName = "lapis_ore";
-				else if(blockName.equalsIgnoreCase("diamond") || blockName.equalsIgnoreCase("diamondore"))
-					blockName = "diamond_ore";
-				else if(blockName.equalsIgnoreCase("coal") || blockName.equalsIgnoreCase("coalore"))
-					blockName = "coal_ore";
-				else if(blockName.equalsIgnoreCase("redstone") || blockName.equalsIgnoreCase("redstoneore"))
-					blockName = "redstone_ore";
+				if(parts[0].equalsIgnoreCase("iron") || parts[0].equalsIgnoreCase("ironore"))
+					parts[0] = "iron_ore";
+				else if(blockName.equalsIgnoreCase("gold") || parts[0].equalsIgnoreCase("goldore"))
+					parts[0] = "gold_ore";
+				else if(blockName.equalsIgnoreCase("lapis") || parts[0].equalsIgnoreCase("lapisore"))
+					parts[0] = "lapis_ore";
+				else if(blockName.equalsIgnoreCase("diamond") || parts[0].equalsIgnoreCase("diamondore"))
+					parts[0] = "diamond_ore";
+				else if(blockName.equalsIgnoreCase("coal") || parts[0].equalsIgnoreCase("coalore"))
+					parts[0] = "coal_ore";
+				else if(blockName.equalsIgnoreCase("redstone") || parts[0].equalsIgnoreCase("redstoneore"))
+					parts[0] = "redstone_ore";
 				
-				if(blockName.equalsIgnoreCase("lava") || blockName.equalsIgnoreCase("lava_bucket") || blockName.equalsIgnoreCase("lavabucket"))
-					material = Material.WATER_BUCKET;
-				else if(blockName.equalsIgnoreCase("water") || blockName.equalsIgnoreCase("water_bucket") || blockName.equalsIgnoreCase("waterbucket"))
-					material = Material.LAVA_BUCKET;
-				else
-					material = Material.matchMaterial(blockName);
+				block = new MaterialData (Material.getMaterial(parts[0]));
+				if(parts.length == 2)
+				{
+					block.setData(Byte.parseByte(parts[1]));
+				}
 			}
 			
-			if(material == null) return -1;
-			else return material.getId();
+			return block;
 			
 		}
-		catch(NumberFormatException nfe) { return -1; }
+		catch(NumberFormatException nfe) { return null; }
 	}
 	
 	/**

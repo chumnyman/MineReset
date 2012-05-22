@@ -62,11 +62,23 @@ public class Info
 		
 		boolean autoReset = Regions.getBoolean("mines." + parentMine + ".reset.auto.reset");
 		int autoResetTime = Regions.getInt("mines." + parentMine + ".reset.auto.reset-every");
+		String autoResetFormatted = autoResetTime / 60 + ":";
+		if(autoResetTime % 60 > 10)
+			autoResetFormatted = autoResetFormatted + "0" + autoResetTime % 60;
+		else
+			autoResetFormatted = autoResetFormatted + autoResetTime % 60;
+		
 		int nextResetTime = Regions.getInt("mines." + parentMine + ".reset.auto.data.next");
+		String nextResetFormatted = nextResetTime / 60 + ":";
+		if(nextResetTime % 60 > 10)
+			nextResetFormatted = autoResetFormatted + "0" + autoResetTime % 60;
+		else
+			nextResetFormatted = autoResetFormatted + autoResetTime % 60;
+		
 		
 		if(autoReset)
 		{
-			Message.sendMessage(" Resets every " + ChatColor.GOLD +  autoResetTime / 60 + ":" + autoResetTime % 60 + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetTime / 60 + ":" + nextResetTime % 60 + ChatColor.WHITE + " minutes");
+			Message.sendMessage(" Resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes");
 		}
 		else
 		{

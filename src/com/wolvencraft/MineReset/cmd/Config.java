@@ -62,16 +62,15 @@ public class Config
 		}
 	}
 	
-	public static boolean update()
-	{
-		boolean updated = false;
+	public static void update()
+	{	
+		CommandManager.getPlugin().getConfig().set("configuration.version", "1.2.2");
 		
 		String baseNode = "defaults.reset.auto";
 		if(Configuration.exists(baseNode + ".reset-time"))
 		{
 			CommandManager.getPlugin().getConfig().set(baseNode + ".reset-every", Configuration.getInt(baseNode + ".reset-time") * 60);
 			Configuration.remove(baseNode + ".reset-time");
-			updated = true;
 		}
 		
 		List<String> mineList = Regions.getList("data.list-of-mines");
@@ -79,6 +78,7 @@ public class Config
 		
 		for(String mineName : mineList)
 		{
+			Message.debug("Updating the configuration file . . .");
 			baseNode = "mines." + mineName + ".reset.auto";
 			if(Regions.exists(baseNode + ".reset-time"))
 			{
@@ -92,10 +92,67 @@ public class Config
 				Regions.setInt(baseNode + ".auto.next", min * 60 + sec);
 				Regions.remove(baseNode + ".auto.min");
 				Regions.remove(baseNode + ".auto.sec");
-				updated = true;
+			}
+			
+			List<String> warnTimes = Configuration.getList("defaults.reset.auto.warn-times");
+			for(String time : warnTimes)
+			{
+				warnTimes.set(warnTimes.indexOf(time), "" + Integer.parseInt(time) * 60);
+			}
+			
+			List<String> materialList = Configuration.getList("defaults.materials.blocks");
+			for(String block : materialList)
+			{
+				if(block.indexOf(":") == -1)
+				{
+					materialList.set(materialList.indexOf(block), block + ":0");
+				}
+			}
+			
+			Message.debug("Updating the regions file . . .");
+			List<String> blacklist = Regions.getList("mines." + mineName + ".blacklist.blocks");
+			for(String block : blacklist)
+			{
+				if(block.indexOf(":") == -1)
+				{
+					blacklist.set(blacklist.indexOf(block), block + ":0");
+				}
+			}
+			
+			List<String> protBlacklist = Regions.getList("mines." + mineName + ".protection.breaking.blacklist.blocks");
+			for(String block : protBlacklist)
+			{
+				if(block.indexOf(":") == -1)
+				{
+					protBlacklist.set(protBlacklist.indexOf(block), block + ":0");
+				}
+			}
+			
+			protBlacklist = Regions.getList("mines." + mineName + ".protection.placement.blacklist.blocks");
+			for(String block : protBlacklist)
+			{
+				if(block.indexOf(":") == -1)
+				{
+					protBlacklist.set(protBlacklist.indexOf(block), block + ":0");
+				}
+			}
+			
+			warnTimes = Configuration.getList("mines." + mineName + ".reset.auto.warn-times");
+			for(String time : warnTimes)
+			{
+				warnTimes.set(warnTimes.indexOf(time), "" + Integer.parseInt(time) * 60);
+			}
+			
+			materialList = Regions.getList("mines." + mineName + ".materials.blocks");
+			for(String block : materialList)
+			{
+				if(block.indexOf(":") == -1)
+				{
+					materialList.set(materialList.indexOf(block), block + ":0");
+				}
 			}
 		}
 		
-		return updated;
+		return;
 	}
 }

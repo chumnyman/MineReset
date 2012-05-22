@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wolvencraft.MineReset.cmd.*;
+import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.events.*;
@@ -67,8 +68,12 @@ public class MineReset extends JavaPlugin
 		List<String> mineList = Regions.getList("data.list-of-mines");
 		log.info("MineReset started");
 		log.info(mineList.size() + " mine(s) found");
-		if(Config.update())
+		
+		if(!Configuration.exists("configuration.version") || !Configuration.getString("configuration.version").equals(curVer + "." + curSubVer))
+		{
+			Config.update();
 			log.info("Configuration successufully updated to the new data format");
+		}
 		
 		final long checkEvery = getConfig().getLong("lag.check-time-every");
 		
@@ -93,7 +98,7 @@ public class MineReset extends JavaPlugin
 							
 							if(Regions.getBoolean("mines." + parentMine + ".reset.auto.reset"))
 							{
-								int nextReset = Regions.getResetTime(parentMine);
+								int nextReset = Regions.getNextReset(parentMine);
 								List<String> warnTimes = Regions.getList("mines." + mineName + ".reset.auto.warn-times");
 								
 								if(parentMine == mineName)

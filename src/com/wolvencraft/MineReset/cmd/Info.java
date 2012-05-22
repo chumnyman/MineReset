@@ -56,13 +56,13 @@ public class Info
 		Message.sendMessage(ChatColor.DARK_RED + "                             -=[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.RED + " ]=-");
 		
 		// Reset
-		String linkedMine = Regions.getString("mines." + mineName + ".link");
-		if(linkedMine == null)
-			linkedMine = mineName;
+		String parentMine = Regions.getString("mines." + mineName + ".parent");
+		if(parentMine == null)
+			parentMine = mineName;
 		
-		boolean autoReset = Regions.getBoolean("mines." + linkedMine + ".reset.auto.reset");
-		int autoResetTime = Regions.getInt("mines." + linkedMine + ".reset.auto.reset-every");
-		int nextResetTime = Regions.getInt("mines." + linkedMine + ".reset.auto.data.next");
+		boolean autoReset = Regions.getBoolean("mines." + parentMine + ".reset.auto.reset");
+		int autoResetTime = Regions.getInt("mines." + parentMine + ".reset.auto.reset-every");
+		int nextResetTime = Regions.getInt("mines." + parentMine + ".reset.auto.data.next");
 		
 		if(autoReset)
 		{

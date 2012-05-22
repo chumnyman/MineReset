@@ -325,12 +325,12 @@ public class Edit
 			
 			if(args[1].equalsIgnoreCase("none"))
 			{
-				Regions.remove("mines." + curMine + ".link");
+				Regions.remove("mines." + curMine + ".parent");
 				Message.sendSuccess("Mine '" + curMine + "' is no longer linked to any mine");
 				return;
 			}
 			
-			Regions.setString("mines." + curMine + ".link", args[1]);
+			Regions.setString("mines." + curMine + ".parent", args[1]);
 			Message.sendSuccess("Mines '" + curMine + "' will now reset with '" + args[1] + "'");
 			return;
 		}

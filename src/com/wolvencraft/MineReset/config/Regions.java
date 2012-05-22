@@ -148,4 +148,12 @@ public class Regions
 		CommandManager.getPlugin().getRegionData().set(node, null);
 		return;
 	}
+	
+	public static int getResetTime(String mineName)
+	{
+		if(getString("mines." + mineName + ".link") == null)
+			return getInt("mines." + mineName + ".reset.data.next");
+		else
+			return getResetTime(getString("mines." + mineName + ".link"));
+	}
 }

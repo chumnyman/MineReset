@@ -66,6 +66,8 @@ public class Config
 	{	
 		CommandManager.getPlugin().getConfig().set("configuration.version", "1.2.2");
 		
+		Message.debug("Updating the configuration file . . .");
+		
 		String baseNode = "defaults.reset.auto";
 		if(Configuration.exists(baseNode + ".reset-time"))
 		{
@@ -73,12 +75,35 @@ public class Config
 			Configuration.remove(baseNode + ".reset-time");
 		}
 		
-		List<String> mineList = Regions.getList("data.list-of-mines");
+		List<String> warnTimes = Configuration.getList("defaults.reset.auto.warn-times");
+		for(String time : warnTimes)
+		{
+			warnTimes.set(warnTimes.indexOf(time), "" + Integer.parseInt(time) * 60);
+		}
 		
+		CommandManager.getPlugin().getConfig().set("defaults.reset.auto.warn-times", warnTimes);
+		
+		List<String> materialList = Configuration.getList("defaults.materials.blocks");
+		for(String block : materialList)
+		{
+			if(block.indexOf(":") == -1)
+			{
+				materialList.set(materialList.indexOf(block), block + ":0");
+			}
+		}
+		
+		CommandManager.getPlugin().getConfig().set("defaults.materials.blocks", materialList);
+
+		
+		
+		
+		
+		Message.debug("Updating the regions file . . .");
+		
+		List<String> mineList = Regions.getList("data.list-of-mines");
 		
 		for(String mineName : mineList)
 		{
-			Message.debug("Updating the configuration file . . .");
 			baseNode = "mines." + mineName + ".reset.auto";
 			if(Regions.exists(baseNode + ".reset-time"))
 			{
@@ -94,22 +119,7 @@ public class Config
 				Regions.remove(baseNode + ".auto.sec");
 			}
 			
-			List<String> warnTimes = Configuration.getList("defaults.reset.auto.warn-times");
-			for(String time : warnTimes)
-			{
-				warnTimes.set(warnTimes.indexOf(time), "" + Integer.parseInt(time) * 60);
-			}
 			
-			List<String> materialList = Configuration.getList("defaults.materials.blocks");
-			for(String block : materialList)
-			{
-				if(block.indexOf(":") == -1)
-				{
-					materialList.set(materialList.indexOf(block), block + ":0");
-				}
-			}
-			
-			Message.debug("Updating the regions file . . .");
 			List<String> blacklist = Regions.getList("mines." + mineName + ".blacklist.blocks");
 			for(String block : blacklist)
 			{
@@ -118,6 +128,7 @@ public class Config
 					blacklist.set(blacklist.indexOf(block), block + ":0");
 				}
 			}
+			Regions.setList("mines." + mineName + ".blacklist.blocks", blacklist);
 			
 			List<String> protBlacklist = Regions.getList("mines." + mineName + ".protection.breaking.blacklist.blocks");
 			for(String block : protBlacklist)
@@ -127,6 +138,7 @@ public class Config
 					protBlacklist.set(protBlacklist.indexOf(block), block + ":0");
 				}
 			}
+			Regions.setList("mines." + mineName + ".protection.breaking.blacklist.blocks", protBlacklist);
 			
 			protBlacklist = Regions.getList("mines." + mineName + ".protection.placement.blacklist.blocks");
 			for(String block : protBlacklist)
@@ -136,12 +148,14 @@ public class Config
 					protBlacklist.set(protBlacklist.indexOf(block), block + ":0");
 				}
 			}
+			Regions.setList("mines." + mineName + ".protection.placement.blacklist.blocks", protBlacklist);
 			
 			warnTimes = Configuration.getList("mines." + mineName + ".reset.auto.warn-times");
 			for(String time : warnTimes)
 			{
 				warnTimes.set(warnTimes.indexOf(time), "" + Integer.parseInt(time) * 60);
 			}
+			Regions.setList("mines." + mineName + ".reset.auto.warn-times", warnTimes);
 			
 			materialList = Regions.getList("mines." + mineName + ".materials.blocks");
 			for(String block : materialList)
@@ -151,7 +165,10 @@ public class Config
 					materialList.set(materialList.indexOf(block), block + ":0");
 				}
 			}
+			Regions.setList("mines." + mineName + ".materials.blocks", materialList);
 		}
+		
+		Regions.saveData();
 		
 		return;
 	}

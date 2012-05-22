@@ -70,7 +70,7 @@ public class Reset
 		}
 		
 		boolean silent = Regions.getBoolean("mines." + mineName + ".silent");
-		int nextReset = Regions.getNextReset(mineName);
+		int nextReset = Regions.getResetTime(mineName);
 		Regions.setInt("mines." + mineName + ".reset.auto.data.next", nextReset);
 		Regions.saveData();
 		

@@ -63,17 +63,17 @@ public class Info
 		boolean autoReset = Regions.getBoolean("mines." + parentMine + ".reset.auto.reset");
 		int autoResetTime = Regions.getInt("mines." + parentMine + ".reset.auto.reset-every");
 		String autoResetFormatted = autoResetTime / 60 + ":";
-		if(autoResetTime % 60 > 10)
+		if(autoResetTime % 60 < 10)
 			autoResetFormatted = autoResetFormatted + "0" + autoResetTime % 60;
 		else
 			autoResetFormatted = autoResetFormatted + autoResetTime % 60;
 		
 		int nextResetTime = Regions.getInt("mines." + parentMine + ".reset.auto.data.next");
 		String nextResetFormatted = nextResetTime / 60 + ":";
-		if(nextResetTime % 60 > 10)
-			nextResetFormatted = autoResetFormatted + "0" + autoResetTime % 60;
+		if(nextResetTime % 60 < 10)
+			nextResetFormatted = nextResetFormatted + "0" + nextResetTime % 60;
 		else
-			nextResetFormatted = autoResetFormatted + autoResetTime % 60;
+			nextResetFormatted = nextResetFormatted + nextResetTime % 60;
 		
 		
 		if(autoReset)

@@ -113,4 +113,31 @@ public class Mine
 		return finalList;
 		
 	}
+	
+	
+	/**
+	 * Returns the time period at which a certain mine is reset
+	 * @param mineName Mine to check
+	 * @return Time period at which the mine is reset
+	 */
+	public static int getResetTime(String mineName)
+	{
+		if(Regions.getString("mines." + mineName + ".parent") == null)
+			return Regions.getInt("mines." + mineName + ".reset.auto.reset-every");
+		else
+			return getNextReset(Regions.getString("mines." + mineName + ".parent"));
+	}
+	
+	/**
+	 * Returns the time in which a certain mine is reset
+	 * @param mineName Mine to check
+	 * @return Seconds until the next reset
+	 */
+	public static int getNextReset(String mineName)
+	{
+		if(Regions.getString("mines." + mineName + ".parent") == null)
+			return Regions.getInt("mines." + mineName + ".reset.auto.data.next");
+		else
+			return getNextReset(Regions.getString("mines." + mineName + ".parent"));
+	}
 }

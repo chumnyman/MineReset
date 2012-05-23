@@ -19,6 +19,7 @@ import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.events.*;
 import com.wolvencraft.MineReset.util.Broadcast;
 import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Mine;
 import com.wolvencraft.MineReset.util.Util;
 
 import couk.Adamki11s.AutoUpdater.Updater;
@@ -102,8 +103,8 @@ public class MineReset extends JavaPlugin
 							
 							if(Regions.getBoolean("mines." + parentMine + ".reset.auto.reset"))
 							{
-								int nextReset = Regions.getNextReset(parentMine);
-								List<String> warnTimes = Regions.getList("mines." + mineName + ".reset.auto.warn-times");
+								int nextReset = Mine.getNextReset(parentMine);
+								List<String> warnTimes = Regions.getList("mines." + parentMine + ".reset.auto.warn-times");
 								
 								if(parent)
 								{
@@ -114,14 +115,17 @@ public class MineReset extends JavaPlugin
 								
 								SignCmd.updateAll(mineName);
 								
-								if(parent && warnTimes.indexOf(nextReset + "") != -1 && Regions.getBoolean("mines." + mineName + ".reset.auto.warn") && !Regions.getBoolean("mines." + mineName + ".silent"))
+								if(parent)
 								{
-									Broadcast.sendSuccess(Util.parseVars(warnMessage, mineName));
-								}
-								else if(nextReset <= 0)
-								{
-									String[] args = {"reset", mineName};
-									Reset.run(args, true, null);
+									if(warnTimes.indexOf(nextReset + "") != -1 && Regions.getBoolean("mines." + parentMine + ".reset.auto.warn") && !Regions.getBoolean("mines." + parentMine + ".silent"))
+									{
+										Broadcast.sendSuccess(Util.parseVars(warnMessage, mineName));
+									}
+									if(nextReset <= 0)
+									{
+										String[] args = {"", mineName};
+										Reset.run(args, true, null);
+									}
 								}
 							}
 						}

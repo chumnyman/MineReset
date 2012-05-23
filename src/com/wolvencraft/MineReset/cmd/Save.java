@@ -137,7 +137,7 @@ public class Save
 		
 		// - - Reset
 		
-		String generator = Configuration.getString("defaults.reset.generator");
+		String generator = Configuration.getString("defaults.reset.generator").toUpperCase();
 		
 		// - - - Auto
 		boolean resetAutoEnabled = Configuration.getBoolean("defaults.reset.auto.reset");

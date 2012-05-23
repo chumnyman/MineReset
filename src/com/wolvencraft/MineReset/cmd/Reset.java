@@ -1,5 +1,7 @@
 package com.wolvencraft.MineReset.cmd;
 
+import java.util.List;
+
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.cmd.Help;
 import com.wolvencraft.MineReset.config.Language;
@@ -70,7 +72,7 @@ public class Reset
 		}
 		
 		boolean silent = Regions.getBoolean("mines." + mineName + ".silent");
-		int nextReset = Regions.getResetTime(mineName);
+		int nextReset = Mine.getResetTime(mineName);
 		Regions.setInt("mines." + mineName + ".reset.auto.data.next", nextReset);
 		Regions.saveData();
 		
@@ -78,6 +80,15 @@ public class Reset
 		if(automatic)
 		{
 			broadcastMessage = Language.getString("reset.automatic-reset-successful");
+			List<String> mineList = Regions.getList("data.list-of-mines");
+			for(String childMineName : mineList)
+			{
+				if(Regions.getString("mines." + childMineName + ".parent") != null && Regions.getString("mines." + childMineName + ".parent").equalsIgnoreCase(mineName))
+				{
+					String[] childArgs = {"", childMineName};
+					run(childArgs, true, null);
+				}
+			}
 		}
 		else
 		{

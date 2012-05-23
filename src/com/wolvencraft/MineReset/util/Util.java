@@ -304,15 +304,16 @@ public class Util
 		
 		if(auto)
 		{
-			int min = Regions.getInt("mines." + mineName + ".reset.auto.data.min");
-			int sec = Regions.getInt("mines." + mineName + ".reset.auto.data.sec");
-			String time = ChatColor.GOLD + "" + min + ChatColor.WHITE + " minutes, " + ChatColor.GOLD + "" + sec + ChatColor.WHITE + " seconds";
+			int time = Regions.getInt("mines." + mineName + ".reset.auto.data.next");
+			int min = time / 60;
+			int sec = time % 60;
+			String timeFormatted = min + ":" + sec;
 			int next = Regions.getInt("mines." + mineName + ".reset.auto.reset-time");
 			
 			str = parseString(str, "%MIN%", min + "");
 			str = parseString(str, "%SEC%", sec + "");
 			str = parseString(str, "%NEXT%", next + "");
-			str = parseString(str, "%TIME%", time);
+			str = parseString(str, "%TIME%", timeFormatted);
 		}
 		
 		str = parseColors(str);

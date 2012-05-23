@@ -318,7 +318,7 @@ public class Edit
 				return;
 			}
 			
-			if(!args[1].equalsIgnoreCase("none") && !Regions.exists(args[1]))
+			if(!args[1].equalsIgnoreCase("none") && !Mine.exists(args[1]))
 			{
 				String error = Language.getString("general.mine-name-invalid");
 				error = Util.parseString(error, "%MINE%", args[1]);

@@ -26,7 +26,7 @@ public class Edit
 			}
 		}
 		
-		if(args.length == 1 && !args[0].equalsIgnoreCase("none"))
+		if(!args[0].equalsIgnoreCase("none") && args.length == 1)
 		{
 			Help.getEdit();
 			return;
@@ -62,24 +62,17 @@ public class Edit
 		}
 		else if(args[0].equalsIgnoreCase("none"))
 		{
-			if(args.length != 2)
+			if(args.length != 1)
 			{
 				Message.sendInvalid(args);
 				return;
 			}
-			String mineName = args[1];
-			if(!Mine.exists(mineName))
-			{
-				String error = Language.getString("general.mine-name-invalid");
-				error = Util.parseString(error, "%MINE%", mineName);
-				Message.sendError(error);
-				return;
-			}
-			CommandManager.setMine(null);
+			String mineName = CommandManager.getMine();
 			String message = Language.getString("general.mine-deselected-successfully");
 			String displayName = Regions.getString("mines." + mineName + ",display-name");
 			message = Util.parseString(message, "%MINE%", mineName);
 			message = Util.parseString(message, "%MINENAME%", displayName);
+			CommandManager.setMine(null);
 			Message.sendSuccess(message);
 		}
 		else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+"))
@@ -96,6 +89,7 @@ public class Edit
 				Message.sendError("I find your lack of parameters disturbing");
 				return;
 			}
+			
 			String blockName = args[1];
 			MaterialData block = Util.getBlock(blockName);
 			
@@ -117,11 +111,11 @@ public class Edit
 			
 			if(itemList.size() == 0)
 			{
-				itemList.add("0");
+				itemList.add("0:0");
 				weightList.add("100");
 			}
 			
-			if(block.getItemTypeId() == Integer.parseInt(itemList.get(0)))
+			if(block.getItemTypeId() == Integer.parseInt(itemList.get(0).split(":")[0]))
 			{
 				Message.sendError("You do not need to do this. The weight of the default block is calculated automatically.");
 				return;
@@ -190,6 +184,12 @@ public class Edit
 		}
 		else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-"))
 		{
+			if(args.length != 2)
+			{
+				Message.sendError("I find your lack of parameters disturbing");
+				return;
+			}
+			
 			if(curMine == null)
 			{
 				String error = Language.getString("general.mine-not-selected");

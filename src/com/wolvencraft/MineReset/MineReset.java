@@ -93,15 +93,19 @@ public class MineReset extends JavaPlugin
 						for(String mineName : mineList)
 						{
 							String parentMine = Regions.getString("mines." + mineName + ".parent");
+							boolean parent = false;
 							if(parentMine == null)
+							{
 								parentMine = mineName;
+								parent = true;
+							}
 							
 							if(Regions.getBoolean("mines." + parentMine + ".reset.auto.reset"))
 							{
 								int nextReset = Regions.getNextReset(parentMine);
 								List<String> warnTimes = Regions.getList("mines." + mineName + ".reset.auto.warn-times");
 								
-								if(parentMine == mineName)
+								if(parent)
 								{
 									nextReset -= (int)checkEvery;
 									Regions.setInt("mines." + mineName + ".reset.auto.data.next", nextReset);
@@ -110,7 +114,7 @@ public class MineReset extends JavaPlugin
 								
 								SignCmd.updateAll(mineName);
 								
-								if((warnTimes.indexOf(nextReset + "") != -1) && Regions.getBoolean("mines." + mineName + ".reset.auto.warn") && !Regions.getBoolean("mines." + mineName + ".silent"))
+								if(parent && warnTimes.indexOf(nextReset + "") != -1 && Regions.getBoolean("mines." + mineName + ".reset.auto.warn") && !Regions.getBoolean("mines." + mineName + ".silent"))
 								{
 									Broadcast.sendSuccess(Util.parseVars(warnMessage, mineName));
 								}

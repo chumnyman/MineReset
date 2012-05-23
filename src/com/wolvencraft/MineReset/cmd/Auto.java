@@ -59,7 +59,7 @@ public class Auto
 			int time = Util.parseTime(args[2]);
 			if(time <= 0)
 			{
-				Message.sendError("Time cannot be negative, dummy");
+				Message.sendError("Invalid time provided");
 				return;
 			}
 			Message.sendSuccess("'" + mineName + "' will now reset every " + time / 60 + " minute(s) " + time % 60 + " second(s)");
@@ -94,7 +94,7 @@ public class Auto
 				int time = Util.parseTime(args[3]);
 				if(time <= 0)
 				{
-					Message.sendError("Time cannot be negative, dummy");
+					Message.sendError("Invalid time provided");
 					return;
 				}
 				if(time > Regions.getInt(baseNode + ".reset-every"))
@@ -118,6 +118,11 @@ public class Auto
 					return;
 				}
 				int time = Util.parseTime(args[3]);
+				if(time <= 0)
+				{
+					Message.sendError("Invalid time provided");
+					return;
+				}
 				List<String> warnList = Regions.getList(baseNode + ".warn-times");
 				int index = warnList.indexOf(time + "");
 				if(index == -1)

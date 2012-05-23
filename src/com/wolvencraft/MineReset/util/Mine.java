@@ -98,7 +98,7 @@ public class Mine
 			String blockName = Material.getMaterial(Integer.parseInt(itemList.get(i).split(":")[0])).toString().toLowerCase().replace("_", " ");
 			if(!itemList.get(i).split(":")[1].equalsIgnoreCase("0"))
 			{
-				blockName = blockName + ":" + itemList.get(i).split(":")[1];
+				blockName = Util.parseMetadata(itemList.get(i).split(":"), true) + " " + blockName;
 			}
 			String blockWeight = null;
 			if(Double.parseDouble(weightList.get(i)) < 10)

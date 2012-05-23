@@ -49,14 +49,28 @@ public class Time
 		if(displayName.equals("")) displayName = mineName;
 		
 		// Reset
-		boolean autoReset = Regions.getBoolean("mines." + mineName + ".reset.auto.reset");
-		int autoResetTime = Regions.getInt("mines." + mineName + ".reset.auto.reset-time");
-		int nextResetMin = Regions.getInt("mines." + mineName + ".reset.auto.data.min");
-		int nextResetSec = Regions.getInt("mines." + mineName + ".reset.auto.data.sec");
+		String parentMine = Regions.getString("mines." + mineName + ".parent");
+		if(parentMine == null)
+			parentMine = mineName;
+		
+		boolean autoReset = Regions.getBoolean("mines." + parentMine + ".reset.auto.reset");
+		int autoResetTime = Regions.getInt("mines." + parentMine + ".reset.auto.reset-every");
+		String autoResetFormatted = autoResetTime / 60 + ":";
+		if(autoResetTime % 60 < 10)
+			autoResetFormatted = autoResetFormatted + "0" + autoResetTime % 60;
+		else
+			autoResetFormatted = autoResetFormatted + autoResetTime % 60;
+		
+		int nextResetTime = Regions.getInt("mines." + parentMine + ".reset.auto.data.next");
+		String nextResetFormatted = nextResetTime / 60 + ":";
+		if(nextResetTime % 60 < 10)
+			nextResetFormatted = nextResetFormatted + "0" + nextResetTime % 60;
+		else
+			nextResetFormatted = nextResetFormatted + nextResetTime % 60;
 		
 		if(autoReset)
 		{
-			Message.sendSuccess(displayName + " resets every " + ChatColor.GOLD +  autoResetTime + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetMin + ChatColor.WHITE + " minutes " + ChatColor.GOLD + nextResetSec + ChatColor.WHITE + " seconds");
+			Message.sendSuccess(displayName + " resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes.");
 		}
 		else
 		{

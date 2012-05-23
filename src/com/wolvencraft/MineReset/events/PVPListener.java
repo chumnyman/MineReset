@@ -22,9 +22,9 @@ public class PVPListener implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        //Message.debug("Entity was damaged by another Entity!");
+        Message.debug("Entity was damaged by another Entity!");
         if (!(event.getDamager() instanceof Player || event.getDamager() instanceof Arrow) || !(event.getEntity() instanceof Player)) {
-            //Message.debug("Entities weren't players");
+            Message.debug("Entities weren't players");
             return;
         }
         Player attacker;

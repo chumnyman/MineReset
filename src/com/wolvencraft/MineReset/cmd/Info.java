@@ -129,8 +129,13 @@ public class Info
 			placementProt = ChatColor.RED + "OFF";
 		}
 		
+		String pvpProt;
+		if(Regions.getBoolean("mines." + mineName + ".protection.pvp.enabled"))
+			pvpProt = ChatColor.GREEN + "ON";
+		else pvpProt = ChatColor.RED + "OFF";
+		
 		Message.sendMessage(ChatColor.BLUE + " Protection:");
-		Message.sendMessage("Breaking: " + breakingProt + ChatColor.WHITE + " | Placement: " + placementProt + ChatColor.WHITE + " ");
+		Message.sendMessage("Breaking: " + breakingProt + ChatColor.WHITE + " | Placement: " + placementProt + ChatColor.WHITE + " | PVP " + pvpProt);
 		
 		List<String> finalList = Mine.getSortedList(mineName);
 		

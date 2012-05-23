@@ -61,7 +61,7 @@ public class Reset
 		{
 			RandomGenerator.run(mineName);
 		}
-		else if(generator.equalsIgnoreCase("empty"))
+		else if(generator.equalsIgnoreCase("empty") || generator.equalsIgnoreCase("clear"))
 		{
 			EmptyGenerator.run(mineName);
 		}

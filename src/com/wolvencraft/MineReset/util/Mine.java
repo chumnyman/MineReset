@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.config.Regions;
@@ -32,25 +33,33 @@ public class Mine
 	 * @param mineName Name of the mine
 	 * @return true if a player is in the mine, false if he is not
 	 */
-	public static boolean playerInTheMine(Player player, String mineName)
-	{
-		int[] x = {Regions.getInt("mines." + mineName + ".coordinates.pos0.x"), Regions.getInt("mines." + mineName + ".coordinates.pos1.x")};
-		int[] y = {Regions.getInt("mines." + mineName + ".coordinates.pos0.y"), Regions.getInt("mines." + mineName + ".coordinates.pos1.y")};
-		int[] z = {Regions.getInt("mines." + mineName + ".coordinates.pos0.z"), Regions.getInt("mines." + mineName + ".coordinates.pos1.z")};
-		Location loc = player.getLocation();
-		if((loc.getBlockX() > x[0] && loc.getBlockX() < x[1])
-				&& (loc.getBlockY() > y[0] && loc.getBlockY() < y[1])
-				&& (loc.getBlockZ() > z[0] && loc.getBlockZ() < z[1]))
-				{
-					return true;
-				}
-				else return false;
+	public static boolean playerInTheMine(Player player, String mineName) {
+        return isLocationInMine(player.getLocation(), mineName);
 	}
-	
+
+    public static boolean isBlockInMine(Block block, String mine) {
+        return isLocationInMine(block.getLocation(), mine);
+    }
+
+    /**
+     * Slightly more abstract method to determine if a mine contains a location or not
+     * @param location location object
+     * @param mine mine name
+     * @return true if location is in mine
+     */
+    public static boolean isLocationInMine(Location location, String mine) {
+        int[] x = {Regions.getInt("mines." + mine + ".coordinates.pos0.x"), Regions.getInt("mines." + mine + ".coordinates.pos1.x")};
+        int[] y = {Regions.getInt("mines." + mine + ".coordinates.pos0.y"), Regions.getInt("mines." + mine + ".coordinates.pos1.y")};
+        int[] z = {Regions.getInt("mines." + mine + ".coordinates.pos0.z"), Regions.getInt("mines." + mine + ".coordinates.pos1.z")};
+
+        return (location.getX() >= x[0] && location.getX() <= x[1])     //if x matches
+                && (location.getY() >= y[0] && location.getY() <= y[1]) //and y
+                && (location.getZ() >= z[0] && location.getZ() <= z[1]);//and z
+    }
 	/**
 	 * Teleports a player to the mine specified
 	 * @param player Player to be teleported
-	 * @param mienName The name of the mine
+	 * @param mineName The name of the mine
 	 */
 	public static void warpToMine(Player player, String mineName)
 	{

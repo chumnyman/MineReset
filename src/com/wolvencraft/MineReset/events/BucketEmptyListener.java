@@ -2,6 +2,9 @@ package com.wolvencraft.MineReset.events;
 
 import java.util.List;
 
+import com.wolvencraft.MineReset.config.Configuration;
+import com.wolvencraft.MineReset.util.Mine;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -17,85 +20,44 @@ import com.wolvencraft.MineReset.util.Util;
 
 public class BucketEmptyListener implements Listener
 {
-	public BucketEmptyListener(MineReset plugin)
-	{
+	public BucketEmptyListener(MineReset plugin) {
         Message.debug("Initiating BucketEmptyListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
 	@EventHandler
-	public void onBucketEmpty(PlayerBucketEmptyEvent  event)
-	{
-        Message.debug("PlayerBucketEmptyEvent called");
-		
-		Player player = event.getPlayer();
-		
-		if(Util.playerHasPermission(player, "protection.place"))
-		{
-			return;
-		}
+	public void onBucketEmpty(PlayerBucketEmptyEvent event) {
+        Message.debug("BucketEmptyEvent caught");
 
-        Message.debug("Permissions check passed");
-		
-		int padding;
-		int paddingTop;
-		
-		List<String> regionList = Regions.getList("data.list-of-mines");
+        if (Util.playerHasPermission(event.getPlayer(), "protection.place") || !Configuration.getBoolean("lag.protection-checks-enabled")) {
+            Message.debug("Player has perms or protection is disabled");
+            return;
+        }
 
-        Message.debug("Retrieved the region list");
-		
-		for(String mineName : regionList )
-		{
-            Message.debug("For mine " + mineName);
-			if(Regions.getBoolean("mines." + mineName + ".protection.placement.enabled"))
-			{
-				if(!Util.playerHasPermission(player, "protection.place." + mineName) && !Util.playerHasPermission(player, "protection.place"))
-				{
-                    Message.debug("The player does not have protection.place." + mineName);
-					Block b = event.getBlockClicked();
-					Location blockLocation = b.getLocation();
-					padding = Regions.getInt("mines." + mineName + ".protection.padding");
-					paddingTop = Regions.getInt("mines." + mineName + ".protection.padding-top");
-					String mineWorld = Regions.getString("mines." + mineName + ".coordinates.world");
-					int[] x = {Regions.getInt("mines." + mineName + ".coordinates.pos0.x"), Regions.getInt("mines." + mineName + ".coordinates.pos1.x")};
-					int[] y = {Regions.getInt("mines." + mineName + ".coordinates.pos0.y"), Regions.getInt("mines." + mineName + ".coordinates.pos1.y")};
-					int[] z = {Regions.getInt("mines." + mineName + ".coordinates.pos0.z"), Regions.getInt("mines." + mineName + ".coordinates.pos1.z")};
-					
-					if(mineWorld.equals(blockLocation.getWorld().getName())
-							&& (blockLocation.getBlockX() >= (x[0] - padding) && blockLocation.getBlockX() <= (x[1] + padding))
-							&& (blockLocation.getBlockY() >= (y[0] - padding) && blockLocation.getBlockY() <= (y[1] + paddingTop))
-							&& (blockLocation.getBlockZ() >= (z[0] - padding) && blockLocation.getBlockZ() <= (z[1] + padding)))
-					{
-                        Message.debug("Player emptied a bucket in the mine region");
-						if(Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.enabled"))
-						{
-							List<String> blacklist = Regions.getList("mines." + mineName + ".protection.placement.blacklist.blocks");
-							boolean whitelist = Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.whitelist");
-							
-							for(String block : blacklist)
-							{
-								String blockTypeId = b.getTypeId() + "";
-								if(block.equals("326") || block.equals("327"))
-								{
-                                    Message.debug(blockTypeId + " ? " + block);
-									if((whitelist && !blockTypeId.equals(block)) || (!whitelist && blockTypeId.equals(block)))
-									{
-										Message.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
-										event.setCancelled(true);
-										return;
-									}
-								}
-							}
-						}
-						else
-						{
-							event.setCancelled(true);
-						}
-					}
-				}
-			}
-		}
-		
-		return;
-	}
+        List<String> mines = Regions.getList("data.list-of-mines");
+
+        for (String mine : mines) {
+            if (!Regions.getBoolean("mines." + mine + ".protection.placement.enabled")) {
+                Message.debug(mine + " doesn't have placement protection enabled, skipping rest of check...");
+                continue;
+            }
+
+            if (event.getBlockClicked().getWorld().equals(Bukkit.getWorld(Regions.getString("mines." + mine + ".coordinates.world")))) {
+                Message.debug(mine + " mine's world, " + Regions.getString("mines." + mine + ".coordinates.world") + ", didn't equal block's world, " + event.getBlockClicked().getWorld().getName());
+                continue;
+            }
+
+            if (Util.playerHasPermission(event.getPlayer(), "protection.place." + mine)) {
+                Message.debug("Player had permission to place in that mine, leave 'em alone!");
+                continue;
+            }
+
+            if (Mine.isBlockInMine(event.getBlockClicked().getRelative(event.getBlockFace()), mine)) {
+                Message.debug("Yup, they can't place that bucket in the mine.");
+                event.setCancelled(true);
+                Message.sendPlayerError(event.getPlayer(), "You are not allowed to empty buckets in the mine! No soup for you!");
+                break;
+            }
+        }
+    }
 }

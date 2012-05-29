@@ -310,14 +310,40 @@ public class Util
 		if(auto)
 		{
 			int time = Regions.getInt("mines." + mineName + ".reset.auto.data.next");
+			int hour = time / 3600;
+			String hourFormatted = hour + "";
+			if(hour < 10) hourFormatted = "0" + hour;
 			int min = time / 60;
+			String minFormatted = min + "";
+			if(min < 10) minFormatted = "0" + min;
 			int sec = time % 60;
-			String timeFormatted = min + ":" + sec;
-			int next = Regions.getInt("mines." + mineName + ".reset.auto.reset-time");
+			String secFormatted = sec + "";
+			if(sec < 10) secFormatted = "0" + min;
 			
+			String timeFormatted = min + ":" + secFormatted;
+			if(hour != 0)
+				timeFormatted = hour + ":" + minFormatted + ":" + secFormatted;
+			
+			int next = Regions.getInt("mines." + mineName + ".reset.auto.reset-every");
+			int nextHour = next / 3600;
+			int nextMin = next / 60;
+			String nextMinFormatted = min + "";
+			if(nextMin < 10) nextMinFormatted = "0" + min;
+			int nextSec = next % 60;
+			String nextSecFormatted = sec + "";
+			if(nextSec < 10) secFormatted = "0" + min;
+			
+			String nextFormatted = nextMin + ":" + nextSecFormatted;
+			if(nextHour != 0)
+				nextFormatted = nextHour + ":" + nextMinFormatted + ":" + nextSecFormatted;
+			
+			str = str.replaceAll("%HOUR%", hour + "");
+			str = str.replaceAll("%HOURF%", hourFormatted);
 			str = str.replaceAll("%MIN%", min + "");
+			str = str.replaceAll("%MINF%", minFormatted);
 			str = str.replaceAll("%SEC%", sec + "");
-			str = str.replaceAll("%NEXT%", next + "");
+			str = str.replaceAll("%SECF%", secFormatted);
+			str = str.replaceAll("%NEXT%", nextFormatted + "");
 			str = str.replaceAll("%TIME%", timeFormatted);
 		}
 		

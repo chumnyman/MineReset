@@ -72,6 +72,7 @@ public class Reset
 		}
 		
 		boolean silent = Regions.getBoolean("mines." + mineName + ".silent");
+		boolean parent = Regions.getString("mines." + mineName + ".parent") == null;
 		int nextReset = Mine.getResetTime(mineName);
 		Regions.setInt("mines." + mineName + ".reset.auto.data.next", nextReset);
 		Regions.saveData();
@@ -79,7 +80,6 @@ public class Reset
 		String broadcastMessage;
 		if(automatic)
 		{
-			broadcastMessage = Language.getString("reset.automatic-reset-successful");
 			List<String> mineList = Regions.getList("data.list-of-mines");
 			for(String childMineName : mineList)
 			{
@@ -89,23 +89,26 @@ public class Reset
 					run(childArgs, true, null);
 				}
 			}
+			
+			broadcastMessage = Language.getString("reset.automatic-reset-successful");
 		}
 		else
 		{
 			broadcastMessage = Language.getString("reset.manual-reset-successful");
 		}
-	
-		String displayName = Regions.getString("mines." + mineName + ".display-name");
-		if(displayName.equals("")) displayName = mineName;
+		
 		broadcastMessage = Util.parseVars(broadcastMessage, mineName);
 		
-		if(!silent)
+		if(parent)
 		{
-			Broadcast.sendSuccess(broadcastMessage);
-		}
-		else if(!automatic)
-		{
-			Message.sendSuccess(broadcastMessage);
+			if(!silent)
+			{
+				Broadcast.sendSuccess(broadcastMessage);
+			}
+			else if(!automatic)
+			{
+				Message.sendSuccess(broadcastMessage);
+			}
 		}
 		return;
 	}

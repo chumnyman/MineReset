@@ -30,13 +30,10 @@ public class PlayerLoginListener implements Listener
 		String perm = Configuration.getString("versions.permission-node");
 		Message.debug(perm);
 		
-		if(event.getPlayer().hasPermission(perm));
+		if(event.getPlayer().hasPermission(perm) && !Updater.checkVersion());
 		{
-			if(!Updater.checkVersion())
-			{
-				Player player = event.getPlayer();
-				player.sendMessage(ChatColor.BLUE + "Update for MineReset (" + Updater.getVersion() + "." + Updater.getSubVersion() + ") is available! Urgency: " + Updater.getUrgency());
-			}
+			Player player = event.getPlayer();
+			player.sendMessage(ChatColor.BLUE + "Update for MineReset (" + Updater.getVersion() + "." + Updater.getSubVersion() + ") is available! Urgency: " + Updater.getUrgency());
 		}
 	}
 }

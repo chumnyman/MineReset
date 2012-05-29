@@ -140,6 +140,27 @@ public class Util
 					
 					break;
 				}
+				case 24:
+				{
+					if(Integer.parseInt(parts[1]) == 1) parts[1] = "chiseled";
+					else if(Integer.parseInt(parts[1]) == 2) parts[1] = "smooth";
+					else parts[1] = "";
+					
+					break;
+				}
+				case 33:
+				case 34:
+				{
+					if(Integer.parseInt(parts[1]) == 1) parts[1] = "sandstone";
+					else if(Integer.parseInt(parts[1]) == 1) parts[1] = "wooden";
+					else if(Integer.parseInt(parts[1]) == 1) parts[1] = "cobblestone";
+					else if(Integer.parseInt(parts[1]) == 1) parts[1] = "brick";
+					else if(Integer.parseInt(parts[1]) == 1) parts[1] = "stone brick";
+					else if(Integer.parseInt(parts[1]) == 1) parts[1] = "smooth";
+					else parts[1] = "stone";
+					
+					break;
+				}
 				case 35:
 				{
 					if(Integer.parseInt(parts[1]) == 1) parts[1] = "orange";
@@ -178,6 +199,13 @@ public class Util
 					
 					break;
 				}
+				case 98:
+				{
+					if(Integer.parseInt(parts[1]) == 1) parts[1] = "mossy";
+					else if(Integer.parseInt(parts[1]) == 1) parts[1] = "cracked";
+					else if(Integer.parseInt(parts[1]) == 1) parts[1] = "chiseled";
+					else parts[1] = "";
+				}
 			}
 		}
 		else
@@ -188,6 +216,21 @@ public class Util
 				else if(parts[1].equalsIgnoreCase("birch")) parts[1] = 2 + "";
 				else if(parts[1].equalsIgnoreCase("jungle")) parts[1] = 3 + "";
 				else parts[1] = 0 + "";
+			}
+			else if(parts[0].equalsIgnoreCase("24"))
+			{
+				if(parts[1].equalsIgnoreCase("chiseled") || parts[1].equalsIgnoreCase("creeper")) parts[1] = 1 + "";
+				else if(parts[1].equalsIgnoreCase("smooth")) parts[1] = 2 + "";
+				else parts[1] = 0 + "";
+			}
+			else if(parts[0].equalsIgnoreCase("33") || parts[0].equalsIgnoreCase("34"))
+			{
+				if(parts[1].equalsIgnoreCase("sandstone")) parts[1] = 1 + "";
+				else if(parts[1].equalsIgnoreCase("wooden") || parts[1].equalsIgnoreCase("wood") || parts[1].equalsIgnoreCase("plank")) parts[1] = 2+ "";
+				else if(parts[1].equalsIgnoreCase("cobblestone") || parts[1].equalsIgnoreCase("cobble")) parts[1] = 3 + "";
+				else if(parts[1].equalsIgnoreCase("brick")) parts[1] = 4 + "";
+				else if(parts[1].equalsIgnoreCase("stonebrick") || parts[1].equalsIgnoreCase("stone_brick")) parts[1] = 5 + "";
+				else if(parts[1].equalsIgnoreCase("smoothstone") || parts[1].equalsIgnoreCase("smooth")) parts[1] = 6 + "";
 			}
 			else if(parts[0].equalsIgnoreCase("35"))
 			{
@@ -223,13 +266,12 @@ public class Util
 				else if(parts[1].equalsIgnoreCase("broken")) parts[1] = 11 + "";
 				else parts[1] = 0 + "";
 			}
-			else if(parts[0].equalsIgnoreCase("24"))
-			{
-				
-			}
 			else if(parts[0].equalsIgnoreCase("98"))
 			{
-				
+				if(parts[1].equalsIgnoreCase("mossy")) parts[1] = 1 + "";
+				else if(parts[1].equalsIgnoreCase("cracked")) parts[1] = 2 + "";
+				else if(parts[1].equalsIgnoreCase("chiseled")) parts[1] = 3 + "";
+				else parts[1] = 0 + "";
 			}
 		}
 		return parts[1];

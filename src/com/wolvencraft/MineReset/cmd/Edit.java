@@ -49,15 +49,13 @@ public class Edit
 			if(!Mine.exists(mineName))
 			{
 				String error = Language.getString("general.mine-name-invalid");
-				error = Util.parseString(error, "%MINE%", mineName);
+				error = error.replaceAll("%MINE%", mineName);
 				Message.sendError(error);
 				return;
 			}
 			CommandManager.setMine(mineName);
 			String message = Language.getString("general.mine-selected-successfully");
-			String displayName = Regions.getString("mines." + mineName + ",display-name");
-			message = Util.parseString(message, "%MINE%", mineName);
-			message = Util.parseString(message, "%MINENAME%", displayName);
+			message = Util.parseVars(message, mineName);
 			Message.sendSuccess(message);
 		}
 		else if(args[0].equalsIgnoreCase("none"))
@@ -69,9 +67,7 @@ public class Edit
 			}
 			String mineName = CommandManager.getMine();
 			String message = Language.getString("general.mine-deselected-successfully");
-			String displayName = Regions.getString("mines." + mineName + ",display-name");
-			message = Util.parseString(message, "%MINE%", mineName);
-			message = Util.parseString(message, "%MINENAME%", displayName);
+			message = Util.parseVars(message, mineName);
 			CommandManager.setMine(null);
 			Message.sendSuccess(message);
 		}
@@ -321,8 +317,8 @@ public class Edit
 			if(!args[1].equalsIgnoreCase("none") && !Mine.exists(args[1]))
 			{
 				String error = Language.getString("general.mine-name-invalid");
-				error = Util.parseString(error, "%MINE%", args[1]);
-				error = Util.parseString(error, "%MINENAME%", args[1]);
+				error = error.replaceAll("%MINE%", args[1]);
+				error = error.replaceAll("%MINENAME%", args[1]);
 				Message.sendError(error);
 				return;
 			}

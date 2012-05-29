@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
 
 public class Message
@@ -124,7 +125,7 @@ public class Message
      */
     public static void debug(String message)
     {
-        if (Util.debugEnabled()) {
+    	if(Configuration.getBoolean("configuration.debug-mode")) {
             Message.log(message);
         }
     }

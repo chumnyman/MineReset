@@ -1,6 +1,7 @@
 package com.wolvencraft.MineReset.util;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,24 +21,11 @@ public class Util
 	public static boolean senderHasPermission(String node)
 	{
 		CommandSender sender = CommandManager.getSender();
-		boolean usePermissions = Configuration.getBoolean("configuration.use-permissions");
 		
 		// Console always has the permissions
-		Player player;
-		if (isPlayer()) player = (Player) sender;
-		else return true;
+		if (!isPlayer()) return true;
 		
-		// If permissions are not used, check for op
-		if(!usePermissions)
-		{
-			if(player.isOp()) return true;
-			else return false;
-		}
-		
-		if(player.hasPermission("minereset." + node))
-			return true;
-		
-		return false;
+		return playerHasPermission((Player) sender, node);
 	}
 	
 
@@ -75,22 +63,6 @@ public class Util
 	}
 	
 	/**
-	 * Checks if debug mode is enabled in the config
-	 * @return true if debug is enabled, false if it's not
-	 */
-	public static boolean debugEnabled()
-	{
-		if(Configuration.getBoolean("configuration.debug-mode")) return true;
-		else return false;
-	}
-	
-	/**
-	 * Sends a message back to the command sender
-	 * @param message A message to be sent
-	 */
-
-	
-	/**
 	 * Parses a block specified for a material
 	 * @param blockName Name of a block
 	 * @return Block material if it exists, null if it does not.
@@ -101,11 +73,10 @@ public class Util
 		try
 		{
 			MaterialData block;
+			if(blockName.indexOf(":") == -1) blockName += ":0";
 			String[] parts = blockName.split(":");
-			if(parts.length > 2)
-			{
-				return null;
-			}
+			
+			if(parts.length > 2) return null;
 			
 			if(isNumeric(parts[0]))
 			{
@@ -126,22 +97,19 @@ public class Util
 				else if(blockName.equalsIgnoreCase("redstone") || parts[0].equalsIgnoreCase("redstoneore"))
 					parts[0] = "redstone_ore";
 				
-				Message.debug(parts[0]);
-				Message.debug(Material.getMaterial(parts[0].toUpperCase()).name());
+				Message.debug("Material found: " + Material.getMaterial(parts[0].toUpperCase()).name());
 				block = new MaterialData(Material.getMaterial(parts[0].toUpperCase()));
 			}
 			
 			parts[0] = block.getItemTypeId() + "";
 			
-			if(parts.length == 2)
+			
+			if(!isNumeric(parts[1]))
 			{
-				if(!isNumeric(parts[1]))
-				{
-					parts[1] = parseMetadata(parts, false);
-				}
-				
-				block.setData(Byte.parseByte(parts[1]));
+				parts[1] = parseMetadata(parts, false);
 			}
+			
+			block.setData(Byte.parseByte(parts[1]));
 			
 			return block;
 			
@@ -255,6 +223,14 @@ public class Util
 				else if(parts[1].equalsIgnoreCase("broken")) parts[1] = 11 + "";
 				else parts[1] = 0 + "";
 			}
+			else if(parts[0].equalsIgnoreCase("24"))
+			{
+				
+			}
+			else if(parts[0].equalsIgnoreCase("98"))
+			{
+				
+			}
 		}
 		return parts[1];
 	}
@@ -275,19 +251,6 @@ public class Util
 	}
 	
 	/**
-	 * Replaces the specified value in the string provided with the new value
-	 * @param str String to parse
-	 * @param replaceFrom Value to be replaced
-	 * @param replaceTo Value to be substituted
-	 * @return A new String with necessary values substituted
-	 */
-	public static String parseString(String str, String replaceFrom, String replaceTo)
-	{
-		str = str.replaceAll(replaceFrom, replaceTo);
-		return str;
-	}
-	
-	/**
 	 * Replaces the variables in the string with their values
 	 * @param str String to be parsed
 	 * @param mineName Name of the mine
@@ -299,8 +262,8 @@ public class Util
 		boolean auto = Regions.getBoolean("mines." + mineName + ".reset.auto.reset");
 		
 		if(displayName.equals("")) displayName = mineName;
-		str = parseString(str, "%MINE%", mineName);
-		str = parseString(str, "%MINENAME%", displayName);
+		str = str.replaceAll("%MINE%", mineName);
+		str = str.replaceAll("%MINENAME%", displayName);
 		
 		if(auto)
 		{
@@ -310,10 +273,10 @@ public class Util
 			String timeFormatted = min + ":" + sec;
 			int next = Regions.getInt("mines." + mineName + ".reset.auto.reset-time");
 			
-			str = parseString(str, "%MIN%", min + "");
-			str = parseString(str, "%SEC%", sec + "");
-			str = parseString(str, "%NEXT%", next + "");
-			str = parseString(str, "%TIME%", timeFormatted);
+			str = str.replaceAll("%MIN%", min + "");
+			str = str.replaceAll("%SEC%", sec + "");
+			str = str.replaceAll("%NEXT%", next + "");
+			str = str.replaceAll("%TIME%", timeFormatted);
 		}
 		
 		str = parseColors(str);
@@ -326,33 +289,48 @@ public class Util
 	 * @param str String to be parsed
 	 * @return Parsed string
 	 */
-	public static String parseColors(String str)
+	public static String parseColors(String msg)
 	{
-		str = parseString(str, "&0", "" + ChatColor.BLACK);
-		str = parseString(str, "&1", "" + ChatColor.DARK_BLUE);
-		str = parseString(str, "&2", "" + ChatColor.DARK_GREEN);
-		str = parseString(str, "&3", "" + ChatColor.DARK_AQUA);
-		str = parseString(str, "&4", "" + ChatColor.DARK_RED);
-		str = parseString(str, "&5", "" + ChatColor.DARK_PURPLE);
-		str = parseString(str, "&6", "" + ChatColor.GOLD);
-		str = parseString(str, "&7", "" + ChatColor.GRAY);
-		str = parseString(str, "&8", "" + ChatColor.DARK_GRAY);
-		str = parseString(str, "&9", "" + ChatColor.BLUE);
-		str = parseString(str, "&a", "" + ChatColor.GREEN);
-		str = parseString(str, "&b", "" + ChatColor.AQUA);
-		str = parseString(str, "&c", "" + ChatColor.RED);
-		str = parseString(str, "&d", "" + ChatColor.LIGHT_PURPLE);
-		str = parseString(str, "&e", "" + ChatColor.YELLOW);
-		str = parseString(str, "&f", "" + ChatColor.WHITE);
+		msg = msg.replaceAll("&0", ChatColor.BLACK.toString());
+		msg = msg.replaceAll("&1", ChatColor.DARK_BLUE.toString());
+		msg = msg.replaceAll("&2", ChatColor.DARK_GREEN.toString());
+		msg = msg.replaceAll("&3", ChatColor.DARK_AQUA.toString());
+		msg = msg.replaceAll("&4", ChatColor.DARK_RED.toString());
+		msg = msg.replaceAll("&5", ChatColor.DARK_PURPLE.toString());
+		msg = msg.replaceAll("&6", ChatColor.GOLD.toString());
+		msg = msg.replaceAll("&7", ChatColor.GRAY.toString());
+		msg = msg.replaceAll("&8", ChatColor.DARK_GRAY.toString());
+		msg = msg.replaceAll("&9", ChatColor.BLUE.toString());
 		
-
-		str = parseString(str, "&k", "" + ChatColor.MAGIC);
-		str = parseString(str, "&l", "" + ChatColor.BOLD);
-		str = parseString(str, "&m", "" + ChatColor.STRIKETHROUGH);
-		str = parseString(str, "&n", "" + ChatColor.UNDERLINE);
-		str = parseString(str, "&o", "" + ChatColor.ITALIC);
-		str = parseString(str, "&r", "" + ChatColor.RESET);
-		return str;
+		msg = msg.replaceAll("&a", ChatColor.GREEN.toString());
+		msg = msg.replaceAll("&b", ChatColor.AQUA.toString());
+		msg = msg.replaceAll("&c", ChatColor.RED.toString());
+		msg = msg.replaceAll("&d", ChatColor.LIGHT_PURPLE.toString());
+		msg = msg.replaceAll("&e", ChatColor.YELLOW.toString());
+		msg = msg.replaceAll("&f", ChatColor.WHITE.toString());
+		
+		msg = msg.replaceAll("&A", ChatColor.GREEN.toString());
+		msg = msg.replaceAll("&B", ChatColor.AQUA.toString());
+		msg = msg.replaceAll("&C", ChatColor.RED.toString());
+		msg = msg.replaceAll("&D", ChatColor.LIGHT_PURPLE.toString());
+		msg = msg.replaceAll("&E", ChatColor.YELLOW.toString());
+		msg = msg.replaceAll("&F", ChatColor.WHITE.toString());
+		
+		msg = msg.replaceAll("&k", ChatColor.MAGIC.toString());
+		msg = msg.replaceAll("&l", ChatColor.BOLD.toString());
+		msg = msg.replaceAll("&m", ChatColor.STRIKETHROUGH.toString());
+		msg = msg.replaceAll("&n", ChatColor.UNDERLINE.toString());
+		msg = msg.replaceAll("&o", ChatColor.ITALIC.toString());
+		msg = msg.replaceAll("&r", ChatColor.RESET.toString());
+		
+		msg = msg.replaceAll("&K", ChatColor.MAGIC.toString());
+		msg = msg.replaceAll("&L", ChatColor.BOLD.toString());
+		msg = msg.replaceAll("&M", ChatColor.STRIKETHROUGH.toString());
+		msg = msg.replaceAll("&N", ChatColor.UNDERLINE.toString());
+		msg = msg.replaceAll("&O", ChatColor.ITALIC.toString());
+		msg = msg.replaceAll("&R", ChatColor.RESET.toString());
+		
+		return msg;
 	}
 	
 	/**
@@ -362,27 +340,72 @@ public class Util
 	 */
 	public static int parseTime(String message)
 	{
+		if(message.substring(0, 2).equals(":"))
+			message = "0" + message;
+		
 		String[] parts = message.split(":");
 		int time = 0;
 		
 		try
 		{
-			if(parts.length < 2)
+			if(parts.length == 3)
 			{
-				return (Integer.parseInt(message) * 60);
+				time += Integer.parseInt(parts[0]) * 3600;
+				time += Integer.parseInt(parts[1]) * 60;
+				time += Integer.parseInt(parts[2]);
 			}
-			else if(parts.length > 2)
+			else if(parts.length == 2)
+			{
+				time += Integer.parseInt(parts[0]) * 60;
+				time += Integer.parseInt(parts[1]);
+			}
+			else if(parts.length == 1)
+			{
+				time += Integer.parseInt(parts[0]);
+			}
+			else
 			{
 				return -1;
 			}
-			
-			time = (Integer.parseInt(parts[0]) * 60) + Integer.parseInt(parts[1]);
-			return time;
 		}
 		catch(NumberFormatException nfe)
 		{
 			return -1;
 		}
+
+		return time;
+	}
+	
+	/**
+	 * Checks if both selection points are set
+	 * @return true if both points are set, false if they are not
+	 */
+	public static boolean locationsSet()
+	{
+		Location[] point = CommandManager.getLocation();
+		if(point[0] == null || point[1] == null) return false;
+		return true;
+	}
+	
+	/**
+	 * Counts the number of blocks in the selection region
+	 * @return the number of blocks in the region
+	 */
+	public static int getBlockCount()
+	{
+		Location[] point = CommandManager.getLocation();
+		int x1 = point[0].getBlockX(), x2 = point[1].getBlockX(),
+	       y1 = point[0].getBlockY(), y2 = point[1].getBlockY(),
+	       z1 = point[0].getBlockZ(), z2 = point[1].getBlockZ();
+
+		int xdist, zdist, ydist;
 		
+		if(x1 > x2){ xdist = Math.round(x1 - x2); } else { xdist = Math.round(x2 - x1); }
+		if(y1 > y2){ ydist = Math.round(y1 - y2); } else { ydist = Math.round(y2 - y1); }
+		if(z1 > z2){ zdist = Math.round(z1 - z2); } else { zdist = Math.round(z2 - z1); }
+		
+		int blockCount = xdist * ydist * zdist;
+		
+		return blockCount;
 	}
 }

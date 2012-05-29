@@ -52,11 +52,15 @@ public class Updater
 		}
 		catch(NullPointerException npe)
 		{
-			String[] args = {"config", "generate"};
+			String[] args = {"", "generate"};
 			Config.run(args);
 		}
 		
 		source = FetchSource.fetchSource();
+		if(source == null)
+		{
+			return true;
+		}
 		formatSource(source);
 		
 		String subVers = Integer.toString(MineReset.curSubVer);

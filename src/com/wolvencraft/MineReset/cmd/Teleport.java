@@ -68,7 +68,7 @@ public class Teleport
 		else
 		{
 			String error = Language.getString("general.mine-name-invalid");
-			error = Util.parseString(error, "%MINE%", args[1]);
+			error = error.replaceAll("%MINE%", args[1]);
 			Message.sendError(error);
 			return;
 		}

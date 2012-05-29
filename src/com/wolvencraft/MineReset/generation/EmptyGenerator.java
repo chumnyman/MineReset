@@ -85,12 +85,12 @@ public class EmptyGenerator
 						{
 							if(blockTypeId.equals(block))
 							{
-								if(Util.debugEnabled()) Message.log(blockID + " is blacklisted and thus was not replaced");
+								Message.debug(blockID + " is blacklisted and thus was not replaced");
 							}
 							else
 							{
 								b.setTypeId(0);
-								if(Util.debugEnabled()) Message.log(blockTypeId + " was replaced with " + blockID);
+								Message.debug(blockTypeId + " was replaced with " + blockID);
 							}	
 						}
 					}
@@ -113,11 +113,11 @@ public class EmptyGenerator
 							if(blockTypeId.equals(block))
 							{
 								b.setTypeId(0);
-								if(Util.debugEnabled()) Message.log(blockTypeId + " was replaced with " + blockID);
+								Message.debug(blockTypeId + " was replaced with " + blockID);
 							}
 							else
 							{
-								if(Util.debugEnabled()) Message.log(blockTypeId + " is not whitelisted and thus not replaced");
+								Message.debug(blockTypeId + " is not whitelisted and thus not replaced");
 							}
 						}
 					}

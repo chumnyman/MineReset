@@ -35,8 +35,8 @@ public class FetchSource
 		}
 		catch (IOException ex)
 		{
-			ex.printStackTrace();
-			Message.log("Error opening URL input stream!");
+			//ex.printStackTrace();
+			Message.log("Unable to connect to the update server!");
 		}
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new DataInputStream(new BufferedInputStream(is))));
@@ -50,7 +50,7 @@ public class FetchSource
 		}
 		catch (IOException ex)
 		{
-			ex.printStackTrace();
+			//ex.printStackTrace();
 			Message.log("Error reading input stream!");
 		}
 		
@@ -60,7 +60,7 @@ public class FetchSource
 		}
 		catch (IOException ioe)
 		{
-			ioe.printStackTrace();
+			//ioe.printStackTrace();
 			Message.log("Error closing URL input stream!");
 		}
          

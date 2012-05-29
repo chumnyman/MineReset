@@ -41,7 +41,7 @@ public class MineReset extends JavaPlugin
 	private FileConfiguration regionData = null, languageData = null, signData = null;
 	private File regionDataFile = null, languageDataFile = null, signDataFile = null;
 	
-	public static double curVer = 1.2;
+	public static double curVer = 1.1;
 	public static int curSubVer = 2;
 	
 	public void onEnable()
@@ -171,9 +171,12 @@ public class MineReset extends JavaPlugin
 	    }
 	}
 	
+	@SuppressWarnings("unused")
 	public void reloadLanguageData() {
 		
 		String lang = this.getConfig().getString("configuration.language") + ".yml";
+		if(lang == null) lang = "english";
+		
 		Message.log("Language file used: " + lang);
 		
 	    if (languageDataFile == null) {

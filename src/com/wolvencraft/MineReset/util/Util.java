@@ -152,11 +152,11 @@ public class Util
 				case 34:
 				{
 					if(Integer.parseInt(parts[1]) == 1) parts[1] = "sandstone";
-					else if(Integer.parseInt(parts[1]) == 1) parts[1] = "wooden";
-					else if(Integer.parseInt(parts[1]) == 1) parts[1] = "cobblestone";
-					else if(Integer.parseInt(parts[1]) == 1) parts[1] = "brick";
-					else if(Integer.parseInt(parts[1]) == 1) parts[1] = "stone brick";
-					else if(Integer.parseInt(parts[1]) == 1) parts[1] = "smooth";
+					else if(Integer.parseInt(parts[1]) == 2) parts[1] = "wooden";
+					else if(Integer.parseInt(parts[1]) == 3) parts[1] = "cobblestone";
+					else if(Integer.parseInt(parts[1]) == 4) parts[1] = "brick";
+					else if(Integer.parseInt(parts[1]) == 5) parts[1] = "stone brick";
+					else if(Integer.parseInt(parts[1]) == 6) parts[1] = "smooth";
 					else parts[1] = "stone";
 					
 					break;
@@ -202,8 +202,8 @@ public class Util
 				case 98:
 				{
 					if(Integer.parseInt(parts[1]) == 1) parts[1] = "mossy";
-					else if(Integer.parseInt(parts[1]) == 1) parts[1] = "cracked";
-					else if(Integer.parseInt(parts[1]) == 1) parts[1] = "chiseled";
+					else if(Integer.parseInt(parts[1]) == 2) parts[1] = "cracked";
+					else if(Integer.parseInt(parts[1]) == 3) parts[1] = "chiseled";
 					else parts[1] = "";
 				}
 			}

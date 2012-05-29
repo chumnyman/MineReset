@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Configuration;
+import com.wolvencraft.MineReset.util.Message;
 
 import couk.Adamki11s.AutoUpdater.Updater;
 
@@ -27,6 +28,7 @@ public class PlayerLoginListener implements Listener
 			return;
 		
 		String perm = Configuration.getString("versions.permission-node");
+		Message.debug(perm);
 		
 		if(event.getPlayer().hasPermission(perm));
 		{

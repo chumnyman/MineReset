@@ -37,6 +37,7 @@ public class FetchSource
 		{
 			//ex.printStackTrace();
 			Message.log("Unable to connect to the update server!");
+			return null;
 		}
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new DataInputStream(new BufferedInputStream(is))));
@@ -52,6 +53,7 @@ public class FetchSource
 		{
 			//ex.printStackTrace();
 			Message.log("Error reading input stream!");
+			return null;
 		}
 		
 		try
@@ -62,6 +64,7 @@ public class FetchSource
 		{
 			//ioe.printStackTrace();
 			Message.log("Error closing URL input stream!");
+			return null;
 		}
          
 		return source;

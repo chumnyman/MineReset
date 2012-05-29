@@ -1,6 +1,9 @@
 Mine Reset
 ==========
 
+[Visit BukkitDev](http://dev.bukkit.org/server-mods/minereset/)
+[Download Latest Build](https://s3.amazonaws.com/builds.mcprison.com/MineReset/lastSuccessful/MineReset.jar)
+
 Aren't you tired of manually selecting the mine region with World Edit, then typing in an incredibly long command that will reset the mining area while keeping the block pattern random? Tired of people going straight for the diamonds, the location of which they remember? I have good news for you.
 
 With Mine Reset, all you need to do is set up an area, set up the block ratios using an easy-to-remember command, and now you can set it to a randomized pattern using one command, any time you want, anywhere you want. Even from the console! You can even stretch the use of the plugin to make it meet other purposes like resetting the spleef arena floor or do something even more weird.

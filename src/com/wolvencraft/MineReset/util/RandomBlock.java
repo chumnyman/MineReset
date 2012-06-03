@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.wolvencraft.MineReset.mine.MineBlock;
 import org.bukkit.material.MaterialData;
 
 
@@ -37,19 +38,5 @@ public class RandomBlock {
     	//At this point, we've got a problem folks.
     	return null;
     }
-    
-    private static class MineBlock {
-        private MaterialData block;
-        private double chance;
-        public MineBlock(MaterialData block, double chance) {
-            this.block = block;
-            this.chance = chance;
-        }
-        public MaterialData getBlock() {
-            return block;
-        }
-        public double getChance() {
-            return chance;
-        }
-    }
+
 }

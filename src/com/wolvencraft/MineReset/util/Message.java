@@ -128,4 +128,8 @@ public class Message
             Message.log(message);
         }
     }
+
+    public static void sendPlayer(Player p, String message) {
+        p.sendMessage(ChatColor.GREEN + "[" + Language.getString("general.title") + "]" + ChatColor.WHITE + message);
+    }
 }

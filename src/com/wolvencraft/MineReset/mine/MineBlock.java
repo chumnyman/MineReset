@@ -20,4 +20,7 @@ public class MineBlock {
         return chance;
     }
 
+    public void setChance(double chance) {
+        this.chance = chance;
+    }
 }

@@ -26,6 +26,20 @@ public class RandomBlock {
             Message.debug("Block " + blockList.get(i).getItemTypeId() + " was assigned the tally weight of " + tally);
     	}
     }
+
+    public RandomBlock(List<MineBlock> blocks) {
+        blocks = new ArrayList<MineBlock>();
+        double total = 0;
+        for (MineBlock block : blocks) {
+            total += block.getChance();
+        }
+        double tally = 0;
+        for (MineBlock block : blocks) {
+            tally += block.getChance() / total;
+            block.setChance(tally);
+            Message.debug("Block " + block.getBlock().getItemTypeId() + " was assigned the tally weight of " + tally);
+        }
+    }
     
     public MaterialData next()
     {

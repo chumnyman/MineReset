@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -20,6 +21,7 @@ import java.util.Map;
 /**
  * @author jjkoletar
  */
+@SerializableAs("Mine")
 public class Mine implements ConfigurationSerializable, Listener {
     private Location one;
     private Location two;
@@ -64,6 +66,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         automaticSeconds = (Integer) me.get("automaticResetTime");
         warned = (Boolean) me.get("isWarned");
         warningTimes = (List<Integer>) me.get("warningTimes");
+        blocks = (List<MineBlock>) me.get("blocks");
         enabledProtection = (List<Protection>) me.get("protectionTypes");
     }
 
@@ -110,6 +113,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("isWarned", warned);
         me.put("warningTimes", warningTimes);
         me.put("protectionTypes", enabledProtection);
+        me.put("blocks", blocks);
         return me;
     }
 }

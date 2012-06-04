@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.wolvencraft.MineReset.mine.Mine;
+import com.wolvencraft.MineReset.mine.MineBlock;
 import com.wolvencraft.MineReset.util.MineUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -67,7 +68,8 @@ public class MineReset extends JavaPlugin
 		saveLanguageData();
 		Updater.checkVersion();
 
-        ConfigurationSerialization.registerClass(Mine.class);
+        ConfigurationSerialization.registerClass(Mine.class, "Mine");
+        ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
 
 		List<String> mineList = Regions.getList("data.list-of-mines");
 		log.info("MineReset started");

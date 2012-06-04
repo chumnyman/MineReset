@@ -2,13 +2,13 @@ package com.wolvencraft.MineReset.cmd;
 
 import java.util.List;
 
+import com.wolvencraft.MineReset.util.MineUtils;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.Mine;
 import com.wolvencraft.MineReset.util.Util;
 
 public class Edit
@@ -46,7 +46,7 @@ public class Edit
 				return;
 			}
 			String mineName = args[1];
-			if(!Mine.exists(mineName))
+			if(!MineUtils.exists(mineName))
 			{
 				String error = Language.getString("general.mine-name-invalid");
 				error = Util.parseString(error, "%MINE%", mineName);
@@ -318,7 +318,7 @@ public class Edit
 				return;
 			}
 			
-			if(!args[1].equalsIgnoreCase("none") && !Mine.exists(args[1]))
+			if(!args[1].equalsIgnoreCase("none") && !MineUtils.exists(args[1]))
 			{
 				String error = Language.getString("general.mine-name-invalid");
 				error = Util.parseString(error, "%MINE%", args[1]);

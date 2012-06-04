@@ -4,7 +4,7 @@ import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.Mine;
+import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.Util;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -52,7 +52,7 @@ public class PVPListener implements Listener {
                 Message.debug(mine+" doesn't have PvP protection on");
                 return;
             }
-            if (Mine.playerInTheMine(attacker, mine) || Mine.playerInTheMine(victim, mine)) {
+            if (MineUtils.playerInTheMine(attacker, mine) || MineUtils.playerInTheMine(victim, mine)) {
                 Message.sendPlayerError(attacker, "PvP is not allowed in the mine!");
                 event.setCancelled(true);
                 return;

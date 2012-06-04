@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.Mine;
+import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.Util;
 
 public class Time
@@ -37,7 +37,7 @@ public class Time
 			return;
 		}
 		
-		if(args.length != 1 && !Mine.exists(args[1]))
+		if(args.length != 1 && !MineUtils.exists(args[1]))
 		{
 			Message.sendError("Mine '" + args[1] + "' does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
 			return;

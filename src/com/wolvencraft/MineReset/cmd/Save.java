@@ -9,7 +9,7 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.Mine;
+import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.Util;
 
 public class Save
@@ -49,7 +49,7 @@ public class Save
         Message.debug("Selections checks passed");
 		
 		String mineName = args[1];
-		if(Mine.exists(mineName))
+		if(MineUtils.exists(mineName))
 		{
 			Message.sendError("Mine '" + mineName + "' already exists!");
 			return;

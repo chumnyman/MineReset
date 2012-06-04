@@ -2,13 +2,13 @@ package com.wolvencraft.MineReset.cmd;
 
 import java.util.List;
 
+import com.wolvencraft.MineReset.util.MineUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.Mine;
 import com.wolvencraft.MineReset.util.Util;
 
 public class Info
@@ -40,7 +40,7 @@ public class Info
 			return;
 		}
 		
-		if(args.length != 1 && !Mine.exists(args[1]))
+		if(args.length != 1 && !MineUtils.exists(args[1]))
 		{
 			Message.sendError("Mine '" + args[1] + "' does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
 			return;
@@ -137,7 +137,7 @@ public class Info
 		Message.sendMessage(ChatColor.BLUE + " Protection:");
 		Message.sendMessage("Breaking: " + breakingProt + ChatColor.WHITE + " | Placement: " + placementProt + ChatColor.WHITE + " | PVP " + pvpProt);
 		
-		List<String> finalList = Mine.getSortedList(mineName);
+		List<String> finalList = MineUtils.getSortedList(mineName);
 		
 		Message.sendMessage(ChatColor.BLUE + " Composition:");
 		for(String message : finalList)

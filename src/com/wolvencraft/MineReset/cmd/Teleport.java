@@ -1,5 +1,6 @@
 package com.wolvencraft.MineReset.cmd;
 
+import com.wolvencraft.MineReset.util.MineUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -7,7 +8,6 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.Mine;
 import com.wolvencraft.MineReset.util.Util;
 
 
@@ -53,14 +53,14 @@ public class Teleport
 			return;
 		}
 		
-		if(Mine.exists(args[1]))
+		if(MineUtils.exists(args[1]))
 		{
 			String message = Language.getString("teleportation.mine-teleport");
 			
 			message = Util.parseVars(message, args[1]);
 			
 			Player player = (Player) CommandManager.getSender();
-			Mine.warpToMine(player, args[1]);
+			MineUtils.warpToMine(player, args[1]);
 			
 			Message.sendSuccess(message);
 			return;

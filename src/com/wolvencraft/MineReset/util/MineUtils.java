@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.config.Regions;
 
-public class Mine
+public class MineUtils
 {
 	/**
 	 * Checks if the mine exists

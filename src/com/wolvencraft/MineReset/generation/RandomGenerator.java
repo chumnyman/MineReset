@@ -15,7 +15,7 @@ import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.Mine;
+import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.RandomBlock;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -64,12 +64,12 @@ public class RandomGenerator
 			Player[] onlinePlayers = Bukkit.getOnlinePlayers();
 			for(Player player : onlinePlayers)
 			{
-				if(Mine.playerInTheMine(player, mineName))
+				if(MineUtils.playerInTheMine(player, mineName))
 				{
 					String message = Language.getString("teleportation.mine-teleport");
 					message = Util.parseVars(message, mineName);
 					
-					Mine.warpToMine(player, mineName);
+					MineUtils.warpToMine(player, mineName);
 					
 					String title = Language.getString("general.title");
 					player.sendMessage(ChatColor.GREEN + "[" + title + "] " + ChatColor.WHITE + message);

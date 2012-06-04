@@ -3,12 +3,8 @@ package com.wolvencraft.MineReset.events;
 import java.util.List;
 
 import com.wolvencraft.MineReset.config.Configuration;
-import com.wolvencraft.MineReset.util.Mine;
+import com.wolvencraft.MineReset.util.MineUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
@@ -52,7 +48,7 @@ public class BucketEmptyListener implements Listener
                 continue;
             }
 
-            if (Mine.isBlockInMine(event.getBlockClicked().getRelative(event.getBlockFace()), mine)) {
+            if (MineUtils.isBlockInMine(event.getBlockClicked().getRelative(event.getBlockFace()), mine)) {
                 Message.debug("Yup, they can't place that bucket in the mine.");
                 event.setCancelled(true);
                 Message.sendPlayerError(event.getPlayer(), "You are not allowed to empty buckets in the mine! No soup for you!");

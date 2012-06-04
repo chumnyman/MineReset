@@ -3,14 +3,13 @@ package com.wolvencraft.MineReset.cmd;
 import java.util.List;
 
 import com.wolvencraft.MineReset.CommandManager;
-import com.wolvencraft.MineReset.cmd.Help;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.generation.EmptyGenerator;
 import com.wolvencraft.MineReset.generation.RandomGenerator;
 import com.wolvencraft.MineReset.util.Broadcast;
 import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.Mine;
+import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.Util;
 
 public class Reset
@@ -36,7 +35,7 @@ public class Reset
 		else
 			mineName = args[1];
 		
-		if(!Mine.exists(mineName))
+		if(!MineUtils.exists(mineName))
 		{
 			String error = Util.parseVars(Language.getString("general.mine-name-invalid"), mineName);
 			Message.sendError(error);
@@ -72,7 +71,7 @@ public class Reset
 		}
 		
 		boolean silent = Regions.getBoolean("mines." + mineName + ".silent");
-		int nextReset = Mine.getResetTime(mineName);
+		int nextReset = MineUtils.getResetTime(mineName);
 		Regions.setInt("mines." + mineName + ".reset.auto.data.next", nextReset);
 		Regions.saveData();
 		

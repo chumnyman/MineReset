@@ -7,9 +7,12 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.wolvencraft.MineReset.mine.Mine;
+import com.wolvencraft.MineReset.util.MineUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wolvencraft.MineReset.cmd.*;
@@ -19,7 +22,6 @@ import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.events.*;
 import com.wolvencraft.MineReset.util.Broadcast;
 import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.Mine;
 import com.wolvencraft.MineReset.util.Util;
 
 import couk.Adamki11s.AutoUpdater.Updater;
@@ -64,7 +66,8 @@ public class MineReset extends JavaPlugin
 		getLanguageData().options().copyDefaults(true);
 		saveLanguageData();
 		Updater.checkVersion();
-		
+
+        ConfigurationSerialization.registerClass(Mine.class);
 
 		List<String> mineList = Regions.getList("data.list-of-mines");
 		log.info("MineReset started");
@@ -103,7 +106,7 @@ public class MineReset extends JavaPlugin
 							
 							if(Regions.getBoolean("mines." + parentMine + ".reset.auto.reset"))
 							{
-								int nextReset = Mine.getNextReset(parentMine);
+								int nextReset = MineUtils.getNextReset(parentMine);
 								List<String> warnTimes = Regions.getList("mines." + parentMine + ".reset.auto.warn-times");
 								
 								if(parent)

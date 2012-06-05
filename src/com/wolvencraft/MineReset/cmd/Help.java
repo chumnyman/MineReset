@@ -12,39 +12,40 @@ public class Help
 {	
 	public static void getAuto()
 	{
+		Message.sendMessage("                    -=[ Timer ]=-");
 		formatHelp("auto", " toggle", "Toggles the automatic resets on and off", "");
 		formatHelp("auto", " time <time>", "Changes the automatic reset time to the value specified", "");
-		Message.sendMessage(" The value cannot be smaller then 5 minutes");
-		formatHelp("auto", " warning toggle", "Toggles warnings before the reset on and off", "");
 		formatHelp("auto", " warning add <time>", "Adds a warning at time specified", "");
 		formatHelp("auto", " warning remove <time>", "Adds a warning at time specified", "");
-		Message.sendMessage(" The value cannot be larger then the reset time");
+		formatHelp("auto", " warning clear", "Removes all warnings from the mine", "");
 	}
 	
 	public static void getBlacklist()
 	{
+		Message.sendMessage("                    -=[ Blacklist ]=-");
 		formatHelp("blacklist", " toggle", "Enables the use of blacklist for the mine", "");
 		formatHelp("blacklist", " whitelist", "Makes the blacklist be treated as a whitelist", "");
-		Message.sendMessage(" Blacklist should be enabled");
 		formatHelp("blacklist", " add <block>", "Adds a block to the blacklist", "");
 		formatHelp("blacklist", " remove <block>", "Removes a block from the whitelist", "");
 	}
 	
 	public static void getConfig()
 	{
-		Message.sendMessage(" You do NOT need these commands. At all. I promise.");
+		Message.sendMessage("                   -=[ Configuration ]=-");
 		formatHelp("config", " save", "Saves the data into a configuration file", "");
 		formatHelp("config", " load", "Loads the configuration from a file", "");
 	}
 	
 	public static void getEdit()
 	{
+		Message.sendMessage("                     -=[ Editing ]=-");
 		formatHelp("edit", " <name>", "Selects a mine to edit its properties", "");
+		formatHelp("none", "", "De-selects the mine", "");
 		formatHelp("name", " <name>", "Creates a display name for a mine", "");
-		formatHelp("cooldown", " toggle", "Toggles the reset cooldown in the mine (manual reset)", "");
-		formatHelp("cooldown", " <time>", "Sets a cooldown time for the manual reset", "");
-		formatHelp("add", " <block> <percentage>", "Adds another type of block to the mine", "");
-		formatHelp("remove", " <block>", "Removes a block from the mine", "");
+		formatHelp("add", " <block> [percentage]", "Adds a block type to the mine", "");
+		Message.sendMessage("If no persentage is provided, the block will fill up all the space available");
+		formatHelp("remove", " <block> [persentage]", "Removes the specified persentage of a block from the mine", "");
+		Message.sendMessage("If no persentage is provided, the block will be removed completely");
 		formatHelp("delete", "", "Completely deletes all the data about the selected mine", "");
 	}
 	
@@ -69,7 +70,9 @@ public class Help
 	
 	public static void getInfo()
 	{
-		formatHelp("info", " <name>", "Returns the information about a mine", "");
+		Message.sendMessage("                    -=[ Information ]=-");
+		formatHelp("info", " <name>", "Returns the information about a mine", "info");
+		formatHelp("time", " <name>", "Returns the next reset time for the mine", "time");
 		return;
 	}
 	
@@ -77,28 +80,30 @@ public class Help
 	{
 		//formatHelp("protection", " pvp", "Toggles the PVP on and off for the current mine", "");
 		
-		formatHelp("protection", " breaking toggle", "Enables or disables the block breaking protection", "");
-		formatHelp("protection", " breaking blacklist toggle", "Enables or disables the block breaking blacklist", "");
-		formatHelp("protection", " breaking blacklist whitelist", "Should the blacklist be treated as a whitelist?", "");
-		formatHelp("protection", " breaking blacklist add", "Add a block to the block breaking blacklist", "");
-		formatHelp("protection", " breaking blacklist remove", "Remove a block from the block breaking blacklist", "");
+		formatHelp("prot", " breaking toggle", "Enables or disables the block breaking protection", "");
+		formatHelp("prot", " breaking blacklist toggle", "Enables or disables the block breaking blacklist", "");
+		formatHelp("prot", " breaking blacklist whitelist", "Should the blacklist be treated as a whitelist?", "");
+		formatHelp("prot", " breaking blacklist add", "Add a block to the block breaking blacklist", "");
+		formatHelp("prot", " breaking blacklist remove", "Remove a block from the block breaking blacklist", "");
 
-		formatHelp("protection", " placement blacklist toggle", "Enables or disables the block breaking blacklist", "");
-		formatHelp("protection", " placement blacklist whitelist", "Should the blacklist be treated as a whitelist?", "");
-		formatHelp("protection", " placement blacklist add", "Add a block to the block breaking blacklist", "");
-		formatHelp("protection", " placement blacklist remove", "Remove a block from the block breaking blacklist", "");
+		formatHelp("prot", " placement blacklist toggle", "Enables or disables the block breaking blacklist", "");
+		formatHelp("prot", " placement blacklist whitelist", "Should the blacklist be treated as a whitelist?", "");
+		formatHelp("prot", " placement blacklist add", "Add a block to the block breaking blacklist", "");
+		formatHelp("prot", " placement blacklist remove", "Remove a block from the block breaking blacklist", "");
 		
 		return;
 	}
 	
 	public static void getReset()
 	{
+		Message.sendMessage("                    -=[ Reset ]=-");
 		formatHelp("reset", " <name>", "Resets the mine manually", "");
 		return;
 	}
 	
 	public static void getSave()
 	{
+		Message.sendMessage("                    -=[ Save ]=-");
 		formatHelp("save", " <name>", "Saves the region for future use", "");
 		Message.sendMessage(" If no name is provided, the default name will be used");
 		Message.sendMessage(" The default name is defined in the configuration file");
@@ -108,11 +113,12 @@ public class Help
 	
 	public static void getSelect()
 	{
-		formatHelp("select", " hpos1", "Creates a reference point 1 at the block you are looking at", "");
-		formatHelp("select", " hpos2", "Creates a reference point 2 at the block you are looking at", "");
+		Message.sendMessage("                    -=[ Information ]=-");
+		formatHelp("hpos1", "", "Creates a reference point 1 at the block you are looking at", "");
+		formatHelp("hpos2", "", "Creates a reference point 2 at the block you are looking at", "");
 		Message.sendMessage(" Your field of view is limited to 100 blocks");
-		formatHelp("select", " pos1", "Creates a reference point 1 at your immediate location", "");
-		formatHelp("select", " pos2", "Creates a reference point 2 at your immediate location", "");
+		formatHelp("pos1", "", "Creates a reference point 1 at your immediate location", "");
+		formatHelp("pos2", "", "Creates a reference point 2 at your immediate location", "");
 		Message.sendMessage(" You can also select a region with your normal World Edit tool");
 		
 		return;
@@ -138,7 +144,7 @@ public class Help
 	{
 		CommandSender sender = CommandManager.getSender();
 		if(Util.senderHasPermission(node))
-			sender.sendMessage(ChatColor.GREEN + "/mine " + command + ChatColor.GRAY + arguments + ChatColor.WHITE + " " + description);
+			sender.sendMessage(ChatColor.BLUE + "/mine " + command + ChatColor.GRAY + arguments + ChatColor.WHITE + " " + description);
 		
 		return;
 	}

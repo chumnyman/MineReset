@@ -27,8 +27,9 @@ public class Mine implements ConfigurationSerializable, Listener {
     private Location two;
     private World world;
     private Location tpPoint;
-    private String displayName;
     private String name;
+    private String displayName;
+    private Mine parent;
     private List<MineBlock> blocks;
     private boolean silent;
     private boolean automatic;
@@ -37,12 +38,13 @@ public class Mine implements ConfigurationSerializable, Listener {
     private List<Integer> warningTimes;
     private List<Protection> enabledProtection;
 
-    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, String name, List<MineBlock> blocks, boolean isSilent, boolean isAutomatic, int automaticSeconds, boolean isWarned, List<Integer> warningTimes, List<Protection> enabledProtection) {
+    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, Mine parent, String name, List<MineBlock> blocks, boolean isSilent, boolean isAutomatic, int automaticSeconds, boolean isWarned, List<Integer> warningTimes, List<Protection> enabledProtection) {
         this.one = one;
         this.two = two;
         this.world = world;
         this.tpPoint = tpPoint;
         this.displayName = displayName;
+        this.parent = parent;
         this.name = name;
         this.blocks = blocks;
         silent = isSilent;
@@ -64,6 +66,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         tpPoint = ((Vector) me.get("tpPoint")).toLocation(world);
         displayName = (String) me.get("displayName");
         name = (String) me.get("name");
+        parent = (Mine) me.get("parent");
         silent = (Boolean) me.get("silent");
         automatic = (Boolean) me.get("automatic");
         automaticSeconds = (Integer) me.get("automaticResetTime");
@@ -111,6 +114,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("tpPoint", tpPoint.toVector());
         me.put("displayName", displayName);
         me.put("name", name);
+        me.put("parent", parent);
         me.put("silent", silent);
         me.put("automatic", automatic);
         me.put("automaticResetTime", automaticSeconds);
@@ -145,6 +149,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     	return displayName;
     }
     
+    public Mine getParent() {
+    	return parent;
+    }
+    
     public boolean getSilent() {
     	return silent;
     }
@@ -169,6 +177,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     	return warningTimes;
     }
     
+    public List<Protection> getProtection() {
+    	return enabledProtection;
+    }
+    
     public void setFirstPoint(Location position) {
     	one = position;
     }
@@ -187,6 +199,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public void setDisplayName(String displayName) {
     	this.displayName = displayName;
+    }
+    
+    public void setParent(Mine parent) {
+    	this.parent = parent;
     }
     
     public void setSilent(boolean silent) {
@@ -211,5 +227,9 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public void setWarningTimes(List<Integer> warningTimes) {
     	this.warningTimes = warningTimes;
+    }
+    
+    public void setProtection(List<Protection> enabledProtection) {
+    	this.enabledProtection = enabledProtection;
     }
 }

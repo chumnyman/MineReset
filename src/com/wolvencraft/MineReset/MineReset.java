@@ -4,6 +4,7 @@ package com.wolvencraft.MineReset;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -43,6 +44,7 @@ public class MineReset extends JavaPlugin
 	public CommandManager manager;
 	private FileConfiguration regionData = null, languageData = null, signData = null;
 	private File regionDataFile = null, languageDataFile = null, signDataFile = null;
+    private List<Mine> mines;
 	
 	public static double curVer = 1.2;
 	public static int curSubVer = 2;
@@ -71,9 +73,11 @@ public class MineReset extends JavaPlugin
         ConfigurationSerialization.registerClass(Mine.class, "Mine");
         ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
 
-		List<String> mineList = Regions.getList("data.list-of-mines");
+		mines = new ArrayList<Mine>();
+        //TODO: Load mines into new data structure
+
 		log.info("MineReset started");
-		log.info(mineList.size() + " mine(s) found");
+		log.info(mines.size() + " mine(s) found");
 		
 		if(!Configuration.exists("configuration.version") || !Configuration.getString("configuration.version").equals(curVer + "." + curSubVer))
 		{
@@ -239,4 +243,8 @@ public class MineReset extends JavaPlugin
 	        Message.log("Could not save config to " + signDataFile);
 	    }
 	}
+
+    public List<Mine> getMines() {
+        return mines;
+    }
 }

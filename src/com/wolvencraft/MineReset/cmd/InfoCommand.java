@@ -6,10 +6,8 @@ import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Protection;
 import com.wolvencraft.MineReset.util.MineUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 
 import com.wolvencraft.MineReset.CommandManager;
-import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -68,7 +66,7 @@ public class InfoCommand
 			else
 				autoResetFormatted = autoResetFormatted + curMine.getResetPeriod() % 60;
 			
-			int nextResetTime = Regions.getInt("mines." + parentMine + ".reset.auto.data.next");
+			int nextResetTime = (int) ((parentMine.getNextAutomaticResetTick() - parentMine.getWorld().getTime()) / 20);
 			String nextResetFormatted = nextResetTime / 60 + ":";
 			if(nextResetTime % 60 < 10)
 				nextResetFormatted = nextResetFormatted + "0" + nextResetTime % 60;
@@ -153,8 +151,8 @@ public class InfoCommand
 				autoResetFormatted = autoResetFormatted + autoResetTime % 60;
 			
 			//TODO Fix this!
-			int nextResetTime = parent.getNextReset();
-			String nextResetFormatted = nextResetTime / 60 + ":";
+            int nextResetTime = (int) ((parent.getNextAutomaticResetTick() - parent.getWorld().getTime()) / 20);
+            String nextResetFormatted = nextResetTime / 60 + ":";
 			if(nextResetTime % 60 < 10)
 				nextResetFormatted = nextResetFormatted + "0" + nextResetTime % 60;
 			else

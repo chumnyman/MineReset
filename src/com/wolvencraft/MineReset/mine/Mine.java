@@ -34,6 +34,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     private boolean silent;
     private boolean automatic;
     private int automaticSeconds;
+    private long nextAutomaticResetTick;
     private boolean warned;
     private List<Integer> warningTimes;
     private List<Protection> enabledProtection;
@@ -56,7 +57,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     }
 
     /**
-     * Deserialize a mine from it's YML form
+     * Deserialize a mine from its YML form
      * @param me Bukkitian map of strings to objects. <b>Incorrect object types for values are not tolerated by the code!</b>
      */
     public Mine(Map<String, Object> me) {
@@ -231,5 +232,9 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public void setProtection(List<Protection> enabledProtection) {
     	this.enabledProtection = enabledProtection;
+    }
+
+    public long getNextAutomaticResetTick() {
+        return nextAutomaticResetTick;
     }
 }

@@ -1,10 +1,9 @@
 package com.wolvencraft.MineReset.cmd;
 
-import java.util.List;
-
+import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.mine.Mine;
 import org.bukkit.ChatColor;
 
-import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -18,17 +17,15 @@ public class ListCommand
 			return;
 		}
 		
-		List<String> mineList = Regions.getList("data.list-of-mines");
-		
 		Message.sendMessage("                    -=[ Public Mines ]=-");
 		
-		for(String mineName : mineList)
+		for(Mine mine : CommandManager.getPlugin().getMines())
 		{
-			String displayName = Regions.getString("mines." + mineName + ".display-name");
+			String displayName = mine.getDisplayName();
 			if(displayName.equals(""))
-				Message.sendMessage(" - " + ChatColor.GREEN + mineName + "");
+				Message.sendMessage(" - " + ChatColor.GREEN + mine.getName() + "");
 			else
-				Message.sendMessage(" - " + ChatColor.GREEN + displayName + ChatColor.WHITE + " (" + mineName + ")");
+				Message.sendMessage(" - " + ChatColor.GREEN + displayName + ChatColor.WHITE + " (" + mine.getName() + ")");
 		}
 	}
 }

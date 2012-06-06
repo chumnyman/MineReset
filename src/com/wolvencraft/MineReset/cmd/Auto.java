@@ -5,6 +5,7 @@ import java.util.List;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -24,24 +25,23 @@ public class Auto
 			Help.getAuto();
 			return;
 		}
-		else if(args.length < 2 || args.length > 4)
+		
+		if(args.length < 2 || args.length > 4)
 		{
 			Message.sendInvalid(args);
 			return;
 		}
 
-		String mineName = CommandManager.getMine();
-		if(mineName == null)
+		Mine curMine = CommandManager.getMine();
+		if(curMine == null)
 		{
-			String error = Language.getString("general.mine-not-selected");
-			Message.sendError(error);
+			Message.sendError(Language.getString("general.mine-not-selected"));
 			return;
 		}
 		
-		String baseNode = "mines." + mineName + ".reset.auto";
 		if(args[1].equalsIgnoreCase("toggle"))
 		{
-			if(Regions.getBoolean(baseNode + ".reset"))
+			if(curMine.)
 			{
 				Message.sendSuccess("'" + mineName + "' will no longer reset automatically.");
 				Regions.setBoolean(baseNode + ".reset", false);

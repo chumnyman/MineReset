@@ -116,4 +116,88 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("blocks", blocks);
         return me;
     }
+    
+    public Location getFirstPoint() {
+    	return one;
+    }
+    
+    public Location getSecondPoint() {
+    	return two;
+    }
+    
+    public World getWorld() {
+    	return world;
+    }
+    
+    public Location getWarp() {
+    	return tpPoint;
+    }
+    
+    public String getName() {
+    	return name;
+    }
+    
+    public boolean getSilent() {
+    	return silent;
+    }
+    
+    public List<MineBlock> getBlocks() {
+    	return blocks;
+    }
+    
+    public boolean getAutomatic() {
+    	return automatic;
+    }
+    
+    public int getResetPeriod() {
+    	return automaticSeconds;
+    }
+    
+    public boolean getWarned() {
+    	return warned;
+    }
+    
+    public List<Integer> getWarningTimes() {
+    	return warningTimes;
+    }
+    
+    public void setFirstPoint(Location position) {
+    	one = position;
+    }
+    
+    public void setSecondPoint(Location position) {
+    	two = position;
+    }
+    
+    public void setWorld(World world) {
+    	this.world = world;
+    }
+    
+    public void setName(String name) {
+    	this.name = name;
+    }
+    
+    public void setSilent(boolean silent) {
+    	this.silent = silent;
+    }
+    
+    public void setBlocks(List<MineBlock> blocks) {
+    	this.blocks = blocks;
+    }
+    
+    public void setAutomatic(boolean automatic) {
+    	this.automatic = automatic;
+    }
+    
+    public void setResetPeriod(int automaticSeconds) {
+    	this.automaticSeconds = automaticSeconds;
+    }
+    
+    public void setWarned(boolean warned) {
+    	this.warned = warned;
+    }
+    
+    public void setWarningTimes(List<Integer> warningTimes) {
+    	this.warningTimes = warningTimes;
+    }
 }

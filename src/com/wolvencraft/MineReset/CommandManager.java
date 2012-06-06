@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.cmd.*;
+import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -15,7 +16,7 @@ public class CommandManager implements CommandExecutor
 	private static CommandSender sender;
 	private static MineReset plugin;
 	private static Location[] loc = {null, null};
-	private static String curMine = null;
+	private static Mine curMine = null;
 	
 	public CommandManager(MineReset plugin)
 	{
@@ -34,6 +35,7 @@ public class CommandManager implements CommandExecutor
 		{
 			player = (Player) sender;
 		}
+		
 		
 		if(args.length == 0)
 		{
@@ -123,7 +125,7 @@ public class CommandManager implements CommandExecutor
 	 * Returns the name of a mine that is being edited
 	 * @return String is a mine is selected, null if it is not
 	 */
-	public static String getMine()
+	public static Mine getMine()
 	{
 		return curMine;
 	}
@@ -132,7 +134,7 @@ public class CommandManager implements CommandExecutor
 	 * Sets the name of a current mine to a value specified
 	 * @param newMine The newly selected mine name
 	 */
-	public static void setMine(String newMine)
+	public static void setMine(Mine newMine)
 	{
 		curMine = newMine;
 		return;

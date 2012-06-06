@@ -23,7 +23,7 @@ public class CommandManager implements CommandExecutor
 		CommandManager.plugin = plugin;
 		plugin.getLogger();
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
@@ -43,7 +43,7 @@ public class CommandManager implements CommandExecutor
 			return false;
 		}
 		else if(args[0].equalsIgnoreCase("auto") || args[0].equalsIgnoreCase("timer") || args[0].equalsIgnoreCase("tm"))
-			Auto.run(args);
+			TimerCommand.run(args);
 		else if(args[0].equalsIgnoreCase("blacklist") || args[0].equalsIgnoreCase("bl"))
 			BlacklistCommand.run(args);
 		else if(args[0].equalsIgnoreCase("config") || args[0].equalsIgnoreCase("cf"))
@@ -53,7 +53,7 @@ public class CommandManager implements CommandExecutor
 		else if(args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?"))
 			HelpCommand.getHelp();
 		else if(args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("i"))
-			Info.run(args);
+			InfoCommand.run(args);
 		else if(args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("all"))
 			ListCommand.run(args);
 		else if(args[0].equalsIgnoreCase("protection") || args[0].equalsIgnoreCase("prot"))
@@ -69,7 +69,7 @@ public class CommandManager implements CommandExecutor
 		else if(args[0].equalsIgnoreCase("sign") || args[0].equalsIgnoreCase("signs"))
 			SignCommand.run(args);
 		else if(args[0].equalsIgnoreCase("time"))
-			Time.run(args);
+			TimerCommand.run(args);
 		else if(args[0].equalsIgnoreCase("warp") || args[0].equalsIgnoreCase("tp"))
 			WarpCommand.run(args);
 		else Message.sendInvalid(args);

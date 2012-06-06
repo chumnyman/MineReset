@@ -27,6 +27,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     private Location two;
     private World world;
     private Location tpPoint;
+    private String displayName;
     private String name;
     private List<MineBlock> blocks;
     private boolean silent;
@@ -36,11 +37,12 @@ public class Mine implements ConfigurationSerializable, Listener {
     private List<Integer> warningTimes;
     private List<Protection> enabledProtection;
 
-    public Mine(Location one, Location two, World world, Location tpPoint, String name, List<MineBlock> blocks, boolean isSilent, boolean isAutomatic, int automaticSeconds, boolean isWarned, List<Integer> warningTimes, List<Protection> enabledProtection) {
+    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, String name, List<MineBlock> blocks, boolean isSilent, boolean isAutomatic, int automaticSeconds, boolean isWarned, List<Integer> warningTimes, List<Protection> enabledProtection) {
         this.one = one;
         this.two = two;
         this.world = world;
         this.tpPoint = tpPoint;
+        this.displayName = displayName;
         this.name = name;
         this.blocks = blocks;
         silent = isSilent;
@@ -60,6 +62,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         one = ((Vector) me.get("one")).toLocation(world);
         two = ((Vector) me.get("two")).toLocation(world);
         tpPoint = ((Vector) me.get("tpPoint")).toLocation(world);
+        displayName = (String) me.get("displayName");
         name = (String) me.get("name");
         silent = (Boolean) me.get("silent");
         automatic = (Boolean) me.get("automatic");
@@ -106,6 +109,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("two", two.toVector());
         me.put("world", world.getName());
         me.put("tpPoint", tpPoint.toVector());
+        me.put("displayName", displayName);
         me.put("name", name);
         me.put("silent", silent);
         me.put("automatic", automatic);
@@ -135,6 +139,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public String getName() {
     	return name;
+    }
+    
+    public String getDisplayName() {
+    	return displayName;
     }
     
     public boolean getSilent() {
@@ -175,6 +183,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public void setName(String name) {
     	this.name = name;
+    }
+    
+    public void setDisplayName(String displayName) {
+    	this.displayName = displayName;
     }
     
     public void setSilent(boolean silent) {

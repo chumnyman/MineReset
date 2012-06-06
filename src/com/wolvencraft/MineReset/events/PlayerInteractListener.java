@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
-import com.wolvencraft.MineReset.cmd.Reset;
+import com.wolvencraft.MineReset.cmd.ResetCommand;
 import com.wolvencraft.MineReset.config.Signs;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
@@ -72,7 +72,7 @@ public class PlayerInteractListener implements Listener
 		     	if(Signs.getBoolean("signs." + id + ".reset"))
 		     	{
 		     		String[] args = {"reset", mineName};
-		     		Reset.run(args, false, null);
+		     		ResetCommand.run(args, false, null);
 		     	}
 			}
 			

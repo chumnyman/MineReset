@@ -25,7 +25,7 @@
 package couk.Adamki11s.AutoUpdater;
 
 import com.wolvencraft.MineReset.MineReset;
-import com.wolvencraft.MineReset.cmd.Config;
+import com.wolvencraft.MineReset.cmd.ConfigurationCommand;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.util.Message;
 
@@ -53,7 +53,7 @@ public class Updater
 		catch(NullPointerException npe)
 		{
 			String[] args = {"config", "generate"};
-			Config.run(args);
+			ConfigurationCommand.run(args);
 		}
 		
 		source = FetchSource.fetchSource();

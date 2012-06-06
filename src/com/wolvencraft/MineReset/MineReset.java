@@ -77,7 +77,7 @@ public class MineReset extends JavaPlugin
 		
 		if(!Configuration.exists("configuration.version") || !Configuration.getString("configuration.version").equals(curVer + "." + curSubVer))
 		{
-			Config.update();
+			ConfigurationCommand.update();
 			log.info("Configuration successufully updated to the new data format");
 		}
 		
@@ -118,7 +118,7 @@ public class MineReset extends JavaPlugin
 									Regions.saveData();
 								}
 								
-								SignCmd.updateAll(mineName);
+								SignCommand.updateAll(mineName);
 								
 								if(parent)
 								{
@@ -129,7 +129,7 @@ public class MineReset extends JavaPlugin
 									if(nextReset <= 0)
 									{
 										String[] args = {"", mineName};
-										Reset.run(args, true, null);
+										ResetCommand.run(args, true, null);
 									}
 								}
 							}

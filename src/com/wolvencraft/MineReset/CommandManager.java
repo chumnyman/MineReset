@@ -39,39 +39,39 @@ public class CommandManager implements CommandExecutor
 		
 		if(args.length == 0)
 		{
-			Help.getHelp();
+			HelpCommand.getHelp();
 			return false;
 		}
 		else if(args[0].equalsIgnoreCase("auto") || args[0].equalsIgnoreCase("timer") || args[0].equalsIgnoreCase("tm"))
 			Auto.run(args);
 		else if(args[0].equalsIgnoreCase("blacklist") || args[0].equalsIgnoreCase("bl"))
-			Blacklist.run(args);
+			BlacklistCommand.run(args);
 		else if(args[0].equalsIgnoreCase("config") || args[0].equalsIgnoreCase("cf"))
-			Config.run(args);
+			ConfigurationCommand.run(args);
 		else if(args[0].equalsIgnoreCase("edit") || args[0].equalsIgnoreCase("none") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+") || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-") || args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del") || args[0].equalsIgnoreCase("name") || args[0].equalsIgnoreCase("silent") || args[0].equalsIgnoreCase("generator") || args[0].equalsIgnoreCase("link"))
-			Edit.run(args);
+			EditCommand.run(args);
 		else if(args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?"))
-			Help.getHelp();
+			HelpCommand.getHelp();
 		else if(args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("i"))
 			Info.run(args);
 		else if(args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("all"))
-			MineList.run(args);
+			ListCommand.run(args);
 		else if(args[0].equalsIgnoreCase("protection") || args[0].equalsIgnoreCase("prot"))
-			Protection.run(args);
+			ProtectionCommand.run(args);
 		else if(args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("fill"))
-			Reset.run(args, false, null);
+			ResetCommand.run(args, false, null);
 		else if(args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("empty"))
-			Reset.run(args, false, "empty");
+			ResetCommand.run(args, false, "empty");
 		else if(args[0].equalsIgnoreCase("save") || args[0].equalsIgnoreCase("s"))
-			Save.run(args);
+			SaveCommand.run(args);
 		else if(args[0].equalsIgnoreCase("select") || args[0].equalsIgnoreCase("sel"))
-			Select.run(args);
+			SelectCommand.run(args);
 		else if(args[0].equalsIgnoreCase("sign") || args[0].equalsIgnoreCase("signs"))
-			SignCmd.run(args);
+			SignCommand.run(args);
 		else if(args[0].equalsIgnoreCase("time"))
 			Time.run(args);
 		else if(args[0].equalsIgnoreCase("warp") || args[0].equalsIgnoreCase("tp"))
-			Teleport.run(args);
+			WarpCommand.run(args);
 		else Message.sendInvalid(args);
 			
 		String argString = "/mine";

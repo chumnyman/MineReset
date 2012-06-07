@@ -51,7 +51,7 @@ public class SignUtils {
 		for(int i = 0; i < 4; i++) {
 			String line = sign.getLines().get(i);
 			if(!line.equals("")) {
-				line = Util.parseVars(line, sign.getParent().getName());
+				line = Util.parseVars(line, sign.getParent().getParent());
 				signBlock.setLine(i, line);
 			}
 		}

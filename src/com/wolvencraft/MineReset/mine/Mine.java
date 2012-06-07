@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.material.MaterialData;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,12 +34,31 @@ public class Mine implements ConfigurationSerializable, Listener {
     private List<MineBlock> blocks;
     private boolean silent;
     private boolean automatic;
-    private int automaticSeconds;
+    private int automaticSeconds;			// Change to ticks for uniformity maybe?
     private long nextAutomaticResetTick;
     private boolean warned;
     private List<Integer> warningTimes;
     private List<Protection> enabledProtection;
 
+    public Mine(Location one, Location two, Location tpPoint, World world, String name)
+    {
+    	this.one = one;
+    	this.two = two;
+    	this.tpPoint = tpPoint;
+    	this.world = world;
+    	displayName = "";
+    	parent = null;
+    	this.name = name;
+    	blocks = null;
+    	silent = false;
+    	automatic = true;
+    	automaticSeconds = 900;	//TODO Do something about the magic numbers
+    	warned = true;
+    	warningTimes = new ArrayList<Integer>();
+    	warningTimes.add(300); //TODO Same here
+    	enabledProtection = new ArrayList<Protection>();
+    }
+    
     public Mine(Location one, Location two, World world, Location tpPoint, String displayName, Mine parent, String name, List<MineBlock> blocks, boolean isSilent, boolean isAutomatic, int automaticSeconds, boolean isWarned, List<Integer> warningTimes, List<Protection> enabledProtection) {
         this.one = one;
         this.two = two;
@@ -150,8 +170,15 @@ public class Mine implements ConfigurationSerializable, Listener {
     	return displayName;
     }
     
+    /**
+     * If a mine has a parent, returns its object.<br />
+     * Otherwise, returns the mine object itself
+     * @return Mine parent
+     */
     public Mine getParent() {
-    	return parent;
+    	if(parent == null)
+    		return this;
+    	else return parent;
     }
     
     public boolean getSilent() {
@@ -168,6 +195,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public int getResetPeriod() {
     	return automaticSeconds;
+    }
+    
+    public long getNextReset() {
+    	return nextAutomaticResetTick;
     }
     
     public boolean getWarned() {
@@ -224,6 +255,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public void setResetPeriod(int automaticSeconds) {
     	this.automaticSeconds = automaticSeconds;
+    }
+    
+    public void updateTimer(long ticks) {
+    	this.nextAutomaticResetTick -= ticks;
     }
     
     public void setWarned(boolean warned) {

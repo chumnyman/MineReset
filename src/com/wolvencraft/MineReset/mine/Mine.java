@@ -190,6 +190,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     	two = position;
     }
     
+    public void setWarp(Location tpPoint) {
+    	this.tpPoint = tpPoint;
+    }
+    
     public void setWorld(World world) {
     	this.world = world;
     }

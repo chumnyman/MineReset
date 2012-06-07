@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
+import com.wolvencraft.MineReset.mine.SignClass;
 import com.wolvencraft.MineReset.util.MineUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,10 +21,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.wolvencraft.MineReset.cmd.*;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
-import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.events.*;
 import com.wolvencraft.MineReset.util.Broadcast;
 import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.SignUtils;
 import com.wolvencraft.MineReset.util.Util;
 
 import couk.Adamki11s.AutoUpdater.Updater;
@@ -45,6 +46,7 @@ public class MineReset extends JavaPlugin
 	private FileConfiguration regionData = null, languageData = null, signData = null;
 	private File regionDataFile = null, languageDataFile = null, signDataFile = null;
     private List<Mine> mines;
+    private static List<SignClass> signs;
 	
 	public static double curVer = 1.2;
 	public static int curSubVer = 2;
@@ -94,45 +96,33 @@ public class MineReset extends JavaPlugin
 			{
 	           	 public void run()
 	           	 {
-					List<String> mineList = Regions.getList("data.list-of-mines");
 					
-					if(mineList.size() != 0)
+					if(mines.size() != 0)
 					{
 		                String warnMessage = Language.getString("reset.automatic-reset-warning");
 		                
-						for(String mineName : mineList)
+						for(Mine curMine : mines)
 						{
-							String parentMine = Regions.getString("mines." + mineName + ".parent");
-							boolean parent = false;
-							if(parentMine == null)
-							{
-								parentMine = mineName;
-								parent = true;
-							}
+							Mine parentMine = curMine.getParent();
+							if(parentMine == null) parentMine = curMine;
 							
-							if(Regions.getBoolean("mines." + parentMine + ".reset.auto.reset"))
+							if(curMine.getAutomatic())
 							{
-								int nextReset = MineUtils.getNextReset(parentMine);
-								List<String> warnTimes = Regions.getList("mines." + parentMine + ".reset.auto.warn-times");
+								int nextReset = MineUtils.getNextReset(curMine);
+								List<Integer> warnTimes = parentMine.getWarningTimes();
 								
-								if(parent)
+								if(parentMine.equals(curMine))
 								{
-									nextReset -= (int)checkEvery;
-									Regions.setInt("mines." + mineName + ".reset.auto.data.next", nextReset);
-									Regions.saveData();
-								}
-								
-								SignCommand.updateAll(mineName);
-								
-								if(parent)
-								{
-									if(warnTimes.indexOf(nextReset + "") != -1 && Regions.getBoolean("mines." + parentMine + ".reset.auto.warn") && !Regions.getBoolean("mines." + parentMine + ".silent"))
+									curMine.updateTimer(checkEvery);
+									SignUtils.updateAll(parentMine);
+									
+									if(warnTimes.indexOf(nextReset) != -1 && curMine.getWarned() && !curMine.getSilent())
 									{
-										Broadcast.sendSuccess(Util.parseVars(warnMessage, mineName));
+										Broadcast.sendSuccess(Util.parseVars(warnMessage, curMine));
 									}
 									if(nextReset <= 0)
 									{
-										String[] args = {"", mineName};
+										String[] args = {"", curMine.getName()};
 										ResetCommand.run(args, true, null);
 									}
 								}
@@ -140,7 +130,7 @@ public class MineReset extends JavaPlugin
 						}
 		            }
 	           	}
-	        }, 0, (long)(checkEvery * 20));
+	        }, 0, checkEvery);
 		}
     }
 	
@@ -246,5 +236,13 @@ public class MineReset extends JavaPlugin
 
     public List<Mine> getMines() {
         return mines;
+    }
+    
+    public static List<SignClass> getSigns() {
+    	return signs;
+    }
+    
+    public static void setSigns(List<SignClass> signs) {
+    	MineReset.signs = signs;
     }
 }

@@ -1,5 +1,6 @@
 package com.wolvencraft.MineReset.cmd;
 
+import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.MineUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -10,65 +11,55 @@ import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 
-
-
 public class WarpCommand
 {
 	public static void run(String[] args)
 	{
-		if(!Util.senderHasPermission("warp"))
-		{
+		Player player;
+		if(CommandManager.getSender() instanceof Player) {
+			player = (Player) CommandManager.getSender();
+		}
+		else {
+			Message.sendError("This command cannot be executed via console");
+			return;
+		}
+		if(!Util.senderHasPermission("warp")) {
 			Message.sendDenied(args);
 			return;
 		}
 		
-		if(args.length == 1)
+		if(args.length == 1) {
 			HelpCommand.getTeleport();
-		else if(args.length != 2)
-		{
+			return;
+		}
+		else if(args.length != 2) {
 			Message.sendInvalid(args);
 			return;
 		}
 		
-		if(args[1].equalsIgnoreCase("set"))
-		{
-			Player player = (Player) CommandManager.getSender();
-			Location loc = player.getLocation();
-			String mineName = CommandManager.getMine();
-			if(mineName == null)
-			{
+		if(args[1].equalsIgnoreCase("set")) {
+			Mine curMine = CommandManager.getMine();
+			if(curMine == null) {
 				Message.sendError("Select a mine first with /mine edit <name>");
 				return;
 			}
 			
-			String baseNode = "mines." + mineName + ".coordinates";
-			Regions.setDouble(baseNode + ".pos2.x", loc.getX());
-			Regions.setDouble(baseNode + ".pos2.y", loc.getY());
-			Regions.setDouble(baseNode + ".pos2.z", loc.getZ());
-			Regions.setDouble(baseNode + ".pos2.yaw", loc.getYaw());
-			Regions.setDouble(baseNode + ".pos2.pitch", loc.getPitch());
+			Location loc = player.getLocation();
+			curMine.setWarp(loc);
 			
 			Regions.saveData();
 			Message.sendSuccess ("Mine spawn point set (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
 			return;
 		}
 		
-		if(MineUtils.exists(args[1]))
-		{
-			String message = Language.getString("teleportation.mine-teleport");
-			
-			message = Util.parseVars(message, args[1]);
-			
-			Player player = (Player) CommandManager.getSender();
+		if(MineUtils.exists(args[1])) {
 			MineUtils.warpToMine(player, args[1]);
-			
+			String message = Util.parseVars(Language.getString("teleportation.mine-teleport"), args[1]);
 			Message.sendSuccess(message);
 			return;
 		}
-		else
-		{
-			String error = Language.getString("general.mine-name-invalid");
-			error = Util.parseString(error, "%MINE%", args[1]);
+		else {
+			String error = Util.parseString(Language.getString("general.mine-name-invalid"), "%MINE%", args[1]);
 			Message.sendError(error);
 			return;
 		}

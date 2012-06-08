@@ -6,272 +6,270 @@ import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
-import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.mine.Mine;
+import com.wolvencraft.MineReset.mine.Protection;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 
-public class ProtectionCommand
-{
-	public static void run(String[] args)
-	{
-		if(!Util.senderHasPermission("edit"))
-		{
+public class ProtectionCommand {
+	public static void run(String[] args) {
+		if(!Util.senderHasPermission("edit")) {
 			Message.sendDenied(args);
 			return;
 		}
 		
-		if(args.length == 1)
-		{
+		if(args.length == 1) {
 			HelpCommand.getProtection();
 			return;
 		}
-		if(args.length > 5)
-		{
+		if(args.length > 5) {
 			Message.sendInvalid(args);
 		}
 		
-		String curMine = CommandManager.getMine();
-		
-		if(curMine == null)
-		{
-			String error = Language.getString("general.mine-not-selected");
-			Message.sendError(error);
+		Mine curMine = CommandManager.getMine();
+		if(curMine == null) {
+			Message.sendError(Language.getString("general.mine-not-selected"));
 			return;
 		}
 		
-		if(args[1].equalsIgnoreCase("pvp"))
-		{
-			String baseNode = "mines." + curMine + ".protection.pvp";
-			if(Regions.getBoolean(baseNode + ".enabled"))
-			{
-				Regions.setBoolean(baseNode + ".enabled", false);
-				Message.sendSuccess("PVP has been turned OFF for mine '" + curMine + "'");
+		if(args[1].equalsIgnoreCase("pvp")) {
+			if(args.length != 2) {
+				Message.sendError("Invalid parameters. Check your argument count!");
+				return;
+			}
+			if(curMine.getProtection().contains(Protection.PVP)) {
+				curMine.getProtection().remove(Protection.PVP);
+				Message.sendSuccess("PVP has been turned OFF for mine '" + curMine.getName() + "'");
+			}
+			else {
+				curMine.getProtection().add(Protection.PVP);
+				Message.sendSuccess("PVP has been turned ON for mine '" + curMine.getName() + "'");
+			}
+			return;
+		}
+		else if(args[1].equalsIgnoreCase("breaking")) {
+			if(args.length < 3) {
+				Message.sendError("Invalid parameters. Check your argument count!");
+				return;
+			}
+			
+			if(args[2].equalsIgnoreCase("toggle")) {
+
+				if(args.length != 3) {
+					Message.sendError("Invalid parameters. Check your argument count!");
+					return;
+				}
+				
+				if(curMine.getProtection().contains(Protection.BLOCK_BREAK))
+				{
+					curMine.getProtection().remove(Protection.BLOCK_BREAK);
+					Message.sendSuccess("Mine protection has been turned off for mine '" + curMine.getName() + "'");
+				}
+				else
+				{
+					curMine.getProtection().add(Protection.BLOCK_BREAK);
+					Message.sendSuccess("Mine breaking protection has been turned on for mine '" + curMine.getName() + "'");
+				}
+				return;
+			}
+			else if(args[2].equalsIgnoreCase("blacklist")) {
+				if(args.length < 3) {
+					Message.sendError("Invalid parameters. Check your argument count!");
+					return;
+				}
+				if(args[3].equalsIgnoreCase("toggle"))
+				{
+					if(args.length != 3) {
+						Message.sendError("Invalid parameters. Check your argument count!");
+						return;
+					}
+					
+					if(curMine.getBreakBlacklist().getEnabled()) {
+						curMine.getBreakBlacklist().setEnabled(false);
+						Message.sendSuccess("Block breaking protection blacklist has been turned off for mine '" + curMine.getName() + "'");
+					}
+					else {
+						curMine.getBreakBlacklist().setEnabled(true);
+						Message.sendSuccess("Block breaking protection blacklist has been turned on for mine '" + curMine.getName() + "'");
+					}
+					
+				}
+				else if(args[3].equalsIgnoreCase("whitelist")) {
+					if(args.length != 3) {
+						Message.sendError("Invalid parameters. Check your argument count!");
+						return;
+					}
+					if(curMine.getBreakBlacklist().getWhitelist()) {
+						curMine.getBreakBlacklist().setWhitelist(false);
+						Message.sendSuccess("Block breaking blacklist is no longer treated as a whitelist for mine '" + curMine.getName() + "'");
+					}
+					else {
+						curMine.getBreakBlacklist().setWhitelist(true);
+						Message.sendSuccess("Block breaking blacklist is now treated as a whitelist for mine '" + curMine.getName() + "'");
+					}
+				}
+				else if(args[3].equalsIgnoreCase("add") || args[3].equalsIgnoreCase("+")) {
+					if(args.length != 4) {
+						Message.sendError("Invalid parameters. Check your argument count!");
+						return;
+					}
+					MaterialData block = Util.getBlock(args[4]);
+					
+					if(block == null) {
+						Message.sendError("Block '"+ args[4] + "' does not exist");
+						return;
+					}
+					
+					List<MaterialData> blockList = curMine.getBreakBlacklist().getBlocks();
+					blockList.add(block);
+					curMine.getBreakBlacklist().setBlocks(blockList);
+					
+					Message.sendSuccess(block.getItemType().toString().toLowerCase().replace("_", " ") + " was added to the block breaking protection blacklist of '" + curMine.getName() + "'");
+					return;
+				}
+				else if(args[3].equalsIgnoreCase("remove") || args[3].equalsIgnoreCase("-")) {
+					if(args.length != 4) {
+						Message.sendError("Invalid parameters. Check your argument count!");
+						return;
+					}
+					MaterialData block = Util.getBlock(args[4]);
+					
+					if(block == null) {
+						Message.sendError("Block '"+ args[4] + "' does not exist");
+						return;
+					}
+					
+					List<MaterialData> blockList = curMine.getBreakBlacklist().getBlocks();
+					
+					if(blockList.indexOf(block) == -1) {
+						Message.sendError("There is no '" + args[4] + "' in protection blacklist of mine '" + curMine.getName() + "'");
+						return;
+					}
+					blockList.remove(block);
+					curMine.getBreakBlacklist().setBlocks(blockList);
+
+					Message.sendSuccess(args[4] + " was successfully removed from block breaking protection of mine '" + curMine.getName() + "'");
+					return;
+				}
+				else {
+					Message.sendInvalid(args);
+					return;
+				}
 			}
 			else
-			{
-				Regions.setBoolean(baseNode + ".enabled", true);
-				Message.sendSuccess("PVP has been turned ON for mine '" + curMine + "'");
-			}
-			Regions.saveData();
-		}
-		else if(args[1].equalsIgnoreCase("breaking"))
-		{
-			if(args.length < 3)
 			{
 				Message.sendInvalid(args);
 				return;
 			}
-			String baseNode = "mines." + curMine + ".protection.breaking";
-			if(args[2].equalsIgnoreCase("toggle"))
-			{
-				if(Regions.getBoolean(baseNode + ".enabled"))
-				{
-					Regions.setBoolean(baseNode + ".enabled", false);
-					Message.sendSuccess("Mine protection has been turned OFF for mine '" + curMine + "'");
-				}
-				else
-				{
-					Regions.setBoolean(baseNode + ".enabled", true);
-					Message.sendSuccess("Mine breaking protection has been turned ON for mine '" + curMine + "'");
-				}
-			}
-			else if(args[2].equalsIgnoreCase("blacklist"))
-			{
-				if(args[3].equalsIgnoreCase("toggle"))
-				{
-					if(Regions.getBoolean(baseNode + ".blacklist.enabled"))
-					{
-						Regions.setBoolean(baseNode + ".blacklist.enabled", false);
-						Message.sendSuccess("Block breaking protection blacklist has been turned OFF for mine '" + curMine + "'");
-					}
-					else
-					{
-						Regions.setBoolean(baseNode + ".blacklist.enabled", true);
-						Message.sendSuccess("Block breaking protection blacklist has been turned ON for mine '" + curMine + "'");
-					}
-					
-				}
-				else if(args[3].equalsIgnoreCase("whitelist"))
-				{
-					if(Regions.getBoolean(baseNode + ".blacklist.whitelist"))
-					{
-						Regions.setBoolean(baseNode + ".blacklist.whitelist", false);
-						Message.sendSuccess("Block breaking blacklist is no longer treated as a whitelist for mine '" + curMine + "'");
-					}
-					else
-					{
-						Regions.setBoolean(baseNode + ".blacklist.whitelist", true);
-						Message.sendSuccess("Block breaking blacklist is now treated as a whitelist for mine '" + curMine + "'");
-					}
-				}
-				else if(args[3].equalsIgnoreCase("add"))
-				{
-					String blockName = args[4];
-					MaterialData block = Util.getBlock(args[4]);
-					
-					if(block == null)
-					{
-						Message.sendError("Block '"+ args[4] + "' does not exist");
-						return;
-					}
-					
-					List<String> blockList = Regions.getList(baseNode + ".blacklist.blocks");
-					
-					
-					// Writing everything down
-					blockList.add(block.getItemTypeId() + ":" + block.getData());
-					Regions.setList(baseNode + ".blacklist.blocks", blockList);
-					
-					Regions.saveData();
-					
-					Message.sendSuccess(blockName + " was added to the block breaking protection blacklist of '" + curMine + "'");
-					return;
-				}
-				else if(args[3].equalsIgnoreCase("remove"))
-				{
-					MaterialData block = Util.getBlock(args[4]);
-					
-					if(block == null)
-					{
-						Message.sendError("Block '"+ args[4] + "' does not exist");
-						return;
-					}
-					
-					List<String> blockList = Regions.getList(baseNode + ".blacklist.blocks");
-					
-					
-					int index = blockList.indexOf(block.getItemTypeId() + ":" + block.getData());
-					if(index == -1)
-					{
-						Message.sendError("There is no '" + args[4] + "' in protection blacklist of mine '" + curMine + "'");
-						return;
-					}
-					blockList.remove(index);
-					
-
-					Regions.setList(baseNode + ".blacklist.blocks", blockList);
-					
-					Regions.saveData();
-					Message.sendSuccess(args[4] + " was successfully removed from block breaking protection of mine '" + curMine + "'");
-					return;
-				}
-				else
-				{
-					Message.sendInvalid(args);
-					return;
-				}
-				Regions.saveData();
-				return;
-			}
-			else
-			{
-				Message.sendInvalid(args);
-			}
 		}
-		else if(args[1].equalsIgnoreCase("placement"))
-		{
-			String baseNode = "mines." + curMine + ".protection.placement";
-			if(args[2].equalsIgnoreCase("toggle"))
-			{
-				if(Regions.getBoolean(baseNode + ".enabled"))
+		else if(args[1].equalsIgnoreCase("placement")) {
+			if(args.length < 3) {
+				Message.sendError("Invalid parameters. Check your argument count!");
+				return;
+			}
+			
+			if(args[2].equalsIgnoreCase("toggle")) {
+
+				if(args.length != 3) {
+					Message.sendError("Invalid parameters. Check your argument count!");
+					return;
+				}
+				
+				if(curMine.getProtection().contains(Protection.BLOCK_PLACE))
 				{
-					Regions.setBoolean(baseNode + ".enabled", false);
-					Message.sendSuccess("Block placement protection has been turned OFF for mine '" + curMine + "'");
+					curMine.getProtection().remove(Protection.BLOCK_PLACE);
+					Message.sendSuccess("Mine protection has been turned off for mine '" + curMine.getName() + "'");
 				}
 				else
 				{
-					Regions.setBoolean(baseNode + ".enabled", true);
-					Message.sendSuccess("Block placement protection has been turned ON for mine '" + curMine + "'");
+					curMine.getProtection().add(Protection.BLOCK_PLACE);
+					Message.sendSuccess("Mine placement protection has been turned on for mine '" + curMine.getName() + "'");
 				}
+				return;
 			}
-			else if(args[2].equalsIgnoreCase("blacklist"))
-			{
+			else if(args[2].equalsIgnoreCase("blacklist")) {
+				if(args.length < 3) {
+					Message.sendError("Invalid parameters. Check your argument count!");
+					return;
+				}
 				if(args[3].equalsIgnoreCase("toggle"))
 				{
-					if(Regions.getBoolean(baseNode + ".blacklist.enabled"))
-					{
-						Regions.setBoolean(baseNode + ".blacklist.enabled", false);
-						Message.sendSuccess("Block placement protection blacklist has been turned OFF for mine '" + curMine + "'");
+					if(args.length != 3) {
+						Message.sendError("Invalid parameters. Check your argument count!");
+						return;
 					}
-					else
-					{
-						Regions.setBoolean(baseNode + ".blacklist.enabled", true);
-						Message.sendSuccess("Block placement protection blacklist has been turned ON for mine '" + curMine + "'");
+					
+					if(curMine.getPlaceBlacklist().getEnabled()) {
+						curMine.getPlaceBlacklist().setEnabled(false);
+						Message.sendSuccess("Block placement protection blacklist has been turned off for mine '" + curMine.getName() + "'");
+					}
+					else {
+						curMine.getPlaceBlacklist().setEnabled(true);
+						Message.sendSuccess("Block placement protection blacklist has been turned on for mine '" + curMine.getName() + "'");
 					}
 					
 				}
-				else if(args[3].equalsIgnoreCase("whitelist"))
-				{
-					if(Regions.getBoolean(baseNode + ".blacklist.whitelist"))
-					{
-						Regions.setBoolean(baseNode + ".blacklist.whitelist", false);
-						Message.sendSuccess("Block breaking blacklist is no longer treated as a whitelist for mine '" + curMine + "'");
+				else if(args[3].equalsIgnoreCase("whitelist")) {
+					if(args.length != 3) {
+						Message.sendError("Invalid parameters. Check your argument count!");
+						return;
 					}
-					else
-					{
-						Regions.setBoolean(baseNode + ".blacklist.whitelist", true);
-						Message.sendSuccess("Block breaking blacklist is now treated as a whitelist for mine '" + curMine + "'");
+					if(curMine.getPlaceBlacklist().getWhitelist()) {
+						curMine.getPlaceBlacklist().setWhitelist(false);
+						Message.sendSuccess("Block placement blacklist is no longer treated as a whitelist for mine '" + curMine.getName() + "'");
+					}
+					else {
+						curMine.getPlaceBlacklist().setWhitelist(true);
+						Message.sendSuccess("Block placement blacklist is now treated as a whitelist for mine '" + curMine.getName() + "'");
 					}
 				}
-				else if(args[3].equalsIgnoreCase("add"))
-				{
-					String blockName = args[4];
+				else if(args[3].equalsIgnoreCase("add") || args[3].equalsIgnoreCase("+")) {
+					if(args.length != 4) {
+						Message.sendError("Invalid parameters. Check your argument count!");
+						return;
+					}
 					MaterialData block = Util.getBlock(args[4]);
 					
-					if(block == null)
-					{
+					if(block == null) {
 						Message.sendError("Block '"+ args[4] + "' does not exist");
 						return;
 					}
 					
-					List<String> blockList = Regions.getList(baseNode + ".blacklist.blocks");
+					List<MaterialData> blockList = curMine.getPlaceBlacklist().getBlocks();
+					blockList.add(block);
+					curMine.getPlaceBlacklist().setBlocks(blockList);
 					
-					
-					// Writing everything down
-					blockList.add(block.getItemTypeId() + ":" + block.getData());
-					Regions.setList(baseNode + ".blacklist.blocks", blockList);
-					
-					Regions.saveData();
-					
-					Message.sendSuccess(blockName + " was added to the block placement protection blacklist of '" + curMine + "'");
+					Message.sendSuccess(block.getItemType().toString().toLowerCase().replace("_", " ") + " was added to the block placement protection blacklist of '" + curMine.getName() + "'");
 					return;
 				}
-				else if(args[3].equalsIgnoreCase("remove"))
-				{
+				else if(args[3].equalsIgnoreCase("remove") || args[3].equalsIgnoreCase("-")) {
+					if(args.length != 4) {
+						Message.sendError("Invalid parameters. Check your argument count!");
+						return;
+					}
 					MaterialData block = Util.getBlock(args[4]);
 					
-					if(block == null)
-					{
+					if(block == null) {
 						Message.sendError("Block '"+ args[4] + "' does not exist");
 						return;
 					}
 					
-					List<String> blockList = Regions.getList(baseNode + ".blacklist.blocks");
+					List<MaterialData> blockList = curMine.getPlaceBlacklist().getBlocks();
 					
-					
-					int index = blockList.indexOf(block.getItemTypeId() + ":" + block.getData());
-					if(index == -1)
-					{
-						Message.sendError("There is no '" + args[4] + "' in protection blacklist of mine '" + curMine + "'");
+					if(blockList.indexOf(block) == -1) {
+						Message.sendError("There is no '" + args[4] + "' in protection blacklist of mine '" + curMine.getName() + "'");
 						return;
 					}
-					blockList.remove(index);
-					
+					blockList.remove(block);
+					curMine.getPlaceBlacklist().setBlocks(blockList);
 
-					Regions.setList(baseNode + ".blacklist.blocks", blockList);
-					
-					Regions.saveData();
-					Message.sendSuccess(args[4] + " was successfully removed from block placement protection of mine '" + curMine + "'");
+					Message.sendSuccess(args[4] + " was successfully removed from block placement protection of mine '" + curMine.getName() + "'");
 					return;
 				}
-				else
-				{
+				else {
 					Message.sendInvalid(args);
 					return;
 				}
-
-				Regions.saveData();
-				return;
 			}
 			else
 			{

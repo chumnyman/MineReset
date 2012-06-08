@@ -89,16 +89,17 @@ public class InfoCommand
 			//	generatorString = generatorString + ChatColor.WHITE + " | Linked to " + ChatColor.GOLD + parentMine;
 			//Message.sendMessage(generatorString);
 			
-			String blockProtection;
+			String blockBreak, blockPlace;
 			// Protection
-			if(curMine.getProtection().contains(Protection.BLOCK))
-			{
-				blockProtection = ChatColor.GREEN + "ON";
-			}
+			if(curMine.getProtection().contains(Protection.BLOCK_BREAK))
+				blockBreak = ChatColor.GREEN + "ON";
 			else
-			{
-				blockProtection = ChatColor.RED + "OFF";
-			}
+				blockBreak = ChatColor.RED + "OFF";
+			
+			if(curMine.getProtection().contains(Protection.BLOCK_PLACE))
+				blockPlace = ChatColor.GREEN + "ON";
+			else
+				blockPlace = ChatColor.RED + "OFF";
 			
 			String pvpProtection;
 			if(curMine.getProtection().contains(Protection.PVP))
@@ -106,7 +107,7 @@ public class InfoCommand
 			else pvpProtection = ChatColor.RED + "OFF";
 			
 			Message.sendMessage(ChatColor.BLUE + " Protection:");
-			Message.sendMessage("Block protection: " + blockProtection + ChatColor.WHITE + " | PVP " + pvpProtection);
+			Message.sendMessage("Breaking: " + blockBreak + ChatColor.WHITE + " | Placement: " + blockPlace + ChatColor.WHITE + " | PVP " + pvpProtection);
 			
 			List<String> finalList = MineUtils.getSortedList(curMine);
 			

@@ -13,32 +13,24 @@ import org.bukkit.material.MaterialData;
 @SerializableAs("Blacklist")
 public class Blacklist implements ConfigurationSerializable, Listener {
 
-	private Mine parent;
 	private List<MaterialData> blocks;
 	private boolean whitelist;
 	
-	public Blacklist(Mine parent) {
-		this.parent = parent;
+	public Blacklist() {
 		blocks = new ArrayList<MaterialData>();
 		whitelist = false;
 	}
 	
 	public Blacklist(Map<String, Object> me) {
-		parent = (Mine) me.get("parent");
 		whitelist = (Boolean) me.get("whitelist");
         blocks = (List<MaterialData>) me.get("blocks");
 	}
 	
 	public Map<String, Object> serialize() {
 		Map<String, Object> me = new HashMap<String, Object>();
-		me.put("parent", parent);
 		me.put("whitelist", whitelist);
 		me.put("blocks", blocks);
 		return me;
-	}
-	
-	public Mine getParent() {
-		return parent;
 	}
 	
 	public List<MaterialData> getBlocks() {

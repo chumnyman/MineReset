@@ -8,70 +8,70 @@ import org.bukkit.material.MaterialData;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 
-public class BlacklistCommand
-{
-	public static void run(String[] args)
-	{
-		if(!Util.senderHasPermission("edit"))
-		{
+public class BlacklistCommand {
+	public static void run(String[] args) {
+		if(!Util.senderHasPermission("edit")) {
 			Message.sendDenied(args);
 			return;
 		}
 		
-		if(args.length == 1)
-		{
+		if(args.length == 1) {
 			HelpCommand.getBlacklist();
 			return;
 		}
-		else if(args.length > 3)
-		{
+		else if(args.length > 3) {
 			Message.sendInvalid(args);
 			return;
 		}
 		
-		String mineName = CommandManager.getMine();
-		if(mineName == null)
-		{
-			String error = Language.getString("general.mine-not-selected");
-			Message.sendError(error);
+		Mine curMine = CommandManager.getMine();
+		if(curMine == null) {
+			Message.sendError(Language.getString("general.mine-not-selected"));
 			return;
 		}
 		
-		if(args[1].equalsIgnoreCase("toggle") || args[1].equalsIgnoreCase("tg"))
-		{
-			if(Regions.getBoolean("mines." + mineName + ".blacklist.enabled"))
-			{
-				Regions.setBoolean("mines." + mineName + ".blacklist.enabled", false);
-				Message.sendSuccess("Blacklist turned OFF for mine '" + mineName + "'");
+		if(args[1].equalsIgnoreCase("toggle")) {
+			if(args.length != 1) {
+				Message.sendError("Invalid parameters. Check your argument count!");
+				return;
+			}
+			if(curMine.getBlacklist().getEnabled()) {
+				curMine.getBlacklist().setEnabled(false);
+				Message.sendSuccess("Blacklist turned OFF for mine '" + curMine.getName() + "'");
 			}
 			else
 			{
-				Regions.setBoolean("mines." + mineName + ".blacklist.enabled", true);
-				Message.sendSuccess("Blacklist turned ON for mine '" + mineName + "'");
+				curMine.getBlacklist().setEnabled(true);
+				Message.sendSuccess("Blacklist turned ON for mine '" + curMine.getName() + "'");
 			}
 			Regions.saveData();
 			return;
 		}
-		else if(args[1].equalsIgnoreCase("whitelist") || args[1].equalsIgnoreCase("wl"))
+		else if(args[1].equalsIgnoreCase("whitelist"))
 		{
-			if(Regions.getBoolean("mines." + mineName + ".blacklist.whitelist"))
+			if(curMine.getBlacklist().getWhitelist())
 			{
-				Regions.setBoolean("mines." + mineName + ".blacklist.whitelist", false);
-				Message.sendSuccess("Blacklist is no longer treated as a whitelist for mine '" + mineName);
+				curMine.getBlacklist().setWhitelist(false);
+				Message.sendSuccess("Blacklist is no longer treated as a whitelist for mine '" + curMine.getName() + "'");
 			}
 			else
 			{
-				Regions.setBoolean("mines." + mineName + ".blacklist.whitelist", true);
-				Message.sendSuccess("Blacklist is now treated as a whitelist for mine '" + mineName + "'");
+				curMine.getBlacklist().setWhitelist(true);
+				Message.sendSuccess("Blacklist is now treated as a whitelist for mine '" + curMine.getName() + "'");
 			}
 			Regions.saveData();
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+"))
 		{
+			if(args.length != 3) {
+				Message.sendError("Invalid parameters. Check your argument count!");
+				return;
+			}
 			MaterialData block = Util.getBlock(args[2]);
 			if(block == null)
 			{
@@ -79,35 +79,31 @@ public class BlacklistCommand
 				return;
 			}
 			
-			List<String> blacklist = Regions.getList("mines." + mineName + ".blacklist.blocks");
-			blacklist.add(block.getItemTypeId() + ":" + block.getData());
-			Regions.setList("mines." + mineName + ".blacklist.blocks", blacklist);
-
-			Regions.saveData();
+			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
+			blocks.add(block);
+			curMine.getBlacklist().setBlocks(blocks);
+			
 			Message.sendSuccess("Block " + ChatColor.GREEN + args[2] + ChatColor.WHITE + " is now in the blacklist");
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-"))
 		{
+			if(args.length != 3) {
+				Message.sendError("Invalid parameters. Check your argument count!");
+				return;
+			}
+			
 			MaterialData block = Util.getBlock(args[2]);
 			if(block == null)
 			{
-				Message.sendError("Block '" + ChatColor.GREEN + args[2] + ChatColor.WHITE + "' does not exist");
+				Message.sendError("Block '"+ args[2] + "' does not exist");
 				return;
 			}
 			
-			List<String> blacklist = Regions.getList("mines." + mineName + ".blacklist.blocks");
-			
-			int index = blacklist.indexOf(block.getItemTypeId() + ":" + block.getData());
-			if(index == -1)
-			{
-				Message.sendError("Block " + args[2] + " is not in the blacklist");
-				return;
-			}
-			blacklist.remove(index);
-			Regions.setList("mines." + mineName + ".blacklist.blocks", blacklist);
-			Regions.saveData();
-			Message.sendSuccess("Block " + args[2] + " has been removed from the blacklist");
+			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
+			blocks.remove(block);
+			curMine.getBlacklist().setBlocks(blocks);
+			Message.sendSuccess("Block '" + args[2] + "' has been removed from the blacklist");
 			return;
 		}
 		else

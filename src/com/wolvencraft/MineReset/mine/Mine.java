@@ -32,6 +32,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     private String displayName;
     private Mine parent;
     private List<MineBlock> blocks;
+    private Blacklist blacklist;
     private boolean silent;
     private boolean automatic;
     private int automaticSeconds;			// Change to ticks for uniformity maybe?
@@ -59,6 +60,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	parent = null;
     	this.name = name;
     	blocks = null;
+    	blacklist = new Blacklist();
     	silent = false;
     	automatic = true;
     	this.automaticSeconds = automaticSeconds;
@@ -93,6 +95,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         this.parent = parent;
         this.name = name;
         this.blocks = blocks;
+    	blacklist = new Blacklist();
         silent = isSilent;
         automatic = isAutomatic;
         this.automaticSeconds = automaticSeconds;
@@ -114,6 +117,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         displayName = (String) me.get("displayName");
         name = (String) me.get("name");
         parent = (Mine) me.get("parent");
+        blacklist = (Blacklist) me.get("blacklist");
         silent = (Boolean) me.get("silent");
         automatic = (Boolean) me.get("automatic");
         automaticSeconds = (Integer) me.get("automaticResetTime");
@@ -163,6 +167,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("displayName", displayName);
         me.put("name", name);
         me.put("parent", parent);
+        me.put("blacklist", blacklist);
         me.put("silent", silent);
         me.put("automatic", automatic);
         me.put("automaticResetTime", automaticSeconds);
@@ -204,6 +209,10 @@ public class Mine implements ConfigurationSerializable, Listener {
      */
     public Mine getParent() {
     	return parent == null ? this : parent;
+    }
+    
+    public Blacklist getBlacklist() {
+    	return blacklist;
     }
     
     public boolean getSilent() {

@@ -1,6 +1,6 @@
 package com.wolvencraft.MineReset.cmd;
 
-import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.mine.Mine;
 import org.bukkit.ChatColor;
 
@@ -19,7 +19,7 @@ public class ListCommand
 		
 		Message.sendMessage("                    -=[ Public Mines ]=-");
 		
-		for(Mine mine : CommandManager.getPlugin().getMines())
+		for(Mine mine : MineReset.getMines())
 		{
 			String displayName = mine.getDisplayName();
 			if(displayName.equals(""))

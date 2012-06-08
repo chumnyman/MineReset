@@ -45,7 +45,7 @@ public class MineReset extends JavaPlugin
 	public CommandManager manager;
 	private FileConfiguration regionData = null, languageData = null, signData = null;
 	private File regionDataFile = null, languageDataFile = null, signDataFile = null;
-    private List<Mine> mines;
+    private static List<Mine> mines;
     private static List<SignClass> signs;
 	
 	public static double curVer = 1.2;
@@ -234,8 +234,12 @@ public class MineReset extends JavaPlugin
 	    }
 	}
 
-    public List<Mine> getMines() {
+    public static List<Mine> getMines() {
         return mines;
+    }
+    
+    public static void setMines(List<Mine> mines) {
+    	MineReset.mines = mines;
     }
     
     public static List<SignClass> getSigns() {

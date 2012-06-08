@@ -40,6 +40,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     private boolean warned;
     private List<Integer> warningTimes;
     private List<Protection> enabledProtection;
+    private Blacklist breakBlacklist;
+    private Blacklist placeBlacklist;
 
     /**
      * Constuctor for new mines.
@@ -68,6 +70,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     	warned = true;
     	this.warningTimes = warningTimes;
     	enabledProtection = new ArrayList<Protection>();
+    	breakBlacklist = new Blacklist();
+    	placeBlacklist = new Blacklist();
     }
 
     /**
@@ -103,6 +107,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         warned = warningTimes != null && warningTimes.size() > 0;
         this.warningTimes = warningTimes;
         this.enabledProtection = enabledProtection;
+    	breakBlacklist = new Blacklist();
+    	placeBlacklist = new Blacklist();
     }
 
     /**
@@ -125,6 +131,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         warningTimes = (List<Integer>) me.get("warningTimes");
         blocks = (List<MineBlock>) me.get("blocks");
         enabledProtection = (List<Protection>) me.get("protectionTypes");
+        breakBlacklist = (Blacklist) me.get("breakBlacklist");
+        placeBlacklist = (Blacklist) me.get("placeBlacklist");
     }
 
     public void reset() {
@@ -175,6 +183,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("warningTimes", warningTimes);
         me.put("protectionTypes", enabledProtection);
         me.put("blocks", blocks);
+        me.put("breakBlacklist", breakBlacklist);
+        me.put("placeBlacklist", placeBlacklist);
         return me;
     }
     
@@ -309,5 +319,13 @@ public class Mine implements ConfigurationSerializable, Listener {
 
     public long getNextAutomaticResetTick() {
         return nextAutomaticResetTick;
+    }
+    
+    public Blacklist getBreakBlacklist() {
+    	return breakBlacklist;
+    }
+    
+    public Blacklist getPlaceBlacklist() {
+    	return placeBlacklist;
     }
 }

@@ -52,14 +52,14 @@ public class WarpCommand
 			return;
 		}
 		
-		if(MineUtils.exists(args[1])) {
-			MineUtils.warpToMine(player, args[1]);
-			String message = Util.parseVars(Language.getString("teleportation.mine-teleport"), args[1]);
+		if(MineUtils.getMine(args[1]) == null) {
+			MineUtils.warpToMine(player, MineUtils.getMine(args[1]));
+			String message = Util.parseVars(Language.getString("teleportation.mine-teleport"), MineUtils.getMine(args[1]));
 			Message.sendSuccess(message);
 			return;
 		}
 		else {
-			String error = Util.parseString(Language.getString("general.mine-name-invalid"), "%MINE%", args[1]);
+			String error = Language.getString("general.mine-name-invalid").replaceAll("%MINE%", args[1]);
 			Message.sendError(error);
 			return;
 		}

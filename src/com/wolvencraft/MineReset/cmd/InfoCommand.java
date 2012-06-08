@@ -40,7 +40,7 @@ public class InfoCommand
 			return;
 		}
 		
-		if(args.length != 1 && !MineUtils.exists(args[1]))
+		if(args.length != 1 && MineUtils.getMine(args[1]) == null)
 		{
 			Message.sendError("Mine '" + args[1] + "' does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
 			return;
@@ -108,7 +108,7 @@ public class InfoCommand
 			Message.sendMessage(ChatColor.BLUE + " Protection:");
 			Message.sendMessage("Block protection: " + blockProtection + ChatColor.WHITE + " | PVP " + pvpProtection);
 			
-			List<String> finalList = MineUtils.getSortedList(curMine.getName());
+			List<String> finalList = MineUtils.getSortedList(curMine);
 			
 			Message.sendMessage(ChatColor.BLUE + " Composition:");
 			for(String line : finalList)

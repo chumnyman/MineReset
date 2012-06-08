@@ -2,6 +2,8 @@ package com.wolvencraft.MineReset.events;
 
 import java.util.List;
 
+import com.wolvencraft.MineReset.mine.Mine;
+import com.wolvencraft.MineReset.mine.Protection;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -42,37 +44,27 @@ public class BlockBreakListener implements Listener
 		int padding;
 		int paddingTop;
 		
-		List<String> regionList = Regions.getList("data.list-of-mines");
+		List<Mine> mines = MineReset.getMines();
 
         Message.debug("Retrieved the region list");
 		
-		if(regionList.size() == 0) return;
+		if(mines.size() == 0) return;
 		
 		Block b = event.getBlock();
 		
-		for(String mineName : regionList )
+		for(Mine mine : mines)
 		{
-            Message.debug("For mine " + mineName);
+            Message.debug("For mine " + mine.getName());
 			
-			if(Regions.getBoolean("mines." + mineName + ".protection.breaking.enabled"))
+			if (mine.getProtection().contains(Protection.BLOCK_BREAK))
 			{
-                Message.debug(mineName + " has protection enabled");
+                Message.debug(mine.getName() + " has protection enabled");
 				Location blockLocation = b.getLocation();
-				padding = Regions.getInt("mines." + mineName + ".protection.padding");
-				paddingTop = Regions.getInt("mines." + mineName + ".protection.padding-top");
-				String mineWorld = Regions.getString("mines." + mineName + ".coordinates.world");
-				int[] x = {Regions.getInt("mines." + mineName + ".coordinates.pos0.x"), Regions.getInt("mines." + mineName + ".coordinates.pos1.x")};
-				int[] y = {Regions.getInt("mines." + mineName + ".coordinates.pos0.y"), Regions.getInt("mines." + mineName + ".coordinates.pos1.y")};
-				int[] z = {Regions.getInt("mines." + mineName + ".coordinates.pos0.z"), Regions.getInt("mines." + mineName + ".coordinates.pos1.z")};
-				
-				if(mineWorld.equals(blockLocation.getWorld().getName())
-						&& (blockLocation.getBlockX() >= (x[0] - padding) && blockLocation.getBlockX() <= (x[1] + padding))
-						&& (blockLocation.getBlockY() >= (y[0] - padding) && blockLocation.getBlockY() <= (y[1] + paddingTop))
-						&& (blockLocation.getBlockZ() >= (z[0] - padding) && blockLocation.getBlockZ() <= (z[1] + padding)))
-				{
-                    Message.debug("Player breakd a block in the mine region");
 
-					if(!Util.playerHasPermission(player, "protection.break." + mineName) && !Util.playerHasPermission(player, "protection.break"))
+				if (mine.isLocationInMine(event.getBlock().getLocation())) {
+                    Message.debug("Player broke a block in the mine region");
+
+					if(!Util.playerHasPermission(player, "protection.break." + mine.getName()) && !Util.playerHasPermission(player, "protection.break"))
 					{
                         Message.debug("Second permissions check passed");
 						Message.sendPlayerError(player, "You are not allowed to break " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
@@ -81,11 +73,12 @@ public class BlockBreakListener implements Listener
 					}
 
                     Message.debug("Second permissions check failed");
-					
-					if(Regions.getBoolean("mines." + mineName + ".protection.breaking.blacklist.enabled"))
+
+                    //TODO: Implement blacklist again
+					if(false)//Regions.getBoolean("mines." + mineName + ".protection.breaking.blacklist.enabled"))
 					{
-						List<String> blacklist = Regions.getList("mines." + mineName + ".protection.breaking.blacklist.blocks");
-						boolean whitelist = Regions.getBoolean("mines." + mineName + ".protection.breaking.blacklist.whitelist");
+						List<String> blacklist = Regions.getList("mines." + mine.getName() + ".protection.breaking.blacklist.blocks");
+						boolean whitelist = Regions.getBoolean("mines." + mine.getName() + ".protection.breaking.blacklist.whitelist");
 						boolean found = false;
 						
 						for(String block : blacklist)

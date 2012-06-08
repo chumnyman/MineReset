@@ -4,5 +4,5 @@ package com.wolvencraft.MineReset.mine;
  * @author jjkoletar
  */
 public enum Protection {
-    PVP, BLOCK
+    PVP, BLOCK_PLACE, BLOCK_BREAK
 }

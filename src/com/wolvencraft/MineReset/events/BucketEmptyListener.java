@@ -3,6 +3,8 @@ package com.wolvencraft.MineReset.events;
 import java.util.List;
 
 import com.wolvencraft.MineReset.config.Configuration;
+import com.wolvencraft.MineReset.mine.Mine;
+import com.wolvencraft.MineReset.mine.Protection;
 import com.wolvencraft.MineReset.util.MineUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -30,25 +32,21 @@ public class BucketEmptyListener implements Listener
             return;
         }
 
-        List<String> mines = Regions.getList("data.list-of-mines");
+        List<Mine> mines = MineReset.getMines();
 
-        for (String mine : mines) {
-            if (!Regions.getBoolean("mines." + mine + ".protection.placement.enabled")) {
+        for (Mine mine : mines) {
+            if (!mine.getProtection().contains(Protection.BLOCK_PLACE)) {
                 Message.debug(mine + " doesn't have placement protection enabled, skipping rest of check...");
                 continue;
             }
 
-            if (event.getBlockClicked().getWorld().equals(Bukkit.getWorld(Regions.getString("mines." + mine + ".coordinates.world")))) {
-                Message.debug(mine + " mine's world, " + Regions.getString("mines." + mine + ".coordinates.world") + ", didn't equal block's world, " + event.getBlockClicked().getWorld().getName());
-                continue;
-            }
 
-            if (Util.playerHasPermission(event.getPlayer(), "protection.place." + mine)) {
+            if (Util.playerHasPermission(event.getPlayer(), "protection.place." + mine.getName())) {
                 Message.debug("Player had permission to place in that mine, leave 'em alone!");
                 continue;
             }
 
-            if (MineUtils.isBlockInMine(event.getBlockClicked().getRelative(event.getBlockFace()), mine)) {
+            if (mine.isLocationInMine(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation())) {
                 Message.debug("Yup, they can't place that bucket in the mine.");
                 event.setCancelled(true);
                 Message.sendPlayerError(event.getPlayer(), "You are not allowed to empty buckets in the mine! No soup for you!");

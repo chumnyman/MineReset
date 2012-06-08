@@ -40,6 +40,16 @@ public class Mine implements ConfigurationSerializable, Listener {
     private List<Integer> warningTimes;
     private List<Protection> enabledProtection;
 
+    /**
+     * Constuctor for new mines.
+     * @param one First mine point, with the *smaller* X, Y, and Z values.
+     * @param two Second mine point, with the larger coordinate values.
+     * @param tpPoint Teleport point to TP players out of mine to.
+     * @param world World mine resides in.
+     * @param name Name for the mine.
+     * @param automaticSeconds Number of seconds between automatic resets.
+     * @param warningTimes List of seconds before reset to warn over chat.
+     */
     public Mine(Location one, Location two, Location tpPoint, World world, String name, int automaticSeconds, List<Integer> warningTimes) {
     	this.one = one;
     	this.two = two;
@@ -57,8 +67,24 @@ public class Mine implements ConfigurationSerializable, Listener {
     	this.warningTimes = warningTimes;
     	enabledProtection = new ArrayList<Protection>();
     }
-    
-    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, Mine parent, String name, List<MineBlock> blocks, boolean isSilent, boolean isAutomatic, int automaticSeconds, boolean isWarned, List<Integer> warningTimes, List<Protection> enabledProtection) {
+
+    /**
+     * Full constructor.
+     * @param one First mine point, with the *smaller* X, Y, and Z values.
+     * @param two Second mine point, with the larger coordinate values.
+     * @param world World mine resides in.
+     * @param tpPoint Teleport point to TP players out of mine to.
+     * @param displayName Display name for the mine.
+     * @param parent Mines's parent, if any.
+     * @param name Internal name for the mine.
+     * @param blocks List of blocks and their weights.
+     * @param isSilent Will the mine reset silently?
+     * @param isAutomatic Will the mine automatically reset?
+     * @param automaticSeconds Number of seconds between automatic resets.
+     * @param warningTimes List of seconds before reset to warn over chat.
+     * @param enabledProtection List of protection types enabled for the mine.
+     */
+    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, Mine parent, String name, List<MineBlock> blocks, boolean isSilent, boolean isAutomatic, int automaticSeconds,  List<Integer> warningTimes, List<Protection> enabledProtection) {
         this.one = one;
         this.two = two;
         this.world = world;
@@ -71,7 +97,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         automatic = isAutomatic;
         this.automaticSeconds = automaticSeconds;
     	nextAutomaticResetTick = automaticSeconds * 20;
-        warned = isWarned;
+        warned = warningTimes != null && warningTimes.size() > 0;
         this.warningTimes = warningTimes;
         this.enabledProtection = enabledProtection;
     }
@@ -124,7 +150,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     public boolean isLocationInMine(Location l) {
         return (l.getX() >= one.getX() && l.getX() <= two.getX())     //if x matches
                 && (l.getY() >= one.getY() && l.getY() <= two.getY()) //and y
-                && (l.getZ() >= one.getZ() && l.getZ() <= two.getZ());//and z
+                && (l.getZ() >= one.getZ() && l.getZ() <= two.getZ()) //and z
+                && l.getWorld().equals(world);//and world
     }
 
     public Map<String, Object> serialize() {
@@ -176,9 +203,7 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @return Mine parent
      */
     public Mine getParent() {
-    	if(parent == null)
-    		return this;
-    	else return parent;
+    	return parent == null ? this : parent;
     }
     
     public boolean getSilent() {

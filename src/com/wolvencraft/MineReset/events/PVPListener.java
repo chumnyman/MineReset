@@ -3,6 +3,8 @@ package com.wolvencraft.MineReset.events;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.mine.Mine;
+import com.wolvencraft.MineReset.mine.Protection;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.Util;
@@ -44,18 +46,18 @@ public class PVPListener implements Listener {
             return;
         }
 
-        List<String> regionList = Regions.getList("data.list-of-mines");
+        List<Mine> mines = MineReset.getMines();
 
-        for (String mine : regionList) {
-            Message.debug("Checking mine "+mine);
-            if (!Regions.getBoolean("mines." + mine + ".protection.pvp.enabled")) {
+        for (Mine mine : mines) {
+            Message.debug("Checking mine "+mine.getName());
+            if (!mine.getProtection().contains(Protection.PVP)) {
                 Message.debug(mine+" doesn't have PvP protection on");
-                return;
+                continue;
             }
-            if (MineUtils.playerInTheMine(attacker, mine) || MineUtils.playerInTheMine(victim, mine)) {
+            if (mine.isLocationInMine(attacker.getLocation()) || mine.isLocationInMine(victim.getLocation())) {
                 Message.sendPlayerError(attacker, "PvP is not allowed in the mine!");
                 event.setCancelled(true);
-                return;
+                continue;
             }
         }
     }

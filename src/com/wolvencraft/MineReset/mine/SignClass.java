@@ -44,6 +44,7 @@ public class SignClass implements ConfigurationSerializable, Listener  {
         me.put("world", world.getName());
         me.put("parent", parent);
         me.put("reset", reset);
+        me.put("lines", lines);
         return me;
     }
     

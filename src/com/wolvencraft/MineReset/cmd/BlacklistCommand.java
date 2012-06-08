@@ -8,42 +8,38 @@ import org.bukkit.material.MaterialData;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Regions;
+import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 
-public class BlacklistCommand
-{
-	public static void run(String[] args)
-	{
-		if(!Util.senderHasPermission("edit"))
-		{
+public class BlacklistCommand {
+	public static void run(String[] args) {
+		if(!Util.senderHasPermission("edit")) {
 			Message.sendDenied(args);
 			return;
 		}
 		
-		if(args.length == 1)
-		{
+		if(args.length == 1) {
 			HelpCommand.getBlacklist();
 			return;
 		}
-		else if(args.length > 3)
-		{
+		else if(args.length > 3) {
 			Message.sendInvalid(args);
 			return;
 		}
 		
-		String mineName = CommandManager.getMine();
-		if(mineName == null)
-		{
-			String error = Language.getString("general.mine-not-selected");
-			Message.sendError(error);
+		Mine curMine = CommandManager.getMine();
+		if(curMine == null) {
+			Message.sendError(Language.getString("general.mine-not-selected"));
 			return;
 		}
 		
-		if(args[1].equalsIgnoreCase("toggle") || args[1].equalsIgnoreCase("tg"))
-		{
-			if(Regions.getBoolean("mines." + mineName + ".blacklist.enabled"))
-			{
+		if(args[1].equalsIgnoreCase("toggle")) {
+			if(args.length != 1) {
+				Message.sendError("Invalid parameters. Check your argument count!");
+				return;
+			}
+			if(curMine.getBlacklist()) {
 				Regions.setBoolean("mines." + mineName + ".blacklist.enabled", false);
 				Message.sendSuccess("Blacklist turned OFF for mine '" + mineName + "'");
 			}

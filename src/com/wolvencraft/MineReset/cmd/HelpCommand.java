@@ -127,6 +127,7 @@ public class HelpCommand
 	public static void getSign()
 	{
 		formatHelp("sign", " create", "Saves the targeted sign into a file", "");
+		formatHelp("sign", " parent <id>", "Sets the sign's parent to the one specified", "");
 		formatHelp("sign", " reset", "Marks the targeted sign as mine-resetting", "");
 		formatHelp("sign", " remove", "Removes the targeted sign from data", "");
 		

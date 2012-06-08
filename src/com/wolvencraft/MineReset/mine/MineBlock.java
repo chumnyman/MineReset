@@ -42,4 +42,8 @@ public class MineBlock implements ConfigurationSerializable {
         me.put("blockData", block.getData());
         return me;
     }
+    
+    public MineBlock clone() {
+    	return this.clone();
+    }
 }

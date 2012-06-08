@@ -40,8 +40,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     private List<Integer> warningTimes;
     private List<Protection> enabledProtection;
 
-    public Mine(Location one, Location two, Location tpPoint, World world, String name)
-    {
+    public Mine(Location one, Location two, Location tpPoint, World world, String name, int automaticSeconds, List<Integer> warningTimes) {
     	this.one = one;
     	this.two = two;
     	this.tpPoint = tpPoint;
@@ -52,10 +51,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     	blocks = null;
     	silent = false;
     	automatic = true;
-    	automaticSeconds = 900;	//TODO Do something about the magic numbers
+    	this.automaticSeconds = automaticSeconds;
+    	nextAutomaticResetTick = automaticSeconds * 20;
     	warned = true;
-    	warningTimes = new ArrayList<Integer>();
-    	warningTimes.add(300); //TODO Same here
+    	this.warningTimes = warningTimes;
     	enabledProtection = new ArrayList<Protection>();
     }
     
@@ -71,6 +70,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         silent = isSilent;
         automatic = isAutomatic;
         this.automaticSeconds = automaticSeconds;
+    	nextAutomaticResetTick = automaticSeconds * 20;
         warned = isWarned;
         this.warningTimes = warningTimes;
         this.enabledProtection = enabledProtection;

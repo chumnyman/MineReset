@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.mine.Mine;
@@ -15,7 +16,7 @@ public class MineUtils
 	/**
 	 * Returns the object of the mine with the given id
 	 * @param id Name of the mine being checked
-	 * @return True if the mine exists, False if it does not
+	 * @return Mine object if it exists, null if it does not
 	 */
 	public static Mine getMine(String id)
 	{
@@ -77,6 +78,21 @@ public class MineUtils
 		
 	}
 	
+	/**
+	 * Returns the MineBlock with a specified MaterialData
+	 * @param curMine Mine to check the blocks of
+	 * @param block Block to search for
+	 * @return MineBlock if it exists, otherwise null
+	 */
+	public static MineBlock getBlock(Mine curMine, MaterialData block) {
+		if(block == null) return null;
+		
+		List<MineBlock> blocks = curMine.getBlocks();
+		for(MineBlock thisBlock : blocks)
+			if(thisBlock.getBlock().equals(block)) return thisBlock;
+		
+		return null;
+	}
 	
 	/**
 	 * Returns the time period at which a certain mine is reset

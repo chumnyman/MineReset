@@ -32,10 +32,11 @@ public class Mine implements ConfigurationSerializable, Listener {
     private String displayName;
     private Mine parent;
     private List<MineBlock> blocks;
+    private Generator generator;
     private Blacklist blacklist;
     private boolean silent;
     private boolean automatic;
-    private int automaticSeconds;			// Change to ticks for uniformity maybe?
+    private int automaticSeconds;
     private long nextAutomaticResetTick;
     private boolean warned;
     private List<Integer> warningTimes;
@@ -51,9 +52,8 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @param world World mine resides in.
      * @param name Name for the mine.
      * @param automaticSeconds Number of seconds between automatic resets.
-     * @param warningTimes List of seconds before reset to warn over chat.
      */
-    public Mine(Location one, Location two, Location tpPoint, World world, String name, int automaticSeconds, List<Integer> warningTimes) {
+    public Mine(Location one, Location two, Location tpPoint, World world, String name, int automaticSeconds) {
     	this.one = one;
     	this.two = two;
     	this.tpPoint = tpPoint;
@@ -62,13 +62,14 @@ public class Mine implements ConfigurationSerializable, Listener {
     	parent = null;
     	this.name = name;
     	blocks = null;
+    	generator = Generator.RANDOM;
     	blacklist = new Blacklist();
     	silent = false;
     	automatic = true;
     	this.automaticSeconds = automaticSeconds;
     	nextAutomaticResetTick = automaticSeconds * 20;
     	warned = true;
-    	this.warningTimes = warningTimes;
+    	warningTimes = new ArrayList<Integer>();
     	enabledProtection = new ArrayList<Protection>();
     	breakBlacklist = new Blacklist();
     	placeBlacklist = new Blacklist();
@@ -90,7 +91,7 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @param warningTimes List of seconds before reset to warn over chat.
      * @param enabledProtection List of protection types enabled for the mine.
      */
-    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, Mine parent, String name, List<MineBlock> blocks, boolean isSilent, boolean isAutomatic, int automaticSeconds,  List<Integer> warningTimes, List<Protection> enabledProtection) {
+    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, Mine parent, String name, List<MineBlock> blocks, Generator generator, boolean isSilent, boolean isAutomatic, int automaticSeconds,  List<Integer> warningTimes, List<Protection> enabledProtection) {
         this.one = one;
         this.two = two;
         this.world = world;
@@ -99,6 +100,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         this.parent = parent;
         this.name = name;
         this.blocks = blocks;
+        this.generator = generator;
     	blacklist = new Blacklist();
         silent = isSilent;
         automatic = isAutomatic;
@@ -124,6 +126,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         name = (String) me.get("name");
         parent = (Mine) me.get("parent");
         blacklist = (Blacklist) me.get("blacklist");
+        generator = (Generator) me.get("generator");
         silent = (Boolean) me.get("silent");
         automatic = (Boolean) me.get("automatic");
         automaticSeconds = (Integer) me.get("automaticResetTime");
@@ -135,7 +138,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         placeBlacklist = (Blacklist) me.get("placeBlacklist");
     }
 
-    public void reset() {
+    public void reset(Generator generator) {
         removePlayers();
         //TODO: Implement whitelist/blacklist
         RandomBlock pattern = new RandomBlock(blocks);
@@ -176,6 +179,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("name", name);
         me.put("parent", parent);
         me.put("blacklist", blacklist);
+        me.put("generator", generator);
         me.put("silent", silent);
         me.put("automatic", automatic);
         me.put("automaticResetTime", automaticSeconds);
@@ -235,6 +239,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public boolean getAutomatic() {
     	return automatic;
+    }
+    
+    public Generator getGenerator() {
+    	return generator;
     }
     
     public int getResetPeriod() {
@@ -297,12 +305,20 @@ public class Mine implements ConfigurationSerializable, Listener {
     	this.automatic = automatic;
     }
     
+    public void setGenerator(Generator generator) {
+    	this.generator = generator;
+    }
+    
     public void setResetPeriod(int automaticSeconds) {
     	this.automaticSeconds = automaticSeconds;
     }
     
     public void updateTimer(long ticks) {
     	this.nextAutomaticResetTick -= ticks;
+    }
+    
+    public void resetTimer() {
+    	nextAutomaticResetTick = automaticSeconds * 20;
     }
     
     public void setWarned(boolean warned) {

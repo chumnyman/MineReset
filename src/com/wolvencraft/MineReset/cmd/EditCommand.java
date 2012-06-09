@@ -15,8 +15,7 @@ import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 
-public class EditCommand
-{
+public class EditCommand {
 	public static void run(String[] args) {
 		if(!Util.senderHasPermission("edit")) {
 				Message.sendDenied(args);

@@ -1,18 +1,18 @@
 package com.wolvencraft.MineReset.mine;
 
 import com.wolvencraft.MineReset.config.Language;
+import com.wolvencraft.MineReset.generation.EmptyGenerator;
+import com.wolvencraft.MineReset.generation.RandomGenerator;
+import com.wolvencraft.MineReset.generation.SurfaceGenerator;
 import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.RandomBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.material.MaterialData;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -143,62 +143,13 @@ public class Mine implements ConfigurationSerializable, Listener {
     public void reset(Generator generator) {
         removePlayers();
         if(generator.equals(Generator.EMPTY)) {
-        	MaterialData block = new MaterialData(Material.AIR);
-	        for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
-	            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
-	                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-	                    world.getBlockAt(x, y, z).setType(block.getItemType());
-	                }
-	            }
-	        }
+        	EmptyGenerator.reset(this);
+        }
+        else if(generator.equals(Generator.SURFACE)) {
+        	SurfaceGenerator.reset(this);
         }
         else {
-	        RandomBlock pattern = new RandomBlock(blocks);
-        	if(blacklist.getEnabled())
-        	{        		
-        		if(blacklist.getWhitelist()) {
-        			for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
-    		            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
-    		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-    		                    MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
-    		                    MaterialData newBlock = pattern.next();
-    		                    if(blacklist.getBlocks().contains(original))
-    		                    {
-	    		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-	    		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
-    		                    }
-    		                }
-    		            }
-    		        }
-        		}
-        		else {
-        			for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
-    		            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
-    		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-    		                    MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
-    		                    MaterialData newBlock = pattern.next();
-    		                    if(!blacklist.getBlocks().contains(original))
-    		                    {
-	    		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-	    		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
-    		                    }
-    		                }
-    		            }
-    		        }
-        		}
-        	}
-        	else
-        	{
-		        for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
-		            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
-		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-		                    MaterialData block = pattern.next();
-		                    world.getBlockAt(x, y, z).setType(block.getItemType());
-		                    world.getBlockAt(x, y, z).setData(block.getData());
-		                }
-		            }
-		        }
-        	}
+	        RandomGenerator.reset(this);
         }
     }
 

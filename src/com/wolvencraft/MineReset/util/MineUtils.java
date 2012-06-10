@@ -79,6 +79,23 @@ public class MineUtils
 	}
 	
 	/**
+	 * Returns the most common block in the mine (with the largest chance)
+	 * If two or moer most common blocks have the same chances, behavior is unpredictable
+	 * @param curMine Mine to check
+	 * @return MineBlock
+	 */
+	public static MineBlock getMostCommon(Mine curMine) {
+		List<MineBlock> blocks = curMine.getBlocks();
+		MineBlock mostCommon = blocks.get(0);
+		for(MineBlock curBlock : blocks)
+		{
+			if(curBlock.getChance() > mostCommon.getChance())
+				mostCommon = curBlock;
+		}
+		return mostCommon;
+	}
+	
+	/**
 	 * Returns the MineBlock with a specified MaterialData
 	 * @param curMine Mine to check the blocks of
 	 * @param block Block to search for

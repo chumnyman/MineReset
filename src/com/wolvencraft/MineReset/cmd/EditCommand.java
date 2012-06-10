@@ -244,6 +244,7 @@ public class EditCommand {
 			}
 			
 			if(args[1].equalsIgnoreCase("empty")) curMine.setGenerator(Generator.EMPTY);
+			else if(args[1].equalsIgnoreCase("surface")) curMine.setGenerator(Generator.SURFACE);
 			else curMine.setGenerator(Generator.RANDOM);
 			Message.sendNote(curMine.getName(), "Mine generator has been set to " + ChatColor.GREEN + args[1].toUpperCase());
 			return;

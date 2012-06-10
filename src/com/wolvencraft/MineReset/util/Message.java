@@ -47,6 +47,19 @@ public class Message
 	}
 
 	/**
+	 * Broadcasts a green-titled message to all players
+	 * This should be normally used just for the mine reset warnings
+	 * @param message A message to be sent
+	 */
+	public static void broadcast(String message)
+	{
+		String title = Language.getString("general.title-success");
+		title = Util.parseColors(title);
+		message = Util.parseColors(message);
+		Bukkit.getServer().broadcastMessage(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
+	}
+	
+	/**
 	 * Sends a green-titled message to the command sender
 	 * @param message A message to be sent
 	 */

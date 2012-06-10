@@ -22,7 +22,6 @@ import com.wolvencraft.MineReset.cmd.*;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.events.*;
-import com.wolvencraft.MineReset.util.Broadcast;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.SignUtils;
 import com.wolvencraft.MineReset.util.Util;
@@ -118,7 +117,7 @@ public class MineReset extends JavaPlugin
 									
 									if(warnTimes.indexOf(nextReset) != -1 && curMine.getWarned() && !curMine.getSilent())
 									{
-										Broadcast.sendSuccess(Util.parseVars(warnMessage, curMine));
+										Message.broadcast(Util.parseVars(warnMessage, curMine));
 									}
 									if(nextReset <= 0)
 									{

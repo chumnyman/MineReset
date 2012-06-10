@@ -7,7 +7,6 @@ import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.mine.Generator;
 import com.wolvencraft.MineReset.mine.Mine;
-import com.wolvencraft.MineReset.util.Broadcast;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.Util;
@@ -64,7 +63,7 @@ public class ResetCommand
 		broadcastMessage = Util.parseVars(broadcastMessage, curMine);
 		
 		if(!curMine.getSilent()) {
-			Broadcast.sendSuccess(broadcastMessage);
+			Message.broadcast(broadcastMessage);
 		}
 		else if(!automatic) {
 			Message.sendSuccess(broadcastMessage);

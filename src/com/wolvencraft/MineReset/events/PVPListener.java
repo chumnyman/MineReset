@@ -2,11 +2,9 @@ package com.wolvencraft.MineReset.events;
 
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Configuration;
-import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Protection;
 import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.Util;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;

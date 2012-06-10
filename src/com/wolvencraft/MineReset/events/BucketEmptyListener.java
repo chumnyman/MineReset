@@ -5,14 +5,11 @@ import java.util.List;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Protection;
-import com.wolvencraft.MineReset.util.MineUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 
 import com.wolvencraft.MineReset.MineReset;
-import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 

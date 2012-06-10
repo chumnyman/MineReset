@@ -11,10 +11,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Configuration;
-import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -41,15 +41,10 @@ public class BlockPlaceListener implements Listener
 
         Message.debug("Bypass permission check failed");
 		
-		int padding;
-		int paddingTop;
-		
 		List<Mine> mines = MineReset.getMines();
-
         Message.debug("Retrieved the region list");
 		
 		if(mines.size() == 0) return;
-		
 		Block b = event.getBlockPlaced();
 		
 		for(Mine mine : mines)
@@ -73,24 +68,18 @@ public class BlockPlaceListener implements Listener
 					}
 
                     Message.debug("Second permissions check failed");
-					//TODO: Implement this
-					if(false) //Regions.getBoolean("mines." + mineName + ".protection.placement.blacklist.enabled"))
+					if(mine.getBlacklist().getEnabled())
 					{
-						List<String> blacklist = Regions.getList("mines." + mine.getName() + ".protection.placement.blacklist.blocks");
-						boolean whitelist = Regions.getBoolean("mines." + mine.getName() + ".protection.placement.blacklist.whitelist");
 						boolean found = false;
-						
-						for(String block : blacklist)
-						{	
-							String blockTypeId = b.getTypeId() + "";
-                            Message.debug(blockTypeId + " ? " + block);
-							if(blockTypeId.equals(block))
+						for(MaterialData block : mine.getBlacklist().getBlocks())
+						{
+							if(block.getItemType() == b.getType())
 							{
 								found = true;
 							}
 						}
 						
-						if((whitelist && !found) || (!whitelist && found))
+						if((mine.getBlacklist().getWhitelist() && !found) || (!mine.getBlacklist().getWhitelist() && found))
 						{
 							Message.sendPlayerError(player, "You are not allowed to place " + ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE + " in this mine");
 							event.setCancelled(true);

@@ -33,7 +33,7 @@ public class PlayerLoginListener implements Listener
 			if(!Updater.checkVersion())
 			{
 				Player player = event.getPlayer();
-				player.sendMessage(ChatColor.BLUE + "Update for MineReset (" + Updater.getVersion() + "." + Updater.getSubVersion() + ") is available! Urgency: " + Updater.getUrgency());
+				player.sendMessage("Update for " + ChatColor.BLUE + "MineReset" + ChatColor.WHITE + " (" + ChatColor.GOLD + Updater.getVersion() + "." + Updater.getSubVersion() + ChatColor.WHITE + ") is available! Urgency: " + ChatColor.GOLD + Updater.getUrgency());
 			}
 		}
 	}

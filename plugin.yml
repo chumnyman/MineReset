@@ -14,7 +14,7 @@ permissions:
       MineReset.protection: true
       MineReset.reset: true
       MineReset.edit: true
-      MineReset.secret: true
+      MineReset.config: true
   MineReset.user:
     description: Gives access to basic MineReset commands
     children:
@@ -28,7 +28,7 @@ permissions:
       MineReset.user: true
       MineReset.reset: true
       MineReset.edit: true
-      MineReset.secret: true
+      MineReset.config: true
   MineReset.info:
     description: Allows a player to look at the information about a mine
     default: true
@@ -66,6 +66,6 @@ permissions:
   MineReset.edit:
     description: Allows a player to create and edit mines
     default: op
-  MineReset.secret:
-    description: Gives access to undocumented commands
+  MineReset.config:
+    description: Gives access to saving and reloading the configuration
     default: op

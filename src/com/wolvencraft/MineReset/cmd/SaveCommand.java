@@ -31,7 +31,7 @@ public class SaveCommand
 		}
 		
 		if(args.length != 2) {
-			Message.sendInvalid(args);
+			Message.sendInvalidArguments(args);
 			return;
 		}
 		

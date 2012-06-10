@@ -30,7 +30,7 @@ public class SelectCommand
 			return;
 		}
 		if(args.length > 2) {
-			Message.sendError("Invalid parameters. Check your argument count!");
+			Message.sendInvalidArguments(args);
 			return;
 		}
 		

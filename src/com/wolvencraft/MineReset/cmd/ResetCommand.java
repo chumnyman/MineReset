@@ -42,7 +42,6 @@ public class ResetCommand
 			generator = Generator.valueOf(forcedGenerator);
 		
 		curMine.reset(generator);
-		
 		curMine.resetTimer();
 		
 		String broadcastMessage;

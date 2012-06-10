@@ -2,8 +2,9 @@ package com.wolvencraft.MineReset.cmd;
 
 import java.util.List;
 
+import org.bukkit.ChatColor;
+
 import com.wolvencraft.MineReset.CommandManager;
-import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
@@ -29,29 +30,29 @@ public class TimerCommand {
 
 		Mine curMine = CommandManager.getMine();
 		if(curMine == null) {
-			Message.sendError(Language.getString("general.mine-not-selected"));
+			Message.sendMineNotSelected();
 			return;
 		}
 		
 		if(args[1].equalsIgnoreCase("toggle")) {
 			if(args.length != 1) {
-				Message.sendError("Invalid parameters. Check your argument count!");
+				Message.sendInvalidArguments(args);
 				return;
 			}
 			
 			if(curMine.getAutomatic()) {
 				curMine.setAutomatic(false);
-				Message.sendSuccess("'" + curMine.getName() + "' will no longer reset automatically.");
+				Message.sendNote(curMine.getName(), "Automatic mine reset is " + ChatColor.RED + "off");
 			}
 			else {
 				curMine.setAutomatic(true);
-				Message.sendSuccess("'" + curMine.getName() + "' will now reset automatically.");
+				Message.sendNote(curMine.getName(), "Automatic mine reset is " + ChatColor.GREEN + "on");
 			}
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("time")) {
 			if(args.length != 2) {
-				Message.sendError("Invalid parameters. Check your argument count!");
+				Message.sendInvalidArguments(args);
 				return;
 			}
 			int time = Util.parseTime(args[2]);
@@ -60,36 +61,37 @@ public class TimerCommand {
 				return;
 			}
 			curMine.setResetPeriod(time);
-			Message.sendSuccess("'" + curMine.getName() + "' will now reset every " + time / 60 + " minute(s) " + time % 60 + " second(s)");
+			String parsedTime = Util.parseSeconds(time);
+			Message.sendSuccess("'" + curMine.getName() + "' will now reset every " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s)");
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("warning")) {
 			if(args.length < 3) {
-				Message.sendError("Invalid parameters. Check your argument count!");
+				Message.sendInvalidArguments(args);
 				return;
 			}
 			
 			if(args[2].equalsIgnoreCase("toggle")) {
 				if(args.length != 3) {
-					Message.sendError("Invalid parameters. Check your argument count!");
+					Message.sendInvalidArguments(args);
 					return;
 				}
 				
 				if(curMine.getWarned())
 				{
 					curMine.setWarned(false);
-					Message.sendSuccess("Players will no longer be warned before '" + curMine.getName() + "' resets");
+					Message.sendNote(curMine.getName(), "Reset warnings are " + ChatColor.RED + "off");
 				}
 				else
 				{
 					curMine.setWarned(true);
-					Message.sendSuccess("Players will now be warned before '" + curMine.getName() + "' resets");
+					Message.sendNote(curMine.getName(), "Reset warnings are " + ChatColor.GREEN + "on");
 				}
 				return;
 			}
 			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
 				if(args.length != 4) {
-					Message.sendError("Invalid parameters. Check your argument count!");
+					Message.sendInvalidArguments(args);
 					return;
 				}
 				
@@ -106,12 +108,13 @@ public class TimerCommand {
 				List<Integer> warnList = curMine.getWarningTimes();
 				warnList.add(time);
 				curMine.setWarningTimes(warnList);
-				Message.sendSuccess(curMine.getName() + " will now send warnings " + time / 60 + " minute(s) " + time % 60 + " second(s) before the reset");
+				String parsedTime = Util.parseSeconds(time);
+				Message.sendSuccess(curMine.getName() + " will now send warnings " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s) before the reset");
 				return;
 			}
 			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
 				if(args.length != 4) {
-					Message.sendError("Invalid parameters. Check your argument count!");
+					Message.sendInvalidArguments(args);
 					return;
 				}
 				

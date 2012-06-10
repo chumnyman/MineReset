@@ -9,7 +9,6 @@ import org.bukkit.block.Sign;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
-import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.config.Signs;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.SignClass;
@@ -39,7 +38,7 @@ public class SignCommand
 			return;
 		}
 		else if(args.length != 2) {
-			Message.sendInvalid(args);
+			Message.sendInvalidArguments(args);
 			return;
 		}
 		
@@ -51,7 +50,7 @@ public class SignCommand
 		
 		Mine curMine = CommandManager.getMine();
 		if(curMine == null) {
-			Message.sendError(Language.getString("general.mine-not-selected"));
+			Message.sendMineNotSelected();
 			return;
 		}
 		
@@ -68,7 +67,7 @@ public class SignCommand
 			signs.add(sign);
 			MineReset.setSigns(signs);
 			
-			Message.sendSuccess("A new sign was defined successfully");
+			Message.sendNote(curMine.getName(), "A new sign was defined successfully");
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("reset")) {
@@ -80,11 +79,11 @@ public class SignCommand
 			
 			if(sign.getReset()) {
 				sign.setReset(false);
-				Message.sendSuccess("Right-clicking on this sign will no longer result in a reset of " + sign.getParent().getDisplayName());
+				Message.sendNote(curMine.getName(), "Right-clicking on this sign will no longer reset the mine");
 			}
 			else {
 				sign.setReset(true);
-				Message.sendSuccess("Right-clicking on this sign will now result in a reset of " + sign.getParent().getDisplayName());
+				Message.sendNote(curMine.getName(), "Right-clicking on this sign will now reset the mine");
 			}
 			
 			return;
@@ -114,7 +113,7 @@ public class SignCommand
 			signs.remove(sign);
 			MineReset.setSigns(signs);
 			
-			Message.sendSuccess("The sign is no longer defined. You can destroy it now.");
+			Message.sendSuccess("This sign is no longer defined. You can destroy it now.");
 			return;
 		}
 		else {

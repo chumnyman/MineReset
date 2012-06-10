@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
-import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -33,34 +32,32 @@ public class WarpCommand
 			return;
 		}
 		else if(args.length != 2) {
-			Message.sendInvalid(args);
+			Message.sendInvalidArguments(args);
 			return;
 		}
 		
 		if(args[1].equalsIgnoreCase("set")) {
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
-				Message.sendError("Select a mine first with /mine edit <name>");
+				Message.sendMineNotSelected();
 				return;
 			}
 			
 			Location loc = player.getLocation();
 			curMine.setWarp(loc);
 			
-			Regions.saveData();
 			Message.sendSuccess ("Mine spawn point set (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
 			return;
 		}
 		
-		if(MineUtils.getMine(args[1]) == null) {
+		if(MineUtils.getMine(args[1]) != null) {
 			MineUtils.warpToMine(player, MineUtils.getMine(args[1]));
-			String message = Util.parseVars(Language.getString("teleportation.mine-teleport"), MineUtils.getMine(args[1]));
+			String message = Util.parseVars(Language.getString("misc.mine-teleport"), MineUtils.getMine(args[1]));
 			Message.sendSuccess(message);
 			return;
 		}
 		else {
-			String error = Language.getString("general.mine-name-invalid").replaceAll("%MINE%", args[1]);
-			Message.sendError(error);
+			Message.sendInvalidMineName(args[1]);
 			return;
 		}
 	}

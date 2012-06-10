@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.wolvencraft.MineReset.mine.Blacklist;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
 import com.wolvencraft.MineReset.mine.SignClass;
@@ -72,6 +73,8 @@ public class MineReset extends JavaPlugin
 
         ConfigurationSerialization.registerClass(Mine.class, "Mine");
         ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
+        ConfigurationSerialization.registerClass(Blacklist.class, "Blacklist");
+        ConfigurationSerialization.registerClass(SignClass.class, "SignClass");
         
 		mines = new ArrayList<Mine>();
         //TODO: Load mines into new data structure

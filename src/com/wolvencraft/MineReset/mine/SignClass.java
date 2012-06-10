@@ -13,7 +13,7 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.event.Listener;
 import org.bukkit.util.Vector;
 
-@SerializableAs("Sign")
+@SerializableAs("SignClass")
 public class SignClass implements ConfigurationSerializable, Listener  {
 	private World world;
 	private Location loc;

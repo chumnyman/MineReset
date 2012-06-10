@@ -19,7 +19,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wolvencraft.MineReset.cmd.*;
-import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.events.*;
 import com.wolvencraft.MineReset.util.Message;
@@ -42,8 +41,8 @@ public class MineReset extends JavaPlugin
 {
 	Logger log;
 	public CommandManager manager;
-	private FileConfiguration regionData = null, languageData = null, signData = null;
-	private File regionDataFile = null, languageDataFile = null, signDataFile = null;
+	private FileConfiguration languageData = null;
+	private File languageDataFile = null;
     private static List<Mine> mines;
     private static List<SignClass> signs;
 	
@@ -73,18 +72,12 @@ public class MineReset extends JavaPlugin
 
         ConfigurationSerialization.registerClass(Mine.class, "Mine");
         ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
-
+        
 		mines = new ArrayList<Mine>();
         //TODO: Load mines into new data structure
 
 		log.info("MineReset started");
 		log.info(mines.size() + " mine(s) found");
-		
-		if(!Configuration.exists("configuration.version") || !Configuration.getString("configuration.version").equals(curVer + "." + curSubVer))
-		{
-			//TODO Get a real updater, ffs
-			log.info("Configuration successufully updated to the new data format");
-		}
 		
 		final long checkEvery = getConfig().getLong("lag.check-time-every");
 		
@@ -139,39 +132,10 @@ public class MineReset extends JavaPlugin
 		log.info("MineReset stopped");
 	}
 	
-	public void reloadRegionData() {
-	    if (regionDataFile == null) {
-	    regionDataFile = new File(getDataFolder(), "regions.yml");
-	    }
-	    regionData = YamlConfiguration.loadConfiguration(regionDataFile);
-	 
-	    // Look for defaults in the jar
-	    InputStream defConfigStream = getResource("regions.yml");
-	    if (defConfigStream != null) {
-	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-	        regionData.setDefaults(defConfig);
-	    }
-	}
-	
-	public FileConfiguration getRegionData() {
-	    if (regionData == null) {
-	        reloadRegionData();
-	    }
-	    return regionData;
-	}
-
-	public void saveRegionData() {
-	    if (regionData == null || regionDataFile == null) return;
-	    try {
-	        regionData.save(regionDataFile);
-	    } catch (IOException ex) {
-	        Message.log("Could not save config to " + regionDataFile);
-	    }
-	}
-	
 	public void reloadLanguageData() {
 		
 		String lang = this.getConfig().getString("configuration.language") + ".yml";
+		if(lang.equals(null)) lang = "english";
 		Message.log("Language file used: " + lang);
 		
 	    if (languageDataFile == null) {
@@ -200,36 +164,6 @@ public class MineReset extends JavaPlugin
 	        languageData.save(languageDataFile);
 	    } catch (IOException ex) {
 	        Message.log("Could not save config to " + languageDataFile);
-	    }
-	}
-	
-	public void reloadSignData() {
-	    if (signDataFile == null) {
-	    signDataFile = new File(getDataFolder(), "signs.yml");
-	    }
-	    signData = YamlConfiguration.loadConfiguration(signDataFile);
-	 
-	    // Look for defaults in the jar
-	    InputStream defConfigStream = getResource("signs.yml");
-	    if (defConfigStream != null) {
-	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-	        signData.setDefaults(defConfig);
-	    }
-	}
-	
-	public FileConfiguration getSignData() {
-	    if (signData == null) {
-	        reloadSignData();
-	    }
-	    return signData;
-	}
-
-	public void saveSignData() {
-	    if (signData == null || signDataFile == null) return;
-	    try {
-	        signData.save(signDataFile);
-	    } catch (IOException ex) {
-	        Message.log("Could not save config to " + signDataFile);
 	    }
 	}
 

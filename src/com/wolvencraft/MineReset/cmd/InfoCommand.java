@@ -15,79 +15,59 @@ public class InfoCommand
 {
 	public static void run(String[] args)
 	{
-		if(!Util.senderHasPermission("info"))
-		{
+		if(!Util.senderHasPermission("info")) {
 			Message.sendDenied(args);
 			return;
 		}
 		
 		Mine curMine = null;
-		if(args.length == 1)
-		{
-			if(CommandManager.getMine() != null)
-			{
+		if(args.length == 1) {
+			if(CommandManager.getMine() != null) {
 				curMine = CommandManager.getMine();
 			}
-			else
-			{
+			else {
 				HelpCommand.getInfo();
 				return;
 			}
 		}
-		if(args.length > 2)
-		{
-			Message.sendInvalid(args);
+		if(args.length > 2) {
+			Message.sendInvalidArguments(args);
 			return;
 		}
 		
-		if(args.length != 1 && MineUtils.getMine(args[1]) == null)
-		{
-			Message.sendError("Mine '" + args[1] + "' does not exist. Use " + ChatColor.GREEN + "/mine help" + ChatColor.WHITE + " for help");
+		if(args.length != 1 && MineUtils.getMine(args[1]) == null) {
+			Message.sendInvalidMineName(args[1]);
 			return;
 		}
 		
 		
-		if(args[1].equalsIgnoreCase("info") || args[1].equalsIgnoreCase("?"))
-		{
+		if(args[1].equalsIgnoreCase("info") || args[1].equalsIgnoreCase("?")) {
 			// Title
 			String displayName = curMine.getDisplayName();
 			if(displayName.equals("")) displayName = curMine.getName();
-			Message.sendMessage(ChatColor.DARK_RED + "                             -=[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.RED + " ]=-");
+			Message.sendMessage(ChatColor.DARK_RED + "                             -=[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.DARK_RED + " ]=-");
 			
 			// Reset
 			Mine parentMine = curMine.getParent();
 			if(parentMine == null)
 				parentMine = curMine;
 			
+			String autoResetFormatted = Util.parseSeconds(curMine.getResetPeriod());
 			
-			String autoResetFormatted = curMine.getResetPeriod() / 60 + ":";
-			if(curMine.getResetPeriod() % 60 < 10)
-				autoResetFormatted = autoResetFormatted + "0" + curMine.getResetPeriod() % 60;
-			else
-				autoResetFormatted = autoResetFormatted + curMine.getResetPeriod() % 60;
-			
-			int nextResetTime = (int) ((parentMine.getNextAutomaticResetTick() - parentMine.getWorld().getTime()) / 20);
-			String nextResetFormatted = nextResetTime / 60 + ":";
-			if(nextResetTime % 60 < 10)
-				nextResetFormatted = nextResetFormatted + "0" + nextResetTime % 60;
-			else
-				nextResetFormatted = nextResetFormatted + nextResetTime % 60;
+			String nextResetFormatted = Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20);
 			
 			
-			if(curMine.getAutomatic())
-			{
+			if(curMine.getAutomatic()) {
 				Message.sendMessage(" Resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes");
 			}
-			else
-			{
+			else {
 				Message.sendMessage("The mine has to be reset manually");
 			}
 			
-			// generator
-			//String generatorString = curMine.getGenerator();
-			//if(parentMine != mineName)
-			//	generatorString = generatorString + ChatColor.WHITE + " | Linked to " + ChatColor.GOLD + parentMine;
-			//Message.sendMessage(generatorString);
+			String generatorString = curMine.getGenerator().toString();
+			if(!parentMine.equals(curMine) && !parentMine.equals(null))
+				generatorString = generatorString + ChatColor.WHITE + " | Linked to " + ChatColor.GOLD + parentMine.getName();
+			Message.sendMessage(generatorString);
 			
 			String blockBreak, blockPlace;
 			// Protection
@@ -113,9 +93,7 @@ public class InfoCommand
 			
 			Message.sendMessage(ChatColor.BLUE + " Composition:");
 			for(String line : finalList)
-			{
 				Message.sendMessage(line);
-			}
 			
 			// Blacklist
 			//List<String> blacklistBlocks =  Regions.getList("mines." + mineName + ".blacklist.blocks");
@@ -134,37 +112,22 @@ public class InfoCommand
 			//}
 			return;
 		}
-		if(args[1].equalsIgnoreCase("time"))
-		{
+		if(args[1].equalsIgnoreCase("time")) {
 			String displayName = curMine.getDisplayName();
 			if(displayName.equals("")) displayName = curMine.getName();
 			
 			// Reset
-			Mine parent = curMine.getParent();
-			if(parent == null)
-				parent = curMine;
+			Mine parentMine = curMine.getParent();
+			if(parentMine == null)
+				parentMine = curMine;
 			
-			int autoResetTime = parent.getResetPeriod();
-			String autoResetFormatted = autoResetTime / 60 + ":";
-			if(autoResetTime % 60 < 10)
-				autoResetFormatted = autoResetFormatted + "0" + autoResetTime % 60;
-			else
-				autoResetFormatted = autoResetFormatted + autoResetTime % 60;
+			String autoResetFormatted = Util.parseSeconds(curMine.getResetPeriod());
+			String nextResetFormatted = Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20);
 			
-			//TODO Fix this!
-            int nextResetTime = (int) ((parent.getNextAutomaticResetTick() - parent.getWorld().getTime()) / 20);
-            String nextResetFormatted = nextResetTime / 60 + ":";
-			if(nextResetTime % 60 < 10)
-				nextResetFormatted = nextResetFormatted + "0" + nextResetTime % 60;
-			else
-				nextResetFormatted = nextResetFormatted + nextResetTime % 60;
-			
-			if(curMine.getAutomatic())
-			{
+			if(curMine.getAutomatic()) {
 				Message.sendSuccess(displayName + " resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes.");
 			}
-			else
-			{
+			else {
 				Message.sendSuccess(displayName + " has to be reset manually");
 			}
 		}

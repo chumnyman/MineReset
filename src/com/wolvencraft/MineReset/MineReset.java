@@ -83,7 +83,7 @@ public class MineReset extends JavaPlugin
 		
 		if(!Configuration.exists("configuration.version") || !Configuration.getString("configuration.version").equals(curVer + "." + curSubVer))
 		{
-			ConfigurationCommand.update();
+			//TODO Get a real updater, ffs
 			log.info("Configuration successufully updated to the new data format");
 		}
 		

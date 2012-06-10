@@ -12,10 +12,37 @@ import com.wolvencraft.MineReset.config.Language;
 
 public class Message
 {
+	/**
+	 * Sends an untitled message to the command sender
+	 * @param message A message to be sent
+	 */
 	public static void sendMessage(String message)
 	{
 		message = Util.parseColors(message);
 		CommandSender sender = CommandManager.getSender();
+		sender.sendMessage(message);
+	}
+	
+	/**
+	 * Sends a titled message directly to the player
+	 * @param p Player to send the message to
+	 * @param message Message to be sent
+	 */
+    public static void sendPlayer(Player p, String message) {
+        p.sendMessage(ChatColor.GREEN + "[" + Language.getString("general.title") + "]" + ChatColor.WHITE + message);
+    }
+	
+    /**
+     * Sends a message to the command sender with an custom title
+     * @param title Title of the message
+     * @param message Message to be sent
+     */
+	public static void sendNote(String title, String message)
+	{
+		CommandSender sender = CommandManager.getSender();
+		title = Util.parseColors(title);
+		message = Util.parseColors(message);
+		message = ChatColor.GOLD + "[" + title + "] " + ChatColor.WHITE + message;
 		sender.sendMessage(message);
 	}
 
@@ -68,56 +95,84 @@ public class Message
 		message = Util.parseColors(message);
 		player.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
+
 	
 	/**
-	 * Message thrown when the command used by a player is invalid
-	 * Also sends a command into the log
-	 * @param command Command used
+	 * Sends a message that the command is invalid
+	 * @param args Arguments of the command
 	 */
-	public static void sendInvalid(String[] args)
-	{
+	public static void sendInvalid(String[] args) {
 		CommandSender sender = CommandManager.getSender();
 		String title = Language.getString("general.title-error");
-		String message = Language.getString("general.invalid-command");
+		String message = Language.getString("error.command");
 		String command = "";
         for (String arg : args) {
             command = command + " " + arg;
         }
-		log(sender.getName() + " sent an invalid command (/mine" + command + ")");
+		log(sender.getName() + " sent an invalid command: /mine" + command);
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
 		sender.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 	
 	/**
-	 * Message thrown when the user is denied of an action
+	 * Sends a message that the arguments of a command are invalid
+	 * @param name
+	 */
+	public static void sendInvalidArguments(String[] args) {
+		CommandSender sender = CommandManager.getSender();
+		String message = Language.getString("error.arguments");
+		String command = "";
+        for (String arg : args) {
+            command = command + " " + arg;
+        }
+		log(sender.getName() + " sent an invalid command: /mine" + command);
+		message = Util.parseColors(message);
+		sender.sendMessage(message);
+	}
+	
+	/**
+	 * Message sent when the user is denied to perform an action
 	 * @param command Command used
 	 */
 	public static void sendDenied(String[] args)
 	{
 		CommandSender sender = CommandManager.getSender();
 		String title = Language.getString("general.title-error");
-		String message = Language.getString("general.access-denied");
+		String message = Language.getString("error.access");
 		String command = "";
         for (String arg : args) {
             command = command + " " + arg;
         }
-		log(sender.getName() + " was denied to use a command (/mine" + command + ")");
+		log(sender.getName() + " was denied access to /mine" + command);
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
 		sender.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 	
 	/**
-	 * Sends a message into the server log
-	 * @param message A message to be sent
+	 * Message sent when the mine with a name specified does not exist
+	 * @param name Name of the mine
 	 */
-	public static void log(String message)
-	{
-		Logger log = Bukkit.getServer().getLogger();
-		log.info(message);
+	public static void sendInvalidMineName(String name) {
+		sendError(Language.getString("error.mine-name-invalid").replaceAll("%MINE%", name));
 	}
-
+	
+	/**
+	 * Sends a message that no mine is selected
+	 */
+	public static void sendMineNotSelected() {
+		sendError(Language.getString("error.mine-name-invalid"));
+	}
+	
+	/**
+	 * Sends a message that a block does not exist
+	 * @param block
+	 */
+	public static void sendBlockDoesNotExist(String block) {
+		sendError(Language.getString("error.block-does-not-exist").replaceAll("%BLOCK%", block));
+	}
+	
     /**
      * Sends a message into the server log if debug is enabled
      * @param message A message to be sent
@@ -128,8 +183,14 @@ public class Message
             Message.log(message);
         }
     }
-
-    public static void sendPlayer(Player p, String message) {
-        p.sendMessage(ChatColor.GREEN + "[" + Language.getString("general.title") + "]" + ChatColor.WHITE + message);
-    }
+	
+	/**
+	 * Sends a message into the server log
+	 * @param message A message to be sent
+	 */
+	public static void log(String message)
+	{
+		Logger log = Bukkit.getServer().getLogger();
+		log.info(message);
+	}
 }

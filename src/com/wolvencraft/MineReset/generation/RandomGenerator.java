@@ -64,6 +64,7 @@ public class RandomGenerator
 			Player[] onlinePlayers = Bukkit.getOnlinePlayers();
 			for(Player player : onlinePlayers)
 			{
+				/*
 				if(MineUtils.playerInTheMine(player, mineName))
 				{
 					String message = Language.getString("teleportation.mine-teleport");
@@ -75,6 +76,7 @@ public class RandomGenerator
 					player.sendMessage(ChatColor.GREEN + "[" + title + "] " + ChatColor.WHITE + message);
 					
 				}
+				*/
 			}
 		}
 		

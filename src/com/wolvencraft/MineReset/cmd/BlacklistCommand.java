@@ -7,7 +7,6 @@ import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
-import com.wolvencraft.MineReset.config.Regions;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
@@ -30,52 +29,46 @@ public class BlacklistCommand {
 		
 		Mine curMine = CommandManager.getMine();
 		if(curMine == null) {
-			Message.sendError(Language.getString("general.mine-not-selected"));
+			Message.sendMessage(Language.getString("error.mine-name-invalid").replaceAll("%MINE%", args[1]));
 			return;
 		}
 		
 		if(args[1].equalsIgnoreCase("toggle")) {
 			if(args.length != 1) {
-				Message.sendError("Invalid parameters. Check your argument count!");
+				Message.sendMessage(Language.getString("error.invalid-arguments"));
 				return;
 			}
 			if(curMine.getBlacklist().getEnabled()) {
 				curMine.getBlacklist().setEnabled(false);
-				Message.sendSuccess("Blacklist turned OFF for mine '" + curMine.getName() + "'");
+				Message.sendNote(curMine.getName(), "Blacklist turned " + ChatColor.RED + "off");
 			}
 			else
 			{
 				curMine.getBlacklist().setEnabled(true);
-				Message.sendSuccess("Blacklist turned ON for mine '" + curMine.getName() + "'");
+				Message.sendNote(curMine.getName(), "Blacklist turned " + ChatColor.GREEN + "on");
 			}
-			Regions.saveData();
 			return;
 		}
-		else if(args[1].equalsIgnoreCase("whitelist"))
-		{
-			if(curMine.getBlacklist().getWhitelist())
-			{
+		else if(args[1].equalsIgnoreCase("whitelist")) {
+			if(curMine.getBlacklist().getWhitelist()) {
 				curMine.getBlacklist().setWhitelist(false);
-				Message.sendSuccess("Blacklist is no longer treated as a whitelist for mine '" + curMine.getName() + "'");
+				Message.sendNote(curMine.getName() + " Blacklist", "Whitelist mode " + ChatColor.RED + "off");
 			}
-			else
-			{
+			else {
 				curMine.getBlacklist().setWhitelist(true);
-				Message.sendSuccess("Blacklist is now treated as a whitelist for mine '" + curMine.getName() + "'");
+				Message.sendNote(curMine.getName() + " Blacklist", "Whitelist mode " + ChatColor.GREEN + "on");
 			}
-			Regions.saveData();
 			return;
 		}
-		else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+"))
-		{
+		else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
 			if(args.length != 3) {
-				Message.sendError("Invalid parameters. Check your argument count!");
+				Message.sendMessage(Language.getString("error.invalid-arguments"));
 				return;
 			}
+			
 			MaterialData block = Util.getBlock(args[2]);
-			if(block == null)
-			{
-				Message.sendError("Block '"+ args[2] + "' does not exist");
+			if(block == null) {
+				Message.sendError("Block '" + ChatColor.RED + args[2] + ChatColor.WHITE + "' does not exist");
 				return;
 			}
 			
@@ -83,31 +76,28 @@ public class BlacklistCommand {
 			blocks.add(block);
 			curMine.getBlacklist().setBlocks(blocks);
 			
-			Message.sendSuccess("Block " + ChatColor.GREEN + args[2] + ChatColor.WHITE + " is now in the blacklist");
+			Message.sendNote(curMine.getName(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been added to the blacklistlist");
 			return;
 		}
-		else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-"))
-		{
+		else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-")) {
 			if(args.length != 3) {
-				Message.sendError("Invalid parameters. Check your argument count!");
+				Message.sendMessage(Language.getString("error.invalid-arguments"));
 				return;
 			}
 			
 			MaterialData block = Util.getBlock(args[2]);
-			if(block == null)
-			{
-				Message.sendError("Block '"+ args[2] + "' does not exist");
+			if(block == null) {
+				Message.sendError("Block '" + ChatColor.RED + args[2] + ChatColor.WHITE + "' does not exist");
 				return;
 			}
 			
 			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
 			blocks.remove(block);
 			curMine.getBlacklist().setBlocks(blocks);
-			Message.sendSuccess("Block '" + args[2] + "' has been removed from the blacklist");
+			Message.sendNote(curMine.getName(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been removed from the list");
 			return;
 		}
-		else
-		{
+		else {
 			Message.sendInvalid(args);
 			return;
 		}

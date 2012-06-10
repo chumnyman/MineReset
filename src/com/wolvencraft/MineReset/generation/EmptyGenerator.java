@@ -50,6 +50,7 @@ public class EmptyGenerator
 			Player[] onlinePlayers = Bukkit.getOnlinePlayers();
 			for(Player player : onlinePlayers)
 			{
+				/*
 				if(MineUtils.playerInTheMine(player, mineName))
 				{
 					String message = Language.getString("teleportation.mine-teleport");
@@ -61,6 +62,7 @@ public class EmptyGenerator
 					player.sendMessage(ChatColor.GREEN + "[" + title + "] " + ChatColor.WHITE + message);
 					
 				}
+				*/
 			}
 		}
 		

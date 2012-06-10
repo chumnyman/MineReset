@@ -448,8 +448,8 @@ public class Util
 	
 	/**
 	 * Parses the message for time and returns it in seconds
-	 * @param message Input in the MINmSECs format
-	 * @return
+	 * @param message Input in the HOUR:MIN:SEC format
+	 * @return Seconds
 	 */
 	public static int parseTime(String message) {
 		if(message.substring(0, 2).equals(":"))
@@ -483,6 +483,28 @@ public class Util
 	}
 	
 	/**
+	 * Parses the seconds and returns time in HOUR:MIN:SEC format
+	 * @param seconds Seconds to parse
+	 * @return Time in user-friendly format
+	 */
+	public static String parseSeconds(int seconds) {
+		int hour = seconds / 3600;
+		int min = (seconds - hour * 3600) / 60;
+		int sec = (seconds - hour * 3600) % 60;
+		String resetTime = min + ":";
+		if(hour > 0)
+		{
+			if(min < 10)
+				resetTime = "0" + resetTime;
+			resetTime = hour + ":" + resetTime;
+		}
+		if(sec < 10)
+			resetTime = resetTime + "0";
+		resetTime = resetTime + sec;
+		return resetTime;
+	}
+	
+	/**
 	 * Checks if both selection points are set
 	 * @return true if both points are set, false if they are not
 	 */
@@ -511,5 +533,25 @@ public class Util
 		int blockCount = xdist * ydist * zdist;
 
 		return blockCount;
+	}
+	
+	/**
+	 * Parses the material and returns a user-friendly name
+	 * @param material Material to parse
+	 * @return Name of the material
+	 */
+	public static String parseMaterial(Material material) {
+		return material.toString().toLowerCase().replace("_", " ");
+	}
+	
+	/**
+	 * Parses the material and returns a user-friendly name
+	 * @param material Material to parse
+	 * @return Name of the material
+	 */
+	public static String parseMaterialData(MaterialData material) {
+		String str[] = {material.getItemTypeId() + "", material.getData() + ""};
+		String name = parseMetadata(str, true) + " " + material.getItemType().toString().toLowerCase().replace("_", " ");
+		return name;
 	}
 }

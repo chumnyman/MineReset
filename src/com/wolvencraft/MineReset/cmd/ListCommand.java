@@ -11,16 +11,18 @@ public class ListCommand
 {
 	public static void run(String[] args)
 	{
-		if(!Util.senderHasPermission("list"))
-		{
+		if(!Util.senderHasPermission("list")) {
 			Message.sendDenied(args);
 			return;
 		}
+		if(args.length > 2) {
+			Message.sendInvalidArguments(args);
+			return;
+		}
 		
-		Message.sendMessage("                    -=[ Public Mines ]=-");
+		Message.sendMessage(ChatColor.DARK_RED + "                    -=[ " + ChatColor.GREEN + ChatColor.BOLD + "Public Mines" + ChatColor.DARK_RED + " ]=-");
 		
-		for(Mine mine : MineReset.getMines())
-		{
+		for(Mine mine : MineReset.getMines()) {
 			String displayName = mine.getDisplayName();
 			if(displayName.equals(""))
 				Message.sendMessage(" - " + ChatColor.GREEN + mine.getName() + "");

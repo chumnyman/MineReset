@@ -2,10 +2,12 @@ package com.wolvencraft.MineReset.cmd;
 
 import java.util.List;
 
+import com.wolvencraft.MineReset.mine.Generator;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
 import com.wolvencraft.MineReset.util.MineUtils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.material.MaterialData;
 
@@ -27,45 +29,49 @@ public class EditCommand {
 			return;
 		}
 		if(args.length > 3) {
-			Message.sendInvalid(args);
+			Message.sendInvalidArguments(args);
 		}
 		
 		if(args[0].equalsIgnoreCase("edit")) {
 			if(args.length != 2) {
-				Message.sendInvalid(args);
+				Message.sendInvalidArguments(args);
 				return;
 			}
 			
 			Mine curMine = MineUtils.getMine(args[1]);
 			if(curMine == null) {
-				String error = Language.getString("general.mine-name-invalid").replaceAll("%MINE%", args[1]);
-				Message.sendError(error);
+				Message.sendInvalidMineName(args[1]);
 				return;
 			}
+			String message = Util.parseVars(Language.getString("editing.mine-selected-successfully"), curMine);
 			CommandManager.setMine(curMine);
-			String message = Util.parseVars(Language.getString("general.mine-selected-successfully"), curMine);
 			Message.sendSuccess(message);
 		}
 		else if(args[0].equalsIgnoreCase("none")) {
 			if(args.length != 1) {
-				Message.sendInvalid(args);
+				Message.sendInvalidArguments(args);
 				return;
 			}
 			
 			Mine curMine = CommandManager.getMine();
-			String message = Util.parseVars(Language.getString("general.mine-deselected-successfully"), curMine);
+			if(curMine == null) {
+				Message.sendMineNotSelected();
+				return;
+			}
+			
+			String message = Util.parseVars(Language.getString("editing.mine-deselected-successfully"), curMine);
 			CommandManager.setMine(null);
 			Message.sendSuccess(message);
 		}
 		else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+")) {
-			Mine curMine = CommandManager.getMine();
-			if(curMine == null) {
-				Message.sendError(Language.getString("general.mine-not-selected"));
+			if(args.length != 3) {
+				Message.sendInvalidArguments(args);
 				return;
 			}
 			
-			if(args.length != 3) {
-				Message.sendError("Invalid parameters. Check your argument count!");
+			Mine curMine = CommandManager.getMine();
+			if(curMine == null) {
+				Message.sendMineNotSelected();
 				return;
 			}
 			
@@ -78,11 +84,11 @@ public class EditCommand {
 			MineBlock air = MineUtils.getBlock(curMine, new MaterialData(Material.AIR));
 			
 			if(block == null) {
-				Message.sendError("Block '"+ args[1] + "' does not exist");
+				Message.sendBlockDoesNotExist(args[1]);
 				return;
 			}
 			if(block.equals(air.getBlock())) {
-				Message.sendError("You do not need to do this. The weight of the default block is calculated automatically.");
+				Message.sendError(Language.getString("error.removing-air"));
 				return;
 			}
 
@@ -98,13 +104,10 @@ public class EditCommand {
 			}
 			else {
 				Message.debug("Argument is not numeric, attempting to parse");
-				String[] awkArray = args[2].split("%");
-				try
-				{
-					percent = Double.parseDouble(awkArray[0]);
+				try {
+					percent = Double.parseDouble(args[2].replace("%", ""));
 				}
-				catch(NumberFormatException nfe)
-				{
+				catch(NumberFormatException nfe) {
 					Message.sendInvalid(args);
 					return;
 				}
@@ -128,21 +131,19 @@ public class EditCommand {
 			else
 				index.setChance(index.getChance() + percent);
 			
-			
-			Message.sendSuccess(percent + "% of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to " + curMine.getName());
-			Message.sendSuccess("Reset the mine for the changes to take effect");
+			Message.sendNote(curMine.getName(), percent + "% of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
+			Message.sendNote(curMine.getName(), "Reset the mine for the changes to take effect");
 			return;
 		}
-		else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-"))
-		{
-			Mine curMine = CommandManager.getMine();
-			if(curMine == null) {
-				Message.sendError(Language.getString("general.mine-not-selected"));
+		else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-")) {
+			if(args.length != 3) {
+				Message.sendInvalidArguments(args);
 				return;
 			}
 			
-			if(args.length != 3) {
-				Message.sendError("Invalid parameters. Check your argument count!");
+			Mine curMine = CommandManager.getMine();
+			if(curMine == null) {
+				Message.sendMineNotSelected();
 				return;
 			}
 			
@@ -153,7 +154,7 @@ public class EditCommand {
 				return;
 			}
 			if(blockData.equals(air)) {
-				Message.sendError("You cannot remove the default block from the mine");
+				Message.sendError(Language.getString("error.removing-air"));
 				return;
 			}
 			
@@ -164,126 +165,117 @@ public class EditCommand {
 			
 			curMine.setBlocks(blocks);
 			
-			Message.sendSuccess(args[1] + " was successfully removed from mine '" + curMine.getName() + "'");
+			Message.sendNote(curMine.getName(), args[1] + " was successfully removed from the mine");
 			return;
 		}
-		else if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del"))
-		{
-			Mine curMine = CommandManager.getMine();
-			if(curMine == null) {
-				Message.sendError(Language.getString("general.mine-not-selected"));
+		else if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del")) {
+			if(args.length != 1) {
+				Message.sendInvalidArguments(args);
 				return;
 			}
 			
-			if(args.length != 2) {
-				Message.sendError("Invalid parameters. Check your argument count!");
+			Mine curMine = CommandManager.getMine();
+			if(curMine == null) {
+				Message.sendMineNotSelected();
 				return;
 			}
 			
 			List<Mine> mines = MineReset.getMines();
 			mines.remove(curMine);
 			CommandManager.setMine(null);
-			Message.sendSuccess("Mine '" + args[1] + "' was successfully deleted.");
+			Message.sendNote(args[1], "Mine successfully deleted");
 			return;
 		}
-		else if(args[0].equalsIgnoreCase("name"))
-		{
-			Mine curMine = CommandManager.getMine();
-			if(curMine == null) {
-				Message.sendError(Language.getString("general.mine-not-selected"));
+		else if(args[0].equalsIgnoreCase("name")) {
+			if(args.length < 2) {
+				Message.sendInvalidArguments(args);
 				return;
 			}
 			
-			if(args.length < 2) {
-				Message.sendError("Invalid parameters. Check your argument count!");
+			Mine curMine = CommandManager.getMine();
+			if(curMine == null) {
+				Message.sendMineNotSelected();
 				return;
 			}
 			
 			String name = args[1];
-			for(int i = 2; i < args.length; i++)
-			{
+			for(int i = 2; i < args.length; i++) {
 				name = name + " " + args[i];
 			}
 			
 			curMine.setDisplayName(name);
+			Message.sendNote(curMine.getName(), "Mine now has a display name '" + ChatColor.GOLD + name + ChatColor.WHITE + "'");
 			return;
 		}
-		else if(args[0].equalsIgnoreCase("silent"))
-		{
+		else if(args[0].equalsIgnoreCase("silent")) {
+			if(args.length != 1) {
+				Message.sendInvalidArguments(args);
+				return;
+			}
+			
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
-				Message.sendError(Language.getString("general.mine-not-selected"));
+				Message.sendMineNotSelected();
 				return;
 			}
 			
-			if(args.length != 1) {
-				Message.sendError("Invalid parameters. Check your argument count!");
-				return;
-			}
 			
-			if(curMine.getSilent())
-			{
+			if(curMine.getSilent()) {
 				curMine.setSilent(false);
-				Message.sendSuccess("Silent mode has been turned off for mine '" + curMine.getName() + "'");
+				Message.sendNote(curMine.getName(), "Silent mode " + ChatColor.RED + "off");
 			}
 			else
 			{
 				curMine.setSilent(true);
-				Message.sendSuccess("'" + curMine.getName() + "' will no longer broadcast any notifications");
+				Message.sendNote(curMine.getName(), "Silent mode " + ChatColor.GREEN + "on");
 			}
+			return;
 		}
-		//TODO Add generator support!
-		//else if(args[0].equalsIgnoreCase("generator"))
-		//{
-		//	Mine curMine = CommandManager.getMine();
-		//	if(curMine == null) {
-		//		Message.sendError(Language.getString("general.mine-not-selected"));
-		//		return;
-		//	}
-		//	
-		//	if(args.length != 2) {
-		//		Message.sendError("Invalid parameters. Check your argument count!");
-		//		return;
-		//	}
-		//	
-		//	String generator = args[1];
-		//	curMine.setGenerator(args[1].toUpperCase());
-		//}
-		else if(args[0].equalsIgnoreCase("link"))
-		{
+		else if(args[0].equalsIgnoreCase("generator")) {
+			if(args.length != 2) {
+				Message.sendInvalidArguments(args);
+				return;
+			}
+			
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
-				Message.sendError(Language.getString("general.mine-not-selected"));
+				Message.sendMineNotSelected();
 				return;
 			}
 			
+			if(args[1].equalsIgnoreCase("empty")) curMine.setGenerator(Generator.EMPTY);
+			else curMine.setGenerator(Generator.RANDOM);
+			Message.sendNote(curMine.getName(), "Mine generator has been set to " + ChatColor.GREEN + args[1].toUpperCase());
+			return;
+		}
+		else if(args[0].equalsIgnoreCase("link") || args[0].equalsIgnoreCase("setparent")) {
 			if(args.length != 2) {
-				Message.sendError("Invalid parameters. Check your argument count!");
+				Message.sendInvalidArguments(args);
 				return;
 			}
 			
-			if(!args[1].equalsIgnoreCase("none") && MineUtils.getMine(args[1]) == null)
-			{
-				String error = Language.getString("general.mine-name-invalid");
-				error = error.replaceAll("%MINE%", args[1]);
-				error = error.replaceAll("%MINENAME%", args[1]);
-				Message.sendError(error);
+			Mine curMine = CommandManager.getMine();
+			if(curMine == null) {
+				Message.sendMineNotSelected();
 				return;
 			}
 			
-			if(args[1].equalsIgnoreCase("none"))
-			{
+			if(!args[1].equalsIgnoreCase("none") && MineUtils.getMine(args[1]) == null) {
+				Message.sendInvalidMineName(args[1]);
+				return;
+			}
+			
+			if(args[1].equalsIgnoreCase("none")) {
 				curMine.setParent(null);
-				Message.sendSuccess("Mine '" + curMine.getName() + "' is no longer linked to any mine");
+				Message.sendNote(curMine.getName(), "Mine is no longer linked to " + ChatColor.RED + args[1]);
 				return;
 			}
 			
 			curMine.setParent(MineUtils.getMine(args[1]));
-			Message.sendSuccess("Mines '" + curMine.getName() + "' will now reset with '" + args[1] + "'");
+			Message.sendNote(curMine.getName(), "Mine will use the timers of " + ChatColor.GREEN + args[1]);
 			return;
 		}
-		else
-		{
+		else {
 			Message.sendInvalid(args);
 			return;
 		}

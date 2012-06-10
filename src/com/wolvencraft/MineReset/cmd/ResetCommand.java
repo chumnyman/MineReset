@@ -23,8 +23,7 @@ public class ResetCommand
 			curMine = MineUtils.getMine(args[1]);
 		
 		if(curMine == null) {
-			String error = Language.getString("general.mine-name-invalid").replaceAll("%MINE%", args[1]);
-			Message.sendError(error);
+			Message.sendMineNotSelected();
 			return;
 		}
 		

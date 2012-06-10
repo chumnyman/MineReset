@@ -5,6 +5,7 @@ import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.RandomBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
@@ -117,7 +118,8 @@ public class Mine implements ConfigurationSerializable, Listener {
      * Deserialize a mine from its YML form
      * @param me Bukkitian map of strings to objects. <b>Incorrect object types for values are not tolerated by the code!</b>
      */
-    public Mine(Map<String, Object> me) {
+    @SuppressWarnings("unchecked")
+	public Mine(Map<String, Object> me) {
         world = Bukkit.getWorld((String) me.get("world"));
         one = ((Vector) me.get("one")).toLocation(world);
         two = ((Vector) me.get("two")).toLocation(world);
@@ -140,16 +142,63 @@ public class Mine implements ConfigurationSerializable, Listener {
 
     public void reset(Generator generator) {
         removePlayers();
-        //TODO: Implement whitelist/blacklist
-        RandomBlock pattern = new RandomBlock(blocks);
-        for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
-            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
-                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-                    MaterialData block = pattern.next();
-                    world.getBlockAt(x, y, z).setType(block.getItemType());
-                    world.getBlockAt(x, y, z).setData(block.getData());
-                }
-            }
+        if(generator.equals(Generator.EMPTY)) {
+        	MaterialData block = new MaterialData(Material.AIR);
+	        for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
+	            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
+	                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
+	                    world.getBlockAt(x, y, z).setType(block.getItemType());
+	                }
+	            }
+	        }
+        }
+        else {
+	        RandomBlock pattern = new RandomBlock(blocks);
+        	if(blacklist.getEnabled())
+        	{        		
+        		if(blacklist.getWhitelist()) {
+        			for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
+    		            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
+    		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
+    		                    MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
+    		                    MaterialData newBlock = pattern.next();
+    		                    if(blacklist.getBlocks().contains(original))
+    		                    {
+	    		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
+	    		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+    		                    }
+    		                }
+    		            }
+    		        }
+        		}
+        		else {
+        			for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
+    		            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
+    		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
+    		                    MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
+    		                    MaterialData newBlock = pattern.next();
+    		                    if(!blacklist.getBlocks().contains(original))
+    		                    {
+	    		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
+	    		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+    		                    }
+    		                }
+    		            }
+    		        }
+        		}
+        	}
+        	else
+        	{
+		        for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
+		            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
+		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
+		                    MaterialData block = pattern.next();
+		                    world.getBlockAt(x, y, z).setType(block.getItemType());
+		                    world.getBlockAt(x, y, z).setData(block.getData());
+		                }
+		            }
+		        }
+        	}
         }
     }
 

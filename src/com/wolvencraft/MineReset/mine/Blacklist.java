@@ -23,6 +23,7 @@ public class Blacklist implements ConfigurationSerializable, Listener {
 		enabled = false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Blacklist(Map<String, Object> me) {
 		whitelist = (Boolean) me.get("whitelist");
 		enabled = (Boolean) me.get("enabled");

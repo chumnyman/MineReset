@@ -30,6 +30,7 @@ public class SignClass implements ConfigurationSerializable, Listener  {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public SignClass(Map<String, Object> me) {
         world = Bukkit.getWorld((String) me.get("world"));
         loc = ((Vector) me.get("loc")).toLocation(world);

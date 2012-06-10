@@ -82,36 +82,24 @@ public class MineReset extends JavaPlugin
 		final long checkEvery = getConfig().getLong("lag.check-time-every");
 		
 		
-		if(getConfig().getBoolean("lag.automatic-resets-enabled"))
-		{
-			Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable()
-			{
-	           	 public void run()
-	           	 {
-					
-					if(mines.size() != 0)
-					{
+		if(getConfig().getBoolean("lag.automatic-resets-enabled")) {
+			Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
+	           	 public void run() {
+					if(mines.size() != 0) {
 		                String warnMessage = Language.getString("reset.automatic-reset-warning");
-		                
-						for(Mine curMine : mines)
-						{
+		                for(Mine curMine : mines) {
 							Mine parentMine = curMine.getParent();
 							if(parentMine == null) parentMine = curMine;
-							
-							if(curMine.getAutomatic())
-							{
+							if(curMine.getAutomatic()) {
 								int nextReset = MineUtils.getNextReset(curMine);
 								List<Integer> warnTimes = parentMine.getWarningTimes();
 								
-								if(parentMine.equals(curMine))
-								{
+								if(parentMine.equals(curMine)) {
 									curMine.updateTimer(checkEvery);
 									SignUtils.updateAll(parentMine);
 									
 									if(warnTimes.indexOf(nextReset) != -1 && curMine.getWarned() && !curMine.getSilent())
-									{
 										Message.broadcast(Util.parseVars(warnMessage, curMine));
-									}
 									if(nextReset <= 0)
 									{
 										String[] args = {"", curMine.getName()};
@@ -129,6 +117,7 @@ public class MineReset extends JavaPlugin
 	
 	public void onDisable()
 	{
+		//TODO Save the data to file
 		log.info("MineReset stopped");
 	}
 	

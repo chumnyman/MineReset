@@ -9,7 +9,6 @@ import org.bukkit.block.Sign;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
-import com.wolvencraft.MineReset.config.Signs;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.SignClass;
 import com.wolvencraft.MineReset.util.Message;
@@ -71,7 +70,7 @@ public class SignCommand
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("reset")) {
-			if(!Signs.signExists(b)) {
+			if(!SignUtils.exists(b.getLocation())) {
 				Message.sendError("This sign has not been defined for this mine yet");
 				return;
 			}
@@ -89,7 +88,7 @@ public class SignCommand
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("remove")) {
-			if(!Signs.signExists(b)) {
+			if(!SignUtils.exists(b.getLocation())) {
 				Message.sendError("This sign has not been defined yet");
 				return;
 			}

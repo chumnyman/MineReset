@@ -17,8 +17,11 @@ public class SignUtils {
 	 * @return true if a sign exists, false otherwise
 	 */
 	public static boolean exists(Location loc) {
-		//TODO Stub
-		return true;
+		List<SignClass> signs = MineReset.getSigns();
+		for(SignClass sign : signs) {
+			if(sign.getLocation().equals(loc)) return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -27,7 +30,10 @@ public class SignUtils {
 	 * @return SignClass object if it exists, null otherwise
 	 */
 	public static SignClass getSignAt(Location loc) {
-		//TODO Stub
+		List<SignClass> signs = MineReset.getSigns();
+		for(SignClass sign : signs) {
+			if(sign.getLocation().equals(loc)) return sign;
+		}
 		return null;
 	}
 	
@@ -37,8 +43,7 @@ public class SignUtils {
 	 * @return SignClass object if it is defined, null otherwise
 	 */
 	public static SignClass getSign(Sign sign) {
-		//TODO stub
-		return null;
+		return getSignAt(sign.getLocation());
 	}
 	
 	/**

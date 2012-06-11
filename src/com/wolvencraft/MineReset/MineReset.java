@@ -99,6 +99,8 @@ public class MineReset extends JavaPlugin
 								
 								if(parentMine.equals(curMine)) {
 									curMine.updateTimer(checkEvery);
+									if(curMine.getCooldown() && curMine.getCooldownTime() > 0)
+										curMine.updateCooldown(checkEvery);
 									SignUtils.updateAll(parentMine);
 									
 									if(warnTimes.indexOf(nextReset) != -1 && curMine.getWarned() && !curMine.getSilent())

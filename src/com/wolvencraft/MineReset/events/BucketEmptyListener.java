@@ -33,7 +33,7 @@ public class BucketEmptyListener implements Listener
 
         for (Mine mine : mines) {
             if (!mine.getProtection().contains(Protection.BLOCK_PLACE)) {
-                Message.debug(mine + " doesn't have placement protection enabled, skipping rest of check...");
+                Message.debug(mine.getName() + " doesn't have placement protection enabled, skipping rest of check...");
                 continue;
             }
 

@@ -231,6 +231,39 @@ public class EditCommand {
 			}
 			return;
 		}
+		else if(args[0].equalsIgnoreCase("cooldown")) {
+			if(args.length != 2) {
+				Message.sendInvalidArguments(args);
+				return;
+			}
+			
+			Mine curMine = CommandManager.getMine();
+			if(curMine == null) {
+				Message.sendMineNotSelected();
+				return;
+			}
+			if(args[1].equalsIgnoreCase("toggle")) {
+				if(curMine.getCooldown()) {
+					curMine.setCooldown(false);
+					Message.sendNote(curMine.getName(), "Reset cooldown " + ChatColor.GREEN + "enabled");
+				}
+				else {
+					curMine.setCooldown(true);
+					Message.sendNote(curMine.getName(), "Reset cooldown " + ChatColor.RED + "disabled");
+				}
+			}
+			else {
+				try {
+					int seconds = Util.parseTime(args[1]);
+					curMine.setCooldownTime(seconds);
+					Message.sendNote(curMine.getName(), "Reset cooldown set to " + ChatColor.GREEN + Util.parseSeconds(seconds));
+				}
+				catch (NumberFormatException nfe) {
+					Message.sendInvalidArguments(args);
+				}
+			}
+			
+		}
 		else if(args[0].equalsIgnoreCase("generator")) {
 			if(args.length != 2) {
 				Message.sendInvalidArguments(args);

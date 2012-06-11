@@ -31,13 +31,13 @@ permissions:
       MineReset.config: true
   MineReset.info:
     description: Allows a player to look at the information about a mine
-    default: true
+    default: op
   MineReset.list:
     description: Allows a player to look at the list of existing mines
-    default: true
+    default: op
   MineReset.warp:
     description: Allows a player to teleport to the mine warp location
-    default: true
+    default: op
   MineReset.protection:
     description: Allows a player to break and place blocks in all mines
     children:
@@ -62,6 +62,9 @@ permissions:
     default: op
   MineReset.reset.sign:
     description: Allows a player to reset a mine with a sign
+    default: op
+  MineReset.reset.cooldown:
+    description: Allows a player to bypass reset cooldown
     default: op
   MineReset.edit:
     description: Allows a player to create and edit mines

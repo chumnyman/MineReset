@@ -39,6 +39,9 @@ public class Mine implements ConfigurationSerializable, Listener {
     private boolean automatic;
     private int automaticSeconds;
     private long nextAutomaticResetTick;
+    private boolean cooldownEnabled;
+    private int cooldownSeconds;
+    private long nextCooldownTicks;
     private boolean warned;
     private List<Integer> warningTimes;
     private List<Protection> enabledProtection;
@@ -69,6 +72,9 @@ public class Mine implements ConfigurationSerializable, Listener {
     	automatic = true;
     	this.automaticSeconds = automaticSeconds;
     	nextAutomaticResetTick = automaticSeconds * 20;
+    	cooldownEnabled = false;
+    	cooldownSeconds = 0;
+    	nextCooldownTicks = 0;
     	warned = true;
     	warningTimes = new ArrayList<Integer>();
     	enabledProtection = new ArrayList<Protection>();
@@ -92,7 +98,7 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @param warningTimes List of seconds before reset to warn over chat.
      * @param enabledProtection List of protection types enabled for the mine.
      */
-    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, Mine parent, String name, List<MineBlock> blocks, Generator generator, boolean isSilent, boolean isAutomatic, int automaticSeconds,  List<Integer> warningTimes, List<Protection> enabledProtection) {
+    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, Mine parent, String name, List<MineBlock> blocks, Generator generator, boolean isSilent, boolean isAutomatic, int automaticSeconds,  boolean cooldownEnabled, int cooldownSeconds, List<Integer> warningTimes, List<Protection> enabledProtection) {
         this.one = one;
         this.two = two;
         this.world = world;
@@ -107,6 +113,9 @@ public class Mine implements ConfigurationSerializable, Listener {
         automatic = isAutomatic;
         this.automaticSeconds = automaticSeconds;
     	nextAutomaticResetTick = automaticSeconds * 20;
+    	this.cooldownEnabled = cooldownEnabled;
+    	this.cooldownSeconds = cooldownSeconds;
+    	nextCooldownTicks = cooldownSeconds;
         warned = warningTimes != null && warningTimes.size() > 0;
         this.warningTimes = warningTimes;
         this.enabledProtection = enabledProtection;
@@ -132,6 +141,9 @@ public class Mine implements ConfigurationSerializable, Listener {
         silent = (Boolean) me.get("silent");
         automatic = (Boolean) me.get("automatic");
         automaticSeconds = (Integer) me.get("automaticResetTime");
+        cooldownEnabled = (Boolean) me.get("cooldownEnabled");
+        cooldownSeconds = (Integer) me.get("cooldownSeconds");
+        nextCooldownTicks = (Integer) me.get("nextCooldownTicks");
         warned = (Boolean) me.get("isWarned");
         warningTimes = (List<Integer>) me.get("warningTimes");
         blocks = (List<MineBlock>) me.get("blocks");
@@ -183,6 +195,9 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("silent", silent);
         me.put("automatic", automatic);
         me.put("automaticResetTime", automaticSeconds);
+        me.put("cooldownEnabled", cooldownEnabled);
+        me.put("cooldownSeconds", cooldownSeconds);
+        me.put("nextCooldownTicks", nextCooldownTicks);
         me.put("isWarned", warned);
         me.put("warningTimes", warningTimes);
         me.put("protectionTypes", enabledProtection);
@@ -243,6 +258,18 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public Generator getGenerator() {
     	return generator;
+    }
+    
+    public boolean getCooldown() {
+    	return cooldownEnabled;
+    }
+    
+    public int getCooldownTime() {
+    	return cooldownSeconds;
+    }
+    
+    public int getNextCooldown() {
+    	return (int)(nextCooldownTicks * 20);
     }
     
     public int getResetPeriod() {
@@ -307,6 +334,22 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public void setGenerator(Generator generator) {
     	this.generator = generator;
+    }
+    
+    public void setCooldown(boolean cooldownEnabled) {
+    	this.cooldownEnabled = cooldownEnabled;
+    }
+    
+    public void setCooldownTime(int cooldownSeconds) {
+    	this.cooldownSeconds = cooldownSeconds;
+    }
+    
+    public void updateCooldown(long ticks) {
+    	this.nextCooldownTicks -= ticks;
+    }
+    
+    public void resetCooldown() {
+    	this.nextCooldownTicks = cooldownSeconds * 20;
     }
     
     public void setResetPeriod(int automaticSeconds) {

@@ -27,9 +27,13 @@ public class ResetCommand
 		}
 		
 		if(!automatic) {
-			if(!Util.senderHasPermission("reset.manual." + curMine.getName()) && !Util.senderHasPermission("reset.manual"))
-			{
+			if(!Util.senderHasPermission("reset.manual." + curMine.getName()) && !Util.senderHasPermission("reset.manual")) {
 				Message.sendDenied(args);
+				return;
+			}
+			
+			if(!Util.senderHasPermission("reset.cooldown")) {
+				Message.sendError("You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
 				return;
 			}
 		}

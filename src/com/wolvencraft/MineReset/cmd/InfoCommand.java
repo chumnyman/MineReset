@@ -4,10 +4,13 @@ import java.util.List;
 
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Protection;
+import com.wolvencraft.MineReset.mine.SignClass;
 import com.wolvencraft.MineReset.util.MineUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -30,7 +33,7 @@ public class InfoCommand
 				return;
 			}
 		}
-		if(args.length > 2) {
+		if(args.length > 3) {
 			Message.sendInvalidArguments(args);
 			return;
 		}
@@ -41,12 +44,13 @@ public class InfoCommand
 		}
 		
 		
-		if(args[1].equalsIgnoreCase("info") || args[1].equalsIgnoreCase("?")) {
+		if(args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("?")) {
 			// Title
 			String displayName = curMine.getDisplayName();
 			if(displayName.equals("")) displayName = curMine.getName();
 			Message.sendMessage(ChatColor.DARK_RED + "                             -=[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.DARK_RED + " ]=-");
 			
+			if(args.length == 2) {
 			// Reset
 			Mine parentMine = curMine.getParent();
 			if(parentMine == null)
@@ -94,25 +98,84 @@ public class InfoCommand
 			Message.sendMessage(ChatColor.BLUE + " Composition:");
 			for(String line : finalList)
 				Message.sendMessage(line);
-			
-			// Blacklist
-			//List<String> blacklistBlocks =  Regions.getList("mines." + mineName + ".blacklist.blocks");
-			//if(Regions.getBoolean("mines." + mineName + ".blacklist.enabled") && blacklistBlocks.size() != 0)
-			//{
-			//	if(Regions.getBoolean("mines." + mineName + ".blacklist.whitelist"))
-			//	{
-			//		Message.sendMessage(ChatColor.BLUE + " Whitelist:");
-			//	}
-			//	else Message.sendMessage(ChatColor.BLUE + " Blacklist:");
-			//	
-			//	for(String block : blacklistBlocks)
-			//	{
-			//		Message.sendMessage(" - " + Material.getMaterial(Integer.parseInt(block)).toString().toLowerCase().replace("_", " "));
-			//	}
-			//}
 			return;
+			}
+			
+			
+			if(args[2].equalsIgnoreCase("blacklist") || args[2].equalsIgnoreCase("bl")) {
+				boolean enabled = curMine.getBlacklist().getEnabled();
+				boolean whitelist = curMine.getBlacklist().getWhitelist();
+				List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
+				
+				String str = "Blacklist: ";
+				if(enabled) str = str + ChatColor.GREEN + "on";
+				else str = str + ChatColor.RED + "off";
+				str = str + ChatColor.WHITE + " | Whitelist: ";
+				if(whitelist) str = str + ChatColor.GREEN + "on";
+				else str = str + ChatColor.RED + "off";
+				Message.sendMessage(str);
+				Message.sendMessage(ChatColor.BLUE + " Composition");
+				for(MaterialData block : blocks) {
+					String[] parts = {block.getItemTypeId() + "", block.getData() + ""};
+					Message.sendMessage(" - " + Util.parseMetadata(parts, true) + " " + Util.parseMaterial(block.getItemType()));
+				}
+			}
+			else if(args[2].equalsIgnoreCase("protection") || args[2].equalsIgnoreCase("pt")) {
+				boolean pvp = curMine.getProtection().contains(Protection.PVP);
+				boolean blbreak = curMine.getProtection().contains(Protection.BLOCK_BREAK);
+				boolean blplace = curMine.getProtection().contains(Protection.BLOCK_PLACE);
+				String str = "Block breaking protection: ";
+				if(blbreak) str = str + ChatColor.GREEN + "Enabled";
+				else str = str + ChatColor.RED + "Disabled";
+				
+				str = str + ChatColor.WHITE + " | Block placement protection: ";
+				if(blplace) str = str + ChatColor.GREEN + "Enabled";
+				else str = str + ChatColor.RED + "Disabled";
+				Message.sendMessage(str);
+				
+				str = "PVP protection: ";
+				if(pvp) str = str + ChatColor.GREEN + "Enabled";
+				else str = str + ChatColor.RED + "Disabled";
+				Message.sendMessage(str);
+				return;
+			}
+			else if(args[2].equalsIgnoreCase("sign")) {
+				Message.sendMessage("Signs associated with this mine: ");
+				List<SignClass> signs = MineReset.getSigns();
+				for(SignClass sign : signs) {
+					if(sign.getParent().equals(curMine))
+						Message.sendMessage(" - " + sign.getLocation().getBlockX() + ", " + sign.getLocation().getBlockY() + ", " + sign.getLocation().getBlockZ());
+				}
+				return;
+			}
+			else if(args[2].equalsIgnoreCase("reset")) {
+				String autoResetFormatted = Util.parseSeconds(curMine.getResetPeriod());
+				String nextResetFormatted = Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20);
+				
+				if(curMine.getAutomatic()) {
+					Message.sendMessage("Mine resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes.");
+					Message.sendMessage("Warnings are send as follows: ");
+					List<Integer> warnings = curMine.getWarningTimes();
+					for(int time : warnings) {
+						Message.sendMessage(" - " + Util.parseSeconds(time));
+					}
+				}
+				else {
+					Message.sendMessage("Mine has to be reset manually");
+				}
+				return;
+			}
+			else
+			{
+				Message.sendInvalid(args);
+				return;
+			}
 		}
-		if(args[1].equalsIgnoreCase("time")) {
+		if(args[0].equalsIgnoreCase("time")) {
+			if(args.length != 2) {
+				Message.sendInvalidArguments(args);
+				return;
+			}
 			String displayName = curMine.getDisplayName();
 			if(displayName.equals("")) displayName = curMine.getName();
 			

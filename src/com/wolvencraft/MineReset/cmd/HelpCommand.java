@@ -66,6 +66,10 @@ public class HelpCommand {
 	public static void getInfo() {
 		formatHeader(20, "Information");
 		formatHelp("info", "<name>", "Returns the information about a mine", "info");
+		formatHelp("info", "<name> blacklist", "Returns the information about mine blacklist", "info");
+		formatHelp("info", "<name> protection", "Returns the information about mine protection", "info");
+		formatHelp("info", "<name> signs", "Returns the information about signs", "info");
+		formatHelp("info", "<name> reset", "Returns the information about resets", "info");
 		formatHelp("time", "<name>", "Returns the next reset time for the mine", "time");
 		return;
 	}

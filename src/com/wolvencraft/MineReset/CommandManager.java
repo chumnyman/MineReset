@@ -59,6 +59,8 @@ public class CommandManager implements CommandExecutor
 			SignCommand.run(args);
 		else if(args[0].equalsIgnoreCase("warp") || args[0].equalsIgnoreCase("tp"))
 			WarpCommand.run(args);
+        else if(args[0].equalsIgnoreCase("about"))
+            MetaCommand.run(args);
 		else Message.sendInvalid(args);
 			
 		String argString = "/mine";

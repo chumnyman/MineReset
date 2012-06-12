@@ -49,7 +49,8 @@ public class HelpCommand {
 	public static void getHelp() {
 		String title = Language.getString("general.title");
 		formatHeader(20, title);
-		
+
+        formatHelp("about", "", "Returns version info and project info about MineReset", "");
 		formatHelp("info", "<name>", "Returns the information about a mine", "info");	
 		formatHelp("list", "", "Lists all the available mines", "list");
 		formatHelp("warp", "<name>", "Teleports you to the mine warp location", "warp");
@@ -133,12 +134,12 @@ public class HelpCommand {
 	private static void formatHelp(String command, String arguments, String description, String node) {
 		CommandSender sender = CommandManager.getSender();
 		if(!arguments.equalsIgnoreCase("")) arguments = " " + arguments;
-		if(Util.senderHasPermission(node))
+		if(Util.senderHasPermission(node) || node.equals(""))
 			sender.sendMessage(ChatColor.GOLD + "/mine " + command + ChatColor.GRAY + arguments + ChatColor.WHITE + " " + description);
 		return;
 	}
 	
-	private static void formatHeader(int padding, String name) {
+	public static void formatHeader(int padding, String name) {
 		CommandSender sender = CommandManager.getSender();
 		String spaces = "";
 		for(int i = 0; i < padding; i++)

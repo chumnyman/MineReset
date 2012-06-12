@@ -2,6 +2,7 @@
 package com.wolvencraft.MineReset;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -77,7 +78,23 @@ public class MineReset extends JavaPlugin
         ConfigurationSerialization.registerClass(SignClass.class, "SignClass");
         
 		mines = new ArrayList<Mine>();
-        //TODO: Load mines into new data structure
+        File mineFolder = new File(getDataFolder(), "mines");
+        if (!mineFolder.exists() || !mineFolder.isDirectory()) {
+            mineFolder.mkdir();
+        }
+        File[] mineFiles = mineFolder.listFiles(new FileFilter() {
+            public boolean accept(File file) {
+                return file.getName().contains(".yml");
+            }
+        });
+
+        for (File mineFile : mineFiles) {
+            FileConfiguration mineConf = YamlConfiguration.loadConfiguration(mineFile);
+            Object mine = mineConf.get("mine");
+            if (mine instanceof Mine) {
+                mines.add((Mine) mine);
+            }
+        }
 
 		log.info("MineReset started");
 		log.info(mines.size() + " mine(s) found");
@@ -122,7 +139,17 @@ public class MineReset extends JavaPlugin
 	
 	public void onDisable()
 	{
-		//TODO Save the data to file
+		for (Mine mine : mines) {
+            File mineFile = new File(new File(getDataFolder(), "mines"), mine.getName() + ".yml");
+            FileConfiguration mineConf =  YamlConfiguration.loadConfiguration(mineFile);
+            mineConf.set("mine", mine);
+            try {
+                mineConf.save(mineFile);
+            } catch (IOException e) {
+                log.severe("[MineReset] Unable to serialize mine '" + mine.getName() + "'!");
+                e.printStackTrace();
+            }
+        }
 		log.info("MineReset stopped");
 	}
 	

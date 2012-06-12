@@ -387,4 +387,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     public Blacklist getPlaceBlacklist() {
     	return placeBlacklist;
     }
+
+    public boolean hasParent() {
+        return parent != null;
+    }
 }

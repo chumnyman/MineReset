@@ -7,12 +7,14 @@ import com.wolvencraft.MineReset.generation.SurfaceGenerator;
 import com.wolvencraft.MineReset.util.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.material.MaterialData;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     private Location tpPoint;
     private String name;
     private String displayName;
-    private Mine parent;
+    private String parent;
     private List<MineBlock> blocks;
     private Generator generator;
     private Blacklist blacklist;
@@ -65,7 +67,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     	displayName = "";
     	parent = null;
     	this.name = name;
-    	blocks = null;
+    	blocks = new ArrayList<MineBlock>();
+    	blocks.add(new MineBlock(new MaterialData(Material.AIR), 1.0));
     	generator = Generator.RANDOM;
     	blacklist = new Blacklist();
     	silent = false;
@@ -98,7 +101,7 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @param warningTimes List of seconds before reset to warn over chat.
      * @param enabledProtection List of protection types enabled for the mine.
      */
-    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, Mine parent, String name, List<MineBlock> blocks, Generator generator, boolean isSilent, boolean isAutomatic, int automaticSeconds,  boolean cooldownEnabled, int cooldownSeconds, List<Integer> warningTimes, List<Protection> enabledProtection) {
+    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, String parent, String name, List<MineBlock> blocks, Generator generator, boolean isSilent, boolean isAutomatic, int automaticSeconds,  boolean cooldownEnabled, int cooldownSeconds, List<Integer> warningTimes, List<Protection> enabledProtection) {
         this.one = one;
         this.two = two;
         this.world = world;
@@ -135,10 +138,10 @@ public class Mine implements ConfigurationSerializable, Listener {
         tpPoint = ((Vector) me.get("tpPoint")).toLocation(world);
         displayName = (String) me.get("displayName");
         name = (String) me.get("name");
-        parent = (Mine) me.get("parent");
+        parent = (String) me.get("parent");
         blacklist = (Blacklist) me.get("blacklist");
         String generatorString = (String) me.get("generator");
-        generator = matchGenerator(generatorString);
+        generator = Generator.valueOf(generatorString);
         silent = (Boolean) me.get("silent");
         automatic = (Boolean) me.get("automatic");
         automaticSeconds = (Integer) me.get("automaticResetTime");
@@ -237,13 +240,12 @@ public class Mine implements ConfigurationSerializable, Listener {
      * Otherwise, returns the mine object itself
      * @return Mine parent
      */
-    public Mine getParent() {
-    	return parent == null ? this : parent;
+    public String getParent() {
+    	return parent;
     }
     
     public boolean hasParent() {
-    	if(parent == null) return false;
-    	else return true;
+    	return (parent != null);
     }
     
     public Blacklist getBlacklist() {
@@ -264,12 +266,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public Generator getGenerator() {
     	return generator;
-    }
-    
-    public Generator matchGenerator(String str) {
-    	if(str.equalsIgnoreCase("empty")) return Generator.EMPTY;
-    	else if(str.equalsIgnoreCase("surface")) return Generator.SURFACE;
-    	else return Generator.RANDOM;
     }
     
     public boolean getCooldown() {
@@ -328,7 +324,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	this.displayName = displayName;
     }
     
-    public void setParent(Mine parent) {
+    public void setParent(String parent) {
     	this.parent = parent;
     }
     

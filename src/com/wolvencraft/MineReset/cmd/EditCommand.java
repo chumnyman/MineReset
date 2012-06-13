@@ -305,7 +305,7 @@ public class EditCommand {
 				return;
 			}
 			
-			curMine.setParent(MineUtils.getMine(args[1]));
+			curMine.setParent(args[1]);
 			Message.sendNote(curMine.getName(), "Mine will use the timers of " + ChatColor.GREEN + args[1]);
 			return;
 		}

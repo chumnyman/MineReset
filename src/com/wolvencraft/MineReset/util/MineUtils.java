@@ -121,7 +121,7 @@ public class MineUtils
 		if(curMine.getParent() == null)
 			return curMine.getResetPeriod();
 		else
-			return getResetTime(curMine.getParent());
+			return getResetTime(getMine(curMine.getParent()));
 	}
 	
 	/**
@@ -131,9 +131,9 @@ public class MineUtils
 	 */
 	public static int getNextReset(Mine curMine)
 	{
-		if(curMine.hasParent())
+		if(curMine.getParent() == null)
 			return ((int)curMine.getNextAutomaticResetTick()) * 20;
 		else
-			return getNextReset(curMine.getParent());
+			return getNextReset(getMine(curMine.getParent()));
 	}
 }

@@ -134,6 +134,7 @@ public class Message
 	 */
 	public static void sendInvalidArguments(String[] args) {
 		CommandSender sender = CommandManager.getSender();
+		String title = Language.getString("general.title-error");
 		String message = Language.getString("error.arguments");
 		String command = "";
         for (String arg : args) {
@@ -141,7 +142,7 @@ public class Message
         }
 		log(sender.getName() + " sent an invalid command: /mine" + command);
 		message = Util.parseColors(message);
-		sender.sendMessage(message);
+		sender.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 	
 	/**

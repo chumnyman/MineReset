@@ -52,7 +52,7 @@ public class InfoCommand
 			
 			if(args.length == 2) {
 			// Reset
-			Mine parentMine = curMine.getParent();
+			Mine parentMine = MineUtils.getMine(curMine.getParent());
 			if(parentMine == null)
 				parentMine = curMine;
 			
@@ -100,75 +100,76 @@ public class InfoCommand
 				Message.sendMessage(line);
 			return;
 			}
-			
-			
-			if(args[2].equalsIgnoreCase("blacklist") || args[2].equalsIgnoreCase("bl")) {
-				boolean enabled = curMine.getBlacklist().getEnabled();
-				boolean whitelist = curMine.getBlacklist().getWhitelist();
-				List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
-				
-				String str = "Blacklist: ";
-				if(enabled) str = str + ChatColor.GREEN + "on";
-				else str = str + ChatColor.RED + "off";
-				str = str + ChatColor.WHITE + " | Whitelist: ";
-				if(whitelist) str = str + ChatColor.GREEN + "on";
-				else str = str + ChatColor.RED + "off";
-				Message.sendMessage(str);
-				Message.sendMessage(ChatColor.BLUE + " Composition");
-				for(MaterialData block : blocks) {
-					String[] parts = {block.getItemTypeId() + "", block.getData() + ""};
-					Message.sendMessage(" - " + Util.parseMetadata(parts, true) + " " + Util.parseMaterial(block.getItemType()));
-				}
-			}
-			else if(args[2].equalsIgnoreCase("protection") || args[2].equalsIgnoreCase("pt")) {
-				boolean pvp = curMine.getProtection().contains(Protection.PVP);
-				boolean blbreak = curMine.getProtection().contains(Protection.BLOCK_BREAK);
-				boolean blplace = curMine.getProtection().contains(Protection.BLOCK_PLACE);
-				String str = "Block breaking protection: ";
-				if(blbreak) str = str + ChatColor.GREEN + "Enabled";
-				else str = str + ChatColor.RED + "Disabled";
-				
-				str = str + ChatColor.WHITE + " | Block placement protection: ";
-				if(blplace) str = str + ChatColor.GREEN + "Enabled";
-				else str = str + ChatColor.RED + "Disabled";
-				Message.sendMessage(str);
-				
-				str = "PVP protection: ";
-				if(pvp) str = str + ChatColor.GREEN + "Enabled";
-				else str = str + ChatColor.RED + "Disabled";
-				Message.sendMessage(str);
-				return;
-			}
-			else if(args[2].equalsIgnoreCase("sign")) {
-				Message.sendMessage("Signs associated with this mine: ");
-				List<SignClass> signs = MineReset.getSigns();
-				for(SignClass sign : signs) {
-					if(sign.getParent().equals(curMine))
-						Message.sendMessage(" - " + sign.getLocation().getBlockX() + ", " + sign.getLocation().getBlockY() + ", " + sign.getLocation().getBlockZ());
-				}
-				return;
-			}
-			else if(args[2].equalsIgnoreCase("reset")) {
-				String autoResetFormatted = Util.parseSeconds(curMine.getResetPeriod());
-				String nextResetFormatted = Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20);
-				
-				if(curMine.getAutomatic()) {
-					Message.sendMessage("Mine resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes.");
-					Message.sendMessage("Warnings are send as follows: ");
-					List<Integer> warnings = curMine.getWarningTimes();
-					for(int time : warnings) {
-						Message.sendMessage(" - " + Util.parseSeconds(time));
+			else if(args.length == 3)
+			{
+				if(args[2].equalsIgnoreCase("blacklist") || args[2].equalsIgnoreCase("bl")) {
+					boolean enabled = curMine.getBlacklist().getEnabled();
+					boolean whitelist = curMine.getBlacklist().getWhitelist();
+					List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
+					
+					String str = "Blacklist: ";
+					if(enabled) str = str + ChatColor.GREEN + "on";
+					else str = str + ChatColor.RED + "off";
+					str = str + ChatColor.WHITE + " | Whitelist: ";
+					if(whitelist) str = str + ChatColor.GREEN + "on";
+					else str = str + ChatColor.RED + "off";
+					Message.sendMessage(str);
+					Message.sendMessage(ChatColor.BLUE + " Composition");
+					for(MaterialData block : blocks) {
+						String[] parts = {block.getItemTypeId() + "", block.getData() + ""};
+						Message.sendMessage(" - " + Util.parseMetadata(parts, true) + " " + Util.parseMaterial(block.getItemType()));
 					}
 				}
-				else {
-					Message.sendMessage("Mine has to be reset manually");
+				else if(args[2].equalsIgnoreCase("protection") || args[2].equalsIgnoreCase("pt")) {
+					boolean pvp = curMine.getProtection().contains(Protection.PVP);
+					boolean blbreak = curMine.getProtection().contains(Protection.BLOCK_BREAK);
+					boolean blplace = curMine.getProtection().contains(Protection.BLOCK_PLACE);
+					String str = "Block breaking protection: ";
+					if(blbreak) str = str + ChatColor.GREEN + "Enabled";
+					else str = str + ChatColor.RED + "Disabled";
+					
+					str = str + ChatColor.WHITE + " | Block placement protection: ";
+					if(blplace) str = str + ChatColor.GREEN + "Enabled";
+					else str = str + ChatColor.RED + "Disabled";
+					Message.sendMessage(str);
+					
+					str = "PVP protection: ";
+					if(pvp) str = str + ChatColor.GREEN + "Enabled";
+					else str = str + ChatColor.RED + "Disabled";
+					Message.sendMessage(str);
+					return;
 				}
-				return;
-			}
-			else
-			{
-				Message.sendInvalid(args);
-				return;
+				else if(args[2].equalsIgnoreCase("sign")) {
+					Message.sendMessage("Signs associated with this mine: ");
+					List<SignClass> signs = MineReset.getSigns();
+					for(SignClass sign : signs) {
+						if(sign.getParent().equals(curMine))
+							Message.sendMessage(" - " + sign.getLocation().getBlockX() + ", " + sign.getLocation().getBlockY() + ", " + sign.getLocation().getBlockZ());
+					}
+					return;
+				}
+				else if(args[2].equalsIgnoreCase("reset")) {
+					String autoResetFormatted = Util.parseSeconds(curMine.getResetPeriod());
+					String nextResetFormatted = Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20);
+					
+					if(curMine.getAutomatic()) {
+						Message.sendMessage("Mine resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes.");
+						Message.sendMessage("Warnings are send as follows: ");
+						List<Integer> warnings = curMine.getWarningTimes();
+						for(int time : warnings) {
+							Message.sendMessage(" - " + Util.parseSeconds(time));
+						}
+					}
+					else {
+						Message.sendMessage("Mine has to be reset manually");
+					}
+					return;
+				}
+				else
+				{
+					Message.sendInvalid(args);
+					return;
+				}
 			}
 		}
 		if(args[0].equalsIgnoreCase("time")) {
@@ -180,7 +181,7 @@ public class InfoCommand
 			if(displayName.equals("")) displayName = curMine.getName();
 			
 			// Reset
-			Mine parentMine = curMine.getParent();
+			Mine parentMine = MineUtils.getMine(curMine.getParent());
 			if(parentMine == null)
 				parentMine = curMine;
 			

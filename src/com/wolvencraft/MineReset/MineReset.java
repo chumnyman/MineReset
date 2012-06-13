@@ -95,7 +95,9 @@ public class MineReset extends JavaPlugin
                 mines.add((Mine) mine);
             }
         }
-
+        
+        signs = new ArrayList<SignClass>();
+        
 		log.info("MineReset started");
 		log.info(mines.size() + " mine(s) found");
 		
@@ -108,17 +110,18 @@ public class MineReset extends JavaPlugin
 					if(mines.size() != 0) {
 		                String warnMessage = Language.getString("reset.automatic-reset-warning");
 		                for(Mine curMine : mines) {
-							Mine parentMine = curMine.getParent();
+							Mine parentMine = MineUtils.getMine(curMine.getParent());
 							if(parentMine == null) parentMine = curMine;
-							if(curMine.getAutomatic()) {
-								int nextReset = MineUtils.getNextReset(curMine);
+							if(parentMine.getAutomatic()) {
+								int nextReset = MineUtils.getNextReset(parentMine);
 								List<Integer> warnTimes = parentMine.getWarningTimes();
+								
+								SignUtils.updateAll(parentMine);
+								if(curMine.getCooldown() && curMine.getCooldownTime() > 0)
+									curMine.updateCooldown(checkEvery);
 								
 								if(parentMine.equals(curMine)) {
 									curMine.updateTimer(checkEvery);
-									if(curMine.getCooldown() && curMine.getCooldownTime() > 0)
-										curMine.updateCooldown(checkEvery);
-									SignUtils.updateAll(parentMine);
 									
 									if(warnTimes.indexOf(nextReset) != -1 && curMine.getWarned() && !curMine.getSilent())
 										Message.broadcast(Util.parseVars(warnMessage, curMine));

@@ -137,7 +137,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         name = (String) me.get("name");
         parent = (Mine) me.get("parent");
         blacklist = (Blacklist) me.get("blacklist");
-        generator = (Generator) me.get("generator");
+        String generatorString = (String) me.get("generator");
+        generator = matchGenerator(generatorString);
         silent = (Boolean) me.get("silent");
         automatic = (Boolean) me.get("automatic");
         automaticSeconds = (Integer) me.get("automaticResetTime");
@@ -191,7 +192,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("name", name);
         me.put("parent", parent);
         me.put("blacklist", blacklist);
-        me.put("generator", generator);
+        me.put("generator", generator.toString());
         me.put("silent", silent);
         me.put("automatic", automatic);
         me.put("automaticResetTime", automaticSeconds);
@@ -263,6 +264,12 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public Generator getGenerator() {
     	return generator;
+    }
+    
+    public Generator matchGenerator(String str) {
+    	if(str.equalsIgnoreCase("empty")) return Generator.EMPTY;
+    	else if(str.equalsIgnoreCase("surface")) return Generator.SURFACE;
+    	else return Generator.RANDOM;
     }
     
     public boolean getCooldown() {

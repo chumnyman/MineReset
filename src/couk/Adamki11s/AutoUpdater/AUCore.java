@@ -30,7 +30,7 @@ import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.util.Message;
 
 
-public class Updater
+public class AUCore
 {
 
 	private static double version;
@@ -57,6 +57,7 @@ public class Updater
 		}
 		
 		source = FetchSource.fetchSource();
+		if(source == null) return true;
 		formatSource(source);
 		
 		String subVers = Integer.toString(MineReset.curSubVer);

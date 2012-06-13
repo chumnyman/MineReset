@@ -24,6 +24,7 @@ public class FetchSource
 		catch(MalformedURLException ex)
 		{
 			ex.printStackTrace();
+			return null;
 		}	
 		
 		InputStream is = null;
@@ -35,8 +36,8 @@ public class FetchSource
 		}
 		catch (IOException ex)
 		{
-			ex.printStackTrace();
-			Message.log("Error opening URL input stream!");
+			Message.log("Unable to connect to the update server!");
+			return null;
 		}
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new DataInputStream(new BufferedInputStream(is))));
@@ -50,8 +51,8 @@ public class FetchSource
 		}
 		catch (IOException ex)
 		{
-			ex.printStackTrace();
 			Message.log("Error reading input stream!");
+			return null;
 		}
 		
 		try
@@ -60,8 +61,8 @@ public class FetchSource
 		}
 		catch (IOException ioe)
 		{
-			ioe.printStackTrace();
 			Message.log("Error closing URL input stream!");
+			return null;
 		}
          
 		return source;

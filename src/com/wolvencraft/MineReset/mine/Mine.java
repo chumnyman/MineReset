@@ -240,6 +240,11 @@ public class Mine implements ConfigurationSerializable, Listener {
     	return parent == null ? this : parent;
     }
     
+    public boolean hasParent() {
+    	if(parent == null) return false;
+    	else return true;
+    }
+    
     public Blacklist getBlacklist() {
     	return blacklist;
     }

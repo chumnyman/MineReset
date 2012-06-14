@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.wolvencraft.AutoUpdater.AUCore;
+import com.wolvencraft.AutoUpdater.Updater;
 import com.wolvencraft.MineReset.mine.Blacklist;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
@@ -69,7 +69,7 @@ public class MineReset extends JavaPlugin
 		
 		getLanguageData().options().copyDefaults(true);
 		saveLanguageData();
-		AUCore.checkVersion();
+		Updater.checkVersion();
 
         ConfigurationSerialization.registerClass(Mine.class, "Mine");
         ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");

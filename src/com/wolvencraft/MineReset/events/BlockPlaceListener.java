@@ -33,7 +33,7 @@ public class BlockPlaceListener implements Listener
 		
 		Player player = event.getPlayer();
 		
-		if(Util.playerHasPermission(player, "protection.bypass") || !Configuration.getBoolean("lag.protection-checks-enabled"))
+		if(Util.playerHasPermission(player, "protection") || !Configuration.getBoolean("lag.protection-checks-enabled"))
 		{
             Message.debug("Bypass permission check passed");
 			return;

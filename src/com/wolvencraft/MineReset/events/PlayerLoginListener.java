@@ -7,7 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import com.wolvencraft.AutoUpdater.AUCore;
+import com.wolvencraft.AutoUpdater.Updater;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Configuration;
 
@@ -20,20 +20,18 @@ public class PlayerLoginListener implements Listener
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerInteract(PlayerJoinEvent event)
 	{
-		if(!Configuration.getBoolean("versions.remind-on-login"))
+		if(!Configuration.getBoolean("updater.remind-on-login"))
 			return;
 		
-		String perm = Configuration.getString("versions.permission-node");
-		
-		if(event.getPlayer().hasPermission(perm));
+		if(event.getPlayer().hasPermission(Configuration.getString("updater.permission-node")));
 		{
-			if(!AUCore.checkVersion())
+			if(!Updater.checkVersion())
 			{
 				Player player = event.getPlayer();
-				player.sendMessage("Update for " + ChatColor.BLUE + "MineReset" + ChatColor.WHITE + " (" + ChatColor.GOLD + AUCore.getVersion() + "." + AUCore.getSubVersion() + ChatColor.WHITE + ") is available! Urgency: " + ChatColor.GOLD + AUCore.getUrgency());
+				player.sendMessage("Update for " + ChatColor.BLUE + "MineReset" + ChatColor.WHITE + " (" + ChatColor.GOLD + Updater.getVersion() + "." + Updater.getSubVersion() + ChatColor.WHITE + ") is available! Urgency: " + ChatColor.GOLD + Updater.getUrgency());
 			}
 		}
 	}

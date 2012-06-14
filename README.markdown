@@ -1,7 +1,7 @@
 Mine Reset - Refill your mines with ease  
 ========================
           
-[ [Visit BukkitDev](http://dev.bukkit.org/server-mods/minereset/) | [Commands](https://github.com/bitWolfy/MineReset/wiki/Commands/) | [Permissions](https://github.com/bitWolfy/MineReset/wiki/Permissions/) | [Configuration](https://github.com/bitWolfy/MineReset/wiki/Configuration/) | [Tickets](http://dev.bukkit.org/server-mods/minereset/tickets/) ]
+[ [Visit BukkitDev](http://dev.bukkit.org/server-mods/minereset/) | [Commands](https://github.com/bitWolfy/MineReset/wiki/Commands/) | [Permissions](https://github.com/bitWolfy/MineReset/wiki/Permissions/) | [Configuration](https://github.com/bitWolfy/MineReset/wiki/Configuration/) | [Tickets](https://github.com/bitWolfy/MineReset/issues) ]
 ## ![download](http://www.freeiconsweb.com/Icons-show/splashyIcons/download.png) DOWNLOAD: [MineReset 1.2](http://dev.bukkit.org/server-mods/minereset/files/8-mine-reset-1-2/) |  [Latest Dev Build](https://s3.amazonaws.com/builds.mcprison.com/MineReset/lastSuccessful/MineReset.jar) ##
 
 Aren't you tired of manually selecting the mine region with World Edit, then typing in an incredibly long command that will reset the mining area while keeping the block pattern random? Tired of people going straight for the diamonds, the location of which they remember? I have good news for you.

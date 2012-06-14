@@ -3,6 +3,7 @@ package com.wolvencraft.MineReset.mine;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.generation.EmptyGenerator;
 import com.wolvencraft.MineReset.generation.RandomGenerator;
+import com.wolvencraft.MineReset.generation.SnapshotGenerator;
 import com.wolvencraft.MineReset.generation.SurfaceGenerator;
 import com.wolvencraft.MineReset.util.Message;
 import org.bukkit.Bukkit;
@@ -36,6 +37,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     private String parent;
     private List<MineBlock> blocks;
     private Generator generator;
+    private Snapshot snapshot;
     private Blacklist blacklist;
     private boolean silent;
     private boolean automatic;
@@ -70,6 +72,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	blocks = new ArrayList<MineBlock>();
     	blocks.add(new MineBlock(new MaterialData(Material.AIR), 1.0));
     	generator = Generator.RANDOM;
+    	snapshot = null;
     	blacklist = new Blacklist();
     	silent = false;
     	automatic = true;
@@ -111,6 +114,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         this.name = name;
         this.blocks = blocks;
         this.generator = generator;
+        snapshot = null;
     	blacklist = new Blacklist();
         silent = isSilent;
         automatic = isAutomatic;
@@ -140,6 +144,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         name = (String) me.get("name");
         parent = (String) me.get("parent");
         blacklist = (Blacklist) me.get("blacklist");
+        snapshot = (Snapshot) me.get("snapshot");
         String generatorString = (String) me.get("generator");
         generator = Generator.valueOf(generatorString);
         silent = (Boolean) me.get("silent");
@@ -158,15 +163,14 @@ public class Mine implements ConfigurationSerializable, Listener {
 
     public void reset(Generator generator) {
         removePlayers();
-        if(generator.equals(Generator.EMPTY)) {
+        if(generator.equals(Generator.EMPTY))
         	EmptyGenerator.reset(this);
-        }
-        else if(generator.equals(Generator.SURFACE)) {
+        else if(generator.equals(Generator.SURFACE))
         	SurfaceGenerator.reset(this);
-        }
-        else {
+        else if(generator.equals(Generator.SNAPSHOT))
+        	SnapshotGenerator.reset(this);
+        else
 	        RandomGenerator.reset(this);
-        }
     }
 
     private void removePlayers() {
@@ -195,6 +199,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("name", name);
         me.put("parent", parent);
         me.put("blacklist", blacklist);
+        me.put("snapshot", snapshot);
         me.put("generator", generator.toString());
         me.put("silent", silent);
         me.put("automatic", automatic);
@@ -225,6 +230,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public Location getWarp() {
     	return tpPoint;
+    }
+    
+    public Snapshot getSnapshot() {
+    	return snapshot;
     }
     
     public String getName() {

@@ -323,6 +323,24 @@ public class EditCommand {
 			MineUtils.save(curMine);
 			return;
 		}
+		else if(args[0].equalsIgnoreCase("snapshot"))
+		{
+			if(args.length != 2) {
+				Message.sendInvalidArguments(args);
+				return;
+			}
+			
+			Mine curMine = CommandManager.getMine();
+			if(curMine == null) {
+				Message.sendMineNotSelected();
+				return;
+			}
+			
+			curMine.getSnapshot().save(curMine.getWorld(), curMine.getFirstPoint(), curMine.getSecondPoint());
+			Message.sendNote(curMine.getName(), "Snapshot of the mine has been saved");
+			MineUtils.save(curMine);
+			return;
+		}
 		else {
 			Message.sendInvalid(args);
 			return;

@@ -67,6 +67,7 @@ public class SignCommand
 			MineReset.setSigns(signs);
 			
 			Message.sendNote(curMine.getName(), "A new sign was defined successfully");
+			SignUtils.saveAll(MineReset.getSigns());
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("reset")) {
@@ -84,7 +85,8 @@ public class SignCommand
 				sign.setReset(true);
 				Message.sendNote(curMine.getName(), "Right-clicking on this sign will now reset the mine");
 			}
-			
+
+			SignUtils.save(sign);
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("remove")) {
@@ -112,6 +114,7 @@ public class SignCommand
 			signs.remove(sign);
 			MineReset.setSigns(signs);
 			
+			SignUtils.saveAll(MineReset.getSigns());
 			Message.sendSuccess("This sign is no longer defined. You can destroy it now.");
 			return;
 		}

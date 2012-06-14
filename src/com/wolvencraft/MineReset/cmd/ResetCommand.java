@@ -2,8 +2,6 @@ package com.wolvencraft.MineReset.cmd;
 
 import java.util.List;
 
-import jline.internal.Configuration;
-
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Language;
@@ -39,8 +37,6 @@ public class ResetCommand
 				return;
 			}
 		}
-		
-		if(Configuration.getBoolean("lag.save-data-on-reset")) MineUtils.save(curMine);
 		
 		Generator generator;
 		if(forcedGenerator == null)

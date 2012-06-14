@@ -30,6 +30,7 @@ public class EditCommand {
 		}
 		if(args.length > 3) {
 			Message.sendInvalidArguments(args);
+			return;
 		}
 		
 		if(args[0].equalsIgnoreCase("edit")) {
@@ -46,6 +47,7 @@ public class EditCommand {
 			String message = Util.parseVars(Language.getString("editing.mine-selected-successfully"), curMine);
 			CommandManager.setMine(curMine);
 			Message.sendSuccess(message);
+			return;
 		}
 		else if(args[0].equalsIgnoreCase("none")) {
 			if(args.length != 1) {
@@ -62,6 +64,7 @@ public class EditCommand {
 			String message = Util.parseVars(Language.getString("editing.mine-deselected-successfully"), curMine);
 			CommandManager.setMine(null);
 			Message.sendSuccess(message);
+			return;
 		}
 		else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+")) {
 			if(args.length != 3) {
@@ -133,6 +136,7 @@ public class EditCommand {
 			
 			Message.sendNote(curMine.getName(), percent + "% of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
 			Message.sendNote(curMine.getName(), "Reset the mine for the changes to take effect");
+			MineUtils.save(curMine);
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-")) {
@@ -166,6 +170,7 @@ public class EditCommand {
 			curMine.setBlocks(blocks);
 			
 			Message.sendNote(curMine.getName(), args[1] + " was successfully removed from the mine");
+			MineUtils.save(curMine);
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del")) {
@@ -184,6 +189,7 @@ public class EditCommand {
 			mines.remove(curMine);
 			CommandManager.setMine(null);
 			Message.sendNote(args[1], "Mine successfully deleted");
+			MineUtils.saveAll(mines);
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("name")) {
@@ -205,6 +211,8 @@ public class EditCommand {
 			
 			curMine.setDisplayName(name);
 			Message.sendNote(curMine.getName(), "Mine now has a display name '" + ChatColor.GOLD + name + ChatColor.WHITE + "'");
+
+			MineUtils.save(curMine);
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("silent")) {
@@ -229,6 +237,7 @@ public class EditCommand {
 				curMine.setSilent(true);
 				Message.sendNote(curMine.getName(), "Silent mode " + ChatColor.GREEN + "on");
 			}
+			MineUtils.save(curMine);
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("cooldown")) {
@@ -262,7 +271,9 @@ public class EditCommand {
 					Message.sendInvalidArguments(args);
 				}
 			}
-			
+
+			MineUtils.save(curMine);
+			return;
 		}
 		else if(args[0].equalsIgnoreCase("generator")) {
 			if(args.length != 2) {
@@ -280,6 +291,8 @@ public class EditCommand {
 			else if(args[1].equalsIgnoreCase("surface")) curMine.setGenerator(Generator.SURFACE);
 			else curMine.setGenerator(Generator.RANDOM);
 			Message.sendNote(curMine.getName(), "Mine generator has been set to " + ChatColor.GREEN + args[1].toUpperCase());
+
+			MineUtils.save(curMine);
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("link") || args[0].equalsIgnoreCase("setparent")) {
@@ -307,6 +320,7 @@ public class EditCommand {
 			
 			curMine.setParent(args[1]);
 			Message.sendNote(curMine.getName(), "Mine will use the timers of " + ChatColor.GREEN + args[1]);
+			MineUtils.save(curMine);
 			return;
 		}
 		else {

@@ -80,6 +80,7 @@ public class MineReset extends JavaPlugin
         mines = MineUtils.loadAll(mines);
         
         signs = new ArrayList<SignClass>();
+        signs = SignUtils.loadAll(signs);
         
 		log.info("MineReset started");
 		log.info(mines.size() + " mine(s) found");
@@ -126,6 +127,7 @@ public class MineReset extends JavaPlugin
 	public void onDisable()
 	{
 		MineUtils.saveAll(mines);
+		SignUtils.saveAll(signs);
 		log.info("MineReset stopped");
 	}
 	

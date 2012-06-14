@@ -1,7 +1,9 @@
 package com.wolvencraft.MineReset.cmd;
 
+import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.Util;
 
 public class ConfigurationCommand
@@ -23,14 +25,12 @@ public class ConfigurationCommand
 		}
 		
 		if(args[1].equalsIgnoreCase("save")) {
-			
-			
+			MineUtils.save(MineReset.getMines());
 			Message.sendSuccess("Configuration saved to disc");
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("load")) {
-			
-			
+			MineReset.setMines(MineUtils.load(MineReset.getMines()));
 			Message.sendSuccess("Configuration loaded from disc");
 			return;
 		}

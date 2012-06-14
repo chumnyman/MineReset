@@ -1,17 +1,67 @@
 package com.wolvencraft.MineReset.util;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.material.MaterialData;
 
+import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
 
 public class MineUtils
 {
+	/**
+	 * Loads the mine data from disc
+	 * @param mines List of mines to write the data to
+	 * @return Loaded list of mines
+	 */
+	public static List<Mine> load(List<Mine> mines) {
+		File mineFolder = new File(CommandManager.getPlugin().getDataFolder(), "mines");
+        if (!mineFolder.exists() || !mineFolder.isDirectory()) {
+            mineFolder.mkdir();
+        }
+        File[] mineFiles = mineFolder.listFiles(new FileFilter() {
+            public boolean accept(File file) {
+                return file.getName().contains(".yml");
+            }
+        });
+
+        for (File mineFile : mineFiles) {
+            FileConfiguration mineConf = YamlConfiguration.loadConfiguration(mineFile);
+            Object mine = mineConf.get("mine");
+            if (mine instanceof Mine) {
+                mines.add((Mine) mine);
+            }
+        }
+        return mines;
+	}
+	
+	/**
+	 * Saves the mine data to disc
+	 * @param mines List of mines to save
+	 */
+	public static void save(List<Mine> mines) {
+		for (Mine mine : mines) {
+            File mineFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "mines"), mine.getName() + ".yml");
+            FileConfiguration mineConf =  YamlConfiguration.loadConfiguration(mineFile);
+            mineConf.set("mine", mine);
+            try {
+                mineConf.save(mineFile);
+            } catch (IOException e) {
+            	CommandManager.getPlugin().getLogger().severe("[MineReset] Unable to serialize mine '" + mine.getName() + "'!");
+                e.printStackTrace();
+            }
+        }
+	}
+	
 	/**
 	 * Returns the object of the mine with the given id
 	 * @param id Name of the mine being checked

@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Configuration;
 
-import couk.Adamki11s.AutoUpdater.Updater;
+import couk.Adamki11s.AutoUpdater.AUCore;
 
 public class PlayerLoginListener implements Listener
 {
@@ -30,10 +30,10 @@ public class PlayerLoginListener implements Listener
 		
 		if(event.getPlayer().hasPermission(perm));
 		{
-			if(!Updater.checkVersion())
+			if(!AUCore.checkVersion())
 			{
 				Player player = event.getPlayer();
-				player.sendMessage("Update for " + ChatColor.BLUE + "MineReset" + ChatColor.WHITE + " (" + ChatColor.GOLD + Updater.getVersion() + "." + Updater.getSubVersion() + ChatColor.WHITE + ") is available! Urgency: " + ChatColor.GOLD + Updater.getUrgency());
+				player.sendMessage("Update for " + ChatColor.BLUE + "MineReset" + ChatColor.WHITE + " (" + ChatColor.GOLD + AUCore.getVersion() + "." + AUCore.getSubVersion() + ChatColor.WHITE + ") is available! Urgency: " + ChatColor.GOLD + AUCore.getUrgency());
 			}
 		}
 	}

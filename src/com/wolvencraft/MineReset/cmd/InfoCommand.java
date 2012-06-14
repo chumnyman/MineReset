@@ -50,12 +50,13 @@ public class InfoCommand
 			if(displayName.equals("")) displayName = curMine.getName();
 			Message.sendMessage(ChatColor.DARK_RED + "                             -=[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.DARK_RED + " ]=-");
 			
-			if(args.length == 2) {
+			
 			// Reset
 			Mine parentMine = MineUtils.getMine(curMine.getParent());
 			if(parentMine == null)
 				parentMine = curMine;
 			
+			if(args.length == 2) {
 			String autoResetFormatted = Util.parseSeconds(curMine.getResetPeriod());
 			
 			String nextResetFormatted = Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20);

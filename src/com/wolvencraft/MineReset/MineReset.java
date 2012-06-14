@@ -27,7 +27,7 @@ import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.SignUtils;
 import com.wolvencraft.MineReset.util.Util;
 
-import couk.Adamki11s.AutoUpdater.Updater;
+import couk.Adamki11s.AutoUpdater.AUCore;
 
 /**
  * Mine Reset
@@ -70,7 +70,7 @@ public class MineReset extends JavaPlugin
 		
 		getLanguageData().options().copyDefaults(true);
 		saveLanguageData();
-		Updater.checkVersion();
+		AUCore.checkVersion();
 
         ConfigurationSerialization.registerClass(Mine.class, "Mine");
         ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");

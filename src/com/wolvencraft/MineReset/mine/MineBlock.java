@@ -20,7 +20,7 @@ public class MineBlock implements ConfigurationSerializable {
 
     public MineBlock(Map<String, Object> me) {
         chance = (Double) me.get("chance");
-        block = new MaterialData((Integer) me.get("blockId"), (Byte) me.get("blockData"));
+        block = new MaterialData((Integer) me.get("blockId"), ((Integer) me.get("blockData")).byteValue());
     }
 
     public MaterialData getBlock() {

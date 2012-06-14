@@ -7,9 +7,7 @@ lag:
   automatic-resets-enabled: true
   check-time-every: 20
   protection-checks-enabled: true
-versions:
-  check-for-new-versions: true
-  check-for-recommended-builds: true
-  check-for-development-builds: false
+updater:
+  channel: "db"
   remind-on-login: true
   permission-node: "minereset.edit"

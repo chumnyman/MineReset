@@ -19,11 +19,45 @@ import com.wolvencraft.MineReset.mine.MineBlock;
 public class MineUtils
 {
 	/**
+	 * Saves the mine data to disc
+	 * @param mine Individual mine to save
+	 */
+	public static void save(Mine mine) {
+		File mineFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "mines"), mine.getName() + ".yml");
+        FileConfiguration mineConf =  YamlConfiguration.loadConfiguration(mineFile);
+        mineConf.set("mine", mine);
+        try {
+            mineConf.save(mineFile);
+        } catch (IOException e) {
+        	CommandManager.getPlugin().getLogger().severe("[MineReset] Unable to serialize mine '" + mine.getName() + "'!");
+            e.printStackTrace();
+        }
+	}
+	
+	/**
+	 * Saves the mine data to disc
+	 * @param mines List of mines to save
+	 */
+	public static void saveAll(List<Mine> mines) {
+		for (Mine mine : mines) {
+            File mineFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "mines"), mine.getName() + ".yml");
+            FileConfiguration mineConf =  YamlConfiguration.loadConfiguration(mineFile);
+            mineConf.set("mine", mine);
+            try {
+                mineConf.save(mineFile);
+            } catch (IOException e) {
+            	CommandManager.getPlugin().getLogger().severe("[MineReset] Unable to serialize mine '" + mine.getName() + "'!");
+                e.printStackTrace();
+            }
+        }
+	}
+	
+	/**
 	 * Loads the mine data from disc
 	 * @param mines List of mines to write the data to
 	 * @return Loaded list of mines
 	 */
-	public static List<Mine> load(List<Mine> mines) {
+	public static List<Mine> loadAll(List<Mine> mines) {
 		File mineFolder = new File(CommandManager.getPlugin().getDataFolder(), "mines");
         if (!mineFolder.exists() || !mineFolder.isDirectory()) {
             mineFolder.mkdir();
@@ -42,24 +76,6 @@ public class MineUtils
             }
         }
         return mines;
-	}
-	
-	/**
-	 * Saves the mine data to disc
-	 * @param mines List of mines to save
-	 */
-	public static void save(List<Mine> mines) {
-		for (Mine mine : mines) {
-            File mineFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "mines"), mine.getName() + ".yml");
-            FileConfiguration mineConf =  YamlConfiguration.loadConfiguration(mineFile);
-            mineConf.set("mine", mine);
-            try {
-                mineConf.save(mineFile);
-            } catch (IOException e) {
-            	CommandManager.getPlugin().getLogger().severe("[MineReset] Unable to serialize mine '" + mine.getName() + "'!");
-                e.printStackTrace();
-            }
-        }
 	}
 	
 	/**

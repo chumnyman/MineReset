@@ -1,52 +1,16 @@
 configuration:
-  version: "1.2.2"
+  version: "2.0.0"
   debug-mode: false
   language: "english"
   use-permissions: true
 lag:
   automatic-resets-enabled: true
-  check-time-every: 1
+  check-time-every: 20
   protection-checks-enabled: true
-  teleport-out-of-the-mine-on-reset: true
+  save-data-on-reset: true
 versions:
   check-for-new-versions: true
   check-for-recommended-builds: true
   check-for-development-builds: false
   remind-on-login: true
   permission-node: "minereset.edit"
-defaults:
-  display-name: ""
-  silent: false
-  blacklist:
-    enabled: false
-    whitelist: false
-    blocks: []
-  protection:
-    padding: 0
-    padding-top: 0
-    breaking:
-      enabled: false
-      blacklist:
-        enabled: false
-        whitelist: false
-        blocks: []
-    placement:
-      enabled: false
-      blacklist:
-        enabled: false
-        whitelist: false
-        blocks: []
-    pvp: true
-  reset:
-    generator: "random"
-    auto:
-      reset: true
-      reset-every: 900
-      warn: true
-      warn-times:
-      - '300'
-  materials:
-    blocks:
-    - '0:0'
-    weights:
-    - '100'

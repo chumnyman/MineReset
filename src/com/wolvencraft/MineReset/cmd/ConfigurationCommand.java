@@ -25,12 +25,12 @@ public class ConfigurationCommand
 		}
 		
 		if(args[1].equalsIgnoreCase("save")) {
-			MineUtils.save(MineReset.getMines());
+			MineUtils.saveAll(MineReset.getMines());
 			Message.sendSuccess("Configuration saved to disc");
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("load")) {
-			MineReset.setMines(MineUtils.load(MineReset.getMines()));
+			MineReset.setMines(MineUtils.loadAll(MineReset.getMines()));
 			Message.sendSuccess("Configuration loaded from disc");
 			return;
 		}

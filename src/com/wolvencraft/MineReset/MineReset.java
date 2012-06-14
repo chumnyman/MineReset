@@ -77,7 +77,7 @@ public class MineReset extends JavaPlugin
         ConfigurationSerialization.registerClass(SignClass.class, "SignClass");
         
 		mines = new ArrayList<Mine>();
-        mines = MineUtils.load(mines);
+        mines = MineUtils.loadAll(mines);
         
         signs = new ArrayList<SignClass>();
         
@@ -125,7 +125,7 @@ public class MineReset extends JavaPlugin
 	
 	public void onDisable()
 	{
-		MineUtils.save(mines);
+		MineUtils.saveAll(mines);
 		log.info("MineReset stopped");
 	}
 	

@@ -8,20 +8,20 @@ import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.serialization.SerializableAs;
-import org.bukkit.material.MaterialData;
 
 @SerializableAs("Snapshot")
 public class Snapshot {
-	private List<MaterialData> blocks;
+	private List<BlockState> blocks;
 	
 	public Snapshot() {
-		blocks = new ArrayList<MaterialData>();
+		blocks = new ArrayList<BlockState>();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public Snapshot(Map<String, Object> me) {
-		blocks = (List<MaterialData>) me.get("blocks");
+		blocks = (List<BlockState>) me.get("blocks");
 	}
 	
 	public Map<String, Object> serialize() {
@@ -35,13 +35,13 @@ public class Snapshot {
             for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
                 for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
                     Block thisBlock = world.getBlockAt(x, y, z);
-                    blocks.add(new MaterialData(thisBlock.getType(), thisBlock.getData()));
+                    blocks.add(thisBlock.getState());
                 }
             }
         }
 	}
 	
-	public List<MaterialData> getBlocks() {
+	public List<BlockState> getBlocks() {
 		return blocks;
 	}
 }

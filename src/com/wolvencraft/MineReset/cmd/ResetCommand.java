@@ -32,7 +32,7 @@ public class ResetCommand
 				return;
 			}
 			
-			if(!Util.senderHasPermission("reset.cooldown")) {
+			if(!Util.senderHasPermission("reset.cooldown") && curMine.getNextCooldown() > 0) {
 				Message.sendError("You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
 				return;
 			}

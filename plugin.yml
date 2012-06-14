@@ -1,6 +1,9 @@
 name: MineReset
 main: com.wolvencraft.MineReset.MineReset
 version: 2.0.0
+description: A must-have tool for all prison servers
+authors: [bitWolfy, jjkoletar, ProGamerzFTW]
+website: http://bit.ly/MineReset
 commands:
   mine:
     description: MineReset help

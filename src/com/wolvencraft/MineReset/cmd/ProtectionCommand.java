@@ -9,6 +9,7 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Protection;
 import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.Util;
 
 public class ProtectionCommand {
@@ -45,7 +46,6 @@ public class ProtectionCommand {
 				curMine.getProtection().add(Protection.PVP);
 				Message.sendNote(curMine.getName(), "PVP protection has been turned " + ChatColor.GREEN + "on");
 			}
-			return;
 		}
 		else if(args[1].equalsIgnoreCase("breaking")) {
 			if(args.length < 3) {
@@ -68,7 +68,6 @@ public class ProtectionCommand {
 					curMine.getProtection().add(Protection.BLOCK_BREAK);
 					Message.sendNote(curMine.getName(), "Block breaking protection has been turned " + ChatColor.GREEN + "on");
 				}
-				return;
 			}
 			else if(args[2].equalsIgnoreCase("blacklist")) {
 				if(args.length < 3) {
@@ -122,7 +121,6 @@ public class ProtectionCommand {
 					curMine.getBreakBlacklist().setBlocks(blockList);
 					
 					Message.sendNote(curMine.getName(), ChatColor.GREEN + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was added to the block breaking protection blacklist");
-					return;
 				}
 				else if(args[3].equalsIgnoreCase("remove") || args[3].equalsIgnoreCase("-")) {
 					if(args.length != 4) {
@@ -146,7 +144,6 @@ public class ProtectionCommand {
 					curMine.getBreakBlacklist().setBlocks(blockList);
 
 					Message.sendNote(curMine.getName(), ChatColor.RED + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was removed from the block breaking protection blacklist");
-					return;
 				}
 				else {
 					Message.sendInvalid(args);
@@ -180,7 +177,6 @@ public class ProtectionCommand {
 					curMine.getProtection().add(Protection.BLOCK_PLACE);
 					Message.sendNote(curMine.getName(), "Block placement protection has been turned " + ChatColor.GREEN + "on");
 				}
-				return;
 			}
 			else if(args[2].equalsIgnoreCase("blacklist")) {
 				if(args.length < 3) {
@@ -234,7 +230,6 @@ public class ProtectionCommand {
 					curMine.getBreakBlacklist().setBlocks(blockList);
 					
 					Message.sendNote(curMine.getName(), ChatColor.GREEN + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was added to the block placement protection blacklist");
-					return;
 				}
 				else if(args[3].equalsIgnoreCase("remove") || args[3].equalsIgnoreCase("-")) {
 					if(args.length != 4) {
@@ -258,7 +253,6 @@ public class ProtectionCommand {
 					curMine.getBreakBlacklist().setBlocks(blockList);
 
 					Message.sendNote(curMine.getName(), ChatColor.RED + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was removed from the block placement protection blacklist");
-					return;
 				}
 				else {
 					Message.sendInvalid(args);
@@ -270,6 +264,9 @@ public class ProtectionCommand {
 				Message.sendInvalid(args);
 				return;
 			}
+			
+			MineUtils.save(curMine);
+			return;
 		}
 	}
 }

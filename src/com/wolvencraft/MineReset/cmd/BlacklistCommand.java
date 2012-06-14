@@ -9,6 +9,7 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.Util;
 
 public class BlacklistCommand {
@@ -47,7 +48,6 @@ public class BlacklistCommand {
 				curMine.getBlacklist().setEnabled(true);
 				Message.sendNote(curMine.getName(), "Blacklist turned " + ChatColor.GREEN + "on");
 			}
-			return;
 		}
 		else if(args[1].equalsIgnoreCase("whitelist")) {
 			if(curMine.getBlacklist().getWhitelist()) {
@@ -58,7 +58,6 @@ public class BlacklistCommand {
 				curMine.getBlacklist().setWhitelist(true);
 				Message.sendNote(curMine.getName() + " Blacklist", "Whitelist mode " + ChatColor.GREEN + "on");
 			}
-			return;
 		}
 		else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
 			if(args.length != 3) {
@@ -77,7 +76,6 @@ public class BlacklistCommand {
 			curMine.getBlacklist().setBlocks(blocks);
 			
 			Message.sendNote(curMine.getName(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been added to the blacklistlist");
-			return;
 		}
 		else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-")) {
 			if(args.length != 3) {
@@ -95,11 +93,13 @@ public class BlacklistCommand {
 			blocks.remove(block);
 			curMine.getBlacklist().setBlocks(blocks);
 			Message.sendNote(curMine.getName(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been removed from the list");
-			return;
 		}
 		else {
 			Message.sendInvalid(args);
 			return;
 		}
+		
+		MineUtils.save(curMine);
+		return;
 	}
 }

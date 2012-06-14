@@ -44,7 +44,7 @@ public class MineUtils
 		MineBlock tempBlock;
 		for(int j = blocks.size(); j > 0; j--)
 		{
-			for(int i = 0; i < j; i++)
+			for(int i = 0; i < (j - 1); i++)
 			{
 				if(blocks.get(i + 1).getChance() > blocks.get(i).getChance())
 				{

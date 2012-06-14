@@ -33,21 +33,28 @@ public class InfoCommand
 				return;
 			}
 		}
-		if(args.length > 3) {
-			Message.sendInvalidArguments(args);
+		else {
+			curMine = MineUtils.getMine(args[1]);
+		}
+		
+		if(curMine == null) {
+			Message.sendInvalidMineName(args[1]);
 			return;
 		}
 		
-		if(args.length != 1 && MineUtils.getMine(args[1]) == null) {
-			Message.sendInvalidMineName(args[1]);
+		if(args.length > 3) {
+			Message.sendInvalidArguments(args);
 			return;
 		}
 		
 		
 		if(args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("?")) {
 			// Title
-			String displayName = curMine.getDisplayName();
-			if(displayName.equals("")) displayName = curMine.getName();
+			String displayName;
+			if(curMine.getDisplayName().isEmpty())
+				displayName = curMine.getName();
+			else
+				displayName = curMine.getDisplayName();
 			Message.sendMessage(ChatColor.DARK_RED + "                             -=[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.DARK_RED + " ]=-");
 			
 			
@@ -69,7 +76,7 @@ public class InfoCommand
 				Message.sendMessage("The mine has to be reset manually");
 			}
 			
-			String generatorString = curMine.getGenerator().toString();
+			String generatorString =" Generator: " + ChatColor.GOLD +  curMine.getGenerator().toString();
 			if(!parentMine.equals(curMine) && !parentMine.equals(null))
 				generatorString = generatorString + ChatColor.WHITE + " | Linked to " + ChatColor.GOLD + parentMine.getName();
 			Message.sendMessage(generatorString);

@@ -1,4 +1,4 @@
-package couk.Adamki11s.AutoUpdater;
+package com.wolvencraft.AutoUpdater;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;

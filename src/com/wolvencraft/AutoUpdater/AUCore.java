@@ -22,7 +22,7 @@
  *    Please contact adam@adamki11s.co.uk
  */
 
-package couk.Adamki11s.AutoUpdater;
+package com.wolvencraft.AutoUpdater;
 
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.ConfigurationCommand;

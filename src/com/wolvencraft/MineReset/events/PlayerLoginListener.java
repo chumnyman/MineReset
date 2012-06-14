@@ -7,10 +7,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import com.wolvencraft.AutoUpdater.AUCore;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Configuration;
 
-import couk.Adamki11s.AutoUpdater.AUCore;
 
 public class PlayerLoginListener implements Listener
 {

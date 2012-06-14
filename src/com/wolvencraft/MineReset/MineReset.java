@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.wolvencraft.AutoUpdater.AUCore;
 import com.wolvencraft.MineReset.mine.Blacklist;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
@@ -27,7 +28,6 @@ import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.SignUtils;
 import com.wolvencraft.MineReset.util.Util;
 
-import couk.Adamki11s.AutoUpdater.AUCore;
 
 /**
  * Mine Reset

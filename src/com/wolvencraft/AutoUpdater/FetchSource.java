@@ -19,7 +19,7 @@ public class FetchSource
 		URL url = null;
 		try
 		{
-			url = new URL("http://wolvencraft.com/plugins/MineReset/index.html");
+			url = new URL("http://update.wolvencraft.com/MineReset/");
 		}
 		catch(MalformedURLException ex)
 		{
@@ -28,7 +28,7 @@ public class FetchSource
 		}	
 		
 		InputStream is = null;
-	    String s, source = "";
+	    String source = "";
 
 		try
 		{
@@ -44,10 +44,7 @@ public class FetchSource
 		
 		try
 		{
-			while ((s = reader.readLine()) != null)
-			{
-				source += s;
-			}
+			source = reader.readLine();
 		}
 		catch (IOException ex)
 		{

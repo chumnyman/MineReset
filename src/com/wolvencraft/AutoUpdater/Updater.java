@@ -30,7 +30,7 @@ import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.util.Message;
 
 
-public class AUCore
+public class Updater
 {
 
 	private static double version;
@@ -63,26 +63,21 @@ public class AUCore
 		String subVers = Integer.toString(MineReset.curSubVer);
 		
 		boolean verUpToDate;
+		String channel = Configuration.getString("updater.channel");
 		
-		if(Configuration.getBoolean("versions.check-for-development-builds"))
-		{
-			if(version > MineReset.curVer)
-				verUpToDate = false;
-			else if(version == MineReset.curVer && subVersion > MineReset.curSubVer)
+		if(channel.equalsIgnoreCase("db")) {
+			if(version > MineReset.curVer || (version == MineReset.curVer && subVersion > MineReset.curSubVer))
 				verUpToDate = false;
 			else
 				verUpToDate = true;
 		}
-		else if(Configuration.getBoolean("versions.check-for-recommended-builds"))
-		{
+		else if(channel.equalsIgnoreCase("rb")) {
 			if(version > MineReset.curVer)
 				verUpToDate = false;
 			else verUpToDate = true;
 		}
 		else
-		{
 			verUpToDate = true;
-		}
 		
 		
 		if(!verUpToDate)
@@ -113,6 +108,7 @@ public class AUCore
 			}
 			Message.log("+------------------------------" + extraDash + "+");
 			Message.log("| MineReset is not up to date! " + extraAll + "|");
+			Message.log("|    http://bit.ly/MineReset   " + extraAll + "|");
 			Message.log("| Running version : " + MineReset.curVer + "." + subVers + "      " + extraAll + "|");
 			Message.log("| Latest version  : " + version + "." + subVersion + "      " + extraAll + "|");
 			Message.log("| Urgency         : " + urgency + extraOne + "     " + extraAll + "|");

@@ -51,8 +51,9 @@ public class WarpCommand
 		}
 		
 		if(MineUtils.getMine(args[1]) != null) {
-			MineUtils.warpToMine(player, MineUtils.getMine(args[1]));
-			String message = Util.parseVars(Language.getString("misc.mine-teleport"), MineUtils.getMine(args[1]));
+			Mine curMine = MineUtils.getMine(args[1]);
+			player.teleport(curMine.getWarp());
+			String message = Util.parseVars(Language.getString("misc.mine-teleport"), curMine);
 			Message.sendSuccess(message);
 			return;
 		}

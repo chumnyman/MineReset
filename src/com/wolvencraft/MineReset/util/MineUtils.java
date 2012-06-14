@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.MineReset;
@@ -28,14 +27,11 @@ public class MineUtils
 	}
 	
 	/**
-	 * Teleports a player to the mine specified
-	 * @param player Player to be teleported
-	 * @param curMine The mine to be teleported to
+	 * Sorts the list of blocks in the mine from the one with the largest percentage
+	 * to the one with the lowest and returns the formatted list
+	 * @param curMine Mine to check
+	 * @return Formatted list
 	 */
-	public static void warpToMine(Player player, Mine curMine) {
-		player.teleport(curMine.getWarp());
-	}
-	
 	public static List<String> getSortedList(Mine curMine)
 	{
 		List<MineBlock> blocks = curMine.getBlocks();

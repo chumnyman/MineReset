@@ -17,13 +17,16 @@ import com.wolvencraft.MineReset.mine.Generator;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
 import com.wolvencraft.MineReset.mine.Protection;
+import com.wolvencraft.MineReset.mine.SignClass;
+import com.wolvencraft.MineReset.util.MineUtils;
+import com.wolvencraft.MineReset.util.SignUtils;
 
 public class ConfigurationUpdater {
 	
 	private static FileConfiguration regionData = null;
-	private FileConfiguration signData = null;
+	private static FileConfiguration signData = null;
 	private static File regionDataFile = null;
-	private File signDataFile = null;
+	private static File signDataFile = null;
 	
 	public static void run() {
 		if(Configuration.getString("configuration.version").equalsIgnoreCase("2.0.0")) return;
@@ -105,6 +108,28 @@ public class ConfigurationUpdater {
 			
 			mines.add(new Mine(one, two, world, tpPos, displayName, null, mine, blocks, gen, silent, automatic, automaticSeconds, false, 0, warnTimes, enabledProt));
 			}
+		MineUtils.saveAll(mines);
+	}
+	
+	public static void updateSigns() {
+		List<String> signList = getSignData().getStringList("data.list-of-signs");
+		List<SignClass> signs = MineReset.getSigns();
+		
+		for(String sign : signList) {
+			String id = SignUtils.generateId();
+			Mine parent = MineUtils.getMine(getSignData().getString("signs." + sign + ".mine"));
+			boolean reset = getSignData().getBoolean("signs." + sign + ".reset");
+			World world = CommandManager.getPlugin().getServer().getWorld(getSignData().getString("signs." + sign + ".world"));
+			Location loc = new Location(world, getSignData().getInt("signs." + sign + ".x"), getSignData().getInt("signs." + sign + ".y"), getSignData().getInt("signs." + sign + ".z"));
+			List<String> lines = new ArrayList<String>();
+			for(int i = 0; i < 4; i++) {
+				lines.add(getSignData().getString("signs." + sign + ".lines." + i));
+			}
+			
+			signs.add(new SignClass(id, world, loc, parent, reset, lines));
+		}
+		
+		SignUtils.saveAll(signs);
 	}
 	
 	public static void reloadRegionData() {
@@ -125,7 +150,7 @@ public class ConfigurationUpdater {
 	    return regionData;
 	}
 	
-	public void reloadSignData() {
+	public static void reloadSignData() {
 	    if (signDataFile == null)
 	    	signDataFile = new File(CommandManager.getPlugin().getDataFolder(), "signs.yml");
 	    signData = YamlConfiguration.loadConfiguration(signDataFile);
@@ -137,7 +162,7 @@ public class ConfigurationUpdater {
 	    }
 	}
 
-	public FileConfiguration getSignData() {
+	public static FileConfiguration getSignData() {
 	    if (signData == null)
 	        reloadSignData();
 	    return signData;

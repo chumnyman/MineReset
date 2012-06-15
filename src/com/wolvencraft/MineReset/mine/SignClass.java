@@ -34,6 +34,15 @@ public class SignClass implements ConfigurationSerializable, Listener  {
 		}
 	}
 	
+	public SignClass(String id, World world, Location loc, Mine parent, boolean reset, List<String> lines) {
+		this.id = id;
+		this.world = world;
+		this.loc = loc;
+		this.parent = parent;
+		this.reset = reset;
+		this.lines = lines;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public SignClass(Map<String, Object> me) {
 		id = (String) me.get("id");

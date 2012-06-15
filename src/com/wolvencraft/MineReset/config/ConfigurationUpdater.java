@@ -28,11 +28,13 @@ public class ConfigurationUpdater {
 	private static File regionDataFile = null;
 	private static File signDataFile = null;
 	
-	public static void run() {
-		if(Configuration.getString("configuration.version").equalsIgnoreCase("2.0.0")) return;
+	public static boolean run() {
+		if(Configuration.getString("configuration.version").equalsIgnoreCase("2.0.0")) return false;
 		updateConfiguration();
 		updateLanguage();
-		
+		updateRegions();
+		updateSigns();
+		return true;
 	}
 	
 	public static void updateConfiguration() {

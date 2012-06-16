@@ -38,11 +38,16 @@ public class ConfigurationUpdater {
 	}
 	
 	public static void updateConfiguration() {
-		Configuration.remove("defaults");
+		CommandManager.getPlugin().getConfig().set("defaults", null);
+		CommandManager.getPlugin().getConfig().set("versions.check-for-new-versions", null);
+		CommandManager.getPlugin().getConfig().set("versions.check-for-recommended-builds", null);
+		CommandManager.getPlugin().getConfig().set("versions.check-for-development-builds", null);
+		CommandManager.getPlugin().getConfig().set("versions.remind-on-login", null);
+		CommandManager.getPlugin().getConfig().set("versions.permissions-node", null);
+		CommandManager.getPlugin().getConfig().set("versions", null);
+		CommandManager.getPlugin().getConfig().set("configuration.teleport-out-of-the-mine-on-reset", null);
 		
 		if(!Configuration.getString("configuration.version").equalsIgnoreCase("1.2.1") && !Configuration.getString("configuration.version").equalsIgnoreCase("1.2.2")) {
-			Configuration.remove("configuration.teleport-out-of-the-mine-on-reset");
-			Configuration.remove("versions");
 			if(!CommandManager.getPlugin().getConfig().isSet("lag")) {
 				CommandManager.getPlugin().getConfig().set("lag.automatic-resets-enabled", true);
 				CommandManager.getPlugin().getConfig().set("lag.check-time-every", "20");
@@ -57,7 +62,6 @@ public class ConfigurationUpdater {
 		}
 		else {
 			CommandManager.getPlugin().getConfig().set("lag.check-time-every", "20");
-			Configuration.remove("versions");
 			if(!CommandManager.getPlugin().getConfig().isSet("updater")) {
 				CommandManager.getPlugin().getConfig().set("updater.channel", "db");
 				CommandManager.getPlugin().getConfig().set("updater.remind-on-login", true);
@@ -67,46 +71,57 @@ public class ConfigurationUpdater {
 	}
 	
 	public static void updateLanguage() {
-		CommandManager.getPlugin().getConfig().set("error.command", Language.getString("general.invalid-command"));
-		CommandManager.getPlugin().getConfig().set("error.mine-name", Language.getString("general.mine-name-invalid"));
-		CommandManager.getPlugin().getConfig().set("error.mine-not-selected", Language.getString("general.mine-not-selected"));
-		CommandManager.getPlugin().getConfig().set("error.command", Language.getString("general.invalid-command"));
-		CommandManager.getPlugin().getConfig().set("error.arguments", "Invalid parameters. Check your argument count!");
-		CommandManager.getPlugin().getConfig().set("error.block-does-not-exist", "Block &c%BLOCK%&f does not exist");
-		CommandManager.getPlugin().getConfig().set("error.removing-air", "This value is calculated automatically");
-
-		CommandManager.getPlugin().getConfig().set("editing.mine-selected-successfully", Language.getString("general.mine-selected-successfully"));
-		CommandManager.getPlugin().getConfig().set("editing.mine-deselected-successfully", Language.getString("general.mine-deselected-successfully"));
+		CommandManager.getPlugin().getLanguageData().set("error.command", Language.getString("general.invalid-command"));
+		CommandManager.getPlugin().getLanguageData().set("error.mine-name", Language.getString("general.mine-name-invalid"));
+		CommandManager.getPlugin().getLanguageData().set("error.mine-not-selected", Language.getString("general.mine-not-selected"));
+		CommandManager.getPlugin().getLanguageData().set("error.command", Language.getString("general.invalid-command"));
+		CommandManager.getPlugin().getLanguageData().set("error.arguments", "Invalid parameters. Check your argument count!");
+		CommandManager.getPlugin().getLanguageData().set("error.block-does-not-exist", "Block &c%BLOCK%&f does not exist");
+		CommandManager.getPlugin().getLanguageData().set("error.removing-air", "This value is calculated automatically");
+		
+		CommandManager.getPlugin().getLanguageData().set("general.invalid-command", null);
+		CommandManager.getPlugin().getLanguageData().set("general.mine-name-invalid", null);
+		CommandManager.getPlugin().getLanguageData().set("general.mine-not-selected", null);
+		CommandManager.getPlugin().getLanguageData().set("general.invalid-command", null);
+		
+		CommandManager.getPlugin().getLanguageData().set("misc.mine-teleport", Language.getString("teleportation.mine-teleport"));
+		CommandManager.getPlugin().getLanguageData().set("teleportation.mine-teleport", null);
+		
+		CommandManager.getPlugin().getLanguageData().set("editing.mine-selected-successfully", Language.getString("general.mine-selected-successfully"));
+		CommandManager.getPlugin().getLanguageData().set("editing.mine-deselected-successfully", Language.getString("general.mine-deselected-successfully"));
+		
+		CommandManager.getPlugin().getLanguageData().set("general.mine-selected-successfully", null);
+		CommandManager.getPlugin().getLanguageData().set("general.mine-deselected-successfully", null);
 	}
 	
 	public static void updateRegions() {
 		List<String> mineList = getRegionData().getStringList("data.list-of-mines");
 		List<Mine> mines = MineReset.getMines();
 		for(String mine : mineList) {
-			String displayName = getRegionData().getString("mines" + mine + ".display-name");
-			boolean silent = getRegionData().getBoolean("mines" + mine + ".silent");
-			World world = CommandManager.getPlugin().getServer().getWorld(getRegionData().getString("mines" + mine + ".coordinates.world"));
-			Location one = new Location(world, getRegionData().getInt("mines" + mine + ".coordinates.pos0.x"), getRegionData().getInt("mines" + mine + ".coordinates.pos0.y"), getRegionData().getInt("mines" + mine + ".coordinates.pos0.z"));
-			Location two = new Location(world, getRegionData().getInt("mines" + mine + ".coordinates.pos1.x"), getRegionData().getInt("mines" + mine + ".coordinates.pos1.y"), getRegionData().getInt("mines" + mine + ".coordinates.pos1.z"));
-			Location tpPos = new Location(world, getRegionData().getDouble("mines" + mine + ".coordinates.pos2.x"), getRegionData().getDouble("mines" + mine + ".coordinates.pos2.y"), getRegionData().getDouble("mines" + mine + ".coordinates.pos2.z"), (float)getRegionData().getDouble("mines" + mine + ".coordinates.pos2.yaw"), (float)getRegionData().getDouble("mines" + mine + ".coordinates.pos2.pitch"));
+			String displayName = getRegionData().getString("mines." + mine + ".display-name");
+			boolean silent = getRegionData().getBoolean("mines." + mine + ".silent");
+			World world = CommandManager.getPlugin().getServer().getWorld(getRegionData().getString("mines." + mine + ".coordinates.world"));
+			Location one = new Location(world, getRegionData().getInt("mines." + mine + ".coordinates.pos0.x"), getRegionData().getInt("mines." + mine + ".coordinates.pos0.y"), getRegionData().getInt("mines." + mine + ".coordinates.pos0.z"));
+			Location two = new Location(world, getRegionData().getInt("mines." + mine + ".coordinates.pos1.x"), getRegionData().getInt("mines." + mine + ".coordinates.pos1.y"), getRegionData().getInt("mines." + mine + ".coordinates.pos1.z"));
+			Location tpPos = new Location(world, getRegionData().getDouble("mines." + mine + ".coordinates.pos2.x"), getRegionData().getDouble("mines." + mine + ".coordinates.pos2.y"), getRegionData().getDouble("mines." + mine + ".coordinates.pos2.z"), (float)getRegionData().getDouble("mines." + mine + ".coordinates.pos2.yaw"), (float)getRegionData().getDouble("mines." + mine + ".coordinates.pos2.pitch"));
 			
 			List<MineBlock> blocks = new ArrayList<MineBlock>();
-			List<String> iBlocks = getRegionData().getStringList("mines" + mine + ".materials.blocks");
-			List<Double> iWeight = getRegionData().getDoubleList("mines" + mine + ".materials.weights");
+			List<String> iBlocks = getRegionData().getStringList("mines." + mine + ".materials.blocks");
+			List<Double> iWeight = getRegionData().getDoubleList("mines." + mine + ".materials.weights");
 			
 			for(int i = 0; i < iBlocks.size(); i++) {
 				String[] parts = iBlocks.get(i).split(":");
 				blocks.add(new MineBlock(new MaterialData(Integer.parseInt(parts[0]),Byte.parseByte(parts[1])), iWeight.get(i)));
 			}
 			
-			Generator gen = Generator.valueOf(getRegionData().getString("mines" + mine + ".reset.generator"));
-			boolean automatic = getRegionData().getBoolean("mines" + mine + ".auto.reset");
-			int automaticSeconds = getRegionData().getInt("mines" + mine + ".auto.reset-every");
+			Generator gen = Generator.valueOf(getRegionData().getString("mines." + mine + ".reset.generator"));
+			boolean automatic = getRegionData().getBoolean("mines." + mine + ".auto.reset");
+			int automaticSeconds = getRegionData().getInt("mines." + mine + ".auto.reset-every");
 			List<Integer> warnTimes = getRegionData().getIntegerList("mines" + mine + ".reset.auto.warn-times");
 			List<Protection> enabledProt = new ArrayList<Protection>();
-			if(getRegionData().getBoolean("mines" + mine + ".protection.breaking.enabled")) enabledProt.add(Protection.BLOCK_BREAK);
-			if(getRegionData().getBoolean("mines" + mine + ".protection.placement.enabled")) enabledProt.add(Protection.BLOCK_PLACE);
-			if(getRegionData().getBoolean("mines" + mine + ".protection.PVP")) enabledProt.add(Protection.BLOCK_BREAK);
+			if(getRegionData().getBoolean("mines." + mine + ".protection.breaking.enabled")) enabledProt.add(Protection.BLOCK_BREAK);
+			if(getRegionData().getBoolean("mines." + mine + ".protection.placement.enabled")) enabledProt.add(Protection.BLOCK_PLACE);
+			if(getRegionData().getBoolean("mines." + mine + ".protection.PVP")) enabledProt.add(Protection.BLOCK_BREAK);
 			
 			mines.add(new Mine(one, two, world, tpPos, displayName, null, mine, blocks, gen, silent, automatic, automaticSeconds, false, 0, warnTimes, enabledProt));
 			}

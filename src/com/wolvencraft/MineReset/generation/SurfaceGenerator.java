@@ -26,10 +26,11 @@ public class SurfaceGenerator {
 		            		for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
 			                    MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
 			                    MaterialData newBlock = MineUtils.getMostCommon(curMine).getBlock();
-			                    if(curMine.getBlacklist().getBlocks().contains(original))
-			                    {
-	    		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-	    		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+			                    if(curMine.getBlacklist().getBlocks().contains(original)) {
+				                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
+					                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
+					                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+				                	}
 			                    }
 			                }
 		            	}
@@ -38,10 +39,11 @@ public class SurfaceGenerator {
 			                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
 			                    MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
 			                    MaterialData newBlock = pattern.next();
-			                    if(curMine.getBlacklist().getBlocks().contains(original))
-			                    {
-	    		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-	    		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+			                    if(curMine.getBlacklist().getBlocks().contains(original)) {
+				                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
+					                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
+					                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+				                	}
 			                    }
 			                }
 		            	}
@@ -57,10 +59,11 @@ public class SurfaceGenerator {
 		            		for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
 			                    MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
 			                    MaterialData newBlock = MineUtils.getMostCommon(curMine).getBlock();
-			                    if(!curMine.getBlacklist().getBlocks().contains(original))
-			                    {
-	    		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-	    		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+			                    if(!curMine.getBlacklist().getBlocks().contains(original)) {
+				                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
+					                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
+					                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+				                	}
 			                    }
 			                }
 		            	}
@@ -69,10 +72,11 @@ public class SurfaceGenerator {
 			                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
 			                    MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
 			                    MaterialData newBlock = pattern.next();
-			                    if(!curMine.getBlacklist().getBlocks().contains(original))
-			                    {
-	    		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-	    		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+			                    if(!curMine.getBlacklist().getBlocks().contains(original)) {
+				                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
+					                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
+					                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+				                	}
 			                    }
 			                }
 		            	}
@@ -89,15 +93,21 @@ public class SurfaceGenerator {
 	            	{
 		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
 		                    MaterialData newBlock = MineUtils.getMostCommon(curMine).getBlock();
-		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+		                	MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
+		                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
+			                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
+			                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+		                	}
 		                }
 	            	}
 	                else {
 	                	for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
 		                    MaterialData newBlock = pattern.next();
-		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+		                	MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
+		                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
+			                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
+			                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+		                	}
 		                }
 	                }
 	            }

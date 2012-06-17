@@ -23,8 +23,10 @@ public class EmptyGenerator {
 		                    MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
 		                    if(curMine.getBlacklist().getBlocks().contains(original))
 		                    {
-    		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-    		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+			                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
+				                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
+				                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+			                	}
 		                    }
 		                }
 		            }
@@ -37,8 +39,10 @@ public class EmptyGenerator {
 		                    MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
 		                    if(!curMine.getBlacklist().getBlocks().contains(original))
 		                    {
-    		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-    		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+			                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
+				                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
+				                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+			                	}
 		                    }
 		                }
 		            }
@@ -50,8 +54,11 @@ public class EmptyGenerator {
 	        for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
 	            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
 	                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-	                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-	                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+	                	MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
+	                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
+		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
+		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
+	                	}
 	                }
 	            }
 	        }

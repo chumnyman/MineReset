@@ -6,6 +6,7 @@ import com.wolvencraft.MineReset.generation.RandomGenerator;
 import com.wolvencraft.MineReset.generation.SnapshotGenerator;
 import com.wolvencraft.MineReset.generation.SurfaceGenerator;
 import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -177,7 +178,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         for (Player p : world.getPlayers()) {
             if (isLocationInMine(p.getLocation())) {
                 p.teleport(tpPoint, PlayerTeleportEvent.TeleportCause.PLUGIN);
-                Message.sendPlayer(p, Language.getMessage("teleportation.mine-teleport", name));
+                Message.sendPlayer(p, Util.parseVars(Language.getString("misc.mine-teleport"), this));
             }
         }
     }

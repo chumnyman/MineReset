@@ -38,11 +38,21 @@ public class ResetCommand
 			}
 		}
 		
+		if(args.length == 3)
+			forcedGenerator = args[2];
+		
 		Generator generator;
 		if(forcedGenerator == null)
 			generator = curMine.getGenerator();
-		else
+		else {
+			try {
 			generator = Generator.valueOf(forcedGenerator);
+			}
+			catch(IllegalArgumentException iae) {
+				Message.sendError("This generator does not exist!");
+				return;
+			}
+		}
 		
 		curMine.reset(generator);
 		curMine.resetTimer();

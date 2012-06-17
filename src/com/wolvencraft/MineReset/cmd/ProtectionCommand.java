@@ -47,7 +47,7 @@ public class ProtectionCommand {
 				Message.sendNote(curMine.getName(), "PVP protection has been turned " + ChatColor.GREEN + "on");
 			}
 		}
-		else if(args[1].equalsIgnoreCase("breaking")) {
+		else if(args[1].equalsIgnoreCase("breaking") || args[1].equalsIgnoreCase("break")) {
 			if(args.length < 3) {
 				Message.sendError("Invalid parameters. Check your argument count!");
 				return;
@@ -69,86 +69,60 @@ public class ProtectionCommand {
 					Message.sendNote(curMine.getName(), "Block breaking protection has been turned " + ChatColor.GREEN + "on");
 				}
 			}
-			else if(args[2].equalsIgnoreCase("blacklist")) {
-				if(args.length < 3) {
+			else if(args[2].equalsIgnoreCase("whitelist")) {
+				if(args.length != 3) {
 					Message.sendInvalidArguments(args);
 					return;
 				}
-				if(args[3].equalsIgnoreCase("toggle")) {
-					if(args.length != 3) {
-						Message.sendError("Invalid parameters. Check your argument count!");
-						return;
-					}
-					
-					if(curMine.getBreakBlacklist().getEnabled()) {
-						curMine.getBreakBlacklist().setEnabled(false);
-						Message.sendNote(curMine.getName(), "Block breaking protection blacklist has been turned " + ChatColor.RED + "off");
-					}
-					else {
-						curMine.getBreakBlacklist().setEnabled(true);
-						Message.sendNote(curMine.getName(), "Block breaking protection blacklist has been turned " + ChatColor.GREEN + "on");
-					}
-					
-				}
-				else if(args[3].equalsIgnoreCase("whitelist")) {
-					if(args.length != 3) {
-						Message.sendInvalidArguments(args);
-						return;
-					}
-					if(curMine.getBreakBlacklist().getWhitelist()) {
-						curMine.getBreakBlacklist().setWhitelist(false);
-						Message.sendNote(curMine.getName(), "Block breaking whitelist is now " + ChatColor.RED + "off");
-					}
-					else {
-						curMine.getBreakBlacklist().setWhitelist(true);
-						Message.sendNote(curMine.getName(), "Block breaking whitelist is now " + ChatColor.GREEN + "on");
-					}
-				}
-				else if(args[3].equalsIgnoreCase("add") || args[3].equalsIgnoreCase("+")) {
-					if(args.length != 4) {
-						Message.sendInvalidArguments(args);
-						return;
-					}
-					MaterialData block = Util.getBlock(args[4]);
-					
-					if(block == null) {
-						Message.sendBlockDoesNotExist(args[4]);
-						return;
-					}
-					
-					List<MaterialData> blockList = curMine.getBreakBlacklist().getBlocks();
-					blockList.add(block);
-					curMine.getBreakBlacklist().setBlocks(blockList);
-					
-					Message.sendNote(curMine.getName(), ChatColor.GREEN + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was added to the block breaking protection blacklist");
-				}
-				else if(args[3].equalsIgnoreCase("remove") || args[3].equalsIgnoreCase("-")) {
-					if(args.length != 4) {
-						Message.sendInvalidArguments(args);
-						return;
-					}
-					MaterialData block = Util.getBlock(args[4]);
-					
-					if(block == null) {
-						Message.sendBlockDoesNotExist(args[4]);
-						return;
-					}
-					
-					List<MaterialData> blockList = curMine.getBreakBlacklist().getBlocks();
-					
-					if(blockList.indexOf(block) == -1) {
-						Message.sendError("There is no '" + args[4] + "' in break protection blacklist of mine '" + curMine.getName() + "'");
-						return;
-					}
-					blockList.remove(block);
-					curMine.getBreakBlacklist().setBlocks(blockList);
-
-					Message.sendNote(curMine.getName(), ChatColor.RED + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was removed from the block breaking protection blacklist");
+				if(curMine.getBreakBlacklist().getWhitelist()) {
+					curMine.getBreakBlacklist().setWhitelist(false);
+					Message.sendNote(curMine.getName(), "Block breaking whitelist is now " + ChatColor.RED + "off");
 				}
 				else {
-					Message.sendInvalid(args);
+					curMine.getBreakBlacklist().setWhitelist(true);
+					Message.sendNote(curMine.getName(), "Block breaking whitelist is now " + ChatColor.GREEN + "on");
+				}
+			}
+			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
+				if(args.length != 4) {
+					Message.sendInvalidArguments(args);
 					return;
 				}
+				MaterialData block = Util.getBlock(args[3]);
+				
+				if(block == null) {
+					Message.sendBlockDoesNotExist(args[3]);
+					return;
+				}
+				
+				List<MaterialData> blockList = curMine.getBreakBlacklist().getBlocks();
+				blockList.add(block);
+				curMine.getBreakBlacklist().setBlocks(blockList);
+				
+				Message.sendNote(curMine.getName(), ChatColor.GREEN + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was added to the block breaking protection blacklist");
+			}
+			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
+				if(args.length != 4) {
+					Message.sendInvalidArguments(args);
+					return;
+				}
+				MaterialData block = Util.getBlock(args[3]);
+				
+				if(block == null) {
+					Message.sendBlockDoesNotExist(args[3]);
+					return;
+				}
+				
+				List<MaterialData> blockList = curMine.getBreakBlacklist().getBlocks();
+				
+				if(blockList.indexOf(block) == -1) {
+					Message.sendError("There is no '" + args[3] + "' in break protection blacklist of mine '" + curMine.getName() + "'");
+					return;
+				}
+				blockList.remove(block);
+				curMine.getBreakBlacklist().setBlocks(blockList);
+
+				Message.sendNote(curMine.getName(), ChatColor.RED + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was removed from the block breaking protection blacklist");
 			}
 			else
 			{
@@ -156,7 +130,7 @@ public class ProtectionCommand {
 				return;
 			}
 		}
-		else if(args[1].equalsIgnoreCase("placement")) {
+		else if(args[1].equalsIgnoreCase("placement") || args[1].equalsIgnoreCase("place")) {
 			if(args.length < 3) {
 				Message.sendError("Invalid parameters. Check your argument count!");
 				return;
@@ -178,95 +152,74 @@ public class ProtectionCommand {
 					Message.sendNote(curMine.getName(), "Block placement protection has been turned " + ChatColor.GREEN + "on");
 				}
 			}
-			else if(args[2].equalsIgnoreCase("blacklist")) {
-				if(args.length < 3) {
+			else if(args[2].equalsIgnoreCase("whitelist")) {
+				if(args.length != 3) {
 					Message.sendInvalidArguments(args);
 					return;
 				}
-				if(args[3].equalsIgnoreCase("toggle")) {
-					if(args.length != 3) {
-						Message.sendError("Invalid parameters. Check your argument count!");
-						return;
-					}
-					
-					if(curMine.getBreakBlacklist().getEnabled()) {
-						curMine.getBreakBlacklist().setEnabled(false);
-						Message.sendNote(curMine.getName(), "Block placement protection blacklist has been turned " + ChatColor.RED + "off");
-					}
-					else {
-						curMine.getBreakBlacklist().setEnabled(true);
-						Message.sendNote(curMine.getName(), "Block placement protection blacklist has been turned " + ChatColor.GREEN + "on");
-					}
-					
-				}
-				else if(args[3].equalsIgnoreCase("whitelist")) {
-					if(args.length != 3) {
-						Message.sendInvalidArguments(args);
-						return;
-					}
-					if(curMine.getBreakBlacklist().getWhitelist()) {
-						curMine.getBreakBlacklist().setWhitelist(false);
-						Message.sendNote(curMine.getName(), "Block placement whitelist is now " + ChatColor.RED + "off");
-					}
-					else {
-						curMine.getBreakBlacklist().setWhitelist(true);
-						Message.sendNote(curMine.getName(), "Block placement whitelist is now " + ChatColor.GREEN + "on");
-					}
-				}
-				else if(args[3].equalsIgnoreCase("add") || args[3].equalsIgnoreCase("+")) {
-					if(args.length != 4) {
-						Message.sendInvalidArguments(args);
-						return;
-					}
-					MaterialData block = Util.getBlock(args[4]);
-					
-					if(block == null) {
-						Message.sendBlockDoesNotExist(args[4]);
-						return;
-					}
-					
-					List<MaterialData> blockList = curMine.getBreakBlacklist().getBlocks();
-					blockList.add(block);
-					curMine.getBreakBlacklist().setBlocks(blockList);
-					
-					Message.sendNote(curMine.getName(), ChatColor.GREEN + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was added to the block placement protection blacklist");
-				}
-				else if(args[3].equalsIgnoreCase("remove") || args[3].equalsIgnoreCase("-")) {
-					if(args.length != 4) {
-						Message.sendInvalidArguments(args);
-						return;
-					}
-					MaterialData block = Util.getBlock(args[4]);
-					
-					if(block == null) {
-						Message.sendBlockDoesNotExist(args[4]);
-						return;
-					}
-					
-					List<MaterialData> blockList = curMine.getBreakBlacklist().getBlocks();
-					
-					if(blockList.indexOf(block) == -1) {
-						Message.sendError("There is no '" + args[4] + "' in place protection blacklist of mine '" + curMine.getName() + "'");
-						return;
-					}
-					blockList.remove(block);
-					curMine.getBreakBlacklist().setBlocks(blockList);
-
-					Message.sendNote(curMine.getName(), ChatColor.RED + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was removed from the block placement protection blacklist");
+				if(curMine.getPlaceBlacklist().getWhitelist()) {
+					curMine.getPlaceBlacklist().setWhitelist(false);
+					Message.sendNote(curMine.getName(), "Block placement whitelist is now " + ChatColor.RED + "off");
 				}
 				else {
-					Message.sendInvalid(args);
+					curMine.getPlaceBlacklist().setWhitelist(true);
+					Message.sendNote(curMine.getName(), "Block placement whitelist is now " + ChatColor.GREEN + "on");
+				}
+			}
+			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
+				if(args.length != 4) {
+					Message.sendInvalidArguments(args);
 					return;
 				}
+				MaterialData block = Util.getBlock(args[3]);
+				
+				if(block == null) {
+					Message.sendBlockDoesNotExist(args[3]);
+					return;
+				}
+				
+				List<MaterialData> blockList = curMine.getPlaceBlacklist().getBlocks();
+				blockList.add(block);
+				curMine.getPlaceBlacklist().setBlocks(blockList);
+				
+				Message.sendNote(curMine.getName(), ChatColor.GREEN + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was added to the block placement protection blacklist");
+			}
+			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
+				if(args.length != 4) {
+					Message.sendInvalidArguments(args);
+					return;
+				}
+				MaterialData block = Util.getBlock(args[3]);
+				
+				if(block == null) {
+					Message.sendBlockDoesNotExist(args[3]);
+					return;
+				}
+				
+				List<MaterialData> blockList = curMine.getPlaceBlacklist().getBlocks();
+				
+				if(blockList.indexOf(block) == -1) {
+					Message.sendError("There is no '" + args[3] + "' in place protection blacklist of mine '" + curMine.getName() + "'");
+					return;
+				}
+				blockList.remove(block);
+				curMine.getPlaceBlacklist().setBlocks(blockList);
+
+				Message.sendNote(curMine.getName(), ChatColor.RED + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was removed from the block placement protection blacklist");
 			}
 			else
 			{
 				Message.sendInvalid(args);
 				return;
 			}
-			
-			MineUtils.save(curMine);
+		}
+		else
+		{
+			Message.sendInvalid(args);
 			return;
 		}
+		
+		MineUtils.save(curMine);
+		return;
 	}
 }

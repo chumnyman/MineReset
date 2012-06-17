@@ -13,8 +13,11 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.event.Listener;
 import org.bukkit.util.Vector;
 
+import com.wolvencraft.MineReset.util.SignUtils;
+
 @SerializableAs("SignClass")
 public class SignClass implements ConfigurationSerializable, Listener  {
+	private String id;
 	private World world;
 	private Location loc;
 	private Mine parent;
@@ -22,6 +25,7 @@ public class SignClass implements ConfigurationSerializable, Listener  {
 	private List<String> lines;
 	
 	public SignClass(Mine parent, Location loc, Sign sign) {
+		id = SignUtils.generateId();
 		this.parent = parent;
 		world = loc.getWorld();
 		this.loc = loc;
@@ -30,8 +34,18 @@ public class SignClass implements ConfigurationSerializable, Listener  {
 		}
 	}
 	
+	public SignClass(String id, World world, Location loc, Mine parent, boolean reset, List<String> lines) {
+		this.id = id;
+		this.world = world;
+		this.loc = loc;
+		this.parent = parent;
+		this.reset = reset;
+		this.lines = lines;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public SignClass(Map<String, Object> me) {
+		id = (String) me.get("id");
         world = Bukkit.getWorld((String) me.get("world"));
         loc = ((Vector) me.get("loc")).toLocation(world);
         parent = (Mine) me.get("parent");
@@ -41,12 +55,21 @@ public class SignClass implements ConfigurationSerializable, Listener  {
 	
     public Map<String, Object> serialize() {
         Map<String, Object> me = new HashMap<String, Object>();
+        me.put("id", id);
         me.put("loc", loc.toVector());
         me.put("world", world.getName());
         me.put("parent", parent);
         me.put("reset", reset);
         me.put("lines", lines);
         return me;
+    }
+    
+    /**
+     * Returns the unique ID of the sign
+     * @return Sign id
+     */
+    public String getId() {
+    	return id;
     }
     
     /**

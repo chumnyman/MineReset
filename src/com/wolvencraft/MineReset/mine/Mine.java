@@ -3,16 +3,20 @@ package com.wolvencraft.MineReset.mine;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.generation.EmptyGenerator;
 import com.wolvencraft.MineReset.generation.RandomGenerator;
+import com.wolvencraft.MineReset.generation.SnapshotGenerator;
 import com.wolvencraft.MineReset.generation.SurfaceGenerator;
 import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.material.MaterialData;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -31,9 +35,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     private Location tpPoint;
     private String name;
     private String displayName;
-    private Mine parent;
+    private String parent;
     private List<MineBlock> blocks;
     private Generator generator;
+    private Snapshot snapshot;
     private Blacklist blacklist;
     private boolean silent;
     private boolean automatic;
@@ -65,8 +70,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     	displayName = "";
     	parent = null;
     	this.name = name;
-    	blocks = null;
+    	blocks = new ArrayList<MineBlock>();
+    	blocks.add(new MineBlock(new MaterialData(Material.AIR), 1.0));
     	generator = Generator.RANDOM;
+    	snapshot = null;
     	blacklist = new Blacklist();
     	silent = false;
     	automatic = true;
@@ -98,7 +105,7 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @param warningTimes List of seconds before reset to warn over chat.
      * @param enabledProtection List of protection types enabled for the mine.
      */
-    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, Mine parent, String name, List<MineBlock> blocks, Generator generator, boolean isSilent, boolean isAutomatic, int automaticSeconds,  boolean cooldownEnabled, int cooldownSeconds, List<Integer> warningTimes, List<Protection> enabledProtection) {
+    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, String parent, String name, List<MineBlock> blocks, Generator generator, boolean isSilent, boolean isAutomatic, int automaticSeconds,  boolean cooldownEnabled, int cooldownSeconds, List<Integer> warningTimes, List<Protection> enabledProtection) {
         this.one = one;
         this.two = two;
         this.world = world;
@@ -108,6 +115,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         this.name = name;
         this.blocks = blocks;
         this.generator = generator;
+        snapshot = null;
     	blacklist = new Blacklist();
         silent = isSilent;
         automatic = isAutomatic;
@@ -135,9 +143,11 @@ public class Mine implements ConfigurationSerializable, Listener {
         tpPoint = ((Vector) me.get("tpPoint")).toLocation(world);
         displayName = (String) me.get("displayName");
         name = (String) me.get("name");
-        parent = (Mine) me.get("parent");
+        parent = (String) me.get("parent");
         blacklist = (Blacklist) me.get("blacklist");
-        generator = (Generator) me.get("generator");
+        snapshot = (Snapshot) me.get("snapshot");
+        String generatorString = (String) me.get("generator");
+        generator = Generator.valueOf(generatorString);
         silent = (Boolean) me.get("silent");
         automatic = (Boolean) me.get("automatic");
         automaticSeconds = (Integer) me.get("automaticResetTime");
@@ -154,22 +164,21 @@ public class Mine implements ConfigurationSerializable, Listener {
 
     public void reset(Generator generator) {
         removePlayers();
-        if(generator.equals(Generator.EMPTY)) {
+        if(generator.equals(Generator.EMPTY))
         	EmptyGenerator.reset(this);
-        }
-        else if(generator.equals(Generator.SURFACE)) {
+        else if(generator.equals(Generator.SURFACE))
         	SurfaceGenerator.reset(this);
-        }
-        else {
+        else if(generator.equals(Generator.SNAPSHOT))
+        	SnapshotGenerator.reset(this);
+        else
 	        RandomGenerator.reset(this);
-        }
     }
 
     private void removePlayers() {
         for (Player p : world.getPlayers()) {
             if (isLocationInMine(p.getLocation())) {
                 p.teleport(tpPoint, PlayerTeleportEvent.TeleportCause.PLUGIN);
-                Message.sendPlayer(p, Language.getMessage("teleportation.mine-teleport", name));
+                Message.sendPlayer(p, Util.parseVars(Language.getString("misc.mine-teleport"), this));
             }
         }
     }
@@ -191,7 +200,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("name", name);
         me.put("parent", parent);
         me.put("blacklist", blacklist);
-        me.put("generator", generator);
+        me.put("snapshot", snapshot);
+        me.put("generator", generator.toString());
         me.put("silent", silent);
         me.put("automatic", automatic);
         me.put("automaticResetTime", automaticSeconds);
@@ -223,6 +233,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     	return tpPoint;
     }
     
+    public Snapshot getSnapshot() {
+    	return snapshot;
+    }
+    
     public String getName() {
     	return name;
     }
@@ -236,8 +250,12 @@ public class Mine implements ConfigurationSerializable, Listener {
      * Otherwise, returns the mine object itself
      * @return Mine parent
      */
-    public Mine getParent() {
-    	return parent == null ? this : parent;
+    public String getParent() {
+    	return parent;
+    }
+    
+    public boolean hasParent() {
+    	return (parent != null);
     }
     
     public Blacklist getBlacklist() {
@@ -316,7 +334,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	this.displayName = displayName;
     }
     
-    public void setParent(Mine parent) {
+    public void setParent(String parent) {
     	this.parent = parent;
     }
     

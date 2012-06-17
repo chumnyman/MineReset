@@ -33,7 +33,7 @@ public class Blacklist implements ConfigurationSerializable, Listener {
 	public Map<String, Object> serialize() {
 		Map<String, Object> me = new HashMap<String, Object>();
 		me.put("whitelist", whitelist);
-		me.put("whitelist", whitelist);
+		me.put("enabled", enabled);
 		me.put("blocks", blocks);
 		return me;
 	}

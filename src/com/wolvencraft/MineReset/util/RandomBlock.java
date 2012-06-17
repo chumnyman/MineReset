@@ -10,33 +10,14 @@ import org.bukkit.material.MaterialData;
 
 public class RandomBlock {
  
-    List<MineBlock> blocks;
-    
-    public RandomBlock (List<MaterialData> blockList, List<String> weightList)
-    {
-    	blocks = new ArrayList<MineBlock>();
-    	double total = 0;
-    	for (String weight : weightList) {
-    	    total += Double.parseDouble(weight);
-    	}
-    	double tally = 0;
-    	for (int i = 0; i < blockList.size(); i++) {
-    	    tally += Double.parseDouble(weightList.get(i)) / total;
-    	    blocks.add(new MineBlock(blockList.get(i), tally));
-            Message.debug("Block " + blockList.get(i).getItemTypeId() + " was assigned the tally weight of " + tally);
-    	}
-    }
+    List<MineBlock> weightedBlocks;
 
     public RandomBlock(List<MineBlock> blocks) {
-        blocks = new ArrayList<MineBlock>();
-        double total = 0;
-        for (MineBlock block : blocks) {
-            total += block.getChance();
-        }
+    	weightedBlocks = new ArrayList<MineBlock>();
         double tally = 0;
         for (MineBlock block : blocks) {
-            tally += block.getChance() / total;
-            block.setChance(tally);
+            tally += block.getChance();
+            weightedBlocks.add(new MineBlock(block.getBlock(), tally));
             Message.debug("Block " + block.getBlock().getItemTypeId() + " was assigned the tally weight of " + tally);
         }
     }
@@ -44,7 +25,7 @@ public class RandomBlock {
     public MaterialData next()
     {
     	double r = new Random().nextDouble();
-    	for (MineBlock block : blocks) {
+    	for (MineBlock block : weightedBlocks) {
     	    if (r <= block.getChance()) {
     	        return block.getBlock();
     	    }

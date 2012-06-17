@@ -81,6 +81,8 @@ public class SaveCommand
 		List<Mine> mines = MineReset.getMines();
 		mines.add(newMine);
 		MineReset.setMines(mines);
+		
+		MineUtils.save(newMine);
 
         Message.debug("Mine creation completed");
 		

@@ -134,6 +134,7 @@ public class Message
 	 */
 	public static void sendInvalidArguments(String[] args) {
 		CommandSender sender = CommandManager.getSender();
+		String title = Language.getString("general.title-error");
 		String message = Language.getString("error.arguments");
 		String command = "";
         for (String arg : args) {
@@ -141,7 +142,7 @@ public class Message
         }
 		log(sender.getName() + " sent an invalid command: /mine" + command);
 		message = Util.parseColors(message);
-		sender.sendMessage(message);
+		sender.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 	
 	/**
@@ -168,14 +169,14 @@ public class Message
 	 * @param name Name of the mine
 	 */
 	public static void sendInvalidMineName(String name) {
-		sendError(Language.getString("error.mine-name-invalid").replaceAll("%MINE%", name));
+		sendError(Language.getString("error.mine-name").replaceAll("%MINE%", name));
 	}
 	
 	/**
 	 * Sends a message that no mine is selected
 	 */
 	public static void sendMineNotSelected() {
-		sendError(Language.getString("error.mine-name-invalid"));
+		sendError(Language.getString("error.mine-not-selected"));
 	}
 	
 	/**

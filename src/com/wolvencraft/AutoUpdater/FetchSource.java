@@ -1,4 +1,4 @@
-package couk.Adamki11s.AutoUpdater;
+package com.wolvencraft.AutoUpdater;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -19,15 +19,16 @@ public class FetchSource
 		URL url = null;
 		try
 		{
-			url = new URL("http://wolvencraft.com/plugins/MineReset/index.html");
+			url = new URL("http://update.wolvencraft.com/MineReset/");
 		}
 		catch(MalformedURLException ex)
 		{
 			ex.printStackTrace();
+			return null;
 		}	
 		
 		InputStream is = null;
-	    String s, source = "";
+	    String source = "";
 
 		try
 		{
@@ -35,23 +36,20 @@ public class FetchSource
 		}
 		catch (IOException ex)
 		{
-			ex.printStackTrace();
-			Message.log("Error opening URL input stream!");
+			Message.log("Unable to connect to the update server!");
+			return null;
 		}
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new DataInputStream(new BufferedInputStream(is))));
 		
 		try
 		{
-			while ((s = reader.readLine()) != null)
-			{
-				source += s;
-			}
+			source = reader.readLine();
 		}
 		catch (IOException ex)
 		{
-			ex.printStackTrace();
 			Message.log("Error reading input stream!");
+			return null;
 		}
 		
 		try
@@ -60,8 +58,8 @@ public class FetchSource
 		}
 		catch (IOException ioe)
 		{
-			ioe.printStackTrace();
 			Message.log("Error closing URL input stream!");
+			return null;
 		}
          
 		return source;

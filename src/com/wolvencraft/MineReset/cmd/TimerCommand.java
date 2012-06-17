@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.Util;
 
 
@@ -48,7 +49,6 @@ public class TimerCommand {
 				curMine.setAutomatic(true);
 				Message.sendNote(curMine.getName(), "Automatic mine reset is " + ChatColor.GREEN + "on");
 			}
-			return;
 		}
 		else if(args[1].equalsIgnoreCase("time")) {
 			if(args.length != 2) {
@@ -63,7 +63,6 @@ public class TimerCommand {
 			curMine.setResetPeriod(time);
 			String parsedTime = Util.parseSeconds(time);
 			Message.sendSuccess("'" + curMine.getName() + "' will now reset every " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s)");
-			return;
 		}
 		else if(args[1].equalsIgnoreCase("warning")) {
 			if(args.length < 3) {
@@ -87,7 +86,6 @@ public class TimerCommand {
 					curMine.setWarned(true);
 					Message.sendNote(curMine.getName(), "Reset warnings are " + ChatColor.GREEN + "on");
 				}
-				return;
 			}
 			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
 				if(args.length != 4) {
@@ -110,7 +108,6 @@ public class TimerCommand {
 				curMine.setWarningTimes(warnList);
 				String parsedTime = Util.parseSeconds(time);
 				Message.sendSuccess(curMine.getName() + " will now send warnings " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s) before the reset");
-				return;
 			}
 			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
 				if(args.length != 4) {
@@ -134,7 +131,6 @@ public class TimerCommand {
 				warnList.remove(index);
 				curMine.setWarningTimes(warnList);
 				Message.sendSuccess(curMine.getName() + " will no longer send a warning " + time + " minute(s) before the reset");
-				return;
 			}
 			else
 			{
@@ -147,5 +143,8 @@ public class TimerCommand {
 			Message.sendInvalid(args);
 			return;
 		}
+		
+		MineUtils.save(curMine);
+		return;
 	}
 }

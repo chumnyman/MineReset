@@ -2,13 +2,13 @@
 package com.wolvencraft.MineReset;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.wolvencraft.AutoUpdater.Updater;
 import com.wolvencraft.MineReset.mine.Blacklist;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
@@ -21,13 +21,13 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wolvencraft.MineReset.cmd.*;
+import com.wolvencraft.MineReset.config.ConfigurationUpdater;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.events.*;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.SignUtils;
 import com.wolvencraft.MineReset.util.Util;
 
-import couk.Adamki11s.AutoUpdater.Updater;
 
 /**
  * Mine Reset
@@ -78,24 +78,15 @@ public class MineReset extends JavaPlugin
         ConfigurationSerialization.registerClass(SignClass.class, "SignClass");
         
 		mines = new ArrayList<Mine>();
-        File mineFolder = new File(getDataFolder(), "mines");
-        if (!mineFolder.exists() || !mineFolder.isDirectory()) {
-            mineFolder.mkdir();
+        mines = MineUtils.loadAll(mines);
+        
+        signs = new ArrayList<SignClass>();
+        signs = SignUtils.loadAll(signs);
+        
+        if(ConfigurationUpdater.run()) {
+        	log.info("Configuration updated to the new format!");
         }
-        File[] mineFiles = mineFolder.listFiles(new FileFilter() {
-            public boolean accept(File file) {
-                return file.getName().contains(".yml");
-            }
-        });
-
-        for (File mineFile : mineFiles) {
-            FileConfiguration mineConf = YamlConfiguration.loadConfiguration(mineFile);
-            Object mine = mineConf.get("mine");
-            if (mine instanceof Mine) {
-                mines.add((Mine) mine);
-            }
-        }
-
+        
 		log.info("MineReset started");
 		log.info(mines.size() + " mine(s) found");
 		
@@ -108,17 +99,18 @@ public class MineReset extends JavaPlugin
 					if(mines.size() != 0) {
 		                String warnMessage = Language.getString("reset.automatic-reset-warning");
 		                for(Mine curMine : mines) {
-							Mine parentMine = curMine.getParent();
+							Mine parentMine = MineUtils.getMine(curMine.getParent());
 							if(parentMine == null) parentMine = curMine;
-							if(curMine.getAutomatic()) {
-								int nextReset = MineUtils.getNextReset(curMine);
+							if(parentMine.getAutomatic()) {
+								int nextReset = MineUtils.getNextReset(parentMine);
 								List<Integer> warnTimes = parentMine.getWarningTimes();
+								
+								SignUtils.updateAll(parentMine);
+								if(curMine.getCooldown() && curMine.getCooldownTime() > 0)
+									curMine.updateCooldown(checkEvery);
 								
 								if(parentMine.equals(curMine)) {
 									curMine.updateTimer(checkEvery);
-									if(curMine.getCooldown() && curMine.getCooldownTime() > 0)
-										curMine.updateCooldown(checkEvery);
-									SignUtils.updateAll(parentMine);
 									
 									if(warnTimes.indexOf(nextReset) != -1 && curMine.getWarned() && !curMine.getSilent())
 										Message.broadcast(Util.parseVars(warnMessage, curMine));
@@ -139,17 +131,8 @@ public class MineReset extends JavaPlugin
 	
 	public void onDisable()
 	{
-		for (Mine mine : mines) {
-            File mineFile = new File(new File(getDataFolder(), "mines"), mine.getName() + ".yml");
-            FileConfiguration mineConf =  YamlConfiguration.loadConfiguration(mineFile);
-            mineConf.set("mine", mine);
-            try {
-                mineConf.save(mineFile);
-            } catch (IOException e) {
-                log.severe("[MineReset] Unable to serialize mine '" + mine.getName() + "'!");
-                e.printStackTrace();
-            }
-        }
+		MineUtils.saveAll(mines);
+		SignUtils.saveAll(signs);
 		log.info("MineReset stopped");
 	}
 	

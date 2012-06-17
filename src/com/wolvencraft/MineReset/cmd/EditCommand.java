@@ -103,7 +103,6 @@ public class EditCommand {
 					Message.sendInvalid(args);
 					return;
 				}
-				percent = (double)(Math.round(percent * 1000)) / 1000;
 			}
 			else {
 				Message.debug("Argument is not numeric, attempting to parse");
@@ -134,7 +133,7 @@ public class EditCommand {
 			else
 				index.setChance(index.getChance() + percent);
 			
-			Message.sendNote(curMine.getName(), (percent * 100) + "% of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
+			Message.sendNote(curMine.getName(), (percent * 100D) + "% of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
 			Message.sendNote(curMine.getName(), "Reset the mine for the changes to take effect");
 			MineUtils.save(curMine);
 			return;

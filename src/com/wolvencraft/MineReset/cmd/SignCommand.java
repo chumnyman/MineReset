@@ -67,7 +67,7 @@ public class SignCommand
 			MineReset.setSigns(signs);
 			
 			Message.sendNote(curMine.getName(), "A new sign was defined successfully");
-			SignUtils.saveAll(MineReset.getSigns());
+			SignUtils.saveAll(signs);
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("reset")) {

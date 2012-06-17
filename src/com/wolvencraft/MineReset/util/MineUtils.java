@@ -58,6 +58,7 @@ public class MineUtils
 	 * @return Loaded list of mines
 	 */
 	public static List<Mine> loadAll(List<Mine> mines) {
+		mines.clear();
 		File mineFolder = new File(CommandManager.getPlugin().getDataFolder(), "mines");
         if (!mineFolder.exists() || !mineFolder.isDirectory()) {
             mineFolder.mkdir();

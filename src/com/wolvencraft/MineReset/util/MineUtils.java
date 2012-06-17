@@ -78,6 +78,25 @@ public class MineUtils
         return mines;
 	}
 	
+	public static boolean delete(Mine curMine) {
+		File mineFolder = new File(CommandManager.getPlugin().getDataFolder(), "mines");
+		if(!mineFolder.exists() || !mineFolder.isDirectory()) return false;
+		
+		File[] mineFiles = mineFolder.listFiles(new FileFilter() {
+            public boolean accept(File file) {
+                return file.getName().contains(".yml");
+            }
+        });
+		
+		for(File mineFile : mineFiles) {
+			if(mineFile.getName().equals(curMine.getName() + ".yml")) {
+				return mineFile.delete();
+			}
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * Returns the object of the mine with the given id
 	 * @param id Name of the mine being checked

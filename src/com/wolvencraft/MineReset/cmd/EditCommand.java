@@ -188,6 +188,7 @@ public class EditCommand {
 			List<Mine> mines = MineReset.getMines();
 			mines.remove(curMine);
 			CommandManager.setMine(null);
+			MineUtils.delete(curMine);
 			Message.sendNote(args[1], "Mine successfully deleted");
 			MineUtils.saveAll(mines);
 			return;

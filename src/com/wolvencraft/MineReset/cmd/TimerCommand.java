@@ -20,7 +20,7 @@ public class TimerCommand {
 		}
 		
 		if(args.length == 1) {
-			HelpCommand.getAuto();
+			HelpCommand.getTimer();
 			return;
 		}
 		

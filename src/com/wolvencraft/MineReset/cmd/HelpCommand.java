@@ -5,52 +5,41 @@ import org.bukkit.command.CommandSender;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
+import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 
-public class HelpCommand {	
-	public static void getAuto() {
-		formatHeader(20, "Timer");
-		formatHelp("auto", "toggle", "Toggles the automatic resets on and off", "");
-		formatHelp("auto", "time <time>", "Changes the automatic reset time to the value specified", "");
-		formatHelp("auto", "warning toggle", "Toggles reset warnings on and off", "");
-		formatHelp("auto", "warning add <time>", "Adds a warning at time specified", "");
-		formatHelp("auto", "warning remove <time>", "Adds a warning at time specified", "");
-		return;
-	}
-	
+public class HelpCommand {
 	public static void getBlacklist() {
 		formatHeader(20, "Blacklist");
 		formatHelp("blacklist", "toggle", "Enables the use of blacklist for the mine", "");
-		formatHelp("blacklist", "whitelist", "Makes the blacklist be treated as a whitelist", "");
-		formatHelp("blacklist", "add <block>", "Adds a block to the blacklist", "");
-		formatHelp("blacklist", "remove <block>", "Removes a block from the whitelist", "");
+		formatHelp("blacklist", "whitelist", "Should the blacklist be treated as a whitelist?", "");
+		formatHelp("blacklist", "+ <block>", "Add <block> to the list", "");
+		formatHelp("blacklist", "- <block>", "Remove <block> from the list", "");
 		return;
 	}
 	
 	public static void getConfig() {
 		formatHeader(20, "Configuration");
-		formatHelp("config", "save", "Saves the data into a configuration file", "");
-		formatHelp("config", "load", "Loads the configuration from a file", "");
+		formatHelp("config", "save", "Saves the mine data to file", "");
+		formatHelp("config", "load", "Loads the mine data from file", "");
 	}
 	
 	public static void getEdit() {
 		formatHeader(20, "Editing");
-		formatHelp("edit", "<name>", "Selects a mine to edit its properties", "");
+		formatHelp("edit", "<id>", "Selects a mine to edit its properties", "");
 		formatHelp("none", "", "De-selects the mine", "");
-		formatHelp("name", "<name>", "Creates a display name for a mine", "");
-		formatHelp("add", "<block> [percentage]", "Adds a block type to the mine", "");
+		formatHelp("name", "<id>", "Creates a display name for a mine", "");
+		formatHelp("+", "<block> [percentage]", "Adds a block type to the mine", "");
 		formatNote("If no persentage is provided, the block will fill up all the space available");
-		formatHelp("remove", "<block> [persentage]", "Removes the specified persentage of a block from the mine", "");
+		formatHelp("-", "<block> [persentage]", "Removes the specified persentage of a block from the mine", "");
 		formatNote("If no persentage is provided, the block will be removed completely");
 		formatHelp("delete", "", "Completely deletes all the data about the selected mine", "");
 		return;
 	}
 	
 	public static void getHelp() {
-		String title = Language.getString("general.title");
-		formatHeader(20, title);
-
-        formatHelp("about", "", "Returns version info and project info about MineReset", "");
+		formatHeader(20, Language.getString("general.title"));
+        formatHelp("about", "", "Returns version and project info about MineReset", "");
 		formatHelp("info", "<name>", "Returns the information about a mine", "info");	
 		formatHelp("list", "", "Lists all the available mines", "list");
 		formatHelp("warp", "<name>", "Teleports you to the mine warp location", "warp");
@@ -78,15 +67,16 @@ public class HelpCommand {
 	public static void getProtection() {
 		formatHeader(20, "Protection");
 		formatHelp("prot", "pvp", "Toggles the PVP on and off for the current mine", "");
+		Message.sendMessage(" ");
 		formatHelp("prot", "break toggle", "Enables or disables the block breaking protection", "");
-		formatHelp("prot", "break blacklist toggle", "Enables or disables the block breaking blacklist", "");
-		formatHelp("prot", "break blacklist whitelist", "Should the blacklist be treated as a whitelist?", "");
-		formatHelp("prot", "break blacklist add", "Add a block to the block breaking blacklist", "");
-		formatHelp("prot", "break blacklist remove", "Remove a block from the block breaking blacklist", "");
-		formatHelp("prot", "place blacklist toggle", "Enables or disables the block breaking blacklist", "");
-		formatHelp("prot", "place blacklist whitelist", "Should the blacklist be treated as a whitelist?", "");
-		formatHelp("prot", "place blacklist add", "Add a block to the block breaking blacklist", "");
-		formatHelp("prot", "place blacklist remove", "Remove a block from the block breaking blacklist", "");
+		formatHelp("prot", "break whitelist", "Should the blacklist be treated as a whitelist?", "");
+		formatHelp("prot", "break + <block>", "Add <block> to the block breaking blacklist", "");
+		formatHelp("prot", "break - <block>", "Remove <block> from the block breaking blacklist", "");
+		Message.sendMessage(" ");
+		formatHelp("prot", "place toggle", "Enables or disables the block breaking blacklist", "");
+		formatHelp("prot", "place whitelist", "Should the blacklist be treated as a whitelist?", "");
+		formatHelp("prot", "place + <block>", "Add <block> to the block placement blacklist", "");
+		formatHelp("prot", "place - <block>", "Remove <block> from the block placement blacklist", "");
 		return;
 	}
 	
@@ -94,7 +84,8 @@ public class HelpCommand {
 		formatHeader(20, "Reset");
 		formatHelp("reset", "<name> [generator]", "Resets the mine manually", "");
 		formatNote("Resets the mine according to the generator defined by the configuration.");
-		formatNote("The following generators are supported: RANDOM, CLEAR");
+		formatNote("The following generators are supported: ");
+		formatNote(" " + ChatColor.GOLD + "RANDOM" + ChatColor.WHITE + ", " + ChatColor.GOLD + "CLEAR" + ChatColor.WHITE + ", " + ChatColor.GOLD + "SURFACE" + ChatColor.WHITE + ", " + ChatColor.GOLD + "SNAPSHOT");
 		return;
 	}
 	
@@ -118,13 +109,23 @@ public class HelpCommand {
 	public static void getSign() {
 		formatHeader(20, "Signs");
 		formatHelp("sign", "create", "Saves the targeted sign into a file", "");
-		formatHelp("sign", "parent <id>", "Sets the sign's parent to the one specified", "");
+		formatHelp("sign", "setparent <id>", "Sets the sign's parent to the one specified", "");
 		formatHelp("sign", "reset", "Marks the targeted sign as mine-resetting", "");
 		formatHelp("sign", "remove", "Removes the targeted sign from data", "");
 		return;
 	}
+
+	public static void getTimer() {
+		formatHeader(20, "Timer");
+		formatHelp("auto", "toggle", "Toggles the automatic resets on and off", "");
+		formatHelp("auto", "set <time>", "Changes the automatic reset time to the value specified", "");
+		formatHelp("auto", "warning toggle", "Toggles reset warnings on and off", "");
+		formatHelp("auto", "warning + <time>", "Adds a warning at time specified", "");
+		formatHelp("auto", "warning - <time>", "Adds a warning at time specified", "");
+		return;
+	}
 	
-	public static void getTeleport() {
+	public static void getWarp() {
 		formatHeader(20, "Teleportation");
 		formatHelp("warp", "<name>", "Teleports you to the mine warp location", "");
 		formatHelp("warp", "set", "Sets a warp for the current mine", "");

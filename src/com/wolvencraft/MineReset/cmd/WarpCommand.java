@@ -28,7 +28,7 @@ public class WarpCommand
 		}
 		
 		if(args.length == 1) {
-			HelpCommand.getTeleport();
+			HelpCommand.getWarp();
 			return;
 		}
 		else if(args.length != 2) {

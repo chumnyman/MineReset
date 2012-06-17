@@ -177,7 +177,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         for (Player p : world.getPlayers()) {
             if (isLocationInMine(p.getLocation())) {
                 p.teleport(tpPoint, PlayerTeleportEvent.TeleportCause.PLUGIN);
-                Message.sendPlayer(p, Language.getMessage("teleportation.mine-teleport", name));
+                Message.sendPlayer(p, Util.parseVars(Language.getString("misc.mine-teleport"), name);
             }
         }
     }

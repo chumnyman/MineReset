@@ -1,5 +1,6 @@
 package com.wolvencraft.MineReset.mine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class SignClass implements ConfigurationSerializable, Listener  {
 		this.parent = parent;
 		world = loc.getWorld();
 		this.loc = loc;
+		lines = new ArrayList<String>();
 		for(int i = 0; i < sign.getLines().length; i++) {
 			lines.add(sign.getLine(i));
 		}

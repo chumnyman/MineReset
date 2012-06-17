@@ -36,7 +36,7 @@ public class TimerCommand {
 		}
 		
 		if(args[1].equalsIgnoreCase("toggle")) {
-			if(args.length != 1) {
+			if(args.length != 2) {
 				Message.sendInvalidArguments(args);
 				return;
 			}
@@ -76,13 +76,11 @@ public class TimerCommand {
 					return;
 				}
 				
-				if(curMine.getWarned())
-				{
+				if(curMine.getWarned()) {
 					curMine.setWarned(false);
 					Message.sendNote(curMine.getName(), "Reset warnings are " + ChatColor.RED + "off");
 				}
-				else
-				{
+				else {
 					curMine.setWarned(true);
 					Message.sendNote(curMine.getName(), "Reset warnings are " + ChatColor.GREEN + "on");
 				}
@@ -124,13 +122,13 @@ public class TimerCommand {
 				List<Integer> warnList = curMine.getWarningTimes();
 				int index = warnList.indexOf(time);
 				if(index == -1) {
-					Message.sendError("'" + curMine.getName() + "' does not send a warning " + time + " minute(s) before the reset");
+					Message.sendError("'" + curMine.getName() + "' does not send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
 					return;
 				}
 				
 				warnList.remove(index);
 				curMine.setWarningTimes(warnList);
-				Message.sendSuccess(curMine.getName() + " will no longer send a warning " + time + " minute(s) before the reset");
+				Message.sendSuccess(curMine.getName() + " will no longer send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
 			}
 			else
 			{

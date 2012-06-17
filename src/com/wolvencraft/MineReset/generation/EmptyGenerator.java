@@ -3,6 +3,7 @@ package com.wolvencraft.MineReset.generation;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.BlockState;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.mine.Mine;
@@ -20,13 +21,10 @@ public class EmptyGenerator {
     			for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
 		            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
 		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-		                    MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
-		                    if(curMine.getBlacklist().getBlocks().contains(original))
-		                    {
-			                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
-				                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-				                    world.getBlockAt(x, y, z).setData(newBlock.getData());
-			                	}
+		                    BlockState original = world.getBlockAt(x, y, z).getState();
+		                    if(curMine.getBlacklist().getBlocks().contains(original.getData())) {
+			                    original.setType(newBlock.getItemType());
+				                original.update();
 		                    }
 		                }
 		            }
@@ -36,13 +34,10 @@ public class EmptyGenerator {
     			for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
 		            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
 		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-		                    MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
-		                    if(!curMine.getBlacklist().getBlocks().contains(original))
-		                    {
-			                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
-				                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-				                    world.getBlockAt(x, y, z).setData(newBlock.getData());
-			                	}
+		                    BlockState original = world.getBlockAt(x, y, z).getState();
+		                    if(!curMine.getBlacklist().getBlocks().contains(original.getData())) {
+			                    original.setType(newBlock.getItemType());
+				                original.update();
 		                    }
 		                }
 		            }
@@ -54,11 +49,9 @@ public class EmptyGenerator {
 	        for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
 	            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
 	                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-	                	MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
-	                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
-		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
-	                	}
+	                    BlockState original = world.getBlockAt(x, y, z).getState();
+		                original.setType(newBlock.getItemType());
+			            original.update();
 	                }
 	            }
 	        }

@@ -2,6 +2,7 @@ package com.wolvencraft.MineReset.generation;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.BlockState;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.mine.Mine;
@@ -20,14 +21,12 @@ public class RandomGenerator {
     			for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
 		            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
 		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-		                    MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
+		                    BlockState original = world.getBlockAt(x, y, z).getState();
 		                    MaterialData newBlock = pattern.next();
-		                    if(curMine.getBlacklist().getBlocks().contains(original))
-		                    {
-			                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
-				                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-				                    world.getBlockAt(x, y, z).setData(newBlock.getData());
-			                	}
+		                    if(curMine.getBlacklist().getBlocks().contains(original.getData())) {
+			                    original.setType(newBlock.getItemType());
+				                original.setRawData(newBlock.getData());
+				                original.update();
 		                    }
 		                }
 		            }
@@ -37,14 +36,12 @@ public class RandomGenerator {
     			for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
 		            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
 		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-		                    MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
+		                    BlockState original = world.getBlockAt(x, y, z).getState();
 		                    MaterialData newBlock = pattern.next();
-		                    if(!curMine.getBlacklist().getBlocks().contains(original))
-		                    {
-			                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
-				                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-				                    world.getBlockAt(x, y, z).setData(newBlock.getData());
-			                	}
+		                    if(!curMine.getBlacklist().getBlocks().contains(original.getData())) {
+			                    original.setType(newBlock.getItemType());
+				                original.setRawData(newBlock.getData());
+				                original.update();
 		                    }
 		                }
 		            }
@@ -56,12 +53,11 @@ public class RandomGenerator {
 	        for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
 	            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
 	                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-	                	MaterialData original = new MaterialData(world.getBlockAt(x, y, z).getType());
+	                    BlockState original = world.getBlockAt(x, y, z).getState();
 	                    MaterialData newBlock = pattern.next();
-	                    if(original.getItemType() != newBlock.getItemType() && original.getData() != newBlock.getData()) {
-		                    world.getBlockAt(x, y, z).setType(newBlock.getItemType());
-		                    world.getBlockAt(x, y, z).setData(newBlock.getData());
-	                	}
+		                original.setType(newBlock.getItemType());
+			            original.setRawData(newBlock.getData());
+			            original.update();
 	                }
 	            }
 	        }

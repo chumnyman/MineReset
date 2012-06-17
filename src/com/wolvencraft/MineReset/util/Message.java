@@ -169,14 +169,14 @@ public class Message
 	 * @param name Name of the mine
 	 */
 	public static void sendInvalidMineName(String name) {
-		sendError(Language.getString("error.mine-name-invalid").replaceAll("%MINE%", name));
+		sendError(Language.getString("error.mine-name").replaceAll("%MINE%", name));
 	}
 	
 	/**
 	 * Sends a message that no mine is selected
 	 */
 	public static void sendMineNotSelected() {
-		sendError(Language.getString("error.mine-name-invalid"));
+		sendError(Language.getString("error.mine-not-selected"));
 	}
 	
 	/**

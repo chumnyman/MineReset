@@ -213,7 +213,7 @@ public class MineUtils
 	 */
 	public static int getNextReset(Mine curMine)
 	{
-		if(curMine.getParent() == null)
+		if(!curMine.hasParent())
 			return ((int)curMine.getNextAutomaticResetTick()) * 20;
 		else
 			return getNextReset(getMine(curMine.getParent()));

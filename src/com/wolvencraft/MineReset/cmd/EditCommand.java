@@ -67,7 +67,7 @@ public class EditCommand {
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+")) {
-			if(args.length != 3) {
+			if(args.length != 2 && args.length != 3) {
 				Message.sendInvalidArguments(args);
 				return;
 			}
@@ -95,30 +95,37 @@ public class EditCommand {
 				return;
 			}
 
-			
 			double percent;
-			if(Util.isNumeric(args[2])) {
-				percent = Double.parseDouble(args[2]);
-				if(percent <= 0) {
-					Message.sendInvalid(args);
-					return;
+			double percentAvailable = air.getChance();
+			
+			if(args.length == 3) {
+				if(Util.isNumeric(args[2])) {
+					percent = Double.parseDouble(args[2]);
 				}
+				else {
+					Message.debug("Argument is not numeric, attempting to parse");
+					try {
+						percent = Double.parseDouble(args[2].replace("%", ""));
+					}
+					catch(NumberFormatException nfe) {
+						Message.sendInvalid(args);
+						return;
+					}
+				}
+				
+				percent = percent / 100;
+				Message.debug("Chance value is " + percent);
 			}
 			else {
-				Message.debug("Argument is not numeric, attempting to parse");
-				try {
-					percent = Double.parseDouble(args[2].replace("%", ""));
-				}
-				catch(NumberFormatException nfe) {
-					Message.sendInvalid(args);
-					return;
-				}
+				percent = percentAvailable;
 			}
-			percent = percent / 100;
-			Message.debug("Chance value is " + percent);
 			
-			double percentAvailable = air.getChance();
-			if((percentAvailable - percent) <= 0) {
+			if(percent <= 0) {
+				Message.sendInvalid(args);
+				return;
+			}
+			
+			if((percentAvailable - percent) < 0) {
 				Message.sendError("Invalid percentage. Use /mine info " + curMine.getName() + " to review the percentages");
 				return;
 			}
@@ -139,7 +146,7 @@ public class EditCommand {
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-")) {
-			if(args.length != 3) {
+			if(args.length != 2 && args.length != 3) {
 				Message.sendInvalidArguments(args);
 				return;
 			}
@@ -161,14 +168,44 @@ public class EditCommand {
 				return;
 			}
 			
-			List<MineBlock> blocks = curMine.getBlocks();
+			double percent;
+			
+			if(args.length == 3) {
+				if(Util.isNumeric(args[2])) {
+					percent = Double.parseDouble(args[2]);
+				}
+				else {
+					Message.debug("Argument is not numeric, attempting to parse");
+					try {
+						percent = Double.parseDouble(args[2].replace("%", ""));
+					}
+					catch(NumberFormatException nfe) {
+						Message.sendInvalid(args);
+						return;
+					}
+				}
+				
+				percent = percent / 100;
+				Message.debug("Chance value is " + percent);
+				
+				if(percent > blockData.getChance())
+					percent = blockData.getChance();
+				
+				air.setChance(air.getChance() + blockData.getChance());
+				blockData.setChance(blockData.getChance() - percent);
+				
+				Message.sendNote(curMine.getName(), args[1] + " was successfully removed from the mine");
+			}
+			else {
+				List<MineBlock> blocks = curMine.getBlocks();
 
-			air.setChance(air.getChance() + blockData.getChance());
-			blocks.remove(blockData);
-			
-			curMine.setBlocks(blocks);
-			
-			Message.sendNote(curMine.getName(), args[1] + " was successfully removed from the mine");
+				air.setChance(air.getChance() + blockData.getChance());
+				blocks.remove(blockData);
+				
+				curMine.setBlocks(blocks);
+				
+				Message.sendNote(curMine.getName(), args[1] + " was successfully removed from the mine");
+			}
 			MineUtils.save(curMine);
 			return;
 		}

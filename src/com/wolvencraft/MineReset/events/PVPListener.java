@@ -52,7 +52,7 @@ public class PVPListener implements Listener {
                 Message.debug(mine+" doesn't have PvP protection on");
                 continue;
             }
-            if (mine.isLocationInMine(attacker.getLocation()) || mine.isLocationInMine(victim.getLocation())) {
+            if (mine.isLocationInProtection(attacker.getLocation()) || mine.isLocationInMine(victim.getLocation())) {
                 Message.sendPlayerError(attacker, "PvP is not allowed in the mine!");
                 event.setCancelled(true);
                 continue;

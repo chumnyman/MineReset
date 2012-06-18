@@ -56,8 +56,8 @@ public class BlockBreakListener implements Listener
                 Message.debug(mine.getName() + " has protection enabled");
 				Location blockLocation = b.getLocation();
 
-				if (mine.isLocationInMine(blockLocation)) {
-                    Message.debug("Player breakd a block in the mine region");
+				if (mine.isLocationInProtection(blockLocation)) {
+                    Message.debug("Player broke a block in the mine region");
 
 					if(!Util.playerHasPermission(player, "protection.break." + mine.getName()) && !Util.playerHasPermission(player, "protection.break"))
 					{

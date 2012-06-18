@@ -3,6 +3,7 @@ package com.wolvencraft.MineReset.cmd;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.CommandManager;
@@ -33,7 +34,54 @@ public class ProtectionCommand {
 			return;
 		}
 		
-		if(args[1].equalsIgnoreCase("pvp")) {
+		if(args[1].equalsIgnoreCase("save")) {
+			if(args.length != 2) {
+				Message.sendInvalidArguments(args);
+				return;
+			}
+			
+			if(!Util.locationsSet()) {
+				Message.sendError("Make a selection first");
+				return;
+			}
+			
+			Location[] loc = CommandManager.getLocation();
+			
+			if(!loc[0].getWorld().equals(loc[1].getWorld())) {
+				Message.sendError("Your selection points are in different worlds");
+				return;
+			}
+			
+			if(!loc[0].getWorld().equals(curMine.getWorld())) {
+				Message.sendError("Mine and protection regions are in different worlds");
+				return;
+			}
+	        
+	        // Parsing the coordinates
+	        double temp = 0;
+			
+			if((int)loc[0].getX() > (int)loc[1].getX()) {
+				temp = loc[0].getBlockX();
+				loc[0].setX(loc[1].getBlockX());
+				loc[1].setX(temp);
+			}
+			
+			if((int)loc[0].getY() > (int)loc[1].getY()) {
+				temp = loc[0].getBlockY();
+				loc[0].setY(loc[1].getBlockY());
+				loc[1].setY(temp);
+			}
+			
+			if((int)loc[0].getZ() > (int)loc[1].getZ()) {
+				temp = loc[0].getBlockZ();
+				loc[0].setZ(loc[1].getBlockZ());
+				loc[1].setZ(temp);
+			}
+			
+			curMine.setProtectionRegion(loc);
+			Message.sendNote(curMine.getName(), "Protection region has been set!");
+		}
+		else if(args[1].equalsIgnoreCase("pvp")) {
 			if(args.length != 2) {
 				Message.sendInvalidArguments(args);
 				return;

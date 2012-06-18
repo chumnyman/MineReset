@@ -56,7 +56,7 @@ public class BlockPlaceListener implements Listener
                 Message.debug(mine.getName() + " has protection enabled");
 				Location blockLocation = b.getLocation();
 
-				if (mine.isLocationInMine(blockLocation)) {
+				if (mine.isLocationInProtection(blockLocation)) {
                     Message.debug("Player placed a block in the mine region");
 
 					if(!Util.playerHasPermission(player, "protection.place." + mine.getName()) && !Util.playerHasPermission(player, "protection.place"))

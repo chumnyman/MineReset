@@ -43,7 +43,7 @@ public class BucketEmptyListener implements Listener
                 continue;
             }
 
-            if (mine.isLocationInMine(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation())) {
+            if (mine.isLocationInProtection(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation())) {
                 Message.debug("Yup, they can't place that bucket in the mine.");
                 event.setCancelled(true);
                 Message.sendPlayerError(event.getPlayer(), "You are not allowed to empty buckets in the mine! No soup for you!");

@@ -50,6 +50,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     private boolean warned;
     private List<Integer> warningTimes;
     private List<Protection> enabledProtection;
+    private Location protOne;
+    private Location protTwo;
     private Blacklist breakBlacklist;
     private Blacklist placeBlacklist;
 
@@ -85,6 +87,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     	warned = true;
     	warningTimes = new ArrayList<Integer>();
     	enabledProtection = new ArrayList<Protection>();
+    	protOne = one;
+    	protTwo = two;
     	breakBlacklist = new Blacklist();
     	placeBlacklist = new Blacklist();
     }
@@ -104,8 +108,10 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @param automaticSeconds Number of seconds between automatic resets.
      * @param warningTimes List of seconds before reset to warn over chat.
      * @param enabledProtection List of protection types enabled for the mine.
+     * @param protOne First protection region point
+     * @param protTwo Second protection region point
      */
-    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, String parent, String name, List<MineBlock> blocks, Generator generator, boolean isSilent, boolean isAutomatic, int automaticSeconds,  boolean cooldownEnabled, int cooldownSeconds, List<Integer> warningTimes, List<Protection> enabledProtection) {
+    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, String parent, String name, List<MineBlock> blocks, Generator generator, boolean isSilent, boolean isAutomatic, int automaticSeconds,  boolean cooldownEnabled, int cooldownSeconds, List<Integer> warningTimes, List<Protection> enabledProtection, Location protOne, Location protTwo) {
         this.one = one;
         this.two = two;
         this.world = world;
@@ -127,6 +133,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         warned = warningTimes != null && warningTimes.size() > 0;
         this.warningTimes = warningTimes;
         this.enabledProtection = enabledProtection;
+        this.protOne = protOne;
+        this.protTwo = protTwo;
     	breakBlacklist = new Blacklist();
     	placeBlacklist = new Blacklist();
     }
@@ -158,6 +166,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         warningTimes = (List<Integer>) me.get("warningTimes");
         blocks = (List<MineBlock>) me.get("blocks");
         enabledProtection = (List<Protection>) me.get("protectionTypes");
+        protOne = ((Vector) me.get("protOne")).toLocation(world);
+        protTwo = ((Vector) me.get("protTwo")).toLocation(world);
         breakBlacklist = (Blacklist) me.get("breakBlacklist");
         placeBlacklist = (Blacklist) me.get("placeBlacklist");
     }
@@ -189,6 +199,13 @@ public class Mine implements ConfigurationSerializable, Listener {
                 && (l.getZ() >= one.getZ() && l.getZ() <= two.getZ()) //and z
                 && l.getWorld().equals(world);//and world
     }
+    
+    public boolean isLocationInProtection(Location l) {
+        return (l.getX() >= protOne.getX() && l.getX() <= protTwo.getX())     //if x matches
+                && (l.getY() >= protOne.getY() && l.getY() <= protTwo.getY()) //and y
+                && (l.getZ() >= protOne.getZ() && l.getZ() <= protTwo.getZ()) //and z
+                && l.getWorld().equals(world);//and world
+    }
 
     public Map<String, Object> serialize() {
         Map<String, Object> me = new HashMap<String, Object>();
@@ -211,6 +228,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("isWarned", warned);
         me.put("warningTimes", warningTimes);
         me.put("protectionTypes", enabledProtection);
+        me.put("protOne", protOne);
+        me.put("protTwo", protTwo);
         me.put("blocks", blocks);
         me.put("breakBlacklist", breakBlacklist);
         me.put("placeBlacklist", placeBlacklist);
@@ -310,6 +329,14 @@ public class Mine implements ConfigurationSerializable, Listener {
     	return enabledProtection;
     }
     
+    public Location getFirstProtPoint() {
+    	return protOne;
+    }
+    
+    public Location getSecondProtPoint() {
+    	return protTwo;
+    }
+    
     public void setFirstPoint(Location position) {
     	one = position;
     }
@@ -392,6 +419,11 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public void setProtection(List<Protection> enabledProtection) {
     	this.enabledProtection = enabledProtection;
+    }
+
+    public void setProtectionRegion(Location[] coords) {
+    	protOne = coords[0];
+    	protTwo = coords[1];
     }
 
     public long getNextAutomaticResetTick() {

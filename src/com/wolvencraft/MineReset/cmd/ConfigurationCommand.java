@@ -1,5 +1,6 @@
 package com.wolvencraft.MineReset.cmd;
 
+import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.util.Message;
@@ -30,6 +31,8 @@ public class ConfigurationCommand
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("load")) {
+			CommandManager.getPlugin().reloadConfig();
+			CommandManager.getPlugin().reloadLanguageData();
 			MineReset.setMines(MineUtils.loadAll(MineReset.getMines()));
 			Message.sendSuccess("Configuration loaded from disc");
 			return;

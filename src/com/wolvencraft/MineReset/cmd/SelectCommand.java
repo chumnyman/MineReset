@@ -1,6 +1,5 @@
 package com.wolvencraft.MineReset.cmd;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -70,7 +69,7 @@ public class SelectCommand
 		}
 		
 		if(Util.locationsSet()) {
-			Message.sendSuccess("Both reference points are set! You can now save the region with " + ChatColor.GOLD + "/mine save");
+			Message.sendSuccess("Both reference points are set! You can now save the region.");
 		}
 		
 		return;

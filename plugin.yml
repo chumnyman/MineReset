@@ -11,29 +11,25 @@ permissions:
   MineReset.*:
     description: Gives access to all MineReset commands
     children:
-      MineReset.info: true
-      MineReset.list: true
-      MineReset.warp: true
-      MineReset.protection: true
-      MineReset.reset: true
-      MineReset.edit: true
-      MineReset.config: true
+      MineReset.admin: true
   MineReset.user:
     description: Gives access to basic MineReset commands
     children:
-      MineReset.info: true
+      MineReset.time: true
       MineReset.list: true
       MineReset.warp: true
+      MineReset.info: true
       MineReset.protection: true
   MineReset.admin:
     description: Gives access to advanced MineReset commands
     children:
       MineReset.user: true
       MineReset.reset: true
+      MineReset.reset.cooldown: true
       MineReset.edit: true
       MineReset.config: true
-  MineReset.info:
-    description: Allows a player to look at the information about a mine
+  MineReset.time:
+    description: Allows a player to check the time until the next reset of all mines
     default: op
   MineReset.list:
     description: Allows a player to look at the list of existing mines
@@ -41,19 +37,19 @@ permissions:
   MineReset.warp:
     description: Allows a player to teleport to the mine warp location
     default: op
+  MineReset.info:
+    description: Allows a player to look at the information about mines
+    default: op
   MineReset.protection:
     description: Allows a player to break and place blocks in all mines
     children:
       MineReset.protection.break: true
       MineReset.protection.place: true
-  MineReset.protection.bypass:
-    description: Allows a player to bypass all checks, blacklists and whitelists
-    default: op
   MineReset.protection.break:
-    description: Allows a player to break blocks in all mines
+    description: Allows a player to bypass breaking protection in all mines
     default: op
   MineReset.protection.place:
-    description: Allows a player to place blocks in all mines
+    description: Allows a player to bypass placement protection in all mines
     default: op
   MineReset.reset:
     description: Allows a player to reset a mine manually

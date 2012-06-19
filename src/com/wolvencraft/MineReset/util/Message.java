@@ -29,7 +29,7 @@ public class Message
 	 * @param message Message to be sent
 	 */
     public static void sendPlayer(Player p, String message) {
-        p.sendMessage(ChatColor.GREEN + "[" + Language.getString("general.title") + "]" + ChatColor.WHITE + message);
+        p.sendMessage(ChatColor.GREEN + "[" + Util.parseColors(Language.getString("general.title")) + "]" + ChatColor.WHITE + message);
     }
 	
     /**
@@ -141,6 +141,7 @@ public class Message
             command = command + " " + arg;
         }
 		log(sender.getName() + " sent an invalid command: /mine" + command);
+		title = Util.parseColors(title);
 		message = Util.parseColors(message);
 		sender.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}

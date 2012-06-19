@@ -55,15 +55,13 @@ public class ResetCommand
 		}
 		
 		curMine.reset(generator);
-		curMine.resetTimer();
 		
 		String broadcastMessage;
 		if(automatic) {
 			List<Mine> mines = MineReset.getMines();
 			for(Mine childMine : mines) {
-				if(childMine.getParent() != null)
-				{
-					String[] childArgs = {"", childMine.getName()};
+				if(MineUtils.getMine(childMine.getParent()) != null) {
+					String[] childArgs = {null, childMine.getName()};
 					run(childArgs, true, null);
 				}
 			}

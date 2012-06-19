@@ -81,7 +81,7 @@ public class MineReset extends JavaPlugin
         signs = SignUtils.loadAll(signs);
         
         if(ConfigurationUpdater.run()) {
-        	log.info("Configuration updated to the new format!");
+        	Message.log("Configuration updated to the new format!");
         }
         
 		log.info("MineReset started");
@@ -96,27 +96,25 @@ public class MineReset extends JavaPlugin
 					if(mines.size() != 0) {
 		                String warnMessage = Language.getString("reset.automatic-reset-warning");
 		                for(Mine curMine : mines) {
-							Mine parentMine = MineUtils.getMine(curMine.getParent());
-							if(parentMine == null) parentMine = curMine;
-							if(parentMine.getAutomatic()) {
-								int nextReset = MineUtils.getNextReset(parentMine);
-								List<Integer> warnTimes = parentMine.getWarningTimes();
+							if(MineUtils.getMine(curMine.getParent()) == null && curMine.getAutomatic()) {
+								int nextReset = MineUtils.getNextReset(curMine);
+								List<Integer> warnTimes = curMine.getWarningTimes();
 								
-								SignUtils.updateAll(parentMine);
-								if(curMine.getCooldown() && curMine.getCooldownTime() > 0)
-									curMine.updateCooldown(checkEvery);
-								
-								if(parentMine.equals(curMine)) {
-									curMine.updateTimer(checkEvery);
+								SignUtils.updateAll(curMine);
+								curMine.updateTimer(checkEvery);
 									
-									if(warnTimes.indexOf(nextReset) != -1 && curMine.getWarned() && !curMine.getSilent())
-										Message.broadcast(Util.parseVars(warnMessage, curMine));
-									if(nextReset <= 0)
-									{
-										String[] args = {"", curMine.getName()};
-										ResetCommand.run(args, true, null);
-									}
+								if(!curMine.getSilent() && curMine.getWarned() && warnTimes.indexOf(nextReset) != -1)
+									Message.broadcast(Util.parseVars(warnMessage, curMine));
+								if(nextReset <= 0) {
+									String[] args = {null, curMine.getName()};
+									ResetCommand.run(args, true, null);
+
+									if(curMine.getAutomatic()) curMine.resetTimer();
+									if(curMine.getCooldown()) curMine.resetCooldown();
 								}
+							}
+							if(curMine.getCooldown() && curMine.getCooldownTime() > 0) {
+								curMine.updateCooldown(checkEvery);
 							}
 						}
 		            }

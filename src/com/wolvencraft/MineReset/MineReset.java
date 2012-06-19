@@ -48,9 +48,6 @@ public class MineReset extends JavaPlugin
     private static List<Mine> mines;
     private static List<SignClass> signs;
 	
-	public static double curVer = 1.2;
-	public static int curSubVer = 2;
-	
 	public void onEnable()
 	{
 		log = this.getLogger();

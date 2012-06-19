@@ -24,7 +24,6 @@
 
 package com.wolvencraft.AutoUpdater;
 
-import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.ConfigurationCommand;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.util.Message;
@@ -33,8 +32,8 @@ import com.wolvencraft.MineReset.util.Message;
 public class Updater
 {
 
-	private static double version;
-	private static int subVersion;
+	private static double version, curVer;
+	private static int subVersion, curSubVer;
 	private static String reason, source, urgency;
 	
 	/**
@@ -43,120 +42,111 @@ public class Updater
 	 * @param currentSubVersion - Double
 	 * @return
 	 */
-	public static boolean checkVersion()
-	{
-		try
-		{
-			if(!Configuration.getBoolean("versions.check-for-new-versions"))
+	public static boolean checkVersion() {
+		try {
+			if(!Configuration.getString("updater.channel").equalsIgnoreCase("none"));
 				return true;
 		}
-		catch(NullPointerException npe)
-		{
+		catch(NullPointerException npe) {
 			String[] args = {"config", "generate"};
 			ConfigurationCommand.run(args);
 		}
 		
+		try {
+			String ver = Configuration.getString("configuration.version");
+			curVer = Double.parseDouble(ver.substring(0, 3));
+			curSubVer = Integer.parseInt(ver.substring(4));
+		}
+		catch(NumberFormatException nfe) {
+			return true;
+		}
 		source = FetchSource.fetchSource();
 		if(source == null) return true;
 		formatSource(source);
 		
-		String subVers = Integer.toString(MineReset.curSubVer);
-		
-		boolean verUpToDate;
 		String channel = Configuration.getString("updater.channel");
 		
 		if(channel.equalsIgnoreCase("db")) {
-			if(version > MineReset.curVer || (version == MineReset.curVer && subVersion > MineReset.curSubVer))
-				verUpToDate = false;
-			else
-				verUpToDate = true;
+			if(version <= curVer || (version == curVer && subVersion <= curSubVer))
+				return true;
 		}
 		else if(channel.equalsIgnoreCase("rb")) {
-			if(version > MineReset.curVer)
-				verUpToDate = false;
-			else verUpToDate = true;
+			if(version <= curVer)
+				return true;
 		}
 		else
-			verUpToDate = true;
+			return true;
 		
+		String extraOne = "";
+		String extraTwo = "";
+		String extraAll = "";
+		String extraDash = "";
+		if(urgency.equalsIgnoreCase("LOW"))
+			extraOne = "   ";
+		else if(urgency.equalsIgnoreCase("MEDIUM"))
+			extraOne = "";
+		else if(urgency.equalsIgnoreCase("HIGH"))
+			extraOne = "  ";
 		
-		if(!verUpToDate)
-		{
-			String extraOne = "";
-			String extraTwo = "";
-			String extraAll = "";
-			String extraDash = "";
-			if(urgency.equalsIgnoreCase("LOW"))
-				extraOne = "   ";
-			else if(urgency.equalsIgnoreCase("MEDIUM"))
-				extraOne = "";
-			else if(urgency.equalsIgnoreCase("HIGH"))
-				extraOne = "  ";
-			
-			if(reason.length() < 9)
-			{
-				for(int i = reason.length(); i < 9; i++)
-					extraTwo = extraTwo + " ";
-			}
-			else if(reason.length() > 9)
-			{
-				for(int i = 9; i < reason.length(); i++)
-				{
-					extraAll = extraAll + " ";
-					extraDash = extraDash + "-";
-				}
-			}
-			Message.log("+------------------------------" + extraDash + "+");
-			Message.log("| MineReset is not up to date! " + extraAll + "|");
-			Message.log("|    http://bit.ly/MineReset   " + extraAll + "|");
-			Message.log("| Running version : " + MineReset.curVer + "." + subVers + "      " + extraAll + "|");
-			Message.log("| Latest version  : " + version + "." + subVersion + "      " + extraAll + "|");
-			Message.log("| Urgency         : " + urgency + extraOne + "     " + extraAll + "|");
-			Message.log("| Description     : " + reason + "  " + extraTwo + "|");
-			Message.log("+------------------------------" + extraDash + "+");
-			return false;
+		if(reason.length() < 9) {
+			for(int i = reason.length(); i < 9; i++)
+				extraTwo = extraTwo + " ";
 		}
-		else return true;
+		else if(reason.length() > 9) {
+			for(int i = 9; i < reason.length(); i++) {
+				extraAll = extraAll + " ";
+				extraDash = extraDash + "-";
+			}
+		}
+		Message.log("+------------------------------" + extraDash + "+");
+		Message.log("| MineReset is not up to date! " + extraAll + "|");
+		Message.log("|    http://bit.ly/MineReset   " + extraAll + "|");
+		Message.log("| Running version : " + curVer + "." + curSubVer + "      " + extraAll + "|");
+		Message.log("| Latest version  : " + version + "." + subVersion + "      " + extraAll + "|");
+		Message.log("| Urgency         : " + urgency + extraOne + "     " + extraAll + "|");
+		Message.log("| Description     : " + reason + "  " + extraTwo + "|");
+		Message.log("+------------------------------" + extraDash + "+");
+		return false;
 		
 	}
 	
-	private static void formatSource(String source)
-	{
+	private static void formatSource(String source) {
 		String str[] = source.split("\\@");
 		
-		try
-		{
+		try {
 			version = Double.parseDouble(str[1]);
 			subVersion = Integer.parseInt(str[2]);
 		}
-		catch (NumberFormatException ex)
-		{
+		catch (NumberFormatException ex) {
 			ex.printStackTrace();
 			Message.log("Error while parsing version number!");
 		}
 		
 		urgency = str[3];
-			
 		reason = str[4];
 	}
 	
-	public static String getUrgency()
-	{
+	public static String getUrgency() {
 		return urgency;
 	}
 	
-	public static String getReason()
-	{
+	public static String getReason() {
 		return reason;
 	}
 	
-	public static double getVersion()
-	{
+	public static double getVersion() {
 		return version;
 	}
 	
-	public static int getSubVersion()
-	{
+	public static double getCurVersion() {
+		return curVer;
+	}
+	
+	public static int getSubVersion() {
 		return subVersion;
+	}
+	
+	public static double getCurSubVersion() {
+		return curSubVer;
 	}
 }

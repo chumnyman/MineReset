@@ -78,7 +78,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	snapshot = null;
     	blacklist = new Blacklist();
     	silent = false;
-    	automatic = true;
+    	automatic = false;
     	this.automaticSeconds = automaticSeconds;
     	nextAutomaticResetTick = automaticSeconds * 20;
     	cooldownEnabled = false;

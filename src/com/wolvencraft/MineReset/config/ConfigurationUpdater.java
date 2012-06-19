@@ -115,8 +115,8 @@ public class ConfigurationUpdater {
 			}
 			
 			Generator gen = Generator.valueOf(getRegionData().getString("mines." + mine + ".reset.generator"));
-			boolean automatic = getRegionData().getBoolean("mines." + mine + ".auto.reset");
-			int automaticSeconds = getRegionData().getInt("mines." + mine + ".auto.reset-every");
+			boolean automatic = getRegionData().getBoolean("mines." + mine + ".reset.auto.reset");
+			int automaticSeconds = getRegionData().getInt("mines." + mine + ".reset.auto.reset-every");
 			List<Integer> warnTimes = getRegionData().getIntegerList("mines" + mine + ".reset.auto.warn-times");
 			List<Protection> enabledProt = new ArrayList<Protection>();
 			if(getRegionData().getBoolean("mines." + mine + ".protection.breaking.enabled")) enabledProt.add(Protection.BLOCK_BREAK);

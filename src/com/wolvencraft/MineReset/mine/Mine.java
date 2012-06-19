@@ -228,8 +228,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("isWarned", warned);
         me.put("warningTimes", warningTimes);
         me.put("protectionTypes", enabledProtection);
-        me.put("protOne", protOne);
-        me.put("protTwo", protTwo);
+        me.put("protOne", protOne.toVector());
+        me.put("protTwo", protTwo.toVector());
         me.put("blocks", blocks);
         me.put("breakBlacklist", breakBlacklist);
         me.put("placeBlacklist", placeBlacklist);

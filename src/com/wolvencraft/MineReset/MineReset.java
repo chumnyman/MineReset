@@ -21,7 +21,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wolvencraft.MineReset.cmd.*;
-import com.wolvencraft.MineReset.config.ConfigurationUpdater;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.events.*;
 import com.wolvencraft.MineReset.util.Message;
@@ -79,10 +78,6 @@ public class MineReset extends JavaPlugin
         
         signs = new ArrayList<SignClass>();
         signs = SignUtils.loadAll(signs);
-        
-        if(ConfigurationUpdater.run()) {
-        	Message.log("Configuration updated to the new format!");
-        }
         
 		log.info("MineReset started");
 		log.info(mines.size() + " mine(s) found");

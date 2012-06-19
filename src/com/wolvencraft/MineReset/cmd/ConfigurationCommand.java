@@ -2,6 +2,7 @@ package com.wolvencraft.MineReset.cmd;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
+import com.wolvencraft.MineReset.config.ConfigurationUpdater;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.MineUtils;
@@ -37,10 +38,10 @@ public class ConfigurationCommand
 			Message.sendSuccess("Configuration loaded from disc");
 			return;
 		}
-		else if(args[1].equalsIgnoreCase("generate")) {
-			
-			
-			Message.sendSuccess("Configuration and language files generated successfully");
+		else if(args[1].equalsIgnoreCase("import")) {
+			ConfigurationUpdater.updateRegions();
+			ConfigurationUpdater.updateSigns();
+			Message.sendSuccess("Region and sign data successfully imported into the system");
 			return;
 		}
 		else {

@@ -554,4 +554,16 @@ public class Util
 		String name = parseMetadata(str, true) + " " + material.getItemType().toString().toLowerCase().replace("_", " ");
 		return name;
 	}
+	
+	/**
+	 * Rounds the nubmer to the specified decimal point
+	 * @param number Number to round
+	 * @param decimal Decimal point
+	 * @return The rounded number
+	 */
+	public static double round(double number, int decimal) {
+		double pow = Math.pow(10, decimal);
+		number = ((int)(number * pow)) / pow;
+		return number;
+	}
 }

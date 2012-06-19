@@ -160,7 +160,7 @@ public class EditCommand {
 			MineBlock blockData = MineUtils.getBlock(curMine, Util.getBlock(args[1]));
 			MineBlock air = MineUtils.getBlock(curMine, new MaterialData(Material.AIR));
 			if(blockData == null) {
-				Message.sendError("There is no '" + args[2] + "' in mine '" + curMine + "'");
+				Message.sendError("There is no '" + args[1] + "' in mine '" + curMine + "'");
 				return;
 			}
 			if(blockData.equals(air)) {
@@ -194,7 +194,7 @@ public class EditCommand {
 				air.setChance(air.getChance() + blockData.getChance());
 				blockData.setChance(blockData.getChance() - percent);
 				
-				Message.sendNote(curMine.getName(), args[1] + " was successfully removed from the mine");
+				Message.sendNote(curMine.getName(), (percent * 100) + "% of " + args[1] + " was successfully removed from the mine");
 			}
 			else {
 				List<MineBlock> blocks = curMine.getBlocks();

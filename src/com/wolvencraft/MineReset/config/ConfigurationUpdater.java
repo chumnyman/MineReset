@@ -111,7 +111,7 @@ public class ConfigurationUpdater {
 			
 			for(int i = 0; i < iBlocks.size(); i++) {
 				String[] parts = iBlocks.get(i).split(":");
-				blocks.add(new MineBlock(new MaterialData(Integer.parseInt(parts[0]),Byte.parseByte(parts[1])), iWeight.get(i)));
+				blocks.add(new MineBlock(new MaterialData(Integer.parseInt(parts[0]),Byte.parseByte(parts[1])), iWeight.get(i) / 100));
 			}
 			
 			Generator gen = Generator.valueOf(getRegionData().getString("mines." + mine + ".reset.generator"));

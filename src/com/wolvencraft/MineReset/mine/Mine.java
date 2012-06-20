@@ -38,7 +38,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     private String parent;
     private List<MineBlock> blocks;
     private Generator generator;
-    private String snapshot;
     private Blacklist blacklist;
     private boolean silent;
     private boolean automatic;
@@ -75,7 +74,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     	blocks = new ArrayList<MineBlock>();
     	blocks.add(new MineBlock(new MaterialData(Material.AIR), 1.0));
     	generator = Generator.RANDOM;
-    	snapshot = null;
     	blacklist = new Blacklist();
     	silent = false;
     	automatic = false;
@@ -121,7 +119,6 @@ public class Mine implements ConfigurationSerializable, Listener {
         this.name = name;
         this.blocks = blocks;
         this.generator = generator;
-        snapshot = null;
     	blacklist = new Blacklist();
         silent = isSilent;
         automatic = isAutomatic;
@@ -153,7 +150,6 @@ public class Mine implements ConfigurationSerializable, Listener {
         name = (String) me.get("name");
         parent = (String) me.get("parent");
         blacklist = (Blacklist) me.get("blacklist");
-        snapshot = (String) me.get("snapshot");
         String generatorString = (String) me.get("generator");
         generator = Generator.valueOf(generatorString);
         silent = (Boolean) me.get("silent");
@@ -217,7 +213,6 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("name", name);
         me.put("parent", parent);
         me.put("blacklist", blacklist);
-        me.put("snapshot", snapshot);
         me.put("generator", generator.toString());
         me.put("silent", silent);
         me.put("automatic", automatic);
@@ -250,10 +245,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public Location getWarp() {
     	return tpPoint;
-    }
-    
-    public String getSnapshot() {
-    	return snapshot;
     }
     
     public String getName() {
@@ -355,10 +346,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public void setName(String name) {
     	this.name = name;
-    }
-    
-    public void setSnapshot(Snapshot snap) {
-    	snapshot = snap.toString();
     }
     
     public void setDisplayName(String displayName) {

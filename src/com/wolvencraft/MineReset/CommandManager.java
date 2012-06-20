@@ -31,13 +31,11 @@ public class CommandManager implements CommandExecutor
 			HelpCommand.getHelp();
 			return false;
 		}
-		else if(args[0].equalsIgnoreCase("auto") || args[0].equalsIgnoreCase("timer"))
-			TimerCommand.run(args);
 		else if(args[0].equalsIgnoreCase("blacklist") || args[0].equalsIgnoreCase("bl"))
 			BlacklistCommand.run(args);
-		else if(args[0].equalsIgnoreCase("config"))
+		else if(args[0].equalsIgnoreCase("configuration") || args[0].equalsIgnoreCase("config"))
 			ConfigurationCommand.run(args);
-		else if(args[0].equalsIgnoreCase("edit") || args[0].equalsIgnoreCase("none") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+") || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-") || args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del") || args[0].equalsIgnoreCase("name") || args[0].equalsIgnoreCase("silent") || args[0].equalsIgnoreCase("generator") || args[0].equalsIgnoreCase("link") || args[0].equalsIgnoreCase("snapshot"))
+		else if(args[0].equalsIgnoreCase("edit") || args[0].equalsIgnoreCase("none") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+") || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-") || args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del") || args[0].equalsIgnoreCase("name") || args[0].equalsIgnoreCase("silent") || args[0].equalsIgnoreCase("generator") || args[0].equalsIgnoreCase("link"))
 			EditCommand.run(args);
 		else if(args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?"))
 			HelpCommand.getHelp();
@@ -45,6 +43,8 @@ public class CommandManager implements CommandExecutor
 			InfoCommand.run(args);
 		else if(args[0].equalsIgnoreCase("list"))
 			ListCommand.run(args);
+        else if(args[0].equalsIgnoreCase("meta") || args[0].equalsIgnoreCase("about"))
+            MetaCommand.run(args);
 		else if(args[0].equalsIgnoreCase("protection") || args[0].equalsIgnoreCase("prot"))
 			ProtectionCommand.run(args);
 		else if(args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("fill"))
@@ -57,10 +57,12 @@ public class CommandManager implements CommandExecutor
 			SelectCommand.run(args);
 		else if(args[0].equalsIgnoreCase("sign") || args[0].equalsIgnoreCase("signs"))
 			SignCommand.run(args);
+		else if(args[0].equalsIgnoreCase("snapshot"))
+			SnapshotCommand.run(args);
+		else if(args[0].equalsIgnoreCase("timer") || args[0].equalsIgnoreCase("auto"))
+			TimerCommand.run(args);
 		else if(args[0].equalsIgnoreCase("warp") || args[0].equalsIgnoreCase("tp"))
 			WarpCommand.run(args);
-        else if(args[0].equalsIgnoreCase("about"))
-            MetaCommand.run(args);
 		else Message.sendInvalid(args);
 			
 		String argString = "/mine";

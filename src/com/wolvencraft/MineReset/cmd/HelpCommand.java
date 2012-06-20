@@ -117,11 +117,11 @@ public class HelpCommand {
 
 	public static void getTimer() {
 		formatHeader(20, "Timer");
-		formatHelp("auto", "toggle", "Toggles the automatic resets on and off", "");
-		formatHelp("auto", "set <time>", "Changes the automatic reset time to the value specified", "");
-		formatHelp("auto", "warning toggle", "Toggles reset warnings on and off", "");
-		formatHelp("auto", "warning + <time>", "Adds a warning at time specified", "");
-		formatHelp("auto", "warning - <time>", "Adds a warning at time specified", "");
+		formatHelp("timer", "toggle", "Toggles the automatic resets on and off", "");
+		formatHelp("timer", "set <time>", "Changes the automatic reset time to the value specified", "");
+		formatHelp("timer", "warning toggle", "Toggles reset warnings on and off", "");
+		formatHelp("timer", "warning + <time>", "Adds a warning at time specified", "");
+		formatHelp("timer", "warning - <time>", "Adds a warning at time specified", "");
 		return;
 	}
 	

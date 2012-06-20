@@ -7,15 +7,21 @@ import org.bukkit.block.BlockState;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.mine.Mine;
+import com.wolvencraft.MineReset.mine.Snapshot;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.SnapshotUtils;
 
 public class SnapshotGenerator {
 	public static void reset(Mine curMine) {
-		List<BlockState> blocks = SnapshotUtils.getSnapshot(curMine).getBlocks();
+		Snapshot snap = SnapshotUtils.getSnapshot(curMine);
+		if(snap == null) {
+			Message.sendError("Snapshot was never saved! Use " + ChatColor.GOLD + "/mine snapshot save" + ChatColor.WHITE + " to save it");
+			return;
+		}
+		List<BlockState> blocks = snap.getBlocks();
 		if(!blocks.isEmpty())
 		{
-			Message.sendError("Snapshot was never saved! Use " + ChatColor.GOLD + "/mine snapshot" + ChatColor.WHITE + " to save it");
+			Message.sendError("Snapshot was never saved! Use " + ChatColor.GOLD + "/mine snapshot save" + ChatColor.WHITE + " to save it");
 			return;
 		}
 		

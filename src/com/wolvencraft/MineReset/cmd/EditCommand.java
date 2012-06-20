@@ -24,7 +24,7 @@ public class EditCommand {
 				return;
 			}
 		
-		if(!args[0].equalsIgnoreCase("none") && args.length == 1) {
+		if(!args[0].equalsIgnoreCase("none") && !args[0].equalsIgnoreCase("delete") && args.length == 1) {
 			HelpCommand.getEdit();
 			return;
 		}

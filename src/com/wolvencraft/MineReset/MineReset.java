@@ -13,6 +13,7 @@ import com.wolvencraft.MineReset.mine.Blacklist;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
 import com.wolvencraft.MineReset.mine.SignClass;
+import com.wolvencraft.MineReset.mine.Snapshot;
 import com.wolvencraft.MineReset.util.MineUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -25,6 +26,7 @@ import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.events.*;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.SignUtils;
+import com.wolvencraft.MineReset.util.SnapshotUtils;
 import com.wolvencraft.MineReset.util.Util;
 
 
@@ -46,6 +48,7 @@ public class MineReset extends JavaPlugin
 	private File languageDataFile = null;
     private static List<Mine> mines;
     private static List<SignClass> signs;
+    private static List<Snapshot> snapshots;
 	
 	public void onEnable()
 	{
@@ -72,12 +75,16 @@ public class MineReset extends JavaPlugin
         ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
         ConfigurationSerialization.registerClass(Blacklist.class, "Blacklist");
         ConfigurationSerialization.registerClass(SignClass.class, "SignClass");
+        ConfigurationSerialization.registerClass(Snapshot.class, "Snapshot");
         
 		mines = new ArrayList<Mine>();
         mines = MineUtils.loadAll(mines);
         
         signs = new ArrayList<SignClass>();
         signs = SignUtils.loadAll(signs);
+        
+        snapshots = new ArrayList<Snapshot>();
+        snapshots = SnapshotUtils.loadAll(snapshots);
         
 		log.info("MineReset started");
 		log.info(mines.size() + " mine(s) found");
@@ -175,5 +182,13 @@ public class MineReset extends JavaPlugin
     
     public static void setSigns(List<SignClass> signs) {
     	MineReset.signs = signs;
+    }
+    
+    public static List<Snapshot> getSnapshots() {
+    	return snapshots;
+    }
+    
+    public static void setSnapshots(List<Snapshot> snapshots) {
+    	MineReset.snapshots = snapshots;
     }
 }

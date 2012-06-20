@@ -38,7 +38,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     private String parent;
     private List<MineBlock> blocks;
     private Generator generator;
-    private Snapshot snapshot;
+    private String snapshot;
     private Blacklist blacklist;
     private boolean silent;
     private boolean automatic;
@@ -153,7 +153,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         name = (String) me.get("name");
         parent = (String) me.get("parent");
         blacklist = (Blacklist) me.get("blacklist");
-        snapshot = (Snapshot) me.get("snapshot");
+        snapshot = (String) me.get("snapshot");
         String generatorString = (String) me.get("generator");
         generator = Generator.valueOf(generatorString);
         silent = (Boolean) me.get("silent");
@@ -252,7 +252,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	return tpPoint;
     }
     
-    public Snapshot getSnapshot() {
+    public String getSnapshot() {
     	return snapshot;
     }
     
@@ -355,6 +355,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public void setName(String name) {
     	this.name = name;
+    }
+    
+    public void setSnapshot(Snapshot snap) {
+    	snapshot = snap.toString();
     }
     
     public void setDisplayName(String displayName) {

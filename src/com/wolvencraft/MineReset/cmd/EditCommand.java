@@ -22,7 +22,7 @@ public class EditCommand {
 		if(!Util.senderHasPermission("edit")) {
 				Message.sendDenied(args);
 				return;
-			}
+		}
 		
 		if(!args[0].equalsIgnoreCase("none") && !args[0].equalsIgnoreCase("delete") && args.length == 1) {
 			HelpCommand.getEdit();
@@ -355,24 +355,6 @@ public class EditCommand {
 			
 			curMine.setParent(args[1]);
 			Message.sendNote(curMine.getName(), "Mine will use the timers of " + ChatColor.GREEN + args[1]);
-			MineUtils.save(curMine);
-			return;
-		}
-		else if(args[0].equalsIgnoreCase("snapshot"))
-		{
-			if(args.length != 2) {
-				Message.sendInvalidArguments(args);
-				return;
-			}
-			
-			Mine curMine = CommandManager.getMine();
-			if(curMine == null) {
-				Message.sendMineNotSelected();
-				return;
-			}
-			
-			curMine.getSnapshot().save(curMine.getWorld(), curMine.getFirstPoint(), curMine.getSecondPoint());
-			Message.sendNote(curMine.getName(), "Snapshot of the mine has been saved");
 			MineUtils.save(curMine);
 			return;
 		}

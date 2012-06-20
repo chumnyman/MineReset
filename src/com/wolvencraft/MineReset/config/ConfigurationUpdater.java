@@ -78,12 +78,17 @@ public class ConfigurationUpdater {
 			boolean reset = getSignData().getBoolean("signs." + sign + ".reset");
 			World world = CommandManager.getPlugin().getServer().getWorld(getSignData().getString("signs." + sign + ".world"));
 			Location loc = new Location(world, getSignData().getInt("signs." + sign + ".x"), getSignData().getInt("signs." + sign + ".y"), getSignData().getInt("signs." + sign + ".z"));
+			if(SignUtils.getSignAt(loc) != null) {
+				Message.sendError("A sign is already defined at (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")!");
+				continue;
+			}
 			List<String> lines = new ArrayList<String>();
 			for(int i = 0; i < 4; i++) {
 				lines.add(getSignData().getString("signs." + sign + ".lines." + i));
 			}
 			
 			signs.add(new SignClass(id, world, loc, parent, reset, lines));
+			Message.sendSuccess("A sign at (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ") was imported into the system!");
 		}
 		
 		SignUtils.saveAll(signs);

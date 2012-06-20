@@ -18,6 +18,7 @@ import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
 import com.wolvencraft.MineReset.mine.Protection;
 import com.wolvencraft.MineReset.mine.SignClass;
+import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.SignUtils;
 
@@ -32,6 +33,10 @@ public class ConfigurationUpdater {
 		List<String> mineList = getRegionData().getStringList("data.list-of-mines");
 		List<Mine> mines = MineReset.getMines();
 		for(String mine : mineList) {
+			if(MineUtils.getMine(mine) != null) {
+				Message.sendError("Mine '" + mine + "' is already in the system and was not imported");
+				continue;
+			}
 			String displayName = getRegionData().getString("mines." + mine + ".display-name");
 			boolean silent = getRegionData().getBoolean("mines." + mine + ".silent");
 			World world = CommandManager.getPlugin().getServer().getWorld(getRegionData().getString("mines." + mine + ".coordinates.world"));
@@ -58,7 +63,8 @@ public class ConfigurationUpdater {
 			if(getRegionData().getBoolean("mines." + mine + ".protection.PVP")) enabledProt.add(Protection.BLOCK_BREAK);
 			
 			mines.add(new Mine(one, two, world, tpPos, displayName, null, mine, blocks, gen, silent, automatic, automaticSeconds, false, 0, warnTimes, enabledProt, one, two));
-			}
+			Message.sendSuccess("Mine '" + mine + "' was successfully imported into the system");
+		}
 		MineUtils.saveAll(mines);
 	}
 	

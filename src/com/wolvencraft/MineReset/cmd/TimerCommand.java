@@ -50,8 +50,8 @@ public class TimerCommand {
 				Message.sendNote(curMine.getName(), "Automatic mine reset is " + ChatColor.GREEN + "on");
 			}
 		}
-		else if(args[1].equalsIgnoreCase("time")) {
-			if(args.length != 2) {
+		else if(args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("time")) {
+			if(args.length != 3) {
 				Message.sendInvalidArguments(args);
 				return;
 			}

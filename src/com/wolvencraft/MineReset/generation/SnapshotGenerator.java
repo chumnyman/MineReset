@@ -31,21 +31,21 @@ public class SnapshotGenerator {
     			for(BlockState block : blocks) {
     				MaterialData original = new MaterialData(block.getWorld().getBlockAt(block.getX(), block.getY(), block.getZ()).getType());
     				if(curMine.getBlacklist().getBlocks().contains(original))
-                    	block.update();
+                    	block.update(true);
     			}
     		}
     		else {
     			for(BlockState block : blocks) {
     				MaterialData original = new MaterialData(block.getWorld().getBlockAt(block.getX(), block.getY(), block.getZ()).getType());
     				if(!curMine.getBlacklist().getBlocks().contains(original))
-                    	block.update();
+                    	block.update(true);
     			}
     		}
     	}
     	else
     	{
 	        for(BlockState block : blocks) {
-	        	block.update();
+	        	block.update(true);
 	        }
     	}
 		return;

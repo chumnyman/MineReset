@@ -19,13 +19,13 @@ public class SnapshotUtils {
 	 * @param mine Individual mine to save
 	 */
 	public static void save(Snapshot snap) {
-		File snapFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "snapshots"), snap.getParent().getName() + ".yml");
+		File snapFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "snapshots"), snap.getParent() + ".yml");
         FileConfiguration snapConf =  YamlConfiguration.loadConfiguration(snapFile);
         snapConf.set("snapshot", snap);
         try {
             snapConf.save(snapFile);
         } catch (IOException e) {
-        	CommandManager.getPlugin().getLogger().severe("[MineReset] Unable to serialize snapshot '" + snap.getParent().getName() + "'!");
+        	CommandManager.getPlugin().getLogger().severe("[MineReset] Unable to serialize snapshot '" + snap.getParent() + "'!");
             e.printStackTrace();
         }
 	}
@@ -36,13 +36,13 @@ public class SnapshotUtils {
 	 */
 	public static void saveAll(List<Snapshot> snaps) {
 		for (Snapshot snap : snaps) {
-            File snapFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "snapshots"), snap.getParent().getName() + ".yml");
+            File snapFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "snapshots"), snap.getParent() + ".yml");
             FileConfiguration snapConf =  YamlConfiguration.loadConfiguration(snapFile);
             snapConf.set("snapshot", snap);
             try {
                 snapConf.save(snapFile);
             } catch (IOException e) {
-            	CommandManager.getPlugin().getLogger().severe("[MineReset] Unable to serialize snapshot '" + snap.getParent().getName() + "'!");
+            	CommandManager.getPlugin().getLogger().severe("[MineReset] Unable to serialize snapshot '" + snap.getParent() + "'!");
                 e.printStackTrace();
             }
         }
@@ -86,7 +86,7 @@ public class SnapshotUtils {
         });
 		
 		for(File snapFile : snapFiles) {
-			if(snapFile.getName().equals(snap.getParent().getName() + ".yml")) {
+			if(snapFile.getName().equals(snap.getParent() + ".yml")) {
 				return snapFile.delete();
 			}
 		}

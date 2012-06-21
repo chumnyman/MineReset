@@ -7,24 +7,23 @@ import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 
 @SerializableAs("Snapshot")
 public class Snapshot implements ConfigurationSerializable  {
-	private Mine parent;
+	private String parent;
 	private List<BlockState> blocks;
 	
-	public Snapshot(Mine parent) {
+	public Snapshot(String parent) {
 		this.parent = parent;
 		blocks = new ArrayList<BlockState>();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public Snapshot(Map<String, Object> me) {
-		parent = (Mine) me.get("parent");
+		parent = (String) me.get("parent");
 		blocks = (List<BlockState>) me.get("blocks");
 	}
 	
@@ -35,18 +34,18 @@ public class Snapshot implements ConfigurationSerializable  {
 		return me;
 	}
 	
-	public void save(World world, Location one, Location two) {
+	public void setBlocks(World world, Location one, Location two) {
+		blocks = new ArrayList<BlockState>();
 		for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
             for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
                 for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-                    Block thisBlock = world.getBlockAt(x, y, z);
-                    blocks.add(thisBlock.getState());
+                    blocks.add(world.getBlockAt(x, y, z).getState());
                 }
             }
         }
 	}
 	
-	public Mine getParent() {
+	public String getParent() {
 		return parent;
 	}
 	

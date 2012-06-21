@@ -3,10 +3,10 @@ package com.wolvencraft.MineReset.cmd;
 import java.util.List;
 
 import org.bukkit.Location;
-import org.bukkit.block.BlockState;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
+import com.wolvencraft.MineReset.generation.SnapshotGenerator;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Snapshot;
 import com.wolvencraft.MineReset.util.Message;
@@ -60,8 +60,8 @@ public class SnapshotCommand {
 				return;
 			}
 			
-			Snapshot snap = new Snapshot(curMine);
-			snap.save(loc[0].getWorld(), loc[0], loc[1]);
+			Snapshot snap = new Snapshot(curMine.getName());
+			snap.setBlocks(loc[0].getWorld(), loc[0], loc[1]);
 			List<Snapshot> snaps = MineReset.getSnapshots();
 			snaps.add(snap);
 			MineReset.setSnapshots(snaps);
@@ -81,10 +81,7 @@ public class SnapshotCommand {
 				}
 			}
 			
-			Snapshot snap = SnapshotUtils.getSnapshot(curMine);
-			List<BlockState> blocks = snap.getBlocks();
-			for(BlockState block : blocks)
-				block.update();
+			SnapshotGenerator.reset(curMine);
 			Message.sendNote(curMine.getName(), "Snapshot successfully restored!");
 		}
 		else if(args[1].equalsIgnoreCase("delete")) {

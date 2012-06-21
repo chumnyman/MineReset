@@ -11,8 +11,8 @@ error:
   block-does-not-exist: "Block &c%BLOCK%&f does not exist"
   removing-air: "This value is calculated automatically"
 editing:
-  mine-selected-successfully: "Mine &c%MINE%&f has been selected"
-  mine-deselected-successfully: "Mine &c%MINE%&f is no longer selected"
+  mine-selected-successfully: "Mine &e%MINE%&f has been selected"
+  mine-deselected-successfully: "Mine &e%MINE%&f is no longer selected"
 reset:
   manual-reset-successful: "Mine &6%MINENAME%&f has been reset!"
   automatic-reset-warning: "Mine &6%MINENAME%&f will reset in &6%MIN%&f minute(s)."

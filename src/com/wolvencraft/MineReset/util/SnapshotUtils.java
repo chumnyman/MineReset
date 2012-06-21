@@ -19,11 +19,11 @@ public class SnapshotUtils {
 	 * @param mine Individual mine to save
 	 */
 	public static void save(Snapshot snap) {
-		File mineFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "snapshots"), snap.getParent().getName() + ".yml");
-        FileConfiguration mineConf =  YamlConfiguration.loadConfiguration(mineFile);
-        mineConf.set("snapshot", snap);
+		File snapFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "snapshots"), snap.getParent().getName() + ".yml");
+        FileConfiguration snapConf =  YamlConfiguration.loadConfiguration(snapFile);
+        snapConf.set("snapshot", snap);
         try {
-            mineConf.save(mineFile);
+            snapConf.save(snapFile);
         } catch (IOException e) {
         	CommandManager.getPlugin().getLogger().severe("[MineReset] Unable to serialize snapshot '" + snap.getParent().getName() + "'!");
             e.printStackTrace();
@@ -101,8 +101,7 @@ public class SnapshotUtils {
 	 */
 	public static Snapshot getSnapshot(Mine parent)
 	{
-		for(Snapshot curSnap : MineReset.getSnapshots())
-		{
+		for(Snapshot curSnap : MineReset.getSnapshots()) {
 			if(curSnap.getParent().equals(parent)) return curSnap;
 		}
 		return null;

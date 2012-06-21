@@ -58,7 +58,7 @@ public class RandomGenerator {
 	                    MaterialData newBlock = pattern.next();
 			            Message.debug(original.getBlock().getType() + " was replaced with " + newBlock.getItemType());
 		                original.setData(newBlock);
-			            original.update();
+			            original.update(true);
 	                }
 	            }
 	        }

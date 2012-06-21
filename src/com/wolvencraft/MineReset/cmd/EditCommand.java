@@ -210,15 +210,25 @@ public class EditCommand {
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del")) {
-			if(args.length != 1) {
+			if(args.length > 2) {
 				Message.sendInvalidArguments(args);
 				return;
 			}
 			
-			Mine curMine = CommandManager.getMine();
-			if(curMine == null) {
-				Message.sendMineNotSelected();
-				return;
+			Mine curMine;
+			if(args.length == 1) {
+				curMine = CommandManager.getMine();
+				if(curMine == null) {
+					Message.sendMineNotSelected();
+					return;
+				}
+			}
+			else {
+				curMine = MineUtils.getMine(args[1]);
+				if(curMine == null) {
+					Message.sendInvalidMineName(args[1]);
+					return;
+				}
 			}
 			
 			List<Mine> mines = MineReset.getMines();

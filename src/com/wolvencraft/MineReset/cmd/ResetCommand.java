@@ -60,7 +60,7 @@ public class ResetCommand
 		if(automatic) {
 			List<Mine> mines = MineReset.getMines();
 			for(Mine childMine : mines) {
-				if(MineUtils.getMine(childMine.getParent()) != null) {
+				if(childMine.getParent() != null) {
 					String[] childArgs = {null, childMine.getName()};
 					run(childArgs, true, null);
 				}

@@ -39,9 +39,10 @@ public class ConfigurationCommand
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("import")) {
+			Message.sendSuccess("Data import started");
 			ConfigurationUpdater.updateRegions();
 			ConfigurationUpdater.updateSigns();
-			Message.sendSuccess("Region and sign data successfully imported into the system");
+			Message.sendSuccess("Data import finished");
 			return;
 		}
 		else {

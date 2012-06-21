@@ -69,7 +69,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	this.tpPoint = tpPoint;
     	this.world = world;
     	displayName = "";
-    	parent = null;
+    	parent = "";
     	this.name = name;
     	blocks = new ArrayList<MineBlock>();
     	blocks.add(new MineBlock(new MaterialData(Material.AIR), 1.0));

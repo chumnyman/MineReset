@@ -135,49 +135,47 @@ public class InfoCommand
 				}
 			}
 			else {
-			String autoResetFormatted = Util.parseSeconds(curMine.getResetPeriod());
-			
-			String nextResetFormatted = Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20);
-			
-			
-			if(curMine.getAutomatic()) {
-				Message.sendMessage(" Resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes");
-			}
-			else {
-				Message.sendMessage("The mine has to be reset manually");
-			}
-			
-			String generatorString =" Generator: " + ChatColor.GOLD +  curMine.getGenerator().toString();
-			if(!parentMine.equals(curMine) && !parentMine.equals(null))
-				generatorString = generatorString + ChatColor.WHITE + " | Linked to " + ChatColor.GOLD + parentMine.getName();
-			Message.sendMessage(generatorString);
-			
-			String blockBreak, blockPlace;
-			// Protection
-			if(curMine.getProtection().contains(Protection.BLOCK_BREAK))
-				blockBreak = ChatColor.GREEN + "ON";
-			else
-				blockBreak = ChatColor.RED + "OFF";
-			
-			if(curMine.getProtection().contains(Protection.BLOCK_PLACE))
-				blockPlace = ChatColor.GREEN + "ON";
-			else
-				blockPlace = ChatColor.RED + "OFF";
-			
-			String pvpProtection;
-			if(curMine.getProtection().contains(Protection.PVP))
-				pvpProtection = ChatColor.GREEN + "ON";
-			else pvpProtection = ChatColor.RED + "OFF";
-			
-			Message.sendMessage(ChatColor.BLUE + " Protection:");
-			Message.sendMessage("Breaking: " + blockBreak + ChatColor.WHITE + " | Placement: " + blockPlace + ChatColor.WHITE + " | PVP " + pvpProtection);
-			
-			List<String> finalList = MineUtils.getSortedList(curMine);
-			
-			Message.sendMessage(ChatColor.BLUE + " Composition:");
-			for(String line : finalList)
-				Message.sendMessage(line);
-			return;
+				String autoResetFormatted = Util.parseSeconds(curMine.getResetPeriod());
+				
+				String nextResetFormatted = Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20);
+				
+				
+				if(curMine.getAutomatic())
+					Message.sendMessage(" Resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes");
+				else
+					Message.sendMessage("The mine has to be reset manually");
+				
+				String generatorString =" Generator: " + ChatColor.GOLD +  curMine.getGenerator().toString();
+				if(!parentMine.equals(curMine) && !parentMine.equals(null))
+					generatorString = generatorString + ChatColor.WHITE + " | Linked to " + ChatColor.GOLD + parentMine.getName();
+				Message.sendMessage(generatorString);
+				
+				String blockBreak, blockPlace;
+				// Protection
+				if(curMine.getProtection().contains(Protection.BLOCK_BREAK))
+					blockBreak = ChatColor.GREEN + "ON";
+				else
+					blockBreak = ChatColor.RED + "OFF";
+				
+				if(curMine.getProtection().contains(Protection.BLOCK_PLACE))
+					blockPlace = ChatColor.GREEN + "ON";
+				else
+					blockPlace = ChatColor.RED + "OFF";
+				
+				String pvpProtection;
+				if(curMine.getProtection().contains(Protection.PVP))
+					pvpProtection = ChatColor.GREEN + "ON";
+				else pvpProtection = ChatColor.RED + "OFF";
+				
+				Message.sendMessage(ChatColor.BLUE + " Protection:");
+				Message.sendMessage("Breaking: " + blockBreak + ChatColor.WHITE + " | Placement: " + blockPlace + ChatColor.WHITE + " | PVP " + pvpProtection);
+				
+				List<String> finalList = MineUtils.getSortedList(curMine);
+				
+				Message.sendMessage(ChatColor.BLUE + " Composition:");
+				for(String line : finalList)
+					Message.sendMessage(line);
+				return;
 			}
 		}
 		if(args[0].equalsIgnoreCase("time")) {

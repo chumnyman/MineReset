@@ -62,7 +62,7 @@ public class ConfigurationUpdater {
 			if(getRegionData().getBoolean("mines." + mine + ".protection.placement.enabled")) enabledProt.add(Protection.BLOCK_PLACE);
 			if(getRegionData().getBoolean("mines." + mine + ".protection.PVP")) enabledProt.add(Protection.BLOCK_BREAK);
 			
-			mines.add(new Mine(one, two, world, tpPos, displayName, null, mine, blocks, gen, silent, automatic, automaticSeconds, false, 0, warnTimes, enabledProt, one, two));
+			mines.add(new Mine(one, two, world, tpPos, displayName, "", mine, blocks, gen, silent, automatic, automaticSeconds, false, 0, warnTimes, enabledProt, one, two));
 			Message.sendSuccess("Mine '" + mine + "' was successfully imported into the system");
 		}
 		MineUtils.saveAll(mines);

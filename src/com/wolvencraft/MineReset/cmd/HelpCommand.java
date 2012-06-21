@@ -114,6 +114,14 @@ public class HelpCommand {
 		formatHelp("sign", "remove", "Removes the targeted sign from data", "");
 		return;
 	}
+	
+	public static void getSnapshot() {
+		formatHeader(20, "Snapshot");
+		formatHelp("snapshot", "save", "Saves the snapshot of the selected region to file", "");
+		formatHelp("snapshot", "restore", "Restores the snapshot of a selected mine", "");
+		formatHelp("snapshot", "delete", "Removes the snapshot data completely", "");
+		return;
+	}
 
 	public static void getTimer() {
 		formatHeader(20, "Timer");

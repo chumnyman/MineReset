@@ -6,9 +6,11 @@ import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Snapshot;
 import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.SnapshotUtils;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -19,18 +21,28 @@ public class SnapshotCommand {
 			return;
 		}
 		
+		if(args.length == 1) {
+			HelpCommand.getSnapshot();
+			return;
+		}
+		
 		if(args.length > 3) {
 			Message.sendInvalidArguments(args);
 			return;
 		}
 		
 		Mine curMine = CommandManager.getMine();
-		if(curMine == null) {
+		if(!args[1].equalsIgnoreCase("restore") && curMine == null) {
 			Message.sendMineNotSelected();
 			return;
 		}
 		
 		if(args[1].equalsIgnoreCase("save")) {
+			if(args.length != 2) {
+				Message.sendInvalidArguments(args);
+				return;
+			}
+			
 			if(!Util.locationsSet()) {
 				Message.sendError("Make a selection first");
 				return;
@@ -50,9 +62,25 @@ public class SnapshotCommand {
 			
 			Snapshot snap = new Snapshot(curMine);
 			snap.save(loc[0].getWorld(), loc[0], loc[1]);
+			List<Snapshot> snaps = MineReset.getSnapshots();
+			snaps.add(snap);
+			MineReset.setSnapshots(snaps);
+			SnapshotUtils.save(snap);
 			Message.sendNote(curMine.getName(), "Snapshot successfully saved!");
 		}
 		else if(args[1].equalsIgnoreCase("restore")) {
+			if(args.length == 2 && curMine == null) {
+				Message.sendMineNotSelected();
+				return;
+			}
+			else if(args.length == 3) {
+				curMine = MineUtils.getMine(args[2]);
+				if(curMine == null) {
+					Message.sendInvalidMineName(args[2]);
+					return;
+				}
+			}
+			
 			Snapshot snap = SnapshotUtils.getSnapshot(curMine);
 			List<BlockState> blocks = snap.getBlocks();
 			for(BlockState block : blocks)
@@ -60,6 +88,11 @@ public class SnapshotCommand {
 			Message.sendNote(curMine.getName(), "Snapshot successfully restored!");
 		}
 		else if(args[1].equalsIgnoreCase("delete")) {
+			if(args.length != 2) {
+				Message.sendInvalidArguments(args);
+				return;
+			}
+			
 			if(SnapshotUtils.delete(SnapshotUtils.getSnapshot(curMine)))
 				Message.sendNote(curMine.getName(), "Snapshot successfully deleted!");
 			else

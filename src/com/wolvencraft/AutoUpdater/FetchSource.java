@@ -8,61 +8,62 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.wolvencraft.MineReset.util.Message;
 
 public class FetchSource
 {
 	
-	protected static String fetchSource()
+	protected static Map<String, String> fetchSource()
 	{
 		URL url = null;
-		try
-		{
+		try {
 			url = new URL("http://update.wolvencraft.com/MineReset/");
 		}
-		catch(MalformedURLException ex)
-		{
+		catch(MalformedURLException ex) {
 			ex.printStackTrace();
 			return null;
 		}	
 		
 		InputStream is = null;
-	    String source = "";
+	    String source;
 
-		try
-		{
+		try {
 			is = url.openStream();
 		}
-		catch (IOException ex)
-		{
+		catch (IOException ex) {
 			Message.log("Unable to connect to the update server!");
 			return null;
 		}
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new DataInputStream(new BufferedInputStream(is))));
+		Map<String, String> data = new HashMap<String, String>();
 		
-		try
-		{
-			source = reader.readLine();
+		try {
+			while ((source = reader.readLine()) != null) {
+				if(source.indexOf("@") == 0) {
+					String[] parts = source.substring(1).split("=");
+					parts[1] = parts[1].substring(0, (parts[1].length() - 6));
+				    data.put(parts[0], parts[1]);
+				}
+			 }
 		}
-		catch (IOException ex)
-		{
+		catch (IOException ex) {
 			Message.log("Error reading input stream!");
 			return null;
 		}
 		
-		try
-		{
+		try {
 			is.close();
 		}
-		catch (IOException ioe)
-		{
+		catch (IOException ioe) {
 			Message.log("Error closing URL input stream!");
 			return null;
 		}
          
-		return source;
+		return data;
 	}
 	
 	

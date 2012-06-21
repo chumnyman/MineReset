@@ -23,7 +23,7 @@ public class SignUtils {
 	 * @param mine Individual mine to save
 	 */
 	public static void save(SignClass sign) {
-		File signFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "mines"), sign.getId() + ".yml");
+		File signFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "signs"), sign.getId() + ".yml");
         FileConfiguration signConf =  YamlConfiguration.loadConfiguration(signFile);
         signConf.set("signclass", sign);
         try {
@@ -40,7 +40,7 @@ public class SignUtils {
 	 */
 	public static void saveAll(List<SignClass> signs) {
 		for (SignClass sign : signs) {
-			File signFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "mines"), sign.getId() + ".yml");
+			File signFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "signs"), sign.getId() + ".yml");
 	        FileConfiguration signConf =  YamlConfiguration.loadConfiguration(signFile);
 	        signConf.set("signclass", sign);
 	        try {

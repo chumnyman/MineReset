@@ -140,7 +140,7 @@ public class Mine implements ConfigurationSerializable, Listener {
      * Deserialize a mine from its YML form
      * @param me Bukkitian map of strings to objects. <b>Incorrect object types for values are not tolerated by the code!</b>
      */
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public Mine(Map<String, Object> me) {
         world = Bukkit.getWorld((String) me.get("world"));
         one = ((Vector) me.get("one")).toLocation(world);

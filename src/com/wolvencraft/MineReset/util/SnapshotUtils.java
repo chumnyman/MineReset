@@ -36,7 +36,7 @@ public class SnapshotUtils {
 	 */
 	public static void saveAll(List<Snapshot> snaps) {
 		for (Snapshot snap : snaps) {
-            File snapFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "mines"), snap.getParent().getName() + ".yml");
+            File snapFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "snapshots"), snap.getParent().getName() + ".yml");
             FileConfiguration snapConf =  YamlConfiguration.loadConfiguration(snapFile);
             snapConf.set("snapshot", snap);
             try {

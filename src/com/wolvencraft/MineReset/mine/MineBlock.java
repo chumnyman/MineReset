@@ -44,6 +44,6 @@ public class MineBlock implements ConfigurationSerializable {
     }
     
     public MineBlock clone() {
-    	return this.clone();
+    	return new MineBlock(block, chance);
     }
 }

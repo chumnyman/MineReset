@@ -58,8 +58,6 @@ public class ConfigurationUpdater {
 			int automaticSeconds = getRegionData().getInt("mines." + mine + ".reset.auto.reset-every");
 			List<Integer> warnTimes = getRegionData().getIntegerList("mines" + mine + ".reset.auto.warn-times");
 			List<Protection> enabledProt = new ArrayList<Protection>();
-			if(getRegionData().getBoolean("mines." + mine + ".protection.breaking.enabled")) enabledProt.add(Protection.BLOCK_BREAK);
-			if(getRegionData().getBoolean("mines." + mine + ".protection.placement.enabled")) enabledProt.add(Protection.BLOCK_PLACE);
 			if(getRegionData().getBoolean("mines." + mine + ".protection.PVP")) enabledProt.add(Protection.BLOCK_BREAK);
 			
 			mines.add(new Mine(one, two, world, tpPos, displayName, null, mine, blocks, gen, silent, automatic, automaticSeconds, false, 0, warnTimes, enabledProt, one, two));

@@ -161,7 +161,10 @@ public class Mine implements ConfigurationSerializable, Listener {
         warned = (Boolean) me.get("isWarned");
         warningTimes = (List<Integer>) me.get("warningTimes");
         blocks = (List<MineBlock>) me.get("blocks");
-        enabledProtection = (List<Protection>) me.get("protectionTypes");
+        List<String> names = (List<String>) me.get("protectionTypes");
+        enabledProtection.clear();
+        for(String name : names)
+        	enabledProtection.add(Protection.valueOf(name));
         protOne = ((Vector) me.get("protOne")).toLocation(world);
         protTwo = ((Vector) me.get("protTwo")).toLocation(world);
         breakBlacklist = (Blacklist) me.get("breakBlacklist");
@@ -222,7 +225,10 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("nextCooldownTicks", nextCooldownTicks);
         me.put("isWarned", warned);
         me.put("warningTimes", warningTimes);
-        me.put("protectionTypes", enabledProtection);
+        List<String> names = new ArrayList<String>();
+        for(Protection prot : enabledProtection)
+        	names.add(prot.name());
+        me.put("protectionTypes", names);
         me.put("protOne", protOne.toVector());
         me.put("protTwo", protTwo.toVector());
         me.put("blocks", blocks);

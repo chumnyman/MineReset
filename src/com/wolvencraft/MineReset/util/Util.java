@@ -452,8 +452,10 @@ public class Util
 	 * @return Seconds
 	 */
 	public static int parseTime(String message) {
-		if(message.substring(0, 2).equals(":"))
+		if(message.charAt(0) == ':')
 			message = "0" + message;
+		if(message.charAt(message.length() - 1) == ':')
+			message = message + "0";
 
 		String[] parts = message.split(":");
 		int time = 0;

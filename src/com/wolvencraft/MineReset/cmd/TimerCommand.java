@@ -23,11 +23,6 @@ public class TimerCommand {
 			HelpCommand.getTimer();
 			return;
 		}
-		
-		if(args.length < 2 || args.length > 4) {
-			Message.sendInvalid(args);
-			return;
-		}
 
 		Mine curMine = CommandManager.getMine();
 		if(curMine == null) {
@@ -50,7 +45,7 @@ public class TimerCommand {
 				Message.sendNote(curMine.getName(), "Automatic mine reset is " + ChatColor.GREEN + "on");
 			}
 		}
-		else if(args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("time")) {
+		else if(args[1].equalsIgnoreCase("set")) {
 			if(args.length != 3) {
 				Message.sendInvalidArguments(args);
 				return;
@@ -62,7 +57,7 @@ public class TimerCommand {
 			}
 			curMine.setResetPeriod(time);
 			String parsedTime = Util.parseSeconds(time);
-			Message.sendSuccess("'" + curMine.getName() + "' will now reset every " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s)");
+			Message.sendNote(curMine.getName(), "Mine will now reset every " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s)");
 		}
 		else if(args[1].equalsIgnoreCase("warning")) {
 			if(args.length < 3) {

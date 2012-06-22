@@ -311,6 +311,10 @@ public class EditCommand {
 			else {
 				try {
 					int seconds = Util.parseTime(args[1]);
+					if(seconds == -1) {
+						Message.sendInvalidArguments(args);
+						return;
+					}
 					curMine.setCooldownTime(seconds);
 					Message.sendNote(curMine.getName(), "Reset cooldown set to " + ChatColor.GREEN + Util.parseSeconds(seconds));
 				}

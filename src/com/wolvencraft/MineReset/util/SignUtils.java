@@ -79,6 +79,25 @@ public class SignUtils {
         return signs;
 	}
 	
+	public static boolean delete(SignClass sign) {
+		File signFolder = new File(CommandManager.getPlugin().getDataFolder(), "signs");
+		if(!signFolder.exists() || !signFolder.isDirectory()) return false;
+		
+		File[] signFiles = signFolder.listFiles(new FileFilter() {
+            public boolean accept(File file) {
+                return file.getName().contains(".yml");
+            }
+        });
+		
+		for(File signFile : signFiles) {
+			if(signFile.getName().equals(sign.getId() + ".yml")) {
+				return signFile.delete();
+			}
+		}
+		
+		return false;
+	}
+	
 	public static String generateId() {
 		Random r = new Random();
 		return Long.toString(Math.abs(r.nextLong()), 36);

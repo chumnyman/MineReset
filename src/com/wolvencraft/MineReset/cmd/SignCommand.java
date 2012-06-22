@@ -96,24 +96,25 @@ public class SignCommand
 			}
 			
 			SignClass sign = SignUtils.getSignAt(b.getLocation());
-			
 			if(b.getState() instanceof Sign) {
 				Sign signBlock = (Sign) b.getState();
+				List<String> lines = sign.getLines();
 
-				for(int i = 0; i < 4; i++) {
-					String line = sign.getLines().get(i);
-					if(!line.equals("")) {
-						signBlock.setLine(i, line);
-					}
+				for(int i = 0; i < lines.size(); i++) {
+					signBlock.setLine(i, lines.get(i));
 				}
 				signBlock.update(true);
+			}
+			else {
+				Message.sendError("You have to be targeting a sign you want removed");
+				return;
 			}
 			
 
 			List<SignClass> signs = MineReset.getSigns();
 			signs.remove(sign);
 			MineReset.setSigns(signs);
-			
+			SignUtils.delete(sign);
 			SignUtils.saveAll(MineReset.getSigns());
 			Message.sendSuccess("This sign is no longer defined. You can destroy it now.");
 			return;

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
@@ -48,7 +49,9 @@ public class SignClass implements ConfigurationSerializable, Listener  {
 		this.reset = reset;
 		this.lines = lines;
 		
-		Sign sign = (Sign) (world.getBlockAt(loc).getState());
+		BlockState block = world.getBlockAt(loc).getState();
+		if(!(block instanceof Sign)) return; 
+		Sign sign = (Sign) block;
 		for(int i = 0; i < lines.size(); i++) {
 			sign.setLine(i, Util.parseVars(lines.get(i), parent));
 		}

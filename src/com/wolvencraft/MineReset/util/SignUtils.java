@@ -146,8 +146,10 @@ public class SignUtils {
 	public static Sign update(Sign signBlock) {
 		SignClass sign = SignUtils.getSign(signBlock);
 		List<String> lines = sign.getLines();
-		for(int i = 0; i < lines.size(); i++)
-			signBlock.setLine(i, Util.parseVars(lines.get(i), MineUtils.getMine(sign.getParent().getParent())));
+		for(int i = 0; i < lines.size(); i++) {
+			Mine curMine = MineUtils.getMine(sign.getParent().getName());
+			signBlock.setLine(i, Util.parseVars(lines.get(i), curMine));
+		}
 		
 		return signBlock;
 	}

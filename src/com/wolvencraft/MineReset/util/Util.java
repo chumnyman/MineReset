@@ -303,6 +303,7 @@ public class Util
 	 * @return Parsed string
 	 */
 	public static String parseVars(String str, Mine curMine) {
+		if(curMine == null) return null;
 		String displayName = curMine.getDisplayName();
 
 		if(displayName.equals("")) displayName = curMine.getName();

@@ -56,6 +56,9 @@ public class ResetCommand
 		
 		curMine.reset(generator);
 		
+		if(curMine.getAutomatic()) curMine.resetTimer();
+		if(curMine.getCooldown()) curMine.resetCooldown();
+		
 		String broadcastMessage;
 		if(automatic) {
 			List<Mine> mines = MineReset.getMines();

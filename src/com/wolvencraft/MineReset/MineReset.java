@@ -110,9 +110,6 @@ public class MineReset extends JavaPlugin
 								if(nextReset <= 0) {
 									String[] args = {null, curMine.getName()};
 									ResetCommand.run(args, true, null);
-
-									if(curMine.getAutomatic()) curMine.resetTimer();
-									if(curMine.getCooldown()) curMine.resetCooldown();
 								}
 							}
 							if(curMine.getCooldown() && curMine.getCooldownTime() > 0) {

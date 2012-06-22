@@ -102,7 +102,6 @@ public class MineReset extends JavaPlugin
 								int nextReset = MineUtils.getNextReset(curMine);
 								List<Integer> warnTimes = curMine.getWarningTimes();
 								
-								SignUtils.updateAll(curMine);
 								curMine.updateTimer(checkEvery);
 									
 								if(!curMine.getSilent() && curMine.getWarned() && warnTimes.indexOf(nextReset) != -1)
@@ -115,6 +114,8 @@ public class MineReset extends JavaPlugin
 							if(curMine.getCooldown() && curMine.getCooldownTime() > 0) {
 								curMine.updateCooldown(checkEvery);
 							}
+							
+							SignUtils.updateAll(curMine);
 						}
 		            }
 	           	}

@@ -162,7 +162,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         warningTimes = (List<Integer>) me.get("warningTimes");
         blocks = (List<MineBlock>) me.get("blocks");
         List<String> names = (List<String>) me.get("protectionTypes");
-        enabledProtection.clear();
+        enabledProtection = new ArrayList<Protection>();
         for(String name : names)
         	enabledProtection.add(Protection.valueOf(name));
         protOne = ((Vector) me.get("protOne")).toLocation(world);

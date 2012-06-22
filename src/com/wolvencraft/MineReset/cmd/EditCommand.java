@@ -191,7 +191,7 @@ public class EditCommand {
 				if(percent > blockData.getChance())
 					percent = blockData.getChance();
 				
-				air.setChance(air.getChance() + blockData.getChance());
+				air.setChance(air.getChance() + percent);
 				blockData.setChance(blockData.getChance() - percent);
 				
 				Message.sendNote(curMine.getName(), (percent * 100) + "% of " + args[1] + " was successfully removed from the mine");

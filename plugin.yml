@@ -9,65 +9,52 @@ commands:
     description: MineReset help
 permissions:
   MineReset.*:
-    description: Gives access to all MineReset commands
+    default: op
     children:
-      MineReset.admin: true
-  MineReset.user:
-    description: Gives access to basic MineReset commands
-    children:
-      MineReset.time: true
-      MineReset.list: true
-      MineReset.warp: true
-      MineReset.info: true
-      MineReset.protection: true
-  MineReset.admin:
-    description: Gives access to advanced MineReset commands
-    children:
-      MineReset.user: true
-      MineReset.reset: true
-      MineReset.reset.cooldown: true
-      MineReset.edit: true
-      MineReset.config: true
-  MineReset.time:
-    description: Allows a player to check the time until the next reset of all mines
-    default: op
-  MineReset.list:
-    description: Allows a player to look at the list of existing mines
-    default: op
-  MineReset.warp:
-    description: Allows a player to teleport to the mine warp location
-    default: op
-  MineReset.info:
-    description: Allows a player to look at the information about mines
-    default: op
-  MineReset.protection:
-    description: Allows a player to break and place blocks in all mines
-    children:
-      MineReset.protection.break: true
-      MineReset.protection.place: true
-  MineReset.protection.break:
-    description: Allows a player to bypass breaking protection in all mines
-    default: op
-  MineReset.protection.place:
-    description: Allows a player to bypass placement protection in all mines
-    default: op
-  MineReset.reset:
-    description: Allows a player to reset a mine manually
-    children:
-      MineReset.reset.manual: true
-      MineReset.reset.sign: true
-  MineReset.reset.manual:
-    description: Allows a player to reset a mine manually
-    default: op
-  MineReset.reset.sign:
-    description: Allows a player to reset a mine with a sign
-    default: op
-  MineReset.reset.cooldown:
-    description: Allows a player to bypass reset cooldown
-    default: op
-  MineReset.edit:
-    description: Allows a player to create and edit mines
-    default: op
-  MineReset.config:
-    description: Gives access to saving and reloading the configuration
-    default: op
+      MineReset.normal:
+        default: true
+        children:
+          MineReset.info.time: true
+          MineReset.warp.use: true
+          MineReset.reset.sign: true
+          MineReset.protection.break: true
+          MineReset.protection.place: true
+          MineReset.protection.bypass: true
+      MineReset.admin:
+        default: op
+        children:
+          MineReset.*: true
+      MineReset.info.*:
+        default: op
+        children:
+          MineReset.info.all: true
+          MineReset.info.time: true
+      MineReset.protection.*:
+        default: op
+        children:
+          MineReset.protection.break: true
+          MineReset.protection.place: true
+          MineReset.protection.pvp: true
+          MineReset.protection.bypass: true
+      MineReset.reset.*:
+        default: op
+        children:
+          MineReset.reset.manual: true
+          MineReset.reset.sign: true
+          MineReset.reset.snapshot: true
+          MineReset.reset.bypass: true
+      MineReset.edit.*:
+        default: op
+        children:
+          MineReset.edit.config: true
+          MineReset.edit.info: true
+          MineReset.edit.protection: true
+          MineReset.edit.save: true
+          MineReset.edit.select: true
+          MineReset.edit.snapshot: true
+          MineReset.edit.sign: true
+      MineReset.warp.*:
+        default: op
+        children:
+          MineReset.warp.use: true
+          MineReset.warp.set: true

@@ -155,9 +155,10 @@ public class Mine implements ConfigurationSerializable, Listener {
         silent = (Boolean) me.get("silent");
         automatic = (Boolean) me.get("automatic");
         automaticSeconds = (Integer) me.get("automaticResetTime");
+    	nextAutomaticResetTick = automaticSeconds * 20;
         cooldownEnabled = (Boolean) me.get("cooldownEnabled");
         cooldownSeconds = (Integer) me.get("cooldownSeconds");
-        nextCooldownTicks = (Integer) me.get("nextCooldownTicks");
+        nextCooldownTicks = cooldownSeconds * 20;
         warned = (Boolean) me.get("isWarned");
         warningTimes = (List<Integer>) me.get("warningTimes");
         blocks = (List<MineBlock>) me.get("blocks");
@@ -222,7 +223,6 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("automaticResetTime", automaticSeconds);
         me.put("cooldownEnabled", cooldownEnabled);
         me.put("cooldownSeconds", cooldownSeconds);
-        me.put("nextCooldownTicks", nextCooldownTicks);
         me.put("isWarned", warned);
         me.put("warningTimes", warningTimes);
         List<String> names = new ArrayList<String>();
@@ -261,11 +261,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     	return displayName;
     }
     
-    /**
-     * If a mine has a parent, returns its object.<br />
-     * Otherwise, returns the mine object itself
-     * @return Mine parent
-     */
     public String getParent() {
     	return parent;
     }

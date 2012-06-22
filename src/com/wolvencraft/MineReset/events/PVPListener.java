@@ -22,6 +22,7 @@ public class PVPListener implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+    	if(event.isCancelled()) return;
 //        Message.debug("Entity was damaged by another Entity!");
         if (!(event.getDamager() instanceof Player || event.getDamager() instanceof Arrow) || !(event.getEntity() instanceof Player)) {
 //            Message.debug("Entities weren't players");

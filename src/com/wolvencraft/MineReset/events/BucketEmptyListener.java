@@ -22,6 +22,7 @@ public class BucketEmptyListener implements Listener
 	
 	@EventHandler
 	public void onBucketEmpty(PlayerBucketEmptyEvent event) {
+		if(event.isCancelled()) return;
         Message.debug("BucketEmptyEvent caught");
 
         if (Util.playerHasPermission(event.getPlayer(), "protection.place") || !Configuration.getBoolean("lag.protection-checks-enabled")) {

@@ -10,7 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.MineReset;
@@ -20,15 +20,15 @@ import com.wolvencraft.MineReset.util.Util;
 
 public class BlockBreakListener implements Listener
 {
-	public BlockBreakListener(MineReset plugin)
-	{
+	public BlockBreakListener(MineReset plugin) {
 		Message.debug("Initiating BlockBreakListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
 	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent event)
+	public void onBlockBreak(BlockBreakEvent event)
 	{
+		if(event.isCancelled()) return;
         Message.debug("BlockBreakEvent called");
 		
 		Player player = event.getPlayer();
@@ -45,7 +45,7 @@ public class BlockBreakListener implements Listener
         Message.debug("Retrieved the region list");
 		
 		if(mines.size() == 0) return;
-		Block b = event.getBlockPlaced();
+		Block b = event.getBlock();
 		
 		for(Mine mine : mines)
 		{

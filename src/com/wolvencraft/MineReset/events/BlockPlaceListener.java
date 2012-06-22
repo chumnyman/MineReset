@@ -29,6 +29,7 @@ public class BlockPlaceListener implements Listener
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
+		if(event.isCancelled()) return;
         Message.debug("BlockPlaceEvent called");
 		
 		Player player = event.getPlayer();

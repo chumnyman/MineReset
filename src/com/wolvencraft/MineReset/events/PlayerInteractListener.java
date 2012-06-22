@@ -30,6 +30,7 @@ public class PlayerInteractListener implements Listener
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
+		if(event.isCancelled()) return;
         Message.debug("PlayerInteractEvent passed");
 		
 		Player player = event.getPlayer();

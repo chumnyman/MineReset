@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.ResetCommand;
+import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.SignClass;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.SignUtils;
@@ -59,7 +60,7 @@ public class PlayerInteractListener implements Listener
 				if(!Util.playerHasPermission(player, "reset.sign")) {
 					return;
 				}
-
+				
 		     	SignClass sign = SignUtils.getSignAt(block.getLocation());
 				if(sign == null) {
 					return;
@@ -67,7 +68,13 @@ public class PlayerInteractListener implements Listener
 				
 		     	if(sign.getReset())
 		     	{
-		     		String[] args = {"reset", sign.getParent().getName()};
+		     		Mine curMine = sign.getParent();
+					if(!Util.playerHasPermission(player, "reset.cooldown") && curMine.getNextCooldown() > 0) {
+						Message.sendError("You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
+						return;
+					}
+		     		
+		     		String[] args = {"reset", curMine.getName()};
 		     		ResetCommand.run(args, false, null);
 		     	}
 			}

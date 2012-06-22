@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.util.Vector;
 
 import com.wolvencraft.MineReset.util.SignUtils;
+import com.wolvencraft.MineReset.util.Util;
 
 @SerializableAs("SignClass")
 public class SignClass implements ConfigurationSerializable, Listener  {
@@ -32,8 +33,11 @@ public class SignClass implements ConfigurationSerializable, Listener  {
 		this.loc = loc;
 		lines = new ArrayList<String>();
 		for(int i = 0; i < sign.getLines().length; i++) {
-			lines.add(sign.getLine(i));
+			String line = sign.getLine(i);
+			lines.add(line);
+			sign.setLine(i, Util.parseVars(line, parent));
 		}
+		sign.update(true);
 	}
 	
 	public SignClass(String id, World world, Location loc, Mine parent, boolean reset, List<String> lines) {
@@ -43,6 +47,12 @@ public class SignClass implements ConfigurationSerializable, Listener  {
 		this.parent = parent;
 		this.reset = reset;
 		this.lines = lines;
+		
+		Sign sign = (Sign) (world.getBlockAt(loc).getState());
+		for(int i = 0; i < lines.size(); i++) {
+			sign.setLine(i, Util.parseVars(lines.get(i), parent));
+		}
+		sign.update(true);
 	}
 	
 	@SuppressWarnings("unchecked")

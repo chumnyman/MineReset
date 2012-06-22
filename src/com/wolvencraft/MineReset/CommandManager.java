@@ -53,7 +53,7 @@ public class CommandManager implements CommandExecutor
 			ResetCommand.run(args, false, "empty");
 		else if(args[0].equalsIgnoreCase("save"))
 			SaveCommand.run(args);
-		else if(args[0].equalsIgnoreCase("select") || args[0].equalsIgnoreCase("sel"))
+		else if(args[0].equalsIgnoreCase("select") || args[0].equalsIgnoreCase("pos1") || args[0].equalsIgnoreCase("pos2") || args[0].equalsIgnoreCase("hpos1") || args[0].equalsIgnoreCase("hpos2"))
 			SelectCommand.run(args);
 		else if(args[0].equalsIgnoreCase("sign") || args[0].equalsIgnoreCase("signs"))
 			SignCommand.run(args);

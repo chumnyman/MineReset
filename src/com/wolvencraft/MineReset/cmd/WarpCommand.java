@@ -22,10 +22,6 @@ public class WarpCommand
 			Message.sendError("This command cannot be executed via console");
 			return;
 		}
-		if(!Util.senderHasPermission("warp")) {
-			Message.sendDenied(args);
-			return;
-		}
 		
 		if(args.length == 1) {
 			HelpCommand.getWarp();
@@ -37,6 +33,10 @@ public class WarpCommand
 		}
 		
 		if(args[1].equalsIgnoreCase("set")) {
+			if(!Util.hasPermission("warp.set")) {
+				Message.sendDenied(args);
+				return;
+			}
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
 				Message.sendMineNotSelected();
@@ -58,6 +58,10 @@ public class WarpCommand
 			return;
 		}
 		else {
+			if(!Util.hasPermission("warp.use")) {
+				Message.sendDenied(args);
+				return;
+			}
 			Message.sendInvalidMineName(args[1]);
 			return;
 		}

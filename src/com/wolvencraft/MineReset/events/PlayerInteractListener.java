@@ -37,7 +37,7 @@ public class PlayerInteractListener implements Listener
 		Block block = event.getClickedBlock();
 		if (event.getAction().equals(Action.LEFT_CLICK_BLOCK))
 		{
-			if(!Util.playerHasPermission(player, "edit")) return;
+			if(!Util.playerHasPermission(player, "edit.select")) return;
 			if(player.getItemInHand().equals(new ItemStack(Material.WOOD_AXE))) {
 				Location loc = block.getLocation();
 				CommandManager.setLocation(loc, 0);
@@ -48,7 +48,7 @@ public class PlayerInteractListener implements Listener
 		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
 		{
 			if(player.getItemInHand().equals(new ItemStack(Material.WOOD_AXE))) {
-				if(!Util.playerHasPermission(player, "edit")) return;
+				if(!Util.playerHasPermission(player, "edit.select")) return;
 				Location loc = event.getClickedBlock().getLocation();
 				CommandManager.setLocation(loc, 1);
 				event.setCancelled(true);
@@ -70,7 +70,7 @@ public class PlayerInteractListener implements Listener
 		     	if(sign.getReset())
 		     	{
 		     		Mine curMine = sign.getParent();
-					if(!Util.playerHasPermission(player, "reset.cooldown") && curMine.getNextCooldown() > 0) {
+					if(!Util.playerHasPermission(player, "reset.bypass") && curMine.getNextCooldown() > 0) {
 						Message.sendError("You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
 						return;
 					}

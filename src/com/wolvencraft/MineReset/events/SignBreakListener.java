@@ -3,6 +3,7 @@ package com.wolvencraft.MineReset.events;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
@@ -18,7 +19,7 @@ public class SignBreakListener implements Listener
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onSignBreak(BlockBreakEvent event) {
 		if(event.isCancelled()) return;
         Message.debug("SignBreakEvent called");

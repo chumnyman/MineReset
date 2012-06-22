@@ -21,7 +21,7 @@ public class SelectCommand
 			Message.sendError("This command cannot be executed via console");
 			return;
 		}
-		if(!Util.isPlayer() || !Util.senderHasPermission("edit")) {
+		if(!Util.isPlayer() || !Util.hasPermission("edit.select")) {
 			Message.sendDenied(args);
 			return;
 		}

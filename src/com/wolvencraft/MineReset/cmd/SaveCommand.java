@@ -25,7 +25,7 @@ public class SaveCommand
 			return;
 		}
 		
-		if(!Util.senderHasPermission("edit")) {
+		if(!Util.hasPermission("edit.save")) {
 			Message.sendDenied(args);
 			return;
 		}

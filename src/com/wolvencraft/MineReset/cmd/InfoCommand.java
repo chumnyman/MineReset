@@ -18,11 +18,6 @@ public class InfoCommand
 {
 	public static void run(String[] args)
 	{
-		if(!Util.senderHasPermission("info")) {
-			Message.sendDenied(args);
-			return;
-		}
-		
 		Mine curMine = null;
 		if(args.length == 1) {
 			if(CommandManager.getMine() != null) {
@@ -49,6 +44,12 @@ public class InfoCommand
 		
 		
 		if(args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("?")) {
+
+			if(!Util.hasPermission("info.all")) {
+				Message.sendDenied(args);
+				return;
+			}
+			
 			// Title
 			String displayName;
 			if(curMine.getDisplayName().isEmpty())
@@ -179,6 +180,12 @@ public class InfoCommand
 			}
 		}
 		if(args[0].equalsIgnoreCase("time")) {
+			if(!Util.hasPermission("info.time")) {
+				Message.sendDenied(args);
+				return;
+			}
+			
+			
 			if(args.length != 2) {
 				Message.sendInvalidArguments(args);
 				return;

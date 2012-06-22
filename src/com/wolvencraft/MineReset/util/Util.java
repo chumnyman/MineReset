@@ -18,7 +18,7 @@ public class Util
 	 * @param node The permission node
 	 * @return true is the sender has a permission, false if he does not
 	 */
-	public static boolean senderHasPermission(String node) {
+	public static boolean hasPermission(String node) {
 		
 		// Console always has the permissions
 		Player player;

@@ -14,7 +14,7 @@ import com.wolvencraft.MineReset.util.Util;
 
 public class BlacklistCommand {
 	public static void run(String[] args) {
-		if(!Util.senderHasPermission("edit")) {
+		if(!Util.hasPermission("edit.blacklist")) {
 			Message.sendDenied(args);
 			return;
 		}

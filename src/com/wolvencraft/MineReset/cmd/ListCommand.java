@@ -11,10 +11,11 @@ public class ListCommand
 {
 	public static void run(String[] args)
 	{
-		if(!Util.senderHasPermission("list")) {
+		if(!Util.hasPermission("info.list")) {
 			Message.sendDenied(args);
 			return;
 		}
+		
 		if(args.length > 2) {
 			Message.sendInvalidArguments(args);
 			return;

@@ -40,27 +40,28 @@ public class HelpCommand {
 	public static void getHelp() {
 		formatHeader(20, Language.getString("general.title"));
         formatHelp("about", "", "Returns version and project info about MineReset", "");
-		formatHelp("info", "<name>", "Returns the information about a mine", "info");	
-		formatHelp("list", "", "Lists all the available mines", "list");
-		formatHelp("warp", "<name>", "Teleports you to the mine warp location", "warp");
-		formatHelp("reset", "<name>", "Resets the mine manually", "reset");
-		formatHelp("select", "", "Shows region selection help page", "edit");
-		formatHelp("save", "<name>", "Saves the region for future use", "edit");
-		formatHelp("edit", "", "Shows a help page on how to handle the mine options", "edit");
-		formatHelp("delete", "<name>", "Completely deletes a mine", "edit");
-		formatHelp("auto", "", "Shows a help page on how to automate the mine", "edit");
-		formatHelp("protection", "", "Shows how to set up a mine protection", "edit");
+		formatHelp("info", "<name>", "Returns the information about a mine", "info.all");	
+		formatHelp("list", "", "Lists all the available mines", "info.list");
+		formatHelp("warp", "<name>", "Teleports you to the mine warp location", "warp.use");
+		formatHelp("reset", "<name>", "Resets the mine manually", "reset.manual");
+		formatHelp("select", "", "Shows region selection help page", "edit.select");
+		formatHelp("save", "<name>", "Saves the region for future use", "edit.save");
+		formatHelp("edit", "", "Shows a help page on how to handle the mine options", "edit.info");
+		formatHelp("snapshot", "", "Displays a help page on the snapshots", "edit.snapshot");
+		formatHelp("delete", "<name>", "Completely deletes a mine", "edit.info");
+		formatHelp("timer", "", "Shows a help page on how to automate the mine", "edit.timer");
+		formatHelp("protection", "", "Shows how to set up a mine protection", "edit.protection");
 		return;
 	}
 	
 	public static void getInfo() {
 		formatHeader(20, "Information");
-		formatHelp("info", "<name>", "Returns the information about a mine", "info");
-		formatHelp("info", "<name> blacklist", "Returns the information about mine blacklist", "info");
-		formatHelp("info", "<name> protection", "Returns the information about mine protection", "info");
-		formatHelp("info", "<name> signs", "Returns the information about signs", "info");
-		formatHelp("info", "<name> reset", "Returns the information about resets", "info");
-		formatHelp("time", "<name>", "Returns the next reset time for the mine", "time");
+		formatHelp("info", "<name>", "Returns the information about a mine", "info.all");
+		formatHelp("info", "<name> blacklist", "Returns the information about mine blacklist", "info.all");
+		formatHelp("info", "<name> protection", "Returns the information about mine protection", "info.all");
+		formatHelp("info", "<name> signs", "Returns the information about signs", "info.all");
+		formatHelp("info", "<name> reset", "Returns the information about resets", "info.all");
+		formatHelp("time", "<name>", "Returns the next reset time for the mine", "info.time");
 		return;
 	}
 	
@@ -143,7 +144,7 @@ public class HelpCommand {
 	private static void formatHelp(String command, String arguments, String description, String node) {
 		CommandSender sender = CommandManager.getSender();
 		if(!arguments.equalsIgnoreCase("")) arguments = " " + arguments;
-		if(Util.senderHasPermission(node) || node.equals(""))
+		if(Util.hasPermission(node) || node.equals(""))
 			sender.sendMessage(ChatColor.GOLD + "/mine " + command + ChatColor.GRAY + arguments + ChatColor.WHITE + " " + description);
 		return;
 	}

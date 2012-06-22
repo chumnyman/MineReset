@@ -12,7 +12,7 @@ public class ConfigurationCommand
 {
 	public static void run(String[] args)
 	{
-		if(!Util.senderHasPermission("config")) {
+		if(!Util.hasPermission("edit.config")) {
 			Message.sendDenied(args);
 			return;
 		}

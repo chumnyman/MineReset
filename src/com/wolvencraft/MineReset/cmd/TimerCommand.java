@@ -14,7 +14,7 @@ import com.wolvencraft.MineReset.util.Util;
 public class TimerCommand {
 	
 	public static void run(String[] args) {
-		if(!Util.senderHasPermission("edit")) {
+		if(!Util.hasPermission("edit.timer")) {
 			Message.sendDenied(args);
 			return;
 		}

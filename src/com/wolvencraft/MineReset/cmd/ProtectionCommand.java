@@ -15,7 +15,7 @@ import com.wolvencraft.MineReset.util.Util;
 
 public class ProtectionCommand {
 	public static void run(String[] args) {
-		if(!Util.senderHasPermission("edit")) {
+		if(!Util.hasPermission("edit.protection")) {
 			Message.sendDenied(args);
 			return;
 		}

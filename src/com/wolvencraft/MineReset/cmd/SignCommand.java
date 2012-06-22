@@ -27,7 +27,7 @@ public class SignCommand
 			Message.sendError("This command cannot be executed via console");
 			return;
 		}
-		if(!Util.senderHasPermission("edit")) {
+		if(!Util.hasPermission("edit.sign")) {
 			Message.sendDenied(args);
 			return;
 		}

@@ -19,7 +19,7 @@ import com.wolvencraft.MineReset.util.Util;
 
 public class EditCommand {
 	public static void run(String[] args) {
-		if(!Util.senderHasPermission("edit")) {
+		if(!Util.hasPermission("edit.info")) {
 				Message.sendDenied(args);
 				return;
 		}

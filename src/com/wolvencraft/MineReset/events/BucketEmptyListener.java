@@ -2,7 +2,6 @@ package com.wolvencraft.MineReset.events;
 
 import java.util.List;
 
-import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Protection;
 import org.bukkit.event.EventHandler;
@@ -25,7 +24,7 @@ public class BucketEmptyListener implements Listener
 		if(event.isCancelled()) return;
         Message.debug("BucketEmptyEvent caught");
 
-        if (Util.playerHasPermission(event.getPlayer(), "protection.place") || !Configuration.getBoolean("lag.protection-checks-enabled")) {
+        if (Util.playerHasPermission(event.getPlayer(), "protection.place")) {
             Message.debug("Player has perms or protection is disabled");
             return;
         }

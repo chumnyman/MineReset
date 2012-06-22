@@ -16,7 +16,7 @@ import com.wolvencraft.MineReset.util.Util;
 
 public class SnapshotCommand {
 	public static void run(String[] args) {
-		if(!Util.senderHasPermission("edit")) {
+		if(!Util.hasPermission("edit.snapshot")) {
 			Message.sendDenied(args);
 			return;
 		}

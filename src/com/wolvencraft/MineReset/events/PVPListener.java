@@ -1,7 +1,6 @@
 package com.wolvencraft.MineReset.events;
 
 import com.wolvencraft.MineReset.MineReset;
-import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Protection;
 import com.wolvencraft.MineReset.util.Message;
@@ -40,7 +39,7 @@ public class PVPListener implements Listener {
             attacker = (Player) event.getDamager();
         }
         Player victim = (Player) event.getEntity();
-        if (Util.playerHasPermission(attacker, "protection.bypass") || !Configuration.getBoolean("lag.protection-checks-enabled")) {
+        if (Util.playerHasPermission(attacker, "protection.bypass")) {
             Message.debug("Attacker had perms or protection is disabled");
             return;
         }

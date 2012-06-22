@@ -14,7 +14,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.MineReset;
-import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.util.Message;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -33,7 +32,7 @@ public class BlockBreakListener implements Listener
 		
 		Player player = event.getPlayer();
 		
-		if(Util.playerHasPermission(player, "protection") || !Configuration.getBoolean("lag.protection-checks-enabled"))
+		if(Util.playerHasPermission(player, "protection.bypass.break"))
 		{
             Message.debug("Bypass permission check passed");
 			return;
@@ -50,7 +49,7 @@ public class BlockBreakListener implements Listener
 		for(Mine mine : mines)
 		{
             Message.debug("For mine " + mine.getName());
-			
+            
 			if (mine.getProtection().contains(Protection.BLOCK_BREAK))
 			{
                 Message.debug(mine.getName() + " has protection enabled");

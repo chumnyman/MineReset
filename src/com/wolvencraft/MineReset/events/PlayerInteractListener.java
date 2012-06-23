@@ -28,15 +28,13 @@ public class PlayerInteractListener implements Listener
     }
 	
 	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event)
-	{
+	public void onPlayerInteract(PlayerInteractEvent event) {
 		if(event.isCancelled()) return;
         Message.debug("PlayerInteractEvent passed");
 		
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();
-		if (event.getAction().equals(Action.LEFT_CLICK_BLOCK))
-		{
+		if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 			if(!Util.playerHasPermission(player, "edit.select")) return;
 			if(player.getItemInHand().equals(new ItemStack(Material.WOOD_AXE))) {
 				Location loc = block.getLocation();
@@ -45,8 +43,7 @@ public class PlayerInteractListener implements Listener
 			}
 			return;
 		}
-		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
-		{
+		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			if(player.getItemInHand().equals(new ItemStack(Material.WOOD_AXE))) {
 				if(!Util.playerHasPermission(player, "edit.select")) return;
 				Location loc = event.getClickedBlock().getLocation();
@@ -63,12 +60,9 @@ public class PlayerInteractListener implements Listener
 				}
 				
 		     	SignClass sign = SignUtils.getSignAt(block.getLocation());
-				if(sign == null) {
-					return;
-				}
+				if(sign == null) return;
 				
-		     	if(sign.getReset())
-		     	{
+		     	if(sign.getReset()) {
 		     		Mine curMine = sign.getParent();
 					if(!Util.playerHasPermission(player, "reset.bypass") && curMine.getNextCooldown() > 0) {
 						Message.sendError("You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
@@ -79,7 +73,6 @@ public class PlayerInteractListener implements Listener
 		     		ResetCommand.run(args, false, null);
 		     	}
 			}
-			
 			return;
 		}
 		else return;

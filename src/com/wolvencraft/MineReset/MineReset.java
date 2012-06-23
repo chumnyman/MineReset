@@ -60,6 +60,7 @@ public class MineReset extends JavaPlugin
 		new BlockBreakListener(this);
 		new BlockPlaceListener(this);
 		new BucketEmptyListener(this);
+		new BucketFillListener(this);
 		new PlayerInteractListener(this);
 		new PlayerLoginListener(this);
         new PVPListener(this);

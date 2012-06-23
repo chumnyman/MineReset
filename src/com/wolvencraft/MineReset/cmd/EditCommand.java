@@ -338,7 +338,7 @@ public class EditCommand {
 				return;
 			}
 			
-			curMine.setGenerator(Generator.valueOf(args[1]));
+			curMine.setGenerator(Generator.valueOf(args[1].toUpperCase()));
 			Message.sendNote(curMine.getName(), "Mine generator has been set to " + ChatColor.GREEN + args[1].toUpperCase());
 
 			MineUtils.save(curMine);

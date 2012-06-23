@@ -14,7 +14,6 @@ public class SurfaceGenerator {
 		RandomBlock pattern = new RandomBlock(curMine.getBlocks());
 		Location one = curMine.getFirstPoint();
 		Location two = curMine.getSecondPoint();
-		int minY = one.getBlockY(), maxY = two.getBlockY();
 		World world = curMine.getWorld();
 		
     	if(curMine.getBlacklist().getEnabled())
@@ -22,21 +21,15 @@ public class SurfaceGenerator {
     		if(curMine.getBlacklist().getWhitelist()) {
     			for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
 		            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
-		            	if(topLevel(y, minY, maxY)) {
-		            		for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-			                	Block original = world.getBlockAt(x, y, z);
-			                    MaterialData newBlock = MineUtils.getMostCommon(curMine).getBlock();
-			                    if(curMine.getBlacklist().getBlocks().contains(original.getData()))
-					                original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
-			                }
-		            	}
-		            	else {
-			                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-			                	Block original = world.getBlockAt(x, y, z);
-			                    MaterialData newBlock = pattern.next();
-			                    if(curMine.getBlacklist().getBlocks().contains(original.getData()))
-					                original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
-			                }
+		            	for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
+		                	Block original = world.getBlockAt(x, y, z);
+		                	MaterialData newBlock;
+		                	if(surface(one, two, x, y, z))
+		                		newBlock = MineUtils.getMostCommon(curMine).getBlock();
+		                	else
+				                newBlock = pattern.next();
+			                if(curMine.getBlacklist().getBlocks().contains(original.getData()))
+			                	original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
 		            	}
 		            }
 		        }
@@ -45,22 +38,16 @@ public class SurfaceGenerator {
     		else {
     			for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
 		            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
-		            	if(topLevel(y, minY, maxY)) {
-		            		for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-			                	Block original = world.getBlockAt(x, y, z);
-			                    MaterialData newBlock = MineUtils.getMostCommon(curMine).getBlock();
-			                    if(!curMine.getBlacklist().getBlocks().contains(original.getData()))
-					                original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
-			                }
-		            	}
-		            	else {
-			                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-			                	Block original = world.getBlockAt(x, y, z);
-			                    MaterialData newBlock = pattern.next();
-			                    if(!curMine.getBlacklist().getBlocks().contains(original.getData()))
-					                original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
-			                }
-		            	}
+		            	for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
+		                	Block original = world.getBlockAt(x, y, z);
+		                	MaterialData newBlock;
+		                	if(surface(one, two, x, y, z))
+		                		newBlock = MineUtils.getMostCommon(curMine).getBlock();
+		                	else
+				                newBlock = pattern.next();
+			                if(!curMine.getBlacklist().getBlocks().contains(original.getData()))
+			                	original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
+			            }
 		            }
 		        }
     			return;
@@ -70,30 +57,39 @@ public class SurfaceGenerator {
     	{
 	        for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
 	            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
-	            	if(topLevel(y, minY, maxY)) {
-		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-		                	Block original = world.getBlockAt(x, y, z);
-		                    MaterialData newBlock = MineUtils.getMostCommon(curMine).getBlock();
-			                original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
-		                }
-	            	}
-	                else {
-	                	for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-		                	Block original = world.getBlockAt(x, y, z);
-		                    MaterialData newBlock = pattern.next();
-			                original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
-		                }
-	                }
+	                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
+	                	Block original = world.getBlockAt(x, y, z);
+	                	MaterialData newBlock;
+	                	if(surface(one, two, x, y, z))
+	                		newBlock = MineUtils.getMostCommon(curMine).getBlock();
+	                	else
+			                newBlock = pattern.next();
+			            original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
+		            }
 	            }
 	        }
 	        return;
     	}
 	}
 	
-	private static boolean topLevel(int curY, int minY, int maxY)
+	private static boolean surface(Location pos1, Location pos2, int x, int y, int z)
 	{
-		double percent = curY / (maxY - minY);
-		if(percent >= 0.95) return true;
-		else return false;
+		int xDist = pos2.getBlockX() - pos1.getBlockX();
+		int yDist = pos2.getBlockY() - pos1.getBlockY();
+		int zDist = pos2.getBlockZ() - pos1.getBlockZ();
+		
+		x -= pos1.getBlockX();
+		y -= pos1.getBlockY();
+		z -= pos1.getBlockZ();
+		
+		if(x > xDist / 2) x = xDist - x;
+		if(y > yDist / 2) y = yDist - y;
+		if(z > zDist / 2) y = zDist - z;
+		
+		if(((x / xDist) < 0.1) ||
+		   ((y / yDist) < 0.1) ||
+		   ((z / zDist) < 0.1)) return true;
+		
+		return false;
 	}
 }

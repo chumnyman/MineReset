@@ -164,12 +164,12 @@ public class SignUtils {
 
 		if(curMine != null) {
 			for(SignClass sign : signList) {
-				if(sign.getParent().equals(curMine)) {
+				if(sign.getParent().equals(curMine.getName())) {
 					BlockState b = sign.getLocation().getBlock().getState();
 					if(b instanceof Sign) {
 						Sign signBlock = (Sign) b;
 						signBlock = update(signBlock);
-						signBlock.update(true);
+						signBlock.update();
 					}
 				}
 			}
@@ -181,7 +181,7 @@ public class SignUtils {
 				if(b instanceof Sign) {
 					Sign signBlock = (Sign) b;
 					signBlock = update(signBlock);
-					signBlock.update(true);
+					signBlock.update();
 				}
 			}
 		}

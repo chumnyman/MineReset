@@ -60,7 +60,7 @@ public class SignCommand
 				return;
 			}
 			
-			SignClass sign = new SignClass(curMine, b.getLocation(), (Sign) b.getState());
+			SignClass sign = new SignClass(curMine.getName(), b.getLocation(), (Sign) b.getState());
 			
 			List<SignClass> signs = MineReset.getSigns();
 			signs.add(sign);

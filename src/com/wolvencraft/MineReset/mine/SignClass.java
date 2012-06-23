@@ -15,6 +15,7 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.event.Listener;
 import org.bukkit.util.Vector;
 
+import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.SignUtils;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -23,37 +24,39 @@ public class SignClass implements ConfigurationSerializable, Listener  {
 	private String id;
 	private World world;
 	private Location loc;
-	private Mine parent;
+	private String parent;
 	private boolean reset;
 	private List<String> lines;
 	
-	public SignClass(Mine parent, Location loc, Sign sign) {
+	public SignClass(String parent, Location loc, Sign sign) {
 		id = SignUtils.generateId();
 		this.parent = parent;
 		world = loc.getWorld();
 		this.loc = loc;
 		lines = new ArrayList<String>();
+		Mine parentMine = MineUtils.getMine(parent);
 		for(int i = 0; i < sign.getLines().length; i++) {
 			String line = sign.getLine(i);
 			lines.add(line);
-			sign.setLine(i, Util.parseVars(line, parent));
+			sign.setLine(i, Util.parseVars(line, parentMine));
 		}
 		sign.update(true);
 	}
 	
-	public SignClass(String id, World world, Location loc, Mine parent, boolean reset, List<String> lines) {
+	public SignClass(String id, World world, Location loc, String parent, boolean reset, List<String> lines) {
 		this.id = id;
 		this.world = world;
 		this.loc = loc;
 		this.parent = parent;
 		this.reset = reset;
 		this.lines = lines;
+		Mine parentMine = MineUtils.getMine(parent);
 		
 		BlockState block = world.getBlockAt(loc).getState();
 		if(!(block instanceof Sign)) return; 
 		Sign sign = (Sign) block;
 		for(int i = 0; i < lines.size(); i++) {
-			sign.setLine(i, Util.parseVars(lines.get(i), parent));
+			sign.setLine(i, Util.parseVars(lines.get(i), parentMine));
 		}
 		sign.update(true);
 	}
@@ -63,7 +66,7 @@ public class SignClass implements ConfigurationSerializable, Listener  {
 		id = (String) me.get("id");
         world = Bukkit.getWorld((String) me.get("world"));
         loc = ((Vector) me.get("loc")).toLocation(world);
-        parent = (Mine) me.get("parent");
+        parent = (String) me.get("parent");
         reset = (Boolean) me.get("reset");
         lines = (List<String>) me.get("lines");
 	}
@@ -99,7 +102,7 @@ public class SignClass implements ConfigurationSerializable, Listener  {
      * Returns the parent mine of the specific sign
      * @return The parent mine
      */
-    public Mine getParent() {
+    public String getParent() {
     	return parent;
     }
     
@@ -117,14 +120,6 @@ public class SignClass implements ConfigurationSerializable, Listener  {
      */
     public List<String> getLines() {
     	return lines;
-    }
-    
-    /**
-     * Changes the parent mine of the sign
-     * @param parent New parent
-     */
-    public void setParent(Mine parent) {
-    	this.parent = parent;
     }
     
     /**

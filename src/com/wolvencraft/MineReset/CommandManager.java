@@ -16,8 +16,7 @@ public class CommandManager implements CommandExecutor
 	private static Location[] loc = {null, null};
 	private static Mine curMine = null;
 	
-	public CommandManager(MineReset plugin)
-	{
+	public CommandManager(MineReset plugin) {
 		CommandManager.plugin = plugin;
 		plugin.getLogger();
 	}
@@ -27,10 +26,8 @@ public class CommandManager implements CommandExecutor
 		CommandManager.sender = sender;
 		if(!command.getName().equalsIgnoreCase("mine")) return false;
 		
-		if(args.length == 0) {
+		if(args.length == 0)
 			HelpCommand.getHelp();
-			return false;
-		}
 		else if(args[0].equalsIgnoreCase("blacklist") || args[0].equalsIgnoreCase("bl"))
 			BlacklistCommand.run(args);
 		else if(args[0].equalsIgnoreCase("configuration") || args[0].equalsIgnoreCase("config"))
@@ -47,15 +44,15 @@ public class CommandManager implements CommandExecutor
             MetaCommand.run(args);
 		else if(args[0].equalsIgnoreCase("protection") || args[0].equalsIgnoreCase("prot"))
 			ProtectionCommand.run(args);
-		else if(args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("fill"))
+		else if(args[0].equalsIgnoreCase("reset"))
 			ResetCommand.run(args, false, null);
-		else if(args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("empty"))
+		else if(args[0].equalsIgnoreCase("clear"))
 			ResetCommand.run(args, false, "empty");
 		else if(args[0].equalsIgnoreCase("save"))
 			SaveCommand.run(args);
 		else if(args[0].equalsIgnoreCase("select") || args[0].equalsIgnoreCase("pos1") || args[0].equalsIgnoreCase("pos2") || args[0].equalsIgnoreCase("hpos1") || args[0].equalsIgnoreCase("hpos2"))
 			SelectCommand.run(args);
-		else if(args[0].equalsIgnoreCase("sign") || args[0].equalsIgnoreCase("signs"))
+		else if(args[0].equalsIgnoreCase("sign"))
 			SignCommand.run(args);
 		else if(args[0].equalsIgnoreCase("snapshot"))
 			SnapshotCommand.run(args);

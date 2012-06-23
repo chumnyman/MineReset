@@ -16,6 +16,7 @@ import com.wolvencraft.MineReset.cmd.ResetCommand;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.SignClass;
 import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.MineUtils;
 import com.wolvencraft.MineReset.util.SignUtils;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -63,7 +64,7 @@ public class PlayerInteractListener implements Listener
 				if(sign == null) return;
 				
 		     	if(sign.getReset()) {
-		     		Mine curMine = sign.getParent();
+		     		Mine curMine = MineUtils.getMine(sign.getParent());
 					if(!Util.playerHasPermission(player, "reset.bypass") && curMine.getNextCooldown() > 0) {
 						Message.sendError("You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
 						return;

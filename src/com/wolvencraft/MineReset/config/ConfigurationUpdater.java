@@ -85,7 +85,7 @@ public class ConfigurationUpdater {
 				lines.add(getSignData().getString("signs." + sign + ".lines." + i));
 			}
 			
-			signs.add(new SignClass(id, world, loc, parent, reset, lines));
+			signs.add(new SignClass(id, world, loc, parent.getName(), reset, lines));
 			Message.sendSuccess("A sign at (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ") was imported into the system!");
 		}
 		

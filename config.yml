@@ -2,12 +2,8 @@ configuration:
   version: "2.0.0"
   debug-mode: false
   language: "english"
-  use-permissions: true
-lag:
-  automatic-resets-enabled: true
   check-time-every: 20
-  protection-checks-enabled: true
 updater:
   channel: "db"
   remind-on-login: true
-  permission-node: "minereset.edit"
+  permission-node: "minereset.admin"

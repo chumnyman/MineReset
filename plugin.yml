@@ -11,50 +11,65 @@ permissions:
   MineReset.*:
     default: op
     children:
-      MineReset.normal:
-        default: true
-        children:
-          MineReset.info.time: true
-          MineReset.warp.use: true
-          MineReset.reset.sign: true
-          MineReset.protection.break: true
-          MineReset.protection.place: true
-          MineReset.protection.bypass: true
-      MineReset.admin:
-        default: op
-        children:
-          MineReset.*: true
-      MineReset.info.*:
-        default: op
-        children:
-          MineReset.info.all: true
-          MineReset.info.time: true
-      MineReset.protection.*:
-        default: op
-        children:
-          MineReset.protection.break: true
-          MineReset.protection.place: true
-          MineReset.protection.pvp: true
-          MineReset.protection.bypass: true
-      MineReset.reset.*:
-        default: op
-        children:
-          MineReset.reset.manual: true
-          MineReset.reset.sign: true
-          MineReset.reset.snapshot: true
-          MineReset.reset.bypass: true
-      MineReset.edit.*:
-        default: op
-        children:
-          MineReset.edit.config: true
-          MineReset.edit.info: true
-          MineReset.edit.protection: true
-          MineReset.edit.save: true
-          MineReset.edit.select: true
-          MineReset.edit.snapshot: true
-          MineReset.edit.sign: true
-      MineReset.warp.*:
-        default: op
-        children:
-          MineReset.warp.use: true
-          MineReset.warp.set: true
+      MineReset.info.*: true
+      MineReset.protection.*: true
+      MineReset.reset.*: true
+      MineReset.edit.*: true
+      MineReset.warp.*: true
+  MineReset.normal:
+    default: true
+    children:
+      MineReset.info.time: true
+      MineReset.info.list: true
+      MineReset.warp.use: true
+      MineReset.reset.sign: true
+      MineReset.protection.break: true
+      MineReset.protection.place: true
+      MineReset.protection.bypass: true
+  MineReset.admin:
+    default: op
+    children:
+      MineReset.*: true
+  MineReset.info.*:
+    default: op
+    children:
+      MineReset.info.all: true
+      MineReset.info.time: true
+      MineReset.info.list: true
+  MineReset.protection.*:
+    default: op
+    children:
+      MineReset.protection.break: true
+      MineReset.protection.place: true
+      MineReset.protection.pvp: true
+      MineReset.protection.bypass.*: true
+  MineReset.protection.bypass.*:
+    default: op
+    children:
+      MineReset.protection.bypass.break: true
+      MineReset.protection.bypass.place: true
+      MineReset.protection.bypass.pvp: true
+  MineReset.reset.*:
+    default: op
+    children:
+      MineReset.reset.manual: true
+      MineReset.reset.sign: true
+      MineReset.reset.snapshot: true
+      MineReset.reset.bypass: true
+  MineReset.edit.*:
+    default: op
+    children:
+      MineReset.edit.blacklist: true
+      MineReset.edit.config: true
+      MineReset.edit.info: true
+      MineReset.edit.protection: true
+      MineReset.edit.save: true
+      MineReset.edit.sign: true
+      MineReset.edit.select: true
+      MineReset.edit.snapshot: true
+      MineReset.edit.timer: true
+  MineReset.warp.*:
+    default: op
+    children:
+      MineReset.warp.use: true
+      MineReset.warp.set: true

@@ -293,7 +293,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     }
     
     public int getNextCooldown() {
-    	return (int)(nextCooldownTicks * 20);
+    	return (int)(nextCooldownTicks / 20);
     }
     
     public int getResetPeriod() {

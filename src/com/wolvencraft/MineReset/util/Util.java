@@ -492,16 +492,18 @@ public class Util
 	 * @return Time in user-friendly format
 	 */
 	public static String parseSeconds(int seconds) {
-		int hour = seconds / 3600;
-		int min = (seconds - (hour * 3600)) / 60;
+		ChatUtil.debug("Parsing seconds . . .");
+		ChatUtil.debug("int seconds =  " + seconds);
+		int hour = (int) Math.floor(seconds / 3600);
+		ChatUtil.debug("int hour =  " + hour);
+		int min = (int) Math.floor((seconds - (hour * 3600)) / 60);
+		ChatUtil.debug("int min =  " + min);
 		int sec = seconds - (hour * 3600) - (min * 60);
+		ChatUtil.debug("int sec =  " + sec);
 		String resetTime = min + ":";
-		if(hour > 0)
-		{
-			if(min < 10)
-				resetTime = "0" + resetTime;
-			resetTime = hour + ":" + resetTime;
-		}
+		if(min < 10)
+			resetTime = "0" + resetTime;
+		resetTime = hour + ":" + resetTime;
 		if(sec < 10)
 			resetTime = resetTime + "0";
 		resetTime = resetTime + sec;

@@ -24,11 +24,13 @@ public class SnapshotGenerator implements BaseGenerator {
 	public boolean run(Mine curMine) {
 		Snapshot snap = SnapshotUtil.getSnapshot(curMine);
 		if(snap == null) {
+			ChatUtil.debug("Snapshot does not exist!");
 			ChatUtil.sendError("Snapshot was never saved! Use " + ChatColor.GOLD + "/mine snapshot save" + ChatColor.WHITE + " to save it");
 			return false;
 		}
 		List<DataBlock> blocks = snap.getBlocks();
-		if(!blocks.isEmpty()) {
+		if(blocks.isEmpty()) {
+			ChatUtil.debug("Snapshot block list is empty!");
 			ChatUtil.sendError("Snapshot was never saved! Use " + ChatColor.GOLD + "/mine snapshot save" + ChatColor.WHITE + " to save it");
 			return false;
 		}

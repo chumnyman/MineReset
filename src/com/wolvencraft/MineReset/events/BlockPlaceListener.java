@@ -19,7 +19,7 @@ import com.wolvencraft.MineReset.util.Util;
 public class BlockPlaceListener implements Listener
 {
 	public BlockPlaceListener(MineReset plugin) {
-		ChatUtil.debug("Initiating BlockplaceListener");
+		ChatUtil.debug("Initiating BlockPlaceListener");
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 	

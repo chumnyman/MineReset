@@ -30,7 +30,7 @@ public class RandomGenerator implements BaseGenerator {
 		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
 		                	Block original = world.getBlockAt(x, y, z);
 		                    MaterialData newBlock = pattern.next();
-		                    if(mine.getBlacklist().getBlocks().contains(original.getData()))
+		                    if(mine.getBlacklist().getBlocks().contains(original.getState().getData()))
 				                original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
 		                }
 		            }
@@ -43,7 +43,7 @@ public class RandomGenerator implements BaseGenerator {
 		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
 		                	Block original = world.getBlockAt(x, y, z);
 		                    MaterialData newBlock = pattern.next();
-		                    if(!mine.getBlacklist().getBlocks().contains(original.getData()))
+		                    if(!mine.getBlacklist().getBlocks().contains(original.getState().getData()))
 				                original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
 		                }
 		            }

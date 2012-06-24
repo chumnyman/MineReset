@@ -3,7 +3,7 @@ package com.wolvencraft.MineReset.generation;
 import java.util.List;
 
 import org.bukkit.ChatColor;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.Block;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.mine.DataBlock;
@@ -39,21 +39,19 @@ public class SnapshotGenerator implements BaseGenerator {
     	{        		
     		if(curMine.getBlacklist().getWhitelist()) {
     			for(DataBlock block : blocks) {
-    				BlockState original = block.getLocation().getBlock().getState();
+    				Block original = block.getLocation().getBlock();
     				MaterialData newBlock = block.getData();
-    				if(curMine.getBlacklist().getBlocks().contains(original.getData())) {
-    					original.setData(newBlock);
-    					original.update();
+    				if(curMine.getBlacklist().getBlocks().contains(original.getState().getData())) {
+    					original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
     				}
     			}
     		}
     		else {
     			for(DataBlock block : blocks) {
-    				BlockState original = block.getLocation().getBlock().getState();
+    				Block original = block.getLocation().getBlock();
     				MaterialData newBlock = block.getData();
     				if(!curMine.getBlacklist().getBlocks().contains(original.getData())) {
-    					original.setData(newBlock);
-    					original.update();
+    					original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
     				}
     			}
     		}
@@ -61,10 +59,9 @@ public class SnapshotGenerator implements BaseGenerator {
     	else
     	{
 	        for(DataBlock block : blocks) {
-				BlockState original = block.getLocation().getBlock().getState();
+				Block original = block.getLocation().getBlock();
 				MaterialData newBlock = block.getData();
-				original.setData(newBlock);
-				original.update();
+				original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
 	        }
     	}
 		return true;

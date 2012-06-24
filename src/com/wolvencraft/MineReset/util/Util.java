@@ -84,7 +84,7 @@ public class Util
 	 * @return Block material if it exists, null if it does not.
 	 */
 	public static MaterialData getBlock(String blockName) {
-		Message.debug("Parsing block: " + blockName);
+		ChatUtil.debug("Parsing block: " + blockName);
 		try
 		{
 			String[] parts = blockName.split(":");
@@ -106,7 +106,7 @@ public class Util
 				else if(blockName.equalsIgnoreCase("redstone") || parts[0].equalsIgnoreCase("redstoneore"))
 					parts[0] = "redstone_ore";
 				
-				Message.debug(parts[0] + " => " + Material.getMaterial(parts[0].toUpperCase()).name());
+				ChatUtil.debug(parts[0] + " => " + Material.getMaterial(parts[0].toUpperCase()).name());
 				block = new MaterialData(Material.getMaterial(parts[0].toUpperCase()));
 			}
 			

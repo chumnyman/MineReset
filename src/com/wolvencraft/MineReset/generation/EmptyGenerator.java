@@ -8,8 +8,15 @@ import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.mine.Mine;
 
-public class EmptyGenerator {
-	public static void reset(Mine curMine) {
+public class EmptyGenerator implements BaseGenerator {
+	public final String NAME;
+	public final String DESCRIPTION;
+	
+	public EmptyGenerator() {
+		NAME = "EMPTY";
+		DESCRIPTION = "An equivalent of resetting a mine with the composition of 100% air";
+	}
+	public boolean run(Mine curMine) {
 		Location one = curMine.getFirstPoint();
 		Location two = curMine.getSecondPoint();
 		World world = curMine.getWorld();
@@ -51,5 +58,14 @@ public class EmptyGenerator {
 	            }
 	        }
     	}
+		return true;
+	}
+	@Override
+	public String getName() {
+		return NAME;
+	}
+	@Override
+	public String getDescription() {
+		return DESCRIPTION;
 	}
 }

@@ -6,11 +6,18 @@ import org.bukkit.block.Block;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.mine.Mine;
-import com.wolvencraft.MineReset.util.MineUtils;
+import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.RandomBlock;
 
-public class SurfaceGenerator {
-	public static void reset(Mine curMine) {
+public class SurfaceGenerator implements BaseGenerator {
+	public final String NAME;
+	public final String DESCRIPTION;
+	
+	public SurfaceGenerator() {
+		NAME = "SURFACE";
+		DESCRIPTION = "Resets the contents of the mine randomly according to the persentage set by the mine configuration, and sets the outer blocks to the most common material in the mine";
+	}
+	public boolean run(Mine curMine) {
 		RandomBlock pattern = new RandomBlock(curMine.getBlocks());
 		Location one = curMine.getFirstPoint();
 		Location two = curMine.getSecondPoint();
@@ -25,7 +32,7 @@ public class SurfaceGenerator {
 		                	Block original = world.getBlockAt(x, y, z);
 		                	MaterialData newBlock;
 		                	if(surface(one, two, x, y, z))
-		                		newBlock = MineUtils.getMostCommon(curMine).getBlock();
+		                		newBlock = MineUtil.getMostCommon(curMine).getBlock();
 		                	else
 				                newBlock = pattern.next();
 			                if(curMine.getBlacklist().getBlocks().contains(original.getData()))
@@ -33,7 +40,7 @@ public class SurfaceGenerator {
 		            	}
 		            }
 		        }
-    			return;
+    			return true;
     		}
     		else {
     			for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
@@ -42,7 +49,7 @@ public class SurfaceGenerator {
 		                	Block original = world.getBlockAt(x, y, z);
 		                	MaterialData newBlock;
 		                	if(surface(one, two, x, y, z))
-		                		newBlock = MineUtils.getMostCommon(curMine).getBlock();
+		                		newBlock = MineUtil.getMostCommon(curMine).getBlock();
 		                	else
 				                newBlock = pattern.next();
 			                if(!curMine.getBlacklist().getBlocks().contains(original.getData()))
@@ -50,7 +57,7 @@ public class SurfaceGenerator {
 			            }
 		            }
 		        }
-    			return;
+    			return true;
     		}
     	}
     	else
@@ -61,14 +68,14 @@ public class SurfaceGenerator {
 	                	Block original = world.getBlockAt(x, y, z);
 	                	MaterialData newBlock;
 	                	if(surface(one, two, x, y, z))
-	                		newBlock = MineUtils.getMostCommon(curMine).getBlock();
+	                		newBlock = MineUtil.getMostCommon(curMine).getBlock();
 	                	else
 			                newBlock = pattern.next();
 			            original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
 		            }
 	            }
 	        }
-	        return;
+	        return true;
     	}
 	}
 	
@@ -86,10 +93,20 @@ public class SurfaceGenerator {
 		if(y > yDist / 2) y = yDist - y;
 		if(z > zDist / 2) y = zDist - z;
 		
-		if(((x / xDist) < 0.1) ||
-		   ((y / yDist) < 0.1) ||
-		   ((z / zDist) < 0.1)) return true;
+		if(((x / xDist) < 0.05) ||
+		   ((y / yDist) < 0.05) ||
+		   ((z / zDist) < 0.05)) return true;
 		
 		return false;
+	}
+
+	@Override
+	public String getName() {
+		return NAME;
+	}
+
+	@Override
+	public String getDescription() {
+		return DESCRIPTION;
 	}
 }

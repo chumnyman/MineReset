@@ -14,7 +14,7 @@ import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
 import com.wolvencraft.MineReset.mine.SignClass;
 import com.wolvencraft.MineReset.mine.Snapshot;
-import com.wolvencraft.MineReset.util.MineUtils;
+import com.wolvencraft.MineReset.util.MineUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,9 +24,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.wolvencraft.MineReset.cmd.*;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.events.*;
-import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.SignUtils;
-import com.wolvencraft.MineReset.util.SnapshotUtils;
+import com.wolvencraft.MineReset.generation.BaseGenerator;
+import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.GeneratorLoader;
+import com.wolvencraft.MineReset.util.GeneratorUtil;
+import com.wolvencraft.MineReset.util.SignUtil;
+import com.wolvencraft.MineReset.util.SnapshotUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 
@@ -49,6 +52,7 @@ public class MineReset extends JavaPlugin
     private static List<Mine> mines;
     private static List<SignClass> signs;
     private static List<Snapshot> snapshots;
+	private static List<BaseGenerator> generators;
 	
 	public void onEnable()
 	{
@@ -79,13 +83,17 @@ public class MineReset extends JavaPlugin
         ConfigurationSerialization.registerClass(Snapshot.class, "Snapshot");
         
 		mines = new ArrayList<Mine>();
-        mines = MineUtils.loadAll(mines);
+        mines = MineUtil.loadAll(mines);
         
         signs = new ArrayList<SignClass>();
-        signs = SignUtils.loadAll(signs);
+        signs = SignUtil.loadAll(signs);
         
         snapshots = new ArrayList<Snapshot>();
-        snapshots = SnapshotUtils.loadAll(snapshots);
+        snapshots = SnapshotUtil.loadAll(snapshots);
+        
+        generators = new ArrayList<BaseGenerator>();
+        generators = GeneratorUtil.loadDefault(generators);
+        generators = GeneratorLoader.load(generators);
         
 		log.info("MineReset started");
 		log.info(mines.size() + " mine(s) found");
@@ -99,14 +107,14 @@ public class MineReset extends JavaPlugin
 					if(mines.size() != 0) {
 		                String warnMessage = Language.getString("reset.automatic-reset-warning");
 		                for(Mine curMine : mines) {
-							if(MineUtils.getMine(curMine.getParent()) == null && curMine.getAutomatic()) {
-								int nextReset = MineUtils.getNextReset(curMine);
+							if(MineUtil.getMine(curMine.getParent()) == null && curMine.getAutomatic()) {
+								int nextReset = MineUtil.getNextReset(curMine);
 								List<Integer> warnTimes = curMine.getWarningTimes();
 								
 								curMine.updateTimer(checkEvery);
 									
 								if(!curMine.getSilent() && curMine.getWarned() && warnTimes.indexOf(nextReset) != -1)
-									Message.broadcast(Util.parseVars(warnMessage, curMine));
+									ChatUtil.broadcast(Util.parseVars(warnMessage, curMine));
 								if(nextReset <= 0) {
 									String[] args = {null, curMine.getName()};
 									ResetCommand.run(args, true, null);
@@ -116,7 +124,7 @@ public class MineReset extends JavaPlugin
 								curMine.updateCooldown(checkEvery);
 							}
 							
-							SignUtils.updateAll(curMine);
+							SignUtil.updateAll(curMine);
 						}
 		            }
 	           	}
@@ -127,8 +135,8 @@ public class MineReset extends JavaPlugin
 	
 	public void onDisable()
 	{
-		MineUtils.saveAll(mines);
-		SignUtils.saveAll(signs);
+		MineUtil.saveAll(mines);
+		SignUtil.saveAll(signs);
 		log.info("MineReset stopped");
 	}
 	
@@ -136,7 +144,7 @@ public class MineReset extends JavaPlugin
 		
 		String lang = this.getConfig().getString("configuration.language") + ".yml";
 		if(lang.equals(null)) lang = "english";
-		Message.log("Language file used: " + lang);
+		ChatUtil.log("Language file used: " + lang);
 		
 	    if (languageDataFile == null) {
 	    languageDataFile = new File(getDataFolder(), lang);
@@ -163,7 +171,7 @@ public class MineReset extends JavaPlugin
 	    try {
 	        languageData.save(languageDataFile);
 	    } catch (IOException ex) {
-	        Message.log("Could not save config to " + languageDataFile);
+	        ChatUtil.log("Could not save config to " + languageDataFile);
 	    }
 	}
 
@@ -189,5 +197,9 @@ public class MineReset extends JavaPlugin
     
     public static void setSnapshots(List<Snapshot> snapshots) {
     	MineReset.snapshots = snapshots;
+    }
+    
+    public static List<BaseGenerator> getGenerators() {
+    	return generators;
     }
 }

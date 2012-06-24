@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
-import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class HelpCommand {
@@ -68,12 +68,12 @@ public class HelpCommand {
 	public static void getProtection() {
 		formatHeader(20, "Protection");
 		formatHelp("prot", "pvp", "Toggles the PVP on and off for the current mine", "");
-		Message.sendMessage(" ");
+		ChatUtil.sendMessage(" ");
 		formatHelp("prot", "break toggle", "Enables or disables the block breaking protection", "");
 		formatHelp("prot", "break whitelist", "Should the blacklist be treated as a whitelist?", "");
 		formatHelp("prot", "break + <block>", "Add <block> to the block breaking blacklist", "");
 		formatHelp("prot", "break - <block>", "Remove <block> from the block breaking blacklist", "");
-		Message.sendMessage(" ");
+		ChatUtil.sendMessage(" ");
 		formatHelp("prot", "place toggle", "Enables or disables the block breaking blacklist", "");
 		formatHelp("prot", "place whitelist", "Should the blacklist be treated as a whitelist?", "");
 		formatHelp("prot", "place + <block>", "Add <block> to the block placement blacklist", "");

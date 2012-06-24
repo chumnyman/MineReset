@@ -18,7 +18,7 @@ public class RandomBlock {
         for (MineBlock block : blocks) {
             tally += block.getChance();
             weightedBlocks.add(new MineBlock(block.getBlock(), tally));
-            Message.debug("Block " + block.getBlock().getItemTypeId() + " was assigned the tally weight of " + tally);
+            ChatUtil.debug("Block " + block.getBlock().getItemTypeId() + " was assigned the tally weight of " + tally);
         }
     }
     

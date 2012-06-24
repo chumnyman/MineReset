@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.mine.Mine;
-import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.MineUtils;
+import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class SelectCommand
@@ -18,17 +18,17 @@ public class SelectCommand
 			player = (Player) CommandManager.getSender();
 		}
 		else {
-			Message.sendError("This command cannot be executed via console");
+			ChatUtil.sendError("This command cannot be executed via console");
 			return;
 		}
 		if(!Util.isPlayer() || !Util.hasPermission("edit.select")) {
-			Message.sendDenied(args);
+			ChatUtil.sendDenied(args);
 			return;
 		}
 		
 		
 		if(args.length > 2) {
-			Message.sendInvalidArguments(args);
+			ChatUtil.sendInvalidArguments(args);
 			return;
 		}
 		
@@ -39,19 +39,19 @@ public class SelectCommand
 				return;
 			}
 			if(args.length != 2) {
-				Message.sendInvalidArguments(args);
+				ChatUtil.sendInvalidArguments(args);
 				return;
 			}
 			
-			Mine curMine = MineUtils.getMine(args[1]);
+			Mine curMine = MineUtil.getMine(args[1]);
 			if(curMine == null) {
-				Message.sendInvalidMineName(args[1]);
+				ChatUtil.sendInvalidMineName(args[1]);
 				return;
 			}
 			
 			CommandManager.setLocation(curMine.getFirstPoint(), 0);
 			CommandManager.setLocation(curMine.getSecondPoint(), 1);
-			Message.sendNote(curMine.getName(), "Referents points of the mine are selected!");
+			ChatUtil.sendNote(curMine.getName(), "Referents points of the mine are selected!");
 			return;
 		}
 		
@@ -79,15 +79,15 @@ public class SelectCommand
 			message = "Second point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")";
 		}
 		else {
-			Message.sendInvalid(args);
+			ChatUtil.sendInvalid(args);
 			return;
 		}
 		
 		if(Util.locationsSet()) message = message + ": " + Util.getBlockCount() + " blocks";
-		Message.sendSuccess (message);
+		ChatUtil.sendSuccess (message);
 		
 		if(Util.locationsSet())
-			Message.sendSuccess("Both reference points are set! You can now save the region.");
+			ChatUtil.sendSuccess("Both reference points are set! You can now save the region.");
 		
 		return;
 	}

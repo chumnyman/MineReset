@@ -1,11 +1,8 @@
 package com.wolvencraft.MineReset.mine;
 
 import com.wolvencraft.MineReset.config.Language;
-import com.wolvencraft.MineReset.generation.EmptyGenerator;
-import com.wolvencraft.MineReset.generation.RandomGenerator;
-import com.wolvencraft.MineReset.generation.SnapshotGenerator;
-import com.wolvencraft.MineReset.generation.SurfaceGenerator;
-import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.GeneratorUtil;
 import com.wolvencraft.MineReset.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,7 +34,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     private String displayName;
     private String parent;
     private List<MineBlock> blocks;
-    private Generator generator;
+    private String generator;
     private Blacklist blacklist;
     private boolean silent;
     private boolean automatic;
@@ -73,7 +70,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	this.name = name;
     	blocks = new ArrayList<MineBlock>();
     	blocks.add(new MineBlock(new MaterialData(Material.AIR), 1.0));
-    	generator = Generator.RANDOM;
+    	generator = "RANDOM";
     	blacklist = new Blacklist();
     	silent = false;
     	automatic = false;
@@ -109,7 +106,7 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @param protOne First protection region point
      * @param protTwo Second protection region point
      */
-    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, String parent, String name, List<MineBlock> blocks, Generator generator, boolean isSilent, boolean isAutomatic, int automaticSeconds,  boolean cooldownEnabled, int cooldownSeconds, List<Integer> warningTimes, List<Protection> enabledProtection, Location protOne, Location protTwo) {
+    public Mine(Location one, Location two, World world, Location tpPoint, String displayName, String parent, String name, List<MineBlock> blocks, String generator, boolean isSilent, boolean isAutomatic, int automaticSeconds,  boolean cooldownEnabled, int cooldownSeconds, List<Integer> warningTimes, List<Protection> enabledProtection, Location protOne, Location protTwo) {
         this.one = one;
         this.two = two;
         this.world = world;
@@ -150,8 +147,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         name = (String) me.get("name");
         parent = (String) me.get("parent");
         blacklist = (Blacklist) me.get("blacklist");
-        String generatorString = (String) me.get("generator");
-        generator = Generator.valueOf(generatorString);
+        generator = (String) me.get("generator");
         silent = (Boolean) me.get("silent");
         automatic = (Boolean) me.get("automatic");
         automaticSeconds = (Integer) me.get("automaticResetTime");
@@ -172,23 +168,22 @@ public class Mine implements ConfigurationSerializable, Listener {
         placeBlacklist = (Blacklist) me.get("placeBlacklist");
     }
 
-    public void reset(Generator generator) {
+    public boolean reset(String generator) {
         removePlayers();
-        if(generator.equals(Generator.EMPTY))
-        	EmptyGenerator.reset(this);
-        else if(generator.equals(Generator.SURFACE))
-        	SurfaceGenerator.reset(this);
-        else if(generator.equals(Generator.SNAPSHOT))
-        	SnapshotGenerator.reset(this);
-        else
-	        RandomGenerator.reset(this);
+        try {
+        	return GeneratorUtil.get(generator).run(this);
+        } catch (NullPointerException npe) {
+        	ChatUtil.sendError("Invalid generator selected!");
+        }
+        
+        return false;
     }
 
     private void removePlayers() {
         for (Player p : world.getPlayers()) {
             if (isLocationInMine(p.getLocation())) {
                 p.teleport(tpPoint, PlayerTeleportEvent.TeleportCause.PLUGIN);
-                Message.sendPlayer(p, Util.parseVars(Language.getString("misc.mine-teleport"), this));
+                ChatUtil.sendPlayer(p, Util.parseVars(Language.getString("misc.mine-teleport"), this));
             }
         }
     }
@@ -285,8 +280,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     	return automatic;
     }
     
-    public Generator getGenerator() {
-    	return generator;
+    public String getGenerator() {
+    	return generator.toUpperCase();
     }
     
     public boolean getCooldown() {
@@ -369,7 +364,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	this.automatic = automatic;
     }
     
-    public void setGenerator(Generator generator) {
+    public void setGenerator(String generator) {
     	this.generator = generator;
     }
     

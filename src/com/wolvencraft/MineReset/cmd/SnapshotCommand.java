@@ -6,18 +6,18 @@ import org.bukkit.Location;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
-import com.wolvencraft.MineReset.generation.SnapshotGenerator;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Snapshot;
-import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.MineUtils;
-import com.wolvencraft.MineReset.util.SnapshotUtils;
+import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.GeneratorUtil;
+import com.wolvencraft.MineReset.util.MineUtil;
+import com.wolvencraft.MineReset.util.SnapshotUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class SnapshotCommand {
 	public static void run(String[] args) {
 		if(!Util.hasPermission("edit.snapshot")) {
-			Message.sendDenied(args);
+			ChatUtil.sendDenied(args);
 			return;
 		}
 		
@@ -27,36 +27,36 @@ public class SnapshotCommand {
 		}
 		
 		if(args.length > 3) {
-			Message.sendInvalidArguments(args);
+			ChatUtil.sendInvalidArguments(args);
 			return;
 		}
 		
 		Mine curMine = CommandManager.getMine();
 		if(!args[1].equalsIgnoreCase("restore") && curMine == null) {
-			Message.sendMineNotSelected();
+			ChatUtil.sendMineNotSelected();
 			return;
 		}
 		
 		if(args[1].equalsIgnoreCase("save")) {
 			if(args.length != 2) {
-				Message.sendInvalidArguments(args);
+				ChatUtil.sendInvalidArguments(args);
 				return;
 			}
 			
 			if(!Util.locationsSet()) {
-				Message.sendError("Make a selection first");
+				ChatUtil.sendError("Make a selection first");
 				return;
 			}
 			
 			Location[] loc = CommandManager.getLocation();
 			
 			if(!loc[0].getWorld().equals(loc[1].getWorld())) {
-				Message.sendError("Your selection points are in different worlds");
+				ChatUtil.sendError("Your selection points are in different worlds");
 				return;
 			}
 			
 			if(!loc[0].getWorld().equals(curMine.getWorld())) {
-				Message.sendError("Mine and protection regions are in different worlds");
+				ChatUtil.sendError("Mine and protection regions are in different worlds");
 				return;
 			}
 			
@@ -65,38 +65,38 @@ public class SnapshotCommand {
 			List<Snapshot> snaps = MineReset.getSnapshots();
 			snaps.add(snap);
 			MineReset.setSnapshots(snaps);
-			SnapshotUtils.save(snap);
-			Message.sendNote(curMine.getName(), "Snapshot successfully saved!");
+			SnapshotUtil.save(snap);
+			ChatUtil.sendNote(curMine.getName(), "Snapshot successfully saved!");
 		}
 		else if(args[1].equalsIgnoreCase("restore")) {
 			if(args.length == 2 && curMine == null) {
-				Message.sendMineNotSelected();
+				ChatUtil.sendMineNotSelected();
 				return;
 			}
 			else if(args.length == 3) {
-				curMine = MineUtils.getMine(args[2]);
+				curMine = MineUtil.getMine(args[2]);
 				if(curMine == null) {
-					Message.sendInvalidMineName(args[2]);
+					ChatUtil.sendInvalidMineName(args[2]);
 					return;
 				}
 			}
 			
-			SnapshotGenerator.reset(curMine);
-			Message.sendNote(curMine.getName(), "Snapshot successfully restored!");
+			if(GeneratorUtil.get("SNAPSHOT").run(curMine))
+				ChatUtil.sendNote(curMine.getName(), "Snapshot successfully restored!");
 		}
 		else if(args[1].equalsIgnoreCase("delete")) {
 			if(args.length != 2) {
-				Message.sendInvalidArguments(args);
+				ChatUtil.sendInvalidArguments(args);
 				return;
 			}
 			
-			if(SnapshotUtils.delete(SnapshotUtils.getSnapshot(curMine)))
-				Message.sendNote(curMine.getName(), "Snapshot successfully deleted!");
+			if(SnapshotUtil.delete(SnapshotUtil.getSnapshot(curMine)))
+				ChatUtil.sendNote(curMine.getName(), "Snapshot successfully deleted!");
 			else
-				Message.sendError("This mine does not have a snapshot saved");
+				ChatUtil.sendError("This mine does not have a snapshot saved");
 		}
 		else {
-			Message.sendInvalid(args);
+			ChatUtil.sendInvalid(args);
 			return;
 		}
 		return;

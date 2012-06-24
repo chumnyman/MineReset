@@ -15,23 +15,23 @@ import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.ResetCommand;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.SignClass;
-import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.MineUtils;
-import com.wolvencraft.MineReset.util.SignUtils;
+import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineUtil;
+import com.wolvencraft.MineReset.util.SignUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class PlayerInteractListener implements Listener
 {
 	public PlayerInteractListener(MineReset plugin)
 	{
-        Message.debug("Initiating PlayerInteractListener");
+        ChatUtil.debug("Initiating PlayerInteractListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if(event.isCancelled()) return;
-        Message.debug("PlayerInteractEvent passed");
+        ChatUtil.debug("PlayerInteractEvent passed");
 		
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();
@@ -55,18 +55,18 @@ public class PlayerInteractListener implements Listener
 			
 			if(block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN_POST)
 			{
-                Message.debug("A sign has been clicked");
+                ChatUtil.debug("A sign has been clicked");
 				if(!Util.playerHasPermission(player, "reset.sign")) {
 					return;
 				}
 				
-		     	SignClass sign = SignUtils.getSignAt(block.getLocation());
+		     	SignClass sign = SignUtil.getSignAt(block.getLocation());
 				if(sign == null) return;
 				
 		     	if(sign.getReset()) {
-		     		Mine curMine = MineUtils.getMine(sign.getParent());
+		     		Mine curMine = MineUtil.getMine(sign.getParent());
 					if(!Util.playerHasPermission(player, "reset.bypass") && curMine.getNextCooldown() > 0) {
-						Message.sendError("You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
+						ChatUtil.sendError("You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
 						return;
 					}
 		     		

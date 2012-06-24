@@ -8,21 +8,29 @@ import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Snapshot;
-import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.SnapshotUtils;
+import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.SnapshotUtil;
 
-public class SnapshotGenerator {
-	public static void reset(Mine curMine) {
-		Snapshot snap = SnapshotUtils.getSnapshot(curMine);
+public class SnapshotGenerator implements BaseGenerator {
+	public final String NAME;
+	public final String DESCRIPTION;
+	
+	public SnapshotGenerator() {
+		NAME = "SNAPSHOT";
+		DESCRIPTION = "Resets the contents of the mine to the snapshot taken before";
+	}
+	
+	public boolean run(Mine curMine) {
+		Snapshot snap = SnapshotUtil.getSnapshot(curMine);
 		if(snap == null) {
-			Message.sendError("Snapshot was never saved! Use " + ChatColor.GOLD + "/mine snapshot save" + ChatColor.WHITE + " to save it");
-			return;
+			ChatUtil.sendError("Snapshot was never saved! Use " + ChatColor.GOLD + "/mine snapshot save" + ChatColor.WHITE + " to save it");
+			return false;
 		}
 		List<BlockState> blocks = snap.getBlocks();
 		if(!blocks.isEmpty())
 		{
-			Message.sendError("Snapshot was never saved! Use " + ChatColor.GOLD + "/mine snapshot save" + ChatColor.WHITE + " to save it");
-			return;
+			ChatUtil.sendError("Snapshot was never saved! Use " + ChatColor.GOLD + "/mine snapshot save" + ChatColor.WHITE + " to save it");
+			return false;
 		}
 		
 		if(curMine.getBlacklist().getEnabled())
@@ -45,9 +53,19 @@ public class SnapshotGenerator {
     	else
     	{
 	        for(BlockState block : blocks) {
-	        	block.update(true);
+	        	block.update();
 	        }
     	}
-		return;
+		return true;
+	}
+
+	@Override
+	public String getName() {
+		return NAME;
+	}
+
+	@Override
+	public String getDescription() {
+		return DESCRIPTION;
 	}
 }

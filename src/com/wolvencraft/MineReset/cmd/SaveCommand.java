@@ -8,8 +8,8 @@ import org.bukkit.entity.Player;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.mine.Mine;
-import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.MineUtils;
+import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class SaveCommand
@@ -21,38 +21,38 @@ public class SaveCommand
 			player = (Player) CommandManager.getSender();
 		}
 		else {
-			Message.sendError("This command cannot be executed via console");
+			ChatUtil.sendError("This command cannot be executed via console");
 			return;
 		}
 		
 		if(!Util.hasPermission("edit.save")) {
-			Message.sendDenied(args);
+			ChatUtil.sendDenied(args);
 			return;
 		}
 		
 		if(args.length != 2) {
-			Message.sendInvalidArguments(args);
+			ChatUtil.sendInvalidArguments(args);
 			return;
 		}
 		
 		if(!Util.locationsSet()) {
-			Message.sendError("Make a selection first");
+			ChatUtil.sendError("Make a selection first");
 			return;
 		}
 		
 		Location[] loc = CommandManager.getLocation();
 		
 		if(!loc[0].getWorld().equals(loc[1].getWorld())) {
-			Message.sendError("Your selection points are in different worlds");
+			ChatUtil.sendError("Your selection points are in different worlds");
 			return;
 		}
 
-		if(MineUtils.getMine(args[1]) != null) {
-			Message.sendError("Mine '" + args[1] + "' already exists!");
+		if(MineUtil.getMine(args[1]) != null) {
+			ChatUtil.sendError("Mine '" + args[1] + "' already exists!");
 			return;
 		}
 
-        Message.debug("Mine existance check passed");
+        ChatUtil.debug("Mine existance check passed");
         
         // Parsing the coordinates
         double temp = 0;
@@ -82,16 +82,16 @@ public class SaveCommand
 		mines.add(newMine);
 		MineReset.setMines(mines);
 		
-		MineUtils.save(newMine);
+		MineUtil.save(newMine);
 
-        Message.debug("Mine creation completed");
+        ChatUtil.debug("Mine creation completed");
 		
 		CommandManager.setLocation(null, 0);
 		CommandManager.setLocation(null, 1);
 
-        Message.debug("Data saved successfully");
+        ChatUtil.debug("Data saved successfully");
 		CommandManager.setMine(newMine);
-		Message.sendSuccess("Mine '" + newMine.getName() + "' created successfully!");
+		ChatUtil.sendSuccess("Mine '" + newMine.getName() + "' created successfully!");
 		return;
 	}
 }

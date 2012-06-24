@@ -5,10 +5,9 @@ import java.util.List;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Language;
-import com.wolvencraft.MineReset.mine.Generator;
 import com.wolvencraft.MineReset.mine.Mine;
-import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.MineUtils;
+import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class ResetCommand
@@ -19,21 +18,21 @@ public class ResetCommand
 		if(args.length == 1)
 			curMine = CommandManager.getMine();
 		else
-			curMine = MineUtils.getMine(args[1]);
+			curMine = MineUtil.getMine(args[1]);
 		
 		if(curMine == null) {
-			Message.sendMineNotSelected();
+			ChatUtil.sendMineNotSelected();
 			return;
 		}
 		
 		if(!automatic) {
 			if(!Util.hasPermission("reset.manual." + curMine.getName()) && !Util.hasPermission("reset.manual")) {
-				Message.sendDenied(args);
+				ChatUtil.sendDenied(args);
 				return;
 			}
 			
 			if(!Util.hasPermission("reset.bypass") && curMine.getNextCooldown() > 0) {
-				Message.sendError("You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
+				ChatUtil.sendError("You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
 				return;
 			}
 		}
@@ -41,20 +40,14 @@ public class ResetCommand
 		if(args.length == 3)
 			forcedGenerator = args[2];
 		
-		Generator generator;
+		String generator;
 		if(forcedGenerator == null)
 			generator = curMine.getGenerator();
 		else {
-			try {
-			generator = Generator.valueOf(forcedGenerator);
-			}
-			catch(IllegalArgumentException iae) {
-				Message.sendError("This generator does not exist!");
-				return;
-			}
+			generator = forcedGenerator;
 		}
 		
-		curMine.reset(generator);
+		if(!curMine.reset(generator)) return;
 		
 		if(curMine.getAutomatic()) curMine.resetTimer();
 		if(curMine.getCooldown()) curMine.resetCooldown();
@@ -63,7 +56,7 @@ public class ResetCommand
 		if(automatic) {
 			List<Mine> mines = MineReset.getMines();
 			for(Mine childMine : mines) {
-				Message.debug(childMine.getParent());
+				ChatUtil.debug(childMine.getParent());
 				if(childMine.getParent() != null) {
 					String[] childArgs = {null, childMine.getName()};
 					run(childArgs, true, null);
@@ -79,10 +72,10 @@ public class ResetCommand
 		broadcastMessage = Util.parseVars(broadcastMessage, curMine);
 		
 		if(!curMine.getSilent()) {
-			Message.broadcast(broadcastMessage);
+			ChatUtil.broadcast(broadcastMessage);
 		}
 		else if(!automatic) {
-			Message.sendSuccess(broadcastMessage);
+			ChatUtil.sendSuccess(broadcastMessage);
 		}
 		return;
 	}

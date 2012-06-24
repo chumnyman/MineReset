@@ -1,13 +1,13 @@
 package com.wolvencraft.MineReset.cmd;
 
 import com.wolvencraft.MineReset.mine.Mine;
-import com.wolvencraft.MineReset.util.MineUtils;
+import com.wolvencraft.MineReset.util.MineUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
-import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class WarpCommand
@@ -19,7 +19,7 @@ public class WarpCommand
 			player = (Player) CommandManager.getSender();
 		}
 		else {
-			Message.sendError("This command cannot be executed via console");
+			ChatUtil.sendError("This command cannot be executed via console");
 			return;
 		}
 		
@@ -28,41 +28,41 @@ public class WarpCommand
 			return;
 		}
 		else if(args.length != 2) {
-			Message.sendInvalidArguments(args);
+			ChatUtil.sendInvalidArguments(args);
 			return;
 		}
 		
 		if(args[1].equalsIgnoreCase("set")) {
 			if(!Util.hasPermission("warp.set")) {
-				Message.sendDenied(args);
+				ChatUtil.sendDenied(args);
 				return;
 			}
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
-				Message.sendMineNotSelected();
+				ChatUtil.sendMineNotSelected();
 				return;
 			}
 			
 			Location loc = player.getLocation();
 			curMine.setWarp(loc);
 			
-			Message.sendSuccess ("Mine spawn point set (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
+			ChatUtil.sendSuccess ("Mine spawn point set (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
 			return;
 		}
 		
-		if(MineUtils.getMine(args[1]) != null) {
-			Mine curMine = MineUtils.getMine(args[1]);
+		if(MineUtil.getMine(args[1]) != null) {
+			Mine curMine = MineUtil.getMine(args[1]);
 			player.teleport(curMine.getWarp());
 			String message = Util.parseVars(Language.getString("misc.mine-teleport"), curMine);
-			Message.sendSuccess(message);
+			ChatUtil.sendSuccess(message);
 			return;
 		}
 		else {
 			if(!Util.hasPermission("warp.use")) {
-				Message.sendDenied(args);
+				ChatUtil.sendDenied(args);
 				return;
 			}
-			Message.sendInvalidMineName(args[1]);
+			ChatUtil.sendInvalidMineName(args[1]);
 			return;
 		}
 	}

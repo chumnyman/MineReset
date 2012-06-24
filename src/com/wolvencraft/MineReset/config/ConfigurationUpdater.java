@@ -13,14 +13,13 @@ import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
-import com.wolvencraft.MineReset.mine.Generator;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
 import com.wolvencraft.MineReset.mine.Protection;
 import com.wolvencraft.MineReset.mine.SignClass;
-import com.wolvencraft.MineReset.util.Message;
-import com.wolvencraft.MineReset.util.MineUtils;
-import com.wolvencraft.MineReset.util.SignUtils;
+import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineUtil;
+import com.wolvencraft.MineReset.util.SignUtil;
 
 public class ConfigurationUpdater {
 	
@@ -33,8 +32,8 @@ public class ConfigurationUpdater {
 		List<String> mineList = getRegionData().getStringList("data.list-of-mines");
 		List<Mine> mines = MineReset.getMines();
 		for(String mine : mineList) {
-			if(MineUtils.getMine(mine) != null) {
-				Message.sendError("Mine '" + mine + "' is already in the system and was not imported");
+			if(MineUtil.getMine(mine) != null) {
+				ChatUtil.sendError("Mine '" + mine + "' is already in the system and was not imported");
 				continue;
 			}
 			String displayName = getRegionData().getString("mines." + mine + ".display-name");
@@ -53,7 +52,7 @@ public class ConfigurationUpdater {
 				blocks.add(new MineBlock(new MaterialData(Integer.parseInt(parts[0]),Byte.parseByte(parts[1])), iWeight.get(i) / 100));
 			}
 			
-			Generator gen = Generator.valueOf(getRegionData().getString("mines." + mine + ".reset.generator"));
+			String gen = getRegionData().getString("mines." + mine + ".reset.generator");
 			boolean automatic = getRegionData().getBoolean("mines." + mine + ".reset.auto.reset");
 			int automaticSeconds = getRegionData().getInt("mines." + mine + ".reset.auto.reset-every");
 			List<Integer> warnTimes = getRegionData().getIntegerList("mines" + mine + ".reset.auto.warn-times");
@@ -61,9 +60,9 @@ public class ConfigurationUpdater {
 			if(getRegionData().getBoolean("mines." + mine + ".protection.PVP")) enabledProt.add(Protection.BLOCK_BREAK);
 			
 			mines.add(new Mine(one, two, world, tpPos, displayName, null, mine, blocks, gen, silent, automatic, automaticSeconds, false, 0, warnTimes, enabledProt, one, two));
-			Message.sendSuccess("Mine '" + mine + "' was successfully imported into the system");
+			ChatUtil.sendSuccess("Mine '" + mine + "' was successfully imported into the system");
 		}
-		MineUtils.saveAll(mines);
+		MineUtil.saveAll(mines);
 	}
 	
 	public static void updateSigns() {
@@ -71,13 +70,13 @@ public class ConfigurationUpdater {
 		List<SignClass> signs = MineReset.getSigns();
 		
 		for(String sign : signList) {
-			String id = SignUtils.generateId();
-			Mine parent = MineUtils.getMine(getSignData().getString("signs." + sign + ".mine"));
+			String id = SignUtil.generateId();
+			Mine parent = MineUtil.getMine(getSignData().getString("signs." + sign + ".mine"));
 			boolean reset = getSignData().getBoolean("signs." + sign + ".reset");
 			World world = CommandManager.getPlugin().getServer().getWorld(getSignData().getString("signs." + sign + ".world"));
 			Location loc = new Location(world, getSignData().getInt("signs." + sign + ".x"), getSignData().getInt("signs." + sign + ".y"), getSignData().getInt("signs." + sign + ".z"));
-			if(SignUtils.getSignAt(loc) != null) {
-				Message.sendError("A sign is already defined at (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")!");
+			if(SignUtil.getSignAt(loc) != null) {
+				ChatUtil.sendError("A sign is already defined at (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")!");
 				continue;
 			}
 			List<String> lines = new ArrayList<String>();
@@ -86,10 +85,10 @@ public class ConfigurationUpdater {
 			}
 			
 			signs.add(new SignClass(id, world, loc, parent.getName(), reset, lines));
-			Message.sendSuccess("A sign at (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ") was imported into the system!");
+			ChatUtil.sendSuccess("A sign at (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ") was imported into the system!");
 		}
 		
-		SignUtils.saveAll(signs);
+		SignUtil.saveAll(signs);
 	}
 	
 	public static void reloadRegionData() {

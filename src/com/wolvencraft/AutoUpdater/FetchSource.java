@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.ChatUtil;
 
 public class FetchSource
 {
@@ -34,7 +34,7 @@ public class FetchSource
 			is = url.openStream();
 		}
 		catch (IOException ex) {
-			Message.log("Unable to connect to the update server!");
+			ChatUtil.log("Unable to connect to the update server!");
 			return null;
 		}
 		
@@ -51,7 +51,7 @@ public class FetchSource
 			 }
 		}
 		catch (IOException ex) {
-			Message.log("Error reading input stream!");
+			ChatUtil.log("Error reading input stream!");
 			return null;
 		}
 		
@@ -59,7 +59,7 @@ public class FetchSource
 			is.close();
 		}
 		catch (IOException ioe) {
-			Message.log("Error closing URL input stream!");
+			ChatUtil.log("Error closing URL input stream!");
 			return null;
 		}
          

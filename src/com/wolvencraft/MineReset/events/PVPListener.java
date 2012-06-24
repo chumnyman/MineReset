@@ -3,7 +3,7 @@ package com.wolvencraft.MineReset.events;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Protection;
-import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.Util;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class PVPListener implements Listener {
 	public PVPListener(MineReset plugin) {
-		Message.debug("Initiating PVPListener");
+		ChatUtil.debug("Initiating PVPListener");
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
@@ -32,7 +32,7 @@ public class PVPListener implements Listener {
 			if ((((Arrow) event.getDamager()).getShooter() instanceof Player)) {
 				attacker = (Player) ((Arrow) event.getDamager()).getShooter();
 			} else {
-				Message.debug("Attacking entity (an arrow) wasn't shot by a player.");
+				ChatUtil.debug("Attacking entity (an arrow) wasn't shot by a player.");
 				return;
 			}
 		} else {
@@ -40,23 +40,23 @@ public class PVPListener implements Listener {
 		}
 		Player victim = (Player) event.getEntity();
 		if (Util.playerHasPermission(attacker, "protection.bypass")) {
-			Message.debug("Attacker had perms or protection is disabled");
+			ChatUtil.debug("Attacker had perms or protection is disabled");
 			return;
 		}
 
 		List<Mine> mines = MineReset.getMines();
 
 		for (Mine mine : mines) {
-			Message.debug("Checking mine " + mine.getName());
+			ChatUtil.debug("Checking mine " + mine.getName());
 			
 			if(!mine.isLocationInProtection(victim.getLocation())) continue;
 			
 			if (!mine.getProtection().contains(Protection.PVP)) {
-				Message.debug(mine + " doesn't have PvP protection on");
+				ChatUtil.debug(mine + " doesn't have PvP protection on");
 				continue;
 			}
 			
-			Message.sendPlayerError(attacker, "PvP is not allowed in the mine!");
+			ChatUtil.sendPlayerError(attacker, "PvP is not allowed in the mine!");
 			event.setCancelled(true);
 			return;
 		}

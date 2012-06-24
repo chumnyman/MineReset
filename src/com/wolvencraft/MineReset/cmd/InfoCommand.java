@@ -5,13 +5,13 @@ import java.util.List;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Protection;
 import com.wolvencraft.MineReset.mine.SignClass;
-import com.wolvencraft.MineReset.util.MineUtils;
+import com.wolvencraft.MineReset.util.MineUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
-import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class InfoCommand
@@ -29,16 +29,16 @@ public class InfoCommand
 			}
 		}
 		else {
-			curMine = MineUtils.getMine(args[1]);
+			curMine = MineUtil.getMine(args[1]);
 		}
 		
 		if(curMine == null) {
-			Message.sendInvalidMineName(args[1]);
+			ChatUtil.sendInvalidMineName(args[1]);
 			return;
 		}
 		
 		if(args.length > 3) {
-			Message.sendInvalidArguments(args);
+			ChatUtil.sendInvalidArguments(args);
 			return;
 		}
 		
@@ -46,7 +46,7 @@ public class InfoCommand
 		if(args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("?")) {
 
 			if(!Util.hasPermission("info.all")) {
-				Message.sendDenied(args);
+				ChatUtil.sendDenied(args);
 				return;
 			}
 			
@@ -56,11 +56,11 @@ public class InfoCommand
 				displayName = curMine.getName();
 			else
 				displayName = curMine.getDisplayName();
-			Message.sendMessage(ChatColor.DARK_RED + "                             -=[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.DARK_RED + " ]=-");
+			ChatUtil.sendMessage(ChatColor.DARK_RED + "                             -=[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.DARK_RED + " ]=-");
 			
 			
 			// Reset
-			Mine parentMine = MineUtils.getMine(curMine.getParent());
+			Mine parentMine = MineUtil.getMine(curMine.getParent());
 			if(parentMine == null)
 				parentMine = curMine;
 			
@@ -77,11 +77,11 @@ public class InfoCommand
 					str = str + ChatColor.WHITE + " | Whitelist: ";
 					if(whitelist) str = str + ChatColor.GREEN + "on";
 					else str = str + ChatColor.RED + "off";
-					Message.sendMessage(str);
-					Message.sendMessage(ChatColor.BLUE + " Composition");
+					ChatUtil.sendMessage(str);
+					ChatUtil.sendMessage(ChatColor.BLUE + " Composition");
 					for(MaterialData block : blocks) {
 						String[] parts = {block.getItemTypeId() + "", block.getData() + ""};
-						Message.sendMessage(" - " + Util.parseMetadata(parts, true) + " " + Util.parseMaterial(block.getItemType()));
+						ChatUtil.sendMessage(" - " + Util.parseMetadata(parts, true) + " " + Util.parseMaterial(block.getItemType()));
 					}
 				}
 				else if(args[2].equalsIgnoreCase("protection") || args[2].equalsIgnoreCase("pt")) {
@@ -95,20 +95,20 @@ public class InfoCommand
 					str = str + ChatColor.WHITE + " | Block placement protection: ";
 					if(blplace) str = str + ChatColor.GREEN + "Enabled";
 					else str = str + ChatColor.RED + "Disabled";
-					Message.sendMessage(str);
+					ChatUtil.sendMessage(str);
 					
 					str = "PVP protection: ";
 					if(pvp) str = str + ChatColor.GREEN + "Enabled";
 					else str = str + ChatColor.RED + "Disabled";
-					Message.sendMessage(str);
+					ChatUtil.sendMessage(str);
 					return;
 				}
 				else if(args[2].equalsIgnoreCase("sign")) {
-					Message.sendMessage("Signs associated with this mine: ");
+					ChatUtil.sendMessage("Signs associated with this mine: ");
 					List<SignClass> signs = MineReset.getSigns();
 					for(SignClass sign : signs) {
 						if(sign.getParent().equals(curMine))
-							Message.sendMessage(" - " + sign.getLocation().getBlockX() + ", " + sign.getLocation().getBlockY() + ", " + sign.getLocation().getBlockZ());
+							ChatUtil.sendMessage(" - " + sign.getLocation().getBlockX() + ", " + sign.getLocation().getBlockY() + ", " + sign.getLocation().getBlockZ());
 					}
 					return;
 				}
@@ -117,21 +117,21 @@ public class InfoCommand
 					String nextResetFormatted = Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20);
 					
 					if(curMine.getAutomatic()) {
-						Message.sendMessage("Mine resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes.");
-						Message.sendMessage("Warnings are send as follows: ");
+						ChatUtil.sendMessage("Mine resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes.");
+						ChatUtil.sendMessage("Warnings are send as follows: ");
 						List<Integer> warnings = curMine.getWarningTimes();
 						for(int time : warnings) {
-							Message.sendMessage(" - " + Util.parseSeconds(time));
+							ChatUtil.sendMessage(" - " + Util.parseSeconds(time));
 						}
 					}
 					else {
-						Message.sendMessage("Mine has to be reset manually");
+						ChatUtil.sendMessage("Mine has to be reset manually");
 					}
 					return;
 				}
 				else
 				{
-					Message.sendInvalid(args);
+					ChatUtil.sendInvalid(args);
 					return;
 				}
 			}
@@ -142,14 +142,14 @@ public class InfoCommand
 				
 				
 				if(curMine.getAutomatic())
-					Message.sendMessage(" Resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes");
+					ChatUtil.sendMessage(" Resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes");
 				else
-					Message.sendMessage("The mine has to be reset manually");
+					ChatUtil.sendMessage("The mine has to be reset manually");
 				
 				String generatorString =" Generator: " + ChatColor.GOLD +  curMine.getGenerator().toString();
 				if(!parentMine.equals(curMine) && !parentMine.equals(null))
 					generatorString = generatorString + ChatColor.WHITE + " | Linked to " + ChatColor.GOLD + parentMine.getName();
-				Message.sendMessage(generatorString);
+				ChatUtil.sendMessage(generatorString);
 				
 				String blockBreak, blockPlace;
 				// Protection
@@ -168,33 +168,33 @@ public class InfoCommand
 					pvpProtection = ChatColor.GREEN + "ON";
 				else pvpProtection = ChatColor.RED + "OFF";
 				
-				Message.sendMessage(ChatColor.BLUE + " Protection:");
-				Message.sendMessage("Breaking: " + blockBreak + ChatColor.WHITE + " | Placement: " + blockPlace + ChatColor.WHITE + " | PVP " + pvpProtection);
+				ChatUtil.sendMessage(ChatColor.BLUE + " Protection:");
+				ChatUtil.sendMessage("Breaking: " + blockBreak + ChatColor.WHITE + " | Placement: " + blockPlace + ChatColor.WHITE + " | PVP " + pvpProtection);
 				
-				List<String> finalList = MineUtils.getSortedList(curMine);
+				List<String> finalList = MineUtil.getSortedList(curMine);
 				
-				Message.sendMessage(ChatColor.BLUE + " Composition:");
+				ChatUtil.sendMessage(ChatColor.BLUE + " Composition:");
 				for(String line : finalList)
-					Message.sendMessage(line);
+					ChatUtil.sendMessage(line);
 				return;
 			}
 		}
 		if(args[0].equalsIgnoreCase("time")) {
 			if(!Util.hasPermission("info.time")) {
-				Message.sendDenied(args);
+				ChatUtil.sendDenied(args);
 				return;
 			}
 			
 			
 			if(args.length != 2) {
-				Message.sendInvalidArguments(args);
+				ChatUtil.sendInvalidArguments(args);
 				return;
 			}
 			String displayName = curMine.getDisplayName();
 			if(displayName.equals("")) displayName = curMine.getName();
 			
 			// Reset
-			Mine parentMine = MineUtils.getMine(curMine.getParent());
+			Mine parentMine = MineUtil.getMine(curMine.getParent());
 			if(parentMine == null)
 				parentMine = curMine;
 			
@@ -202,10 +202,10 @@ public class InfoCommand
 			String nextResetFormatted = Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20);
 			
 			if(curMine.getAutomatic()) {
-				Message.sendSuccess(displayName + " resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes.");
+				ChatUtil.sendSuccess(displayName + " resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes.");
 			}
 			else {
-				Message.sendSuccess(displayName + " has to be reset manually");
+				ChatUtil.sendSuccess(displayName + " has to be reset manually");
 			}
 		}
 	}

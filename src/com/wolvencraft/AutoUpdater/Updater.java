@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.wolvencraft.MineReset.config.Configuration;
-import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.ChatUtil;
 
 
 public class Updater
@@ -92,7 +92,7 @@ public class Updater
 				temp = temp + words[i] + " ";
 			else {
 				reasonString.add(centerString(temp.substring(0, temp.length() - 1)));
-				Message.debug("String added: " + temp);
+				ChatUtil.debug("String added: " + temp);
 				temp = "";
 				i--;
 			}
@@ -101,15 +101,15 @@ public class Updater
 			
 		verString = centerString(verString);
 
-		Message.log(" +------------------------------------------+");
-		Message.log(" |        MineReset is not up to date!      |");
-		Message.log(" |          http://bit.ly/MineReset/        |");
-		Message.log(" |                                          |");
-		Message.log(" | " + verString + " |");
-		Message.log(" |                                          |");
+		ChatUtil.log(" +------------------------------------------+");
+		ChatUtil.log(" |        MineReset is not up to date!      |");
+		ChatUtil.log(" |          http://bit.ly/MineReset/        |");
+		ChatUtil.log(" |                                          |");
+		ChatUtil.log(" | " + verString + " |");
+		ChatUtil.log(" |                                          |");
 		for(String displayReason : reasonString)
-			Message.log(" | " + displayReason + " |");
-		Message.log(" +------------------------------------------+");
+			ChatUtil.log(" | " + displayReason + " |");
+		ChatUtil.log(" +------------------------------------------+");
 		
 		return false;
 		
@@ -123,7 +123,7 @@ public class Updater
 		}
 		catch (NumberFormatException ex) {
 			ex.printStackTrace();
-			Message.log("Error while parsing version number!");
+			ChatUtil.log("Error while parsing version number!");
 		}
 		
 		urgency = data.get("urgency");

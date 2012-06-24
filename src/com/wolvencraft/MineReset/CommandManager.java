@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import com.wolvencraft.MineReset.cmd.*;
 import com.wolvencraft.MineReset.mine.Mine;
-import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.ChatUtil;
 
 public class CommandManager implements CommandExecutor
 {
@@ -60,13 +60,13 @@ public class CommandManager implements CommandExecutor
 			TimerCommand.run(args);
 		else if(args[0].equalsIgnoreCase("warp") || args[0].equalsIgnoreCase("tp"))
 			WarpCommand.run(args);
-		else Message.sendInvalid(args);
+		else ChatUtil.sendInvalid(args);
 			
 		String argString = "/mine";
         for (String arg : args) {
             argString = argString + " " + arg;
         }
-		Message.debug(sender.getName() + ": " + argString);
+		ChatUtil.debug(sender.getName() + ": " + argString);
 		
 		return true;
 	}

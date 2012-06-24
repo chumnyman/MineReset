@@ -15,8 +15,8 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.event.Listener;
 import org.bukkit.util.Vector;
 
-import com.wolvencraft.MineReset.util.MineUtils;
-import com.wolvencraft.MineReset.util.SignUtils;
+import com.wolvencraft.MineReset.util.MineUtil;
+import com.wolvencraft.MineReset.util.SignUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 @SerializableAs("SignClass")
@@ -29,12 +29,12 @@ public class SignClass implements ConfigurationSerializable, Listener  {
 	private List<String> lines;
 	
 	public SignClass(String parent, Location loc, Sign sign) {
-		id = SignUtils.generateId();
+		id = SignUtil.generateId();
 		this.parent = parent;
 		world = loc.getWorld();
 		this.loc = loc;
 		lines = new ArrayList<String>();
-		Mine parentMine = MineUtils.getMine(parent);
+		Mine parentMine = MineUtil.getMine(parent);
 		for(int i = 0; i < sign.getLines().length; i++) {
 			String line = sign.getLine(i);
 			lines.add(line);
@@ -50,7 +50,7 @@ public class SignClass implements ConfigurationSerializable, Listener  {
 		this.parent = parent;
 		this.reset = reset;
 		this.lines = lines;
-		Mine parentMine = MineUtils.getMine(parent);
+		Mine parentMine = MineUtil.getMine(parent);
 		
 		BlockState block = world.getBlockAt(loc).getState();
 		if(!(block instanceof Sign)) return; 

@@ -37,13 +37,24 @@ public class ChatUtil
      * @param title Title of the message
      * @param message Message to be sent
      */
-	public static void sendNote(String title, String message)
-	{
+	public static void sendNote(String title, String message) {
 		CommandSender sender = CommandManager.getSender();
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
 		message = ChatColor.GOLD + "[" + title + "] " + ChatColor.WHITE + message;
 		sender.sendMessage(message);
+	}
+	
+	/**
+     * Sends a message to a specific player with an custom title
+     * @param title Title of the message
+     * @param message Message to be sent
+     */
+	public static void sendPlayerNote(Player p, String title, String message) {
+		title = Util.parseColors(title);
+		message = Util.parseColors(message);
+		message = ChatColor.GOLD + "[" + title + "] " + ChatColor.WHITE + message;
+		p.sendMessage(message);
 	}
 
 	/**
@@ -51,8 +62,7 @@ public class ChatUtil
 	 * This should be normally used just for the mine reset warnings
 	 * @param message A message to be sent
 	 */
-	public static void broadcast(String message)
-	{
+	public static void broadcast(String message) {
 		String title = Language.getString("general.title-success");
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
@@ -63,8 +73,7 @@ public class ChatUtil
 	 * Sends a green-titled message to the command sender
 	 * @param message A message to be sent
 	 */
-	public static void sendSuccess(String message)
-	{
+	public static void sendSuccess(String message) {
 		CommandSender sender = CommandManager.getSender();
 		String title = Language.getString("general.title-success");
 		title = Util.parseColors(title);
@@ -76,8 +85,7 @@ public class ChatUtil
 	 * Sends a green-titled message to a player
 	 * @param message A message to be sent
 	 */
-	public static void sendPlayerSuccess(Player player, String message)
-	{
+	public static void sendPlayerSuccess(Player player, String message) {
 		String title = Language.getString("general.title-success");
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);

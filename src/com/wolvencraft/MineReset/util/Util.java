@@ -492,8 +492,8 @@ public class Util
 	 */
 	public static String parseSeconds(int seconds) {
 		int hour = seconds / 3600;
-		int min = (seconds - hour * 3600) / 60;
-		int sec = (seconds - hour * 3600) % 60;
+		int min = (seconds - (hour * 3600)) / 60;
+		int sec = seconds - (hour * 3600) - (min * 60);
 		String resetTime = min + ":";
 		if(hour > 0)
 		{

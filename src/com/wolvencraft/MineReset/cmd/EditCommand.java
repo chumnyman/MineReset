@@ -300,11 +300,11 @@ public class EditCommand {
 			if(args[1].equalsIgnoreCase("toggle")) {
 				if(curMine.getCooldown()) {
 					curMine.setCooldown(false);
-					ChatUtil.sendNote(curMine.getName(), "Reset cooldown " + ChatColor.GREEN + "enabled");
+					ChatUtil.sendNote(curMine.getName(), "Reset cooldown " + ChatColor.RED + "disabled");
 				}
 				else {
 					curMine.setCooldown(true);
-					ChatUtil.sendNote(curMine.getName(), "Reset cooldown " + ChatColor.RED + "disabled");
+					ChatUtil.sendNote(curMine.getName(), "Reset cooldown " + ChatColor.GREEN + "enabled");
 				}
 			}
 			else {

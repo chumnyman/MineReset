@@ -65,8 +65,8 @@ public class PlayerInteractListener implements Listener
 				
 		     	if(sign.getReset()) {
 		     		Mine curMine = MineUtil.getMine(sign.getParent());
-					if(!Util.playerHasPermission(player, "reset.bypass") && curMine.getNextCooldown() > 0) {
-						ChatUtil.sendError("You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
+					if(curMine.getCooldown() && curMine.getNextCooldown() > 0 && !Util.hasPermission("reset.bypass")) {
+						ChatUtil.sendPlayerNote(player, curMine.getName(), "You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
 						return;
 					}
 		     		

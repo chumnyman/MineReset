@@ -24,7 +24,7 @@ public class DataBlock implements ConfigurationSerializable, Listener  {
 	}
 	
 	public DataBlock(Map<String, Object> me) {
-		data = (MaterialData) me.get("data");
+        data = new MaterialData((Integer) me.get("blockId"), ((Integer) me.get("blockData")).byteValue());
 		World world = (World) me.get("world");
 		loc = ((Vector) me.get("loc")).toLocation(world);
 		
@@ -32,9 +32,18 @@ public class DataBlock implements ConfigurationSerializable, Listener  {
 	
 	public Map<String, Object> serialize() {
         Map<String, Object> me = new HashMap<String, Object>();
-        me.put("data", data);
+        me.put("blockId", data.getItemTypeId());
+        me.put("blockData", data.getData());
         me.put("world", loc.getWorld().getName());
         me.put("loc", loc.toVector());
 		return me;
+	}
+	
+	public MaterialData getData() {
+		return data;
+	}
+	
+	public Location getLocation() {
+		return loc;
 	}
 }

@@ -77,7 +77,7 @@ public class BlockPlaceListener implements Listener
 				
 				if((mine.getPlaceBlacklist().getWhitelist() && !found) || (!mine.getPlaceBlacklist().getWhitelist() && found)) {
 					ChatUtil.debug("Player " + player.getName() + " broke a black/whitelisted block in the mine!");
-					ChatUtil.sendPlayerError(player, "You are not allowed to break " + blockName + " in this area");
+					ChatUtil.sendPlayerError(player, "You are not allowed to place " + blockName + " in this area");
 					event.setCancelled(true);
 					return;
 				}

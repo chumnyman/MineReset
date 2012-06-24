@@ -100,7 +100,7 @@ public class SignUtil {
 	
 	public static String generateId() {
 		Random r = new Random();
-		return Long.toString(Math.abs(r.nextLong()), 36);
+		return Long.toString(Math.abs(r.nextLong()), 32);
 	}
 	
 	/**

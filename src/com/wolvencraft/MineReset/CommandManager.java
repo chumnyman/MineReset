@@ -46,8 +46,6 @@ public class CommandManager implements CommandExecutor
 			ProtectionCommand.run(args);
 		else if(args[0].equalsIgnoreCase("reset"))
 			ResetCommand.run(args, false, null);
-		else if(args[0].equalsIgnoreCase("clear"))
-			ResetCommand.run(args, false, "empty");
 		else if(args[0].equalsIgnoreCase("save"))
 			SaveCommand.run(args);
 		else if(args[0].equalsIgnoreCase("select") || args[0].equalsIgnoreCase("pos1") || args[0].equalsIgnoreCase("pos2") || args[0].equalsIgnoreCase("hpos1") || args[0].equalsIgnoreCase("hpos2"))

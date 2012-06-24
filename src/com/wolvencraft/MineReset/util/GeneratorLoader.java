@@ -41,11 +41,19 @@ public class GeneratorLoader {
 				}
 				BaseGenerator generator = (BaseGenerator) object;
 				generators.add(generator);
-				ChatUtil.getLogger().info("Loaded generator: " + generator.getClass().getSimpleName());
+				ChatUtil.log("Loaded generator: " + generator.getClass().getSimpleName());
+		    } catch(ClassNotFoundException cnfe) {
+				ChatUtil.getLogger().log(Level.WARNING, "Error loading " + name + "! Generator disabled. [ClassNotFoundException]");
+		    } catch(InstantiationException ie) {
+				ChatUtil.getLogger().log(Level.WARNING, "Error loading " + name + "! Generator disabled. [InstantiationException]");
+		    } catch(IllegalAccessException iae) {
+				ChatUtil.getLogger().log(Level.WARNING, "Error loading " + name + "! Generator disabled. [IllegalAccessException]");
 			} catch (Exception ex) {
-			ChatUtil.getLogger().log(Level.WARNING, "Error loading " + name + "! Generator disabled.");
-		    } catch (Error ex) {
-		    	ChatUtil.getLogger().log(Level.WARNING, "Error loading " + name + "! Generator disabled.");
+				ChatUtil.getLogger().log(Level.WARNING, "Error loading " + name + "! Generator disabled. [Exception]");
+			} catch (ExceptionInInitializerError eiie) {
+		    	ChatUtil.getLogger().log(Level.WARNING, "Error loading " + name + "! Generator disabled. [ExceptionInInitializer]");
+			} catch (Error ex) {
+		    	ChatUtil.getLogger().log(Level.WARNING, "Error loading " + name + "! Generator disabled. [Error]");
 		    }
 		}
 		

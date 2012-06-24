@@ -34,6 +34,8 @@ public class HelpCommand {
 		formatHelp("-", "<block> [persentage]", "Removes the specified persentage of a block from the mine", "");
 		formatNote("If no persentage is provided, the block will be removed completely");
 		formatHelp("delete", "", "Completely deletes all the data about the selected mine", "");
+		formatHelp("cooldown toggle", "", "Turn the reset cooldown on and off for the mine", "");
+		formatHelp("cooldown <time>", "", "Sets the cooldown time to the value specified", "");
 		return;
 	}
 	
@@ -43,7 +45,7 @@ public class HelpCommand {
 		formatHelp("info", "<name>", "Returns the information about a mine", "info.all");	
 		formatHelp("list", "", "Lists all the available mines", "info.list");
 		formatHelp("warp", "<name>", "Teleports you to the mine warp location", "warp.use");
-		formatHelp("reset", "<name>", "Resets the mine manually", "reset.manual");
+		formatHelp("reset", "<name> [generator]", "Resets the mine manually", "reset.manual");
 		formatHelp("select", "", "Shows region selection help page", "edit.select");
 		formatHelp("save", "<name>", "Saves the region for future use", "edit.save");
 		formatHelp("edit", "", "Shows a help page on how to handle the mine options", "edit.info");

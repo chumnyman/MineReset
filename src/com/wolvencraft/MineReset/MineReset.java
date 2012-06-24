@@ -142,16 +142,16 @@ public class MineReset extends JavaPlugin
 	
 	public void reloadLanguageData() {
 		
-		String lang = this.getConfig().getString("configuration.language") + ".yml";
+		String lang = this.getConfig().getString("configuration.language");
 		if(lang.equals(null)) lang = "english";
+		lang = lang + ".yml";
 		ChatUtil.log("Language file used: " + lang);
 		
 	    if (languageDataFile == null) {
 	    languageDataFile = new File(getDataFolder(), lang);
 	    }
 	    languageData = YamlConfiguration.loadConfiguration(languageDataFile);
-	 
-	    // Look for defaults in the jar
+	    
 	    InputStream defConfigStream = getResource(lang);
 	    if (defConfigStream != null) {
 	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);

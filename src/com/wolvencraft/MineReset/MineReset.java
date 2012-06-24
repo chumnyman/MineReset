@@ -139,6 +139,9 @@ public class MineReset extends JavaPlugin
 	{
 		MineUtil.saveAll(mines);
 		SignUtil.saveAll(signs);
+		SnapshotUtil.saveAll(snapshots);
+		
+		getServer().getScheduler().cancelTasks(this); // Got to stop the task
 		log.info("MineReset stopped");
 	}
 	

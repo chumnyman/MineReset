@@ -3,6 +3,7 @@ package com.wolvencraft.MineReset.mine;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
@@ -25,7 +26,7 @@ public class DataBlock implements ConfigurationSerializable, Listener  {
 	
 	public DataBlock(Map<String, Object> me) {
         data = new MaterialData((Integer) me.get("blockId"), ((Integer) me.get("blockData")).byteValue());
-		World world = (World) me.get("world");
+		World world = Bukkit.getServer().getWorld((String) me.get("world"));
 		loc = ((Vector) me.get("loc")).toLocation(world);
 		
 	}

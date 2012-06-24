@@ -102,7 +102,7 @@ public class SnapshotUtil {
 	public static Snapshot getSnapshot(Mine parent)
 	{
 		for(Snapshot curSnap : MineReset.getSnapshots()) {
-			if(curSnap.getParent().equals(parent)) return curSnap;
+			if(curSnap.getParent().equals(parent.getName())) return curSnap;
 		}
 		return null;
 	}

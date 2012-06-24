@@ -97,7 +97,7 @@ public class Util
 					parts[0] = "iron_ore";
 				else if(blockName.equalsIgnoreCase("gold") || parts[0].equalsIgnoreCase("goldore"))
 					parts[0] = "gold_ore";
-				else if(blockName.equalsIgnoreCase("lapis") || parts[0].equalsIgnoreCase("lapisore"))
+				else if(blockName.equalsIgnoreCase("lapis") || parts[0].equalsIgnoreCase("lapisore")  || parts[0].equalsIgnoreCase("lapislazuri"))
 					parts[0] = "lapis_ore";
 				else if(blockName.equalsIgnoreCase("diamond") || parts[0].equalsIgnoreCase("diamondore"))
 					parts[0] = "diamond_ore";
@@ -121,6 +121,8 @@ public class Util
 			
 		}
 		catch(NumberFormatException nfe) { return null; }
+		catch(NullPointerException npe) { return null; }
+		catch(Exception ex) { return null; }
 	}
 	
 	/**

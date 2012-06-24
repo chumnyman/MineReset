@@ -142,7 +142,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         world = Bukkit.getWorld((String) me.get("world"));
         one = ((Vector) me.get("one")).toLocation(world);
         two = ((Vector) me.get("two")).toLocation(world);
-        tpPoint = ((Vector) me.get("tpPoint")).toLocation(world);
+        tpPoint = ((SimpleLoc) me.get("tpPoint")).toLocation();
         displayName = (String) me.get("displayName");
         name = (String) me.get("name");
         parent = (String) me.get("parent");
@@ -207,7 +207,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("one", one.toVector());
         me.put("two", two.toVector());
         me.put("world", world.getName());
-        me.put("tpPoint", tpPoint.toVector());
+        me.put("tpPoint", new SimpleLoc(tpPoint));
         me.put("displayName", displayName);
         me.put("name", name);
         me.put("parent", parent);

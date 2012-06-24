@@ -14,6 +14,7 @@ import com.wolvencraft.MineReset.mine.DataBlock;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
 import com.wolvencraft.MineReset.mine.SignClass;
+import com.wolvencraft.MineReset.mine.SimpleLoc;
 import com.wolvencraft.MineReset.mine.Snapshot;
 import com.wolvencraft.MineReset.util.MineUtil;
 import org.bukkit.Bukkit;
@@ -83,6 +84,7 @@ public class MineReset extends JavaPlugin
         ConfigurationSerialization.registerClass(SignClass.class, "SignClass");
         ConfigurationSerialization.registerClass(Snapshot.class, "Snapshot");
         ConfigurationSerialization.registerClass(DataBlock.class, "DataBlock");
+        ConfigurationSerialization.registerClass(SimpleLoc.class, "SimpleLoc");
         
 		mines = new ArrayList<Mine>();
         mines = MineUtil.loadAll(mines);

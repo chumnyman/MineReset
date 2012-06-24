@@ -405,6 +405,7 @@ public class Util
 	 * @return Parsed string
 	 */
 	public static String parseColors(String msg) {
+		if(msg == null) return null;
 		msg = msg.replaceAll("&0", ChatColor.BLACK.toString());
 		msg = msg.replaceAll("&1", ChatColor.DARK_BLUE.toString());
 		msg = msg.replaceAll("&2", ChatColor.DARK_GREEN.toString());

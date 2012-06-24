@@ -2,10 +2,8 @@ package com.wolvencraft.MineReset.mine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -30,25 +28,21 @@ public class Blacklist implements ConfigurationSerializable, Listener {
 	public Blacklist(Map<String, Object> me) {
 		whitelist = (Boolean) me.get("whitelist");
 		enabled = (Boolean) me.get("enabled");
-        Map<Integer, Byte> materials = (Map<Integer, Byte>) me.get("blocks");
-        blocks = new ArrayList<MaterialData>();
-        Iterator<Entry<Integer, Byte>> it = materials.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<Integer, Byte> pairs = it.next();
-            blocks.add(new MaterialData(Material.getMaterial(pairs.getKey()), pairs.getValue()));
-            it.remove();
-        }
+		Map<Integer, Byte> materials = (Map<Integer, Byte>) me.get("blocks");
+		blocks = new ArrayList<MaterialData>();
+		for(Map.Entry<Integer, Byte> entry : materials.entrySet())
+			blocks.add(new MaterialData(Material.getMaterial(entry.getKey().intValue()), entry.getValue().byteValue()));
 	}
 	
 	public Map<String, Object> serialize() {
 		Map<String, Object> me = new HashMap<String, Object>();
 		me.put("whitelist", whitelist);
 		me.put("enabled", enabled);
-        Map<Integer, Byte> materials = new HashMap<Integer, Byte>();
-        for(MaterialData block : blocks) {
-        	materials.put(block.getItemTypeId(), block.getData());
-        }
-        me.put("blocks", materials);
+		Map<Integer, Byte> materials = new HashMap<Integer, Byte>();
+		for(MaterialData block : blocks) {
+			materials.put(block.getItemTypeId(), block.getData());
+		}
+		me.put("blocks", materials);
 		return me;
 	}
 	

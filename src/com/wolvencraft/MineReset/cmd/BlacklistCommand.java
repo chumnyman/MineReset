@@ -6,7 +6,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.CommandManager;
-import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.MineUtil;
@@ -30,13 +29,13 @@ public class BlacklistCommand {
 		
 		Mine curMine = CommandManager.getMine();
 		if(curMine == null) {
-			ChatUtil.sendMessage(Language.getString("error.mine-name-invalid").replaceAll("%MINE%", args[1]));
+			ChatUtil.sendMineNotSelected();
 			return;
 		}
 		
 		if(args[1].equalsIgnoreCase("toggle")) {
-			if(args.length != 1) {
-				ChatUtil.sendMessage(Language.getString("error.invalid-arguments"));
+			if(args.length != 2) {
+				ChatUtil.sendInvalidArguments(args);
 				return;
 			}
 			if(curMine.getBlacklist().getEnabled()) {
@@ -61,13 +60,13 @@ public class BlacklistCommand {
 		}
 		else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
 			if(args.length != 3) {
-				ChatUtil.sendMessage(Language.getString("error.invalid-arguments"));
+				ChatUtil.sendInvalidArguments(args);
 				return;
 			}
 			
 			MaterialData block = Util.getBlock(args[2]);
 			if(block == null) {
-				ChatUtil.sendError("Block '" + ChatColor.RED + args[2] + ChatColor.WHITE + "' does not exist");
+				ChatUtil.sendBlockDoesNotExist(args[2]);
 				return;
 			}
 			
@@ -79,13 +78,13 @@ public class BlacklistCommand {
 		}
 		else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-")) {
 			if(args.length != 3) {
-				ChatUtil.sendMessage(Language.getString("error.invalid-arguments"));
+				ChatUtil.sendInvalidArguments(args);
 				return;
 			}
 			
 			MaterialData block = Util.getBlock(args[2]);
 			if(block == null) {
-				ChatUtil.sendError("Block '" + ChatColor.RED + args[2] + ChatColor.WHITE + "' does not exist");
+				ChatUtil.sendBlockDoesNotExist(args[2]);
 				return;
 			}
 			

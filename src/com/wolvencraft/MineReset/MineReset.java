@@ -25,7 +25,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wolvencraft.MineReset.cmd.*;
-import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.events.*;
 import com.wolvencraft.MineReset.generation.BaseGenerator;
@@ -57,6 +56,7 @@ public class MineReset extends JavaPlugin
 	private static List<SignClass> signs;
 	private static List<Snapshot> snapshots;
 	private static List<BaseGenerator> generators;
+	static Statistics stats;
 	
 	public void onEnable()
 	{
@@ -104,14 +104,12 @@ public class MineReset extends JavaPlugin
 		log.info("MineReset started");
 		log.info(mines.size() + " mine(s) found");
 		
-		if(Configuration.getBoolean("configuration.metrics-enabled")) {
-			log.info("Starting PluginMetrics");
-			Statistics stats = new Statistics(this);
-			stats.gatherData();
-			stats.getMetrics().start();
-		}
+		log.info("Starting PluginMetrics");
+		stats = new Statistics(this);
+		stats.gatherData();
+		stats.getMetrics().start();
 		
-		final long checkEvery = getConfig().getLong("lag.check-time-every");
+		final long checkEvery = getConfig().getLong("misc.check-time-every");
 		
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
 			public void run() {
@@ -127,6 +125,7 @@ public class MineReset extends JavaPlugin
 						if(nextReset <= 0) {
 							String[] args = {null, curMine.getName()};
 							ResetCommand.run(args, true, null);
+							stats.updateAutomatic();
 						}
 					}
 				
@@ -211,5 +210,9 @@ public class MineReset extends JavaPlugin
 	
 	public static List<BaseGenerator> getGenerators() {
 		return generators;
+	}
+	
+	public static Statistics getStats() {
+		return stats;
 	}
 }

@@ -35,6 +35,8 @@ public class ResetCommand
 				ChatUtil.sendNote(curMine.getName(), "You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
 				return;
 			}
+			
+			MineReset.getStats().updateViaCommand();
 		}
 		
 		if(args.length == 3)

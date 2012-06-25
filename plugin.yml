@@ -11,11 +11,7 @@ permissions:
   MineReset.*:
     default: op
     children:
-      MineReset.info.*: true
-      MineReset.protection.*: true
-      MineReset.reset.*: true
-      MineReset.edit.*: true
-      MineReset.warp.*: true
+      MineReset.admin: true
   MineReset.normal:
     default: true
     children:
@@ -28,7 +24,12 @@ permissions:
   MineReset.admin:
     default: op
     children:
-      MineReset.*: true
+      MineReset.normal: true
+      MineReset.info.*: true
+      MineReset.protection.*: true
+      MineReset.reset.*: true
+      MineReset.edit.*: true
+      MineReset.warp.*: true
   MineReset.info.*:
     default: op
     children:
@@ -66,6 +67,7 @@ permissions:
       MineReset.edit.select: true
       MineReset.edit.snapshot: true
       MineReset.edit.timer: true
+      MineReset.edit.wand: true
   MineReset.warp.*:
     default: op
     children:

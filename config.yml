@@ -1,8 +1,8 @@
 configuration:
-  version: "2.0.0"
   debug-mode: false
-  metrics-enabled: true
   language: "english"
+misc:
+  wand-item: 294
   check-time-every: 20
 updater:
   channel: "db"

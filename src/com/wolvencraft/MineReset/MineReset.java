@@ -110,6 +110,7 @@ public class MineReset extends JavaPlugin
 				log.info("Starting PluginMetrics");
 			    Metrics metrics = new Metrics(this);
 			    metrics.start();
+
 			} catch (IOException e) {
 			    log.severe("Unable to start PluginMetrics");
 			}

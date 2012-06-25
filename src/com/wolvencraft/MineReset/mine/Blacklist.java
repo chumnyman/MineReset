@@ -30,8 +30,13 @@ public class Blacklist implements ConfigurationSerializable, Listener {
 		enabled = (Boolean) me.get("enabled");
 		Map<Integer, Byte> materials = (Map<Integer, Byte>) me.get("blocks");
 		blocks = new ArrayList<MaterialData>();
-		for(Map.Entry<Integer, Byte> entry : materials.entrySet())
-			blocks.add(new MaterialData(Material.getMaterial(entry.getKey().intValue()), entry.getValue().byteValue()));
+		for(Map.Entry<Integer, Byte> entry : materials.entrySet()) {
+			try {
+				blocks.add(new MaterialData(Material.getMaterial(entry.getKey().intValue()), entry.getValue().byteValue()));
+			} catch (ClassCastException cce) {
+				blocks.add(new MaterialData(Material.getMaterial(entry.getKey().intValue())));
+			}
+		}
 	}
 	
 	public Map<String, Object> serialize() {

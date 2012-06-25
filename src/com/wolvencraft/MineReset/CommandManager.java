@@ -56,6 +56,8 @@ public class CommandManager implements CommandExecutor
 			SnapshotCommand.run(args);
 		else if(args[0].equalsIgnoreCase("timer") || args[0].equalsIgnoreCase("auto"))
 			TimerCommand.run(args);
+		else if(args[0].equalsIgnoreCase("wand"))
+			WandCommand.run(args);
 		else if(args[0].equalsIgnoreCase("warp") || args[0].equalsIgnoreCase("tp"))
 			WarpCommand.run(args);
 		else ChatUtil.sendInvalid(args);

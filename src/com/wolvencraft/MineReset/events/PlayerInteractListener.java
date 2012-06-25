@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.ResetCommand;
+import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.SignClass;
 import com.wolvencraft.MineReset.util.ChatUtil;
@@ -37,7 +38,8 @@ public class PlayerInteractListener implements Listener
 		Block block = event.getClickedBlock();
 		if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 			if(!Util.playerHasPermission(player, "edit.select")) return;
-			if(player.getItemInHand().equals(new ItemStack(Material.WOOD_AXE))) {
+			ItemStack wand = new ItemStack(Configuration.getInt("misc.wand-item"));
+			if(player.getItemInHand().equals(wand)) {
 				Location loc = block.getLocation();
 				CommandManager.setLocation(loc, 0);
 				event.setCancelled(true);
@@ -45,7 +47,8 @@ public class PlayerInteractListener implements Listener
 			return;
 		}
 		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-			if(player.getItemInHand().equals(new ItemStack(Material.WOOD_AXE))) {
+			ItemStack wand = new ItemStack(Configuration.getInt("misc.wand-item"));
+			if(player.getItemInHand().equals(wand)) {
 				if(!Util.playerHasPermission(player, "edit.select")) return;
 				Location loc = event.getClickedBlock().getLocation();
 				CommandManager.setLocation(loc, 1);

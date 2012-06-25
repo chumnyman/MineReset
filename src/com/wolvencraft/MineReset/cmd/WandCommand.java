@@ -29,11 +29,12 @@ public class WandCommand {
 		ItemStack wand = new ItemStack(Configuration.getInt("misc.wand-item"));
 		
 		if(player.getInventory().contains(wand)) {
-			ChatUtil.sendError("You already have a wand!");
+			ChatUtil.sendError("You already have a " + wand.getType().toString().toLowerCase().replace("_", " "));
 			return;
 		}
 		
 		player.getInventory().addItem(wand);
-		ChatUtil.sendSuccess("Here is your wand!");
+		ChatUtil.sendSuccess("Here is your " + wand.getType().toString().toLowerCase().replace("_", " "));
+		return;
 	}
 }

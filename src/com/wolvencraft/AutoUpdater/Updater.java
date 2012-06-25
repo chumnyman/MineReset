@@ -34,10 +34,12 @@ import com.wolvencraft.MineReset.util.ChatUtil;
 
 public class Updater
 {
-
+	private static final double curVer = 2.0;
+	private static final int curSubVer = 0;
+	
 	private static Map<String, String> data;
-	private static double newVer, curVer;
-	private static int newSubVer, newBuild, curSubVer;
+	private static double newVer;
+	private static int newSubVer, newBuild;
 	private static String reason, devReason, urgency;
 	
 	/**
@@ -50,14 +52,6 @@ public class Updater
 		if(Configuration.getString("updater.channel").equalsIgnoreCase("none"))
 			return true;
 		
-		try {
-			String ver = Configuration.getString("configuration.version");
-			curVer = Double.parseDouble(ver.substring(0, 3));
-			curSubVer = Integer.parseInt(ver.substring(4));
-		}
-		catch(NumberFormatException nfe) {
-			return true;
-		}
 		data = FetchSource.fetchSource();
 		if(data == null) return true;
 		formatSource();

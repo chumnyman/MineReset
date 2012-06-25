@@ -540,7 +540,9 @@ public class Util
 	 */
 	public static String parseMaterialData(MaterialData material) {
 		String str[] = {material.getItemTypeId() + "", material.getData() + ""};
-		String name = parseMetadata(str, true) + " " + material.getItemType().toString().toLowerCase().replace("_", " ");
+		String name = material.getItemType().toString().toLowerCase().replace("_", " ");
+		String meta = parseMetadata(str, true);
+		if(!meta.equalsIgnoreCase("0")) name = meta + " " + name;
 		return name;
 	}
 	

@@ -40,7 +40,7 @@ import com.wolvencraft.MineReset.util.Util;
 
 /**
  * Mine Reset
- * Copyright (C) 2012 bitWolfy
+ * Copyright (C) 2012 bitWolfy, jjkoletar
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

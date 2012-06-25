@@ -16,14 +16,13 @@ import com.wolvencraft.MineReset.util.ChatUtil;
 public class FetchSource
 {
 	
-	protected static Map<String, String> fetchSource()
-	{
+	protected static Map<String, String> fetchSource() {
 		URL url = null;
 		try {
 			url = new URL("http://update.wolvencraft.com/MineReset/");
 		}
 		catch(MalformedURLException ex) {
-			ex.printStackTrace();
+			ChatUtil.log("Error occurred while connecting to the update server!");
 			return null;
 		}	
 		

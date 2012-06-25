@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import com.wolvencraft.AutoUpdater.Updater;
 import com.wolvencraft.Metrics.Metrics;
+import com.wolvencraft.Metrics.Metrics.Graph;
 import com.wolvencraft.MineReset.mine.Blacklist;
 import com.wolvencraft.MineReset.mine.DataBlock;
 import com.wolvencraft.MineReset.mine.Mine;
@@ -53,9 +54,9 @@ public class MineReset extends JavaPlugin
 	public CommandManager manager;
 	private FileConfiguration languageData = null;
 	private File languageDataFile = null;
-    private static List<Mine> mines;
-    private static List<SignClass> signs;
-    private static List<Snapshot> snapshots;
+	private static List<Mine> mines;
+	private static List<SignClass> signs;
+	private static List<Snapshot> snapshots;
 	private static List<BaseGenerator> generators;
 	
 	public void onEnable()
@@ -71,7 +72,7 @@ public class MineReset extends JavaPlugin
 		new BucketFillListener(this);
 		new PlayerInteractListener(this);
 		new PlayerLoginListener(this);
-        new PVPListener(this);
+		new PVPListener(this);
 		
 		getConfig().options().copyDefaults(true);
 		saveConfig();
@@ -80,74 +81,78 @@ public class MineReset extends JavaPlugin
 		saveLanguageData();
 		Updater.checkVersion();
 
-        ConfigurationSerialization.registerClass(Mine.class, "Mine");
-        ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
-        ConfigurationSerialization.registerClass(Blacklist.class, "Blacklist");
-        ConfigurationSerialization.registerClass(SignClass.class, "SignClass");
-        ConfigurationSerialization.registerClass(Snapshot.class, "Snapshot");
-        ConfigurationSerialization.registerClass(DataBlock.class, "DataBlock");
-        ConfigurationSerialization.registerClass(SimpleLoc.class, "SimpleLoc");
-        
+		ConfigurationSerialization.registerClass(Mine.class, "Mine");
+		ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
+		ConfigurationSerialization.registerClass(Blacklist.class, "Blacklist");
+		ConfigurationSerialization.registerClass(SignClass.class, "SignClass");
+		ConfigurationSerialization.registerClass(Snapshot.class, "Snapshot");
+		ConfigurationSerialization.registerClass(DataBlock.class, "DataBlock");
+		ConfigurationSerialization.registerClass(SimpleLoc.class, "SimpleLoc");
+		
 		mines = new ArrayList<Mine>();
-        mines = MineUtil.loadAll(mines);
-        
-        signs = new ArrayList<SignClass>();
-        signs = SignUtil.loadAll(signs);
-        
-        snapshots = new ArrayList<Snapshot>();
-        snapshots = SnapshotUtil.loadAll(snapshots);
-        
-        generators = new ArrayList<BaseGenerator>();
-        generators = GeneratorUtil.loadDefault(generators);
-        generators = GeneratorLoader.load(generators);
-        
+		mines = MineUtil.loadAll(mines);
+		
+		signs = new ArrayList<SignClass>();
+		signs = SignUtil.loadAll(signs);
+		
+		snapshots = new ArrayList<Snapshot>();
+		snapshots = SnapshotUtil.loadAll(snapshots);
+		
+		generators = new ArrayList<BaseGenerator>();
+		generators = GeneratorUtil.loadDefault(generators);
+		generators = GeneratorLoader.load(generators);
+		
 		log.info("MineReset started");
 		log.info(mines.size() + " mine(s) found");
 		
 		if(Configuration.getBoolean("configuration.metrics-enabled")) {
 			try {
 				log.info("Starting PluginMetrics");
-			    Metrics metrics = new Metrics(this);
-			    metrics.start();
+				Metrics metrics = new Metrics(this);
+				Graph graph = metrics.createGraph("Mines & Signs");
+
+			    graph.addPlotter(new Metrics.Plotter("Mines") {
+			            @Override
+			            public int getValue() { return mines.size(); }
+			    });
+			    graph.addPlotter(new Metrics.Plotter("Signs") {
+		            @Override
+		            public int getValue() { return signs.size(); }
+			    });
+				metrics.start();
 
 			} catch (IOException e) {
-			    log.severe("Unable to start PluginMetrics");
+				log.severe("Unable to start PluginMetrics");
 			}
 		}
 		
 		final long checkEvery = getConfig().getLong("lag.check-time-every");
 		
-		
-		if(getConfig().getBoolean("lag.automatic-resets-enabled")) {
-			Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
-	           	 public void run() {
-					if(mines.size() != 0) {
-		                String warnMessage = Language.getString("reset.automatic-reset-warning");
-		                for(Mine curMine : mines) {
-							if(MineUtil.getMine(curMine.getParent()) == null && curMine.getAutomatic()) {
-								int nextReset = MineUtil.getNextReset(curMine);
-								List<Integer> warnTimes = curMine.getWarningTimes();
-								
-								curMine.updateTimer(checkEvery);
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
+			public void run() {
+				for(Mine curMine : mines) {
+					if(curMine.getAutomatic() && MineUtil.getMine(curMine.getParent()) == null) {
+						int nextReset = MineUtil.getNextReset(curMine);
+						List<Integer> warnTimes = curMine.getWarningTimes();
+						curMine.updateTimer(checkEvery);
 									
-								if(!curMine.getSilent() && curMine.getWarned() && warnTimes.indexOf(nextReset) != -1)
-									ChatUtil.broadcast(Util.parseVars(warnMessage, curMine));
-								if(nextReset <= 0) {
-									String[] args = {null, curMine.getName()};
-									ResetCommand.run(args, true, null);
-								}
-							}
-							if(curMine.getCooldown() && curMine.getCooldownTime() > 0) {
-								curMine.updateCooldown(checkEvery);
-							}
-							
-							SignUtil.updateAll(curMine);
+						if(!curMine.getSilent() && curMine.getWarned() && warnTimes.indexOf(nextReset) != -1)
+							ChatUtil.broadcast(Util.parseVars(Language.getString("reset.automatic-reset-warning"), curMine));
+						
+						if(nextReset <= 0) {
+							String[] args = {null, curMine.getName()};
+							ResetCommand.run(args, true, null);
 						}
-		            }
-	           	}
-	        }, 0, checkEvery);
-		}
-    }
+					}
+				
+					if(curMine.getCooldown() && curMine.getCooldownTime() > 0)
+						curMine.updateCooldown(checkEvery);
+							
+					SignUtil.updateAll(curMine);
+				}
+			}
+		}, 0, checkEvery);
+	}
 	
 	
 	public void onDisable()
@@ -167,59 +172,59 @@ public class MineReset extends JavaPlugin
 		lang = lang + ".yml";
 		ChatUtil.log("Language file used: " + lang);
 		
-	    if (languageDataFile == null) {
-	    languageDataFile = new File(getDataFolder(), lang);
-	    }
-	    languageData = YamlConfiguration.loadConfiguration(languageDataFile);
-	    
-	    InputStream defConfigStream = getResource(lang);
-	    if (defConfigStream != null) {
-	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-	        languageData.setDefaults(defConfig);
-	    }
+		if (languageDataFile == null) {
+		languageDataFile = new File(getDataFolder(), lang);
+		}
+		languageData = YamlConfiguration.loadConfiguration(languageDataFile);
+		
+		InputStream defConfigStream = getResource(lang);
+		if (defConfigStream != null) {
+			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+			languageData.setDefaults(defConfig);
+		}
 	}
 	
 	public FileConfiguration getLanguageData() {
-	    if (languageData == null) {
-	        reloadLanguageData();
-	    }
-	    return languageData;
+		if (languageData == null) {
+			reloadLanguageData();
+		}
+		return languageData;
 	}
 
 	public void saveLanguageData() {
-	    if (languageData == null || languageDataFile == null) return;
-	    try {
-	        languageData.save(languageDataFile);
-	    } catch (IOException ex) {
-	        ChatUtil.log("Could not save config to " + languageDataFile);
-	    }
+		if (languageData == null || languageDataFile == null) return;
+		try {
+			languageData.save(languageDataFile);
+		} catch (IOException ex) {
+			ChatUtil.log("Could not save config to " + languageDataFile);
+		}
 	}
 
-    public static List<Mine> getMines() {
-        return mines;
-    }
-    
-    public static void setMines(List<Mine> mines) {
-    	MineReset.mines = mines;
-    }
-    
-    public static List<SignClass> getSigns() {
-    	return signs;
-    }
-    
-    public static void setSigns(List<SignClass> signs) {
-    	MineReset.signs = signs;
-    }
-    
-    public static List<Snapshot> getSnapshots() {
-    	return snapshots;
-    }
-    
-    public static void setSnapshots(List<Snapshot> snapshots) {
-    	MineReset.snapshots = snapshots;
-    }
-    
-    public static List<BaseGenerator> getGenerators() {
-    	return generators;
-    }
+	public static List<Mine> getMines() {
+		return mines;
+	}
+	
+	public static void setMines(List<Mine> mines) {
+		MineReset.mines = mines;
+	}
+	
+	public static List<SignClass> getSigns() {
+		return signs;
+	}
+	
+	public static void setSigns(List<SignClass> signs) {
+		MineReset.signs = signs;
+	}
+	
+	public static List<Snapshot> getSnapshots() {
+		return snapshots;
+	}
+	
+	public static void setSnapshots(List<Snapshot> snapshots) {
+		MineReset.snapshots = snapshots;
+	}
+	
+	public static List<BaseGenerator> getGenerators() {
+		return generators;
+	}
 }

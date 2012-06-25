@@ -97,7 +97,7 @@ public class Util
 					parts[0] = "iron_ore";
 				else if(blockName.equalsIgnoreCase("gold") || parts[0].equalsIgnoreCase("goldore"))
 					parts[0] = "gold_ore";
-				else if(blockName.equalsIgnoreCase("lapis") || parts[0].equalsIgnoreCase("lapisore")  || parts[0].equalsIgnoreCase("lapislazuri"))
+				else if(blockName.equalsIgnoreCase("lapis") || parts[0].equalsIgnoreCase("lapisore")  || parts[0].equalsIgnoreCase("lapislazuli"))
 					parts[0] = "lapis_ore";
 				else if(blockName.equalsIgnoreCase("diamond") || parts[0].equalsIgnoreCase("diamondore"))
 					parts[0] = "diamond_ore";
@@ -494,14 +494,9 @@ public class Util
 	 * @return Time in user-friendly format
 	 */
 	public static String parseSeconds(int seconds) {
-		ChatUtil.debug("Parsing seconds . . .");
-		ChatUtil.debug("int seconds =  " + seconds);
 		int hour = (int) Math.floor(seconds / 3600);
-		ChatUtil.debug("int hour =  " + hour);
 		int min = (int) Math.floor((seconds - (hour * 3600)) / 60);
-		ChatUtil.debug("int min =  " + min);
 		int sec = seconds - (hour * 3600) - (min * 60);
-		ChatUtil.debug("int sec =  " + sec);
 		String resetTime = min + ":";
 		if(min < 10)
 			resetTime = "0" + resetTime;

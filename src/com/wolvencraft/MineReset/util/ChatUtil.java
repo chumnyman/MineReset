@@ -20,7 +20,7 @@ public class ChatUtil
 	{
 		message = Util.parseColors(message);
 		CommandSender sender = CommandManager.getSender();
-		sender.sendMessage(message);
+		sender.sendMessage(ChatColor.WHITE + message);
 	}
 	
 	/**

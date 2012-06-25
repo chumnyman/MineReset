@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.wolvencraft.AutoUpdater.Updater;
-import com.wolvencraft.Metrics.Metrics;
-import com.wolvencraft.Metrics.Metrics.Graph;
+import com.wolvencraft.Metrics.Statistics;
 import com.wolvencraft.MineReset.mine.Blacklist;
 import com.wolvencraft.MineReset.mine.DataBlock;
 import com.wolvencraft.MineReset.mine.Mine;
@@ -106,24 +105,10 @@ public class MineReset extends JavaPlugin
 		log.info(mines.size() + " mine(s) found");
 		
 		if(Configuration.getBoolean("configuration.metrics-enabled")) {
-			try {
-				log.info("Starting PluginMetrics");
-				Metrics metrics = new Metrics(this);
-				Graph graph = metrics.createGraph("Mines & Signs");
-
-			    graph.addPlotter(new Metrics.Plotter("Mines") {
-			            @Override
-			            public int getValue() { return mines.size(); }
-			    });
-			    graph.addPlotter(new Metrics.Plotter("Signs") {
-		            @Override
-		            public int getValue() { return signs.size(); }
-			    });
-				metrics.start();
-
-			} catch (IOException e) {
-				log.severe("Unable to start PluginMetrics");
-			}
+			log.info("Starting PluginMetrics");
+			Statistics stats = new Statistics(this);
+			stats.gatherData();
+			stats.getMetrics().start();
 		}
 		
 		final long checkEvery = getConfig().getLong("lag.check-time-every");

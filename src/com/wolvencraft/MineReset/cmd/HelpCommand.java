@@ -20,9 +20,10 @@ public class HelpCommand {
 	}
 	
 	public static void getConfig() {
-		formatHeader(20, "Configuration");
-		formatHelp("config", "save", "Saves the mine data to file");
-		formatHelp("config", "load", "Loads the mine data from file");
+		formatHeader(20, "Data");
+		formatHelp("data", "save", "Saves the mine data to file");
+		formatHelp("data", "load", "Loads the mine data from file");
+		formatHelp("data", "import", "Imports the old-formatted data to the new format");
 	}
 	
 	public static void getEdit() {
@@ -36,6 +37,8 @@ public class HelpCommand {
 		formatNote("If no persentage is provided, the block will be removed completely");
 		formatHelp("delete", "", "Completely deletes all the data about the selected mine");
 		formatHelp("generator", "<generator>", "Changes the active generator for the mine");
+		formatNote("The following generators are supported: ");
+		formatNote(GeneratorUtil.list());
 		formatHelp("cooldown toggle", "", "Turn the reset cooldown on and off for the mine");
 		formatHelp("cooldown <time>", "", "Sets the cooldown time to the value specified");
 		return;

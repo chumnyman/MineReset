@@ -7,33 +7,29 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import com.wolvencraft.AutoUpdater.Updater;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Configuration;
-import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.util.Util;
 
-import couk.Adamki11s.AutoUpdater.Updater;
 
 public class PlayerLoginListener implements Listener
 {
 	
-	public PlayerLoginListener(MineReset plugin)
-	{
+	public PlayerLoginListener(MineReset plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPlayerInteract(PlayerJoinEvent event)
-	{
-		if(!Configuration.getBoolean("versions.remind-on-login"))
-			return;
+	@EventHandler(priority = EventPriority.HIGH)
+	public void onPlayerInteract(PlayerJoinEvent event) {
+		if(!Configuration.getBoolean("updater.remind-on-login")) return;
 		
-		String perm = Configuration.getString("versions.permission-node");
-		Message.debug(perm);
-		
-		if(event.getPlayer().hasPermission(perm) && !Updater.checkVersion());
-		{
-			Player player = event.getPlayer();
-			player.sendMessage(ChatColor.BLUE + "Update for MineReset (" + Updater.getVersion() + "." + Updater.getSubVersion() + ") is available! Urgency: " + Updater.getUrgency());
+		Player player = event.getPlayer();
+		if(Util.playerHasPermission(player, Configuration.getString("updater.permission-node"))) {
+			if(!Updater.checkVersion()) {
+				player.sendMessage("Update for " + ChatColor.BLUE + "MineReset" + ChatColor.WHITE + " (" + ChatColor.GOLD + Updater.getVersion() + "." + Updater.getSubVersion() + ChatColor.WHITE + ") is available! Urgency: " + ChatColor.GOLD + Updater.getUrgency());
+			}
 		}
+		return;
 	}
 }

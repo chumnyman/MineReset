@@ -70,4 +70,22 @@ public class Language
 			CommandManager.getPlugin().getLanguageData().set(node, listToReturn);
 		return listToReturn;
 	}
+
+    /**
+     * Replace a translated string's parameter values with real content.
+     *
+     * Example:
+     * Language file has string "%0 will reset in %1 minutes!" under node "test".
+     * getMessage("test", "Mine 0", "5") returns "Mine 0 will reset in 5 minutes!"
+     * @param node
+     * @param replacements
+     * @return
+     */
+    public static String getMessage(String node, String... replacements) {
+        String parsed = getString(node);
+        for (int i = 0; i < replacements.length; i++) {
+            parsed = parsed.replaceAll("%" + i, replacements[i]);
+        }
+        return parsed;
+    }
 }

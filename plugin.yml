@@ -1,71 +1,74 @@
 name: MineReset
 main: com.wolvencraft.MineReset.MineReset
-version: 1.2.1
+version: 2.0.0
+description: A must-have tool for all prison servers
+authors: [bitWolfy, jjkoletar, ProGamerzFTW]
+website: http://bit.ly/MineReset
 commands:
   mine:
     description: MineReset help
 permissions:
   MineReset.*:
-    description: Gives access to all MineReset commands
+    default: op
     children:
-      MineReset.info: true
-      MineReset.list: true
-      MineReset.warp: true
-      MineReset.protection: true
-      MineReset.reset: true
-      MineReset.edit: true
-      MineReset.secret: true
-  MineReset.user:
-    description: Gives access to basic MineReset commands
+      MineReset.info.*: true
+      MineReset.protection.*: true
+      MineReset.reset.*: true
+      MineReset.edit.*: true
+      MineReset.warp.*: true
+  MineReset.normal:
+    default: true
     children:
-      MineReset.info: true
-      MineReset.list: true
-      MineReset.warp: true
-      MineReset.protection: true
+      MineReset.info.time: true
+      MineReset.info.list: true
+      MineReset.warp.use: true
+      MineReset.reset.sign: true
+      MineReset.protection.break: true
+      MineReset.protection.place: true
+      MineReset.protection.bypass: true
   MineReset.admin:
-    description: Gives access to advanced MineReset commands
+    default: op
     children:
-      MineReset.user: true
-      MineReset.reset: true
-      MineReset.edit: true
-      MineReset.secret: true
-  MineReset.info:
-    description: Allows a player to look at the information about a mine
-    default: true
-  MineReset.list:
-    description: Allows a player to look at the list of existing mines
-    default: true
-  MineReset.warp:
-    description: Allows a player to teleport to the mine warp location
-    default: true
-  MineReset.protection:
-    description: Allows a player to break and place blocks in all mines
+      MineReset.*: true
+  MineReset.info.*:
+    default: op
+    children:
+      MineReset.info.all: true
+      MineReset.info.time: true
+      MineReset.info.list: true
+  MineReset.protection.*:
+    default: op
     children:
       MineReset.protection.break: true
       MineReset.protection.place: true
-  MineReset.protection.bypass:
-    description: Allows a player to bypass all checks, blacklists and whitelists
+      MineReset.protection.pvp: true
+      MineReset.protection.bypass.*: true
+  MineReset.protection.bypass.*:
     default: op
-  MineReset.protection.break:
-    description: Allows a player to break blocks in all mines
+    children:
+      MineReset.protection.bypass.break: true
+      MineReset.protection.bypass.place: true
+      MineReset.protection.bypass.pvp: true
+  MineReset.reset.*:
     default: op
-  MineReset.protection.place:
-    description: Allows a player to place blocks in all mines
-    default: op
-  MineReset.reset:
-    description: Allows a player to reset a mine manually
     children:
       MineReset.reset.manual: true
       MineReset.reset.sign: true
-  MineReset.reset.manual:
-    description: Allows a player to reset a mine manually
+      MineReset.reset.snapshot: true
+      MineReset.reset.bypass: true
+  MineReset.edit.*:
     default: op
-  MineReset.reset.sign:
-    description: Allows a player to reset a mine with a sign
+    children:
+      MineReset.edit.blacklist: true
+      MineReset.edit.info: true
+      MineReset.edit.protection: true
+      MineReset.edit.save: true
+      MineReset.edit.sign: true
+      MineReset.edit.select: true
+      MineReset.edit.snapshot: true
+      MineReset.edit.timer: true
+  MineReset.warp.*:
     default: op
-  MineReset.edit:
-    description: Allows a player to create and edit mines
-    default: op
-  MineReset.secret:
-    description: Gives access to undocumented commands
-    default: op
+    children:
+      MineReset.warp.use: true
+      MineReset.warp.set: true

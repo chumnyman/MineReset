@@ -12,70 +12,68 @@ import org.bukkit.inventory.ItemStack;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
-import com.wolvencraft.MineReset.cmd.Reset;
-import com.wolvencraft.MineReset.config.Signs;
-import com.wolvencraft.MineReset.util.Message;
+import com.wolvencraft.MineReset.cmd.ResetCommand;
+import com.wolvencraft.MineReset.mine.Mine;
+import com.wolvencraft.MineReset.mine.SignClass;
+import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineUtil;
+import com.wolvencraft.MineReset.util.SignUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class PlayerInteractListener implements Listener
 {
 	public PlayerInteractListener(MineReset plugin)
 	{
-        Message.debug("Initiating PlayerInteractListener");
+        ChatUtil.debug("Initiating PlayerInteractListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
 	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event)
-	{
-        Message.debug("PlayerInteractEvent passed");
+	public void onPlayerInteract(PlayerInteractEvent event) {
+		if(event.isCancelled()) return;
+        ChatUtil.debug("PlayerInteractEvent passed");
 		
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();
-		if (event.getAction().equals(Action.LEFT_CLICK_BLOCK))
-		{
-			if(!Util.playerHasPermission(player, "edit")) return;
-			if(player.getItemInHand().equals(new ItemStack(Material.WOOD_AXE)))
-			{
+		if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+			if(!Util.playerHasPermission(player, "edit.select")) return;
+			if(player.getItemInHand().equals(new ItemStack(Material.WOOD_AXE))) {
 				Location loc = block.getLocation();
 				CommandManager.setLocation(loc, 0);
+				event.setCancelled(true);
 			}
 			return;
 		}
-		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
-		{
-			if(player.getItemInHand().equals(new ItemStack(Material.WOOD_AXE)))
-			{
-				if(!Util.playerHasPermission(player, "edit")) return;
+		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			if(player.getItemInHand().equals(new ItemStack(Material.WOOD_AXE))) {
+				if(!Util.playerHasPermission(player, "edit.select")) return;
 				Location loc = event.getClickedBlock().getLocation();
 				CommandManager.setLocation(loc, 1);
+				event.setCancelled(true);
 				return;
 			}
 			
 			if(block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN_POST)
 			{
-                Message.debug("Resetting a mine with a sign");
-				if(!Util.playerHasPermission(player, "reset.sign"))
-				{
+                ChatUtil.debug("A sign has been clicked");
+				if(!Util.playerHasPermission(player, "reset.sign")) {
 					return;
 				}
-                Message.debug("Permissions check passed!");
-
-		     	String id = Signs.getId(block);
-				if(id == null)
-				{
-					return;
-				}
-                Message.debug("All checks passed!");
-                Message.debug("Sign found! (id " + id + ")");
-		     	String mineName = Signs.getString("signs." + id + ".mine");
-		     	if(Signs.getBoolean("signs." + id + ".reset"))
-		     	{
-		     		String[] args = {"reset", mineName};
-		     		Reset.run(args, false, null);
+				
+		     	SignClass sign = SignUtil.getSignAt(block.getLocation());
+				if(sign == null) return;
+				
+		     	if(sign.getReset()) {
+		     		Mine curMine = MineUtil.getMine(sign.getParent());
+					if(curMine.getCooldown() && curMine.getNextCooldown() > 0 && !Util.hasPermission("reset.bypass")) {
+						ChatUtil.sendPlayerNote(player, curMine.getName(), "You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
+						return;
+					}
+		     		
+		     		String[] args = {"reset", curMine.getName()};
+		     		ResetCommand.run(args, false, null);
 		     	}
 			}
-			
 			return;
 		}
 		else return;

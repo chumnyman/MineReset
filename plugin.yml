@@ -60,7 +60,6 @@ permissions:
     default: op
     children:
       MineReset.edit.blacklist: true
-      MineReset.edit.config: true
       MineReset.edit.info: true
       MineReset.edit.protection: true
       MineReset.edit.save: true

@@ -19,17 +19,9 @@ public class Util
 	 * @return true is the sender has a permission, false if he does not
 	 */
 	public static boolean hasPermission(String node) {
-		
-		// Console always has the permissions
 		Player player;
 		if (isPlayer()) player = (Player) CommandManager.getSender();
 		else return true;
-		
-		// If permissions are not used, check for op
-		if(!Configuration.getBoolean("configuration.use-permissions")) {
-			if(player.isOp()) return true;
-			else return false;
-		}
 		
 		if(player.hasPermission("minereset." + node))
 			return true;
@@ -44,12 +36,6 @@ public class Util
 	 * @return true is the sender has a permission, false if he does not
 	 */
 	public static boolean playerHasPermission(Player player, String node) {
-		
-		if(!Configuration.getBoolean("configuration.use-permissions")) {
-			if(player.isOp()) return true;
-			else return false;
-		}
-		
 		if(player.hasPermission("minereset." + node))
 			return true;
 		

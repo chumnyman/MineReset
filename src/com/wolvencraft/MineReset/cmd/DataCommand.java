@@ -8,11 +8,11 @@ import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
-public class ConfigurationCommand
+public class DataCommand
 {
 	public static void run(String[] args)
 	{
-		if(!Util.hasPermission("edit.config")) {
+		if(!Util.hasPermission("edit.admin")) {
 			ChatUtil.sendDenied(args);
 			return;
 		}

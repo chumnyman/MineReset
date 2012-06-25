@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import jline.internal.Configuration;
-
 import com.wolvencraft.AutoUpdater.Updater;
 import com.wolvencraft.Metrics.Metrics;
 import com.wolvencraft.MineReset.mine.Blacklist;
@@ -27,6 +25,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wolvencraft.MineReset.cmd.*;
+import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.events.*;
 import com.wolvencraft.MineReset.generation.BaseGenerator;

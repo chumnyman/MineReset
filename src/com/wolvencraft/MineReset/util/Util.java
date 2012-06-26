@@ -557,7 +557,7 @@ public class Util
 	 */
 	public static double round(double number, int decimal) {
 		double pow = Math.pow(10, decimal);
-		number = ((int)(number * pow)) / pow;
+		number = (Math.round(number * pow)) / pow;
 		return number;
 	}
 }

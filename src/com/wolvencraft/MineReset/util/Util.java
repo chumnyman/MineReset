@@ -556,7 +556,7 @@ public class Util
 	 * @return The rounded number
 	 */
 	public static double round(double number, int decimal) {
-		double pow = 10 ^ decimal;
+		double pow = Math.pow(10, decimal);
 		number = ((int)(number * pow)) / pow;
 		return number;
 	}

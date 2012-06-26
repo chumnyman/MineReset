@@ -27,17 +27,6 @@ public class Statistics {
 	
 	public void gatherData() {
 		if(metrics.isOptOut()) return;
-		Graph mines = metrics.createGraph("Mines and Signs");
-		
-		mines.addPlotter(new Metrics.Plotter("Mines") {
-		
-			@Override
-			public int getValue() { return MineReset.getMines().size(); }
-		});
-		mines.addPlotter(new Metrics.Plotter("Signs") {
-			@Override
-	    	public int getValue() { return MineReset.getSigns().size(); }
-		});
 		
 		Graph resets = metrics.createGraph("Mine Resets");
 		
@@ -45,7 +34,7 @@ public class Statistics {
 			
 			@Override
 			public int getValue() {
-				return (viaSign + viaCommand);
+				return (viaSign + viaCommand + automatic);
 			}
 		});
 		

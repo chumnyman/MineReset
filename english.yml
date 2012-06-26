@@ -15,7 +15,7 @@ editing:
   mine-deselected-successfully: "Mine &e%MINE%&f is no longer selected"
 reset:
   manual-reset-successful: "Mine &6%MINENAME%&f has been reset!"
-  automatic-reset-warning: "Mine &6%MINENAME%&f will reset in &6%NTIME%&f minute(s)."
+  automatic-reset-warning: "Mine &6%MINENAME%&f will reset in &6%NEXT%&f minute(s)."
   automatic-reset-successful: "Mine &6%MINENAME%&f has been reset! Next reset in &6%NEXT%&f minute(s)."
   mine-cooldown: "Mine &6%MINENAME%&f can be reset in &6%COOL%&f minute(s)."
 misc:

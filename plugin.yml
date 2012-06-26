@@ -13,7 +13,7 @@ permissions:
     children:
       MineReset.admin: true
   MineReset.normal:
-    default: true
+    default: op
     children:
       MineReset.info.time: true
       MineReset.info.list: true

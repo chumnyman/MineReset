@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import com.wolvencraft.MineReset.cmd.*;
 import com.wolvencraft.MineReset.mine.Mine;
+import com.wolvencraft.MineReset.mine.Reset;
 import com.wolvencraft.MineReset.util.ChatUtil;
 
 public class CommandManager implements CommandExecutor
@@ -45,7 +46,7 @@ public class CommandManager implements CommandExecutor
 		else if(args[0].equalsIgnoreCase("protection") || args[0].equalsIgnoreCase("prot"))
 			ProtectionCommand.run(args);
 		else if(args[0].equalsIgnoreCase("reset"))
-			ResetCommand.run(args, false, null);
+			ResetCommand.run(args, Reset.AUTOMATIC, null);
 		else if(args[0].equalsIgnoreCase("save"))
 			SaveCommand.run(args);
 		else if(args[0].equalsIgnoreCase("select") || args[0].equalsIgnoreCase("pos1") || args[0].equalsIgnoreCase("pos2") || args[0].equalsIgnoreCase("hpos1") || args[0].equalsIgnoreCase("hpos2"))

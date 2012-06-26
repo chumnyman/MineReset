@@ -6,13 +6,14 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.mine.Mine;
+import com.wolvencraft.MineReset.mine.Reset;
 import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class ResetCommand
 {	
-	public static void run(String[] args, boolean automatic, String forcedGenerator)
+	public static void run(String[] args, Reset source, String forcedGenerator)
 	{	
 		Mine curMine;
 		if(args.length == 1)
@@ -25,7 +26,7 @@ public class ResetCommand
 			return;
 		}
 		
-		if(!automatic) {
+		if(source.equals(Reset.AUTOMATIC)) {
 			if(!Util.hasPermission("reset.manual." + curMine.getName()) && !Util.hasPermission("reset.manual")) {
 				ChatUtil.sendDenied(args);
 				return;
@@ -54,21 +55,18 @@ public class ResetCommand
 		if(curMine.getAutomatic()) curMine.resetTimer();
 		if(curMine.getCooldown()) curMine.resetCooldown();
 		
-		String broadcastMessage;
-		if(automatic) {
+		String broadcastMessage = Language.getString("reset.manual-reset-successful");
+		if(source.equals(Reset.AUTOMATIC)) {
 			List<Mine> mines = MineReset.getMines();
 			for(Mine childMine : mines) {
 				ChatUtil.debug(childMine.getParent());
 				if(childMine.getParent() != null) {
 					String[] childArgs = {null, childMine.getName()};
-					run(childArgs, true, null);
+					run(childArgs, Reset.AUTOMATIC, null);
 				}
 			}
 			
 			broadcastMessage = Language.getString("reset.automatic-reset-successful");
-		}
-		else {
-			broadcastMessage = Language.getString("reset.manual-reset-successful");
 		}
 		
 		broadcastMessage = Util.parseVars(broadcastMessage, curMine);
@@ -76,7 +74,7 @@ public class ResetCommand
 		if(!curMine.getSilent()) {
 			ChatUtil.broadcast(broadcastMessage);
 		}
-		else if(!automatic) {
+		else if(source.equals(Reset.AUTOMATIC)) {
 			ChatUtil.sendSuccess(broadcastMessage);
 		}
 		return;

@@ -14,6 +14,7 @@ import com.wolvencraft.MineReset.mine.Blacklist;
 import com.wolvencraft.MineReset.mine.DataBlock;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
+import com.wolvencraft.MineReset.mine.Reset;
 import com.wolvencraft.MineReset.mine.SignClass;
 import com.wolvencraft.MineReset.mine.SimpleLoc;
 import com.wolvencraft.MineReset.mine.Snapshot;
@@ -124,7 +125,7 @@ public class MineReset extends JavaPlugin
 						
 						if(nextReset <= 0) {
 							String[] args = {null, curMine.getName()};
-							ResetCommand.run(args, true, null);
+							ResetCommand.run(args, Reset.AUTOMATIC, null);
 							stats.updateAutomatic();
 						}
 					}

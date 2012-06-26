@@ -15,6 +15,7 @@ import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.ResetCommand;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.mine.Mine;
+import com.wolvencraft.MineReset.mine.Reset;
 import com.wolvencraft.MineReset.mine.SignClass;
 import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.MineUtil;
@@ -59,23 +60,24 @@ public class PlayerInteractListener implements Listener
 			if(block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN_POST)
 			{
                 ChatUtil.debug("A sign has been clicked");
-				if(!Util.playerHasPermission(player, "reset.sign")) {
-					return;
-				}
 				
 		     	SignClass sign = SignUtil.getSignAt(block.getLocation());
 				if(sign == null) return;
+				if(!sign.getReset()) return;
+		     
+		     	Mine curMine = MineUtil.getMine(sign.getParent());
+				if(!Util.playerHasPermission(player, "reset.sign." + curMine.getName()) && !Util.playerHasPermission(player, "reset.sign")) {
+					ChatUtil.sendPlayerError(player, "You do not have permission to do this!");
+					return;
+				}
 				
-		     	if(sign.getReset()) {
-		     		Mine curMine = MineUtil.getMine(sign.getParent());
-					if(curMine.getCooldown() && curMine.getNextCooldown() > 0 && !Util.hasPermission("reset.bypass")) {
-						ChatUtil.sendPlayerNote(player, curMine.getName(), "You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
-						return;
-					}
-		     		
-		     		String[] args = {"reset", curMine.getName()};
-		     		ResetCommand.run(args, false, null);
-		     	}
+				if(curMine.getCooldown() && curMine.getNextCooldown() > 0 && !Util.hasPermission("reset.bypass")) {
+					ChatUtil.sendPlayerNote(player, curMine.getName(), "You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
+					return;
+				}
+		     	
+		     	String[] args = {"reset", curMine.getName()};
+		     	ResetCommand.run(args, Reset.SIGN, null);
 			}
 			return;
 		}

@@ -23,7 +23,7 @@ public class Util
 		if (isPlayer()) player = (Player) CommandManager.getSender();
 		else return true;
 		
-		if(player.hasPermission("minereset." + node))
+		if(player.hasPermission("MineReset." + node))
 			return true;
 		
 		return false;
@@ -36,7 +36,7 @@ public class Util
 	 * @return true is the sender has a permission, false if he does not
 	 */
 	public static boolean playerHasPermission(Player player, String node) {
-		if(player.hasPermission("minereset." + node))
+		if(player.hasPermission("MineReset." + node))
 			return true;
 		
 		return false;

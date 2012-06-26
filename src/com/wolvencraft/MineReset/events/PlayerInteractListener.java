@@ -14,6 +14,7 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.cmd.ResetCommand;
 import com.wolvencraft.MineReset.config.Configuration;
+import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Reset;
 import com.wolvencraft.MineReset.mine.SignClass;
@@ -72,7 +73,7 @@ public class PlayerInteractListener implements Listener
 				}
 				
 				if(curMine.getCooldown() && curMine.getNextCooldown() > 0 && !Util.hasPermission("reset.bypass")) {
-					ChatUtil.sendPlayerNote(player, curMine.getName(), "You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
+					ChatUtil.sendError(Util.parseVars(Language.getString("reset.mine-cooldown"), curMine));
 					return;
 				}
 		     	

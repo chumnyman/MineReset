@@ -33,7 +33,7 @@ public class ResetCommand
 			}
 			
 			if(curMine.getCooldown() && curMine.getNextCooldown() > 0 && !Util.hasPermission("reset.bypass")) {
-				ChatUtil.sendNote(curMine.getName(), "You can reset the mine in " + Util.parseSeconds(curMine.getNextCooldown()));
+				ChatUtil.sendError(Util.parseVars(Language.getString("reset.mine-cooldown"), curMine));
 				return;
 			}
 			

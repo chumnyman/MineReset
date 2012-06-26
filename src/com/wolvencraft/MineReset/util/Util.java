@@ -297,7 +297,10 @@ public class Util
 		if(displayName.equals("")) displayName = curMine.getName();
 		str = str.replaceAll("%MINE%", curMine.getName());
 		str = str.replaceAll("%MINENAME%", displayName);
-
+		
+		str = str.replaceAll("%COOLTIME%", parseSeconds(curMine.getCooldownTime()));
+		str = str.replaceAll("%COOL%", parseSeconds(curMine.getNextCooldown()));
+		
 		if(curMine.getAutomatic()) {
 			// Reset period variable calculations
 			int ptime = curMine.getResetPeriod();

@@ -54,7 +54,7 @@ public class BlockPlaceListener implements Listener
 			
 			if(!Util.playerHasPermission(player, "protection.place." + mine.getName()) && !Util.playerHasPermission(player, "protection.place")) {
 				ChatUtil.debug("Player " + event.getPlayer().getName() + " does not have permission to place blocks in the mine");
-				ChatUtil.sendPlayerError(player, "You are not allowed to break " + blockName + " in this area");
+				ChatUtil.sendPlayerError(player, "You are not allowed to place " + blockName + " in this area");
 				event.setCancelled(true);
 				continue;
 			}
@@ -84,7 +84,7 @@ public class BlockPlaceListener implements Listener
 			}
 			else {
 				ChatUtil.debug("No block placement blacklist detected");
-				ChatUtil.sendPlayerError(player, "You are not allowed to break " + blockName + " in this area");
+				ChatUtil.sendPlayerError(player, "You are not allowed to place " + blockName + " in this area");
 				event.setCancelled(true);
 			}
 		}

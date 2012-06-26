@@ -157,7 +157,7 @@ public class HelpCommand {
 	}
 	
 	private static void formatHelp(String command, String arguments, String description) {
-		formatHelp(command, arguments, description);
+		formatHelp(command, arguments, description, "");
 		return;
 	}
 	

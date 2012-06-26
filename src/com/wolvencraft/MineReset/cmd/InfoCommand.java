@@ -140,7 +140,6 @@ public class InfoCommand
 				
 				String nextResetFormatted = Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20);
 				
-				
 				if(curMine.getAutomatic())
 					ChatUtil.sendMessage(" Resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes");
 				else

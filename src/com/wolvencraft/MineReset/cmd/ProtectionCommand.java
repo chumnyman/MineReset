@@ -110,10 +110,12 @@ public class ProtectionCommand {
 				
 				if(curMine.getProtection().contains(Protection.BLOCK_BREAK)) {
 					curMine.getProtection().remove(Protection.BLOCK_BREAK);
+					curMine.getBreakBlacklist().setEnabled(false);
 					ChatUtil.sendNote(curMine.getName(), "Block breaking protection has been turned " + ChatColor.RED + "off");
 				}
 				else {
 					curMine.getProtection().add(Protection.BLOCK_BREAK);
+					curMine.getBreakBlacklist().setEnabled(true);
 					ChatUtil.sendNote(curMine.getName(), "Block breaking protection has been turned " + ChatColor.GREEN + "on");
 				}
 			}
@@ -193,10 +195,12 @@ public class ProtectionCommand {
 				
 				if(curMine.getProtection().contains(Protection.BLOCK_PLACE)) {
 					curMine.getProtection().remove(Protection.BLOCK_PLACE);
+					curMine.getPlaceBlacklist().setEnabled(false);
 					ChatUtil.sendNote(curMine.getName(), "Block placement protection has been turned " + ChatColor.RED + "off");
 				}
 				else {
 					curMine.getProtection().add(Protection.BLOCK_PLACE);
+					curMine.getPlaceBlacklist().setEnabled(true);
 					ChatUtil.sendNote(curMine.getName(), "Block placement protection has been turned " + ChatColor.GREEN + "on");
 				}
 			}

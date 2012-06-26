@@ -212,7 +212,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("name", name);
         me.put("parent", parent);
         me.put("blacklist", blacklist);
-        me.put("generator", generator.toString());
+        me.put("generator", generator);
         me.put("silent", silent);
         me.put("automatic", automatic);
         me.put("automaticResetTime", automaticSeconds);

@@ -48,7 +48,9 @@ public class ConfigurationUpdater {
 			List<Double> iWeight = getRegionData().getDoubleList("mines." + mine + ".materials.weights");
 			
 			for(int i = 0; i < iBlocks.size(); i++) {
-				String[] parts = iBlocks.get(i).split(":");
+				String datBlock = iBlocks.get(i);
+				if(datBlock.indexOf(":") == -1) datBlock = datBlock + ":0";
+				String[] parts = datBlock.split(":");
 				blocks.add(new MineBlock(new MaterialData(Integer.parseInt(parts[0]),Byte.parseByte(parts[1])), iWeight.get(i) / 100));
 			}
 			

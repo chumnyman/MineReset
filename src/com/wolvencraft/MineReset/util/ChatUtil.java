@@ -16,8 +16,8 @@ public class ChatUtil
 	 * Sends an untitled message to the command sender
 	 * @param message A message to be sent
 	 */
-	public static void sendMessage(String message)
-	{
+	public static void sendMessage(String message) {
+		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		message = Util.parseColors(message);
 		CommandSender sender = CommandManager.getSender();
 		sender.sendMessage(ChatColor.WHITE + message);
@@ -29,6 +29,7 @@ public class ChatUtil
 	 * @param message Message to be sent
 	 */
     public static void sendPlayer(Player p, String message) {
+		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
         p.sendMessage(ChatColor.GREEN + "[" + Util.parseColors(Language.getString("general.title")) + "]" + ChatColor.WHITE + message);
     }
 	
@@ -38,6 +39,7 @@ public class ChatUtil
      * @param message Message to be sent
      */
 	public static void sendNote(String title, String message) {
+		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		CommandSender sender = CommandManager.getSender();
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
@@ -51,6 +53,7 @@ public class ChatUtil
      * @param message Message to be sent
      */
 	public static void sendPlayerNote(Player p, String title, String message) {
+		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
 		message = ChatColor.GOLD + "[" + title + "] " + ChatColor.WHITE + message;
@@ -63,6 +66,7 @@ public class ChatUtil
 	 * @param message A message to be sent
 	 */
 	public static void broadcast(String message) {
+		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		String title = Language.getString("general.title-success");
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
@@ -74,6 +78,7 @@ public class ChatUtil
 	 * @param message A message to be sent
 	 */
 	public static void sendSuccess(String message) {
+		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		CommandSender sender = CommandManager.getSender();
 		String title = Language.getString("general.title-success");
 		title = Util.parseColors(title);
@@ -86,6 +91,7 @@ public class ChatUtil
 	 * @param message A message to be sent
 	 */
 	public static void sendPlayerSuccess(Player player, String message) {
+		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		String title = Language.getString("general.title-success");
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
@@ -96,8 +102,8 @@ public class ChatUtil
 	 * Sends a red-titled message to the command sender
 	 * @param message A message to be sent
 	 */
-	public static void sendError(String message)
-	{
+	public static void sendError(String message) {
+		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		CommandSender sender = CommandManager.getSender();
 		String title = Language.getString("general.title-error");
 		title = Util.parseColors(title);
@@ -109,8 +115,8 @@ public class ChatUtil
 	 * Sends a red-titled message to a player
 	 * @param message A message to be sent
 	 */
-	public static void sendPlayerError(Player player, String message)
-	{
+	public static void sendPlayerError(Player player, String message) {
+		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		String title = Language.getString("general.title-error");
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);

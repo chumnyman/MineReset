@@ -74,7 +74,7 @@ public class ResetCommand
 		if(!curMine.getSilent()) {
 			ChatUtil.broadcast(broadcastMessage);
 		}
-		else if(source.equals(Reset.AUTOMATIC)) {
+		else if(!source.equals(Reset.AUTOMATIC)) {
 			ChatUtil.sendSuccess(broadcastMessage);
 		}
 		return;

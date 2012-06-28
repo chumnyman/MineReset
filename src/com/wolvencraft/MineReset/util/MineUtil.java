@@ -148,9 +148,9 @@ public class MineUtil
 			}
 			String blockWeight = null;
 			if((block.getChance() * 100) < 10)
-				blockWeight = " " + (Util.format(block.getChance(), 5) * 100) + "%";
+				blockWeight = " " + Util.format(block.getChance());
 			else
-				blockWeight = (Util.format(block.getChance(), 5) * 100) + "%";
+				blockWeight = Util.format(block.getChance());
 			
 			if(block.getChance() != 0)
 				finalList.add(" - " + blockWeight + " " + ChatColor.GREEN + blockName);

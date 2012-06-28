@@ -1,5 +1,8 @@
 package com.wolvencraft.MineReset.util;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -555,30 +558,8 @@ public class Util
 	 * @param decimal Decimal point
 	 * @return The rounded number
 	 */
-	public static double format(double number, int decimal) {
-		char[] digits = (number + "").toCharArray();
-		int length = digits.length;
-		if(length > 9) length = 9;
-		String newNum = digits[2] + "";
-		String parsedNum = "";
-		if(digits.length == 3) parsedNum = newNum + "0.0";
-		else {
-			for(int i = 3; i < length; i++) {
-				newNum = newNum + digits[i];
-			}
-			
-			boolean same = false;
-			for(int i = newNum.length(); i > 2; i--) {
-				if(newNum.charAt(i) == (newNum.charAt(i - 1)))
-					same = true;
-			}
-			if(same) newNum = newNum.substring(3, newNum.length());
-			
-			for(int i = 0; i < newNum.length(); i++) {
-				parsedNum = parsedNum + newNum.charAt(i);
-				if(i == 1) parsedNum = parsedNum + ".";
-			}
-		}
-		return Double.parseDouble(parsedNum);
+	public static String format(double number) {
+        NumberFormat formatter = new DecimalFormat("#0.0####%");
+		return formatter.format(number);
 	}
 }

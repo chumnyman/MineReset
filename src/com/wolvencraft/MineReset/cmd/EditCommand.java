@@ -139,7 +139,7 @@ public class EditCommand {
 			else
 				index.setChance(index.getChance() + percent);
 			
-			ChatUtil.sendNote(curMine.getName(), Util.format((percent * 100.0), 5) + "% of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
+			ChatUtil.sendNote(curMine.getName(), Util.format(percent) + " of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
 			ChatUtil.sendNote(curMine.getName(), "Reset the mine for the changes to take effect");
 			MineUtil.save(curMine);
 			return;
@@ -193,7 +193,7 @@ public class EditCommand {
 				air.setChance(air.getChance() + percent);
 				blockData.setChance(blockData.getChance() - percent);
 				
-				ChatUtil.sendNote(curMine.getName(), (percent * 100) + "% of " + args[1] + " was successfully removed from the mine");
+				ChatUtil.sendNote(curMine.getName(), Util.format(percent) + " of " + args[1] + " was successfully removed from the mine");
 			}
 			else {
 				List<MineBlock> blocks = curMine.getBlocks();

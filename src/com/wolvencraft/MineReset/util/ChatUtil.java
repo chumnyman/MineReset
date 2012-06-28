@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -70,9 +71,28 @@ public class ChatUtil
 		String title = Language.getString("general.title-success");
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
-		Bukkit.getServer().broadcast(ChatColor.GREEN + title + " " + ChatColor.WHITE + message, "MineReset.reset.broadcast");
+		Bukkit.getServer().broadcastMessage(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
 	}
-	
+
+    /**
+     * Broadcasts a green-titled message to all players in a specified world, the console logger, and to admins/ops.
+     * @param message A message to be sent
+     */
+    public static void broadcastWorld(String message, World world) {
+        if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
+        String title = Language.getString("general.title-success");
+        title = Util.parseColors(title);
+        message = Util.parseColors(message);
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (p.getWorld().equals(world)
+                    || Util.playerHasPermission(p, "reset.broadcast")
+                    || p.isOp()) {
+                p.sendMessage(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
+            }
+        }
+        ChatUtil.log(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
+    }
+
 	/**
 	 * Sends a green-titled message to the command sender
 	 * @param message A message to be sent

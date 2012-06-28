@@ -120,7 +120,7 @@ public class MineReset extends JavaPlugin
 						List<Integer> warnTimes = curMine.getWarningTimes();
 						
 						if(!curMine.getSilent() && curMine.getWarned() && warnTimes.indexOf(new Integer(nextReset)) != -1) {
-							ChatUtil.broadcast(Util.parseVars(Language.getString("reset.automatic-reset-warning"), curMine));
+							ChatUtil.broadcastWorld(Util.parseVars(Language.getString("reset.automatic-reset-warning"), curMine), curMine.getWorld());
 						}
 						
 						if(nextReset <= 0) {

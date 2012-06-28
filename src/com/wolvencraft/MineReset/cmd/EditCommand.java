@@ -139,7 +139,7 @@ public class EditCommand {
 			else
 				index.setChance(index.getChance() + percent);
 			
-			ChatUtil.sendNote(curMine.getName(), Util.round((percent * 100.0), 5) + "% of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
+			ChatUtil.sendNote(curMine.getName(), Util.format((percent * 100.0), 5) + "% of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
 			ChatUtil.sendNote(curMine.getName(), "Reset the mine for the changes to take effect");
 			MineUtil.save(curMine);
 			return;

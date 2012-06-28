@@ -550,14 +550,35 @@ public class Util
 	}
 	
 	/**
-	 * Rounds the nubmer to the specified decimal point
+	 * Rounds the number to the specified decimal point
 	 * @param number Number to round
 	 * @param decimal Decimal point
 	 * @return The rounded number
 	 */
-	public static double round(double number, int decimal) {
-		double pow = Math.pow(10, decimal);
-		number = (Math.round(number * pow)) / pow;
-		return number;
+	public static double format(double number, int decimal) {
+		char[] digits = (number + "").toCharArray();
+		int length = digits.length;
+		if(length > 9) length = 9;
+		String newNum = digits[2] + "";
+		String parsedNum = "";
+		if(digits.length == 3) parsedNum = newNum + "0.0";
+		else {
+			for(int i = 3; i < length; i++) {
+				newNum = newNum + digits[i];
+			}
+			
+			boolean same = false;
+			for(int i = newNum.length(); i > 2; i--) {
+				if(newNum.charAt(i) == (newNum.charAt(i - 1)))
+					same = true;
+			}
+			if(same) newNum = newNum.substring(3, newNum.length());
+			
+			for(int i = 0; i < newNum.length(); i++) {
+				parsedNum = parsedNum + newNum.charAt(i);
+				if(i == 1) parsedNum = parsedNum + ".";
+			}
+		}
+		return Double.parseDouble(parsedNum);
 	}
 }

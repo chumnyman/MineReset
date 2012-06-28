@@ -52,6 +52,7 @@ permissions:
   MineReset.reset.*:
     default: op
     children:
+      MineReset.reset.broadcast: true
       MineReset.reset.manual: true
       MineReset.reset.sign: true
       MineReset.reset.snapshot: true

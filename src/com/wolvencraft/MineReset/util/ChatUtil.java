@@ -70,7 +70,7 @@ public class ChatUtil
 		String title = Language.getString("general.title-success");
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
-		Bukkit.getServer().broadcastMessage(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
+		Bukkit.getServer().broadcast(ChatColor.GREEN + title + " " + ChatColor.WHITE + message, "MineReset.reset.broadcast");
 	}
 	
 	/**

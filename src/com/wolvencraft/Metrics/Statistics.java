@@ -30,35 +30,56 @@ public class Statistics {
 		
 		Graph resets = metrics.createGraph("Mine Resets");
 		
-		resets.addPlotter(new Metrics.Plotter("Overall") {
-			
-			@Override
-			public int getValue() {
-				return (viaSign + viaCommand + automatic);
-			}
-		});
-		
 		resets.addPlotter(new Metrics.Plotter("Via Command") {
-			
 			@Override
 			public int getValue() {
-				return viaCommand;
+				int temp = viaCommand;
+				viaCommand = 0;
+				return temp;
 			}
 		});
 		
 		resets.addPlotter(new Metrics.Plotter("Via Sign") {
-			
 			@Override
 			public int getValue() {
-				return viaSign;
+				int temp = viaSign;
+				viaSign = 0;
+				return temp;
 			}
 		});
 		
 		resets.addPlotter(new Metrics.Plotter("Automatic") {
+			@Override
+			public int getValue() {
+				int temp = automatic;
+				automatic = 0;
+				return temp;
+			}
+		});
+		
+		Graph mines = metrics.createGraph("Mine & Signs");
+		
+		mines.addPlotter(new Metrics.Plotter("Mines") {
+			@Override
+			public int getValue() { return MineReset.getMines().size(); }
+		});
+		
+		mines.addPlotter(new Metrics.Plotter("Signs") {
+			@Override
+			public int getValue() { return MineReset.getSigns().size(); }
+		});
+		
+		mines.addPlotter(new Metrics.Plotter("Generators") {
+			
+			@Override
+			public int getValue() { return MineReset.getGenerators().size(); }
+		});
+		
+		mines.addPlotter(new Metrics.Plotter("Snapshots") {
 			
 			@Override
 			public int getValue() {
-				return automatic;
+				return MineReset.getSnapshots().size();
 			}
 		});
 	}

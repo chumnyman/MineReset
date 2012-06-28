@@ -152,7 +152,7 @@ public class MineUtil
 			else
 				blockWeight = Util.format(block.getChance());
 			
-			if(block.getChance() != 0)
+			if(!blockWeight.equalsIgnoreCase(" 0.0%"))
 				finalList.add(" - " + blockWeight + " " + ChatColor.GREEN + blockName);
 		}
 		

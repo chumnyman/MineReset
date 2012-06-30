@@ -50,14 +50,13 @@ public class InfoCommand
 				return;
 			}
 			
-			// Title
-			String displayName;
-			if(curMine.getDisplayName().isEmpty())
-				displayName = curMine.getName();
-			else
-				displayName = curMine.getDisplayName();
-			ChatUtil.sendMessage(ChatColor.DARK_RED + "                             -=[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.DARK_RED + " ]=-");
-			
+
+			// SPACING INFO - IMPORTANT
+			// 51 symbols
+			// 87 spaces
+			// 0.586206897 | 1.70588235
+			//ChatUtil.sendMessage("|                                                                              |");
+			//ChatUtil.sendMessage("/---------------------------------------------------\\");			
 			
 			// Reset
 			Mine parentMine = MineUtil.getMine(curMine.getParent());
@@ -136,45 +135,64 @@ public class InfoCommand
 				}
 			}
 			else {
-				String autoResetFormatted = Util.parseSeconds(curMine.getResetPeriod());
 				
-				String nextResetFormatted = Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20);
+				// Title
+				String displayName = curMine.getDisplayName();
 				
-				if(curMine.getAutomatic())
-					ChatUtil.sendMessage(" Resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes");
-				else
-					ChatUtil.sendMessage("The mine has to be reset manually");
-				
-				String generatorString =" Generator: " + ChatColor.GOLD +  curMine.getGenerator().toString();
-				if(!parentMine.equals(curMine) && !parentMine.equals(null))
-					generatorString = generatorString + ChatColor.WHITE + " | Linked to " + ChatColor.GOLD + parentMine.getName();
-				ChatUtil.sendMessage(generatorString);
-				
-				String blockBreak, blockPlace;
-				// Protection
-				if(curMine.getProtection().contains(Protection.BLOCK_BREAK))
-					blockBreak = ChatColor.GREEN + "ON";
-				else
-					blockBreak = ChatColor.RED + "OFF";
-				
-				if(curMine.getProtection().contains(Protection.BLOCK_PLACE))
-					blockPlace = ChatColor.GREEN + "ON";
-				else
-					blockPlace = ChatColor.RED + "OFF";
-				
-				String pvpProtection;
-				if(curMine.getProtection().contains(Protection.PVP))
-					pvpProtection = ChatColor.GREEN + "ON";
-				else pvpProtection = ChatColor.RED + "OFF";
-				
-				ChatUtil.sendMessage(ChatColor.BLUE + " Protection:");
-				ChatUtil.sendMessage("Breaking: " + blockBreak + ChatColor.WHITE + " | Placement: " + blockPlace + ChatColor.WHITE + " | PVP " + pvpProtection);
-				
+
 				List<String> finalList = MineUtil.getSortedList(curMine);
 				
-				ChatUtil.sendMessage(ChatColor.BLUE + " Composition:");
-				for(String line : finalList)
-					ChatUtil.sendMessage(line);
+				if(displayName.isEmpty()) displayName = curMine.getName();
+				ChatUtil.sendMessage("");
+				String displayString = "---==[ " + ChatColor.GREEN + ChatColor.BOLD + displayName + ChatColor.WHITE + " ]==---";
+				for(int i = 0; i < 25 - (displayName.length() / 2); i++)
+					displayString = " " + displayString;
+				ChatUtil.sendMessage(displayString);
+				ChatUtil.sendMessage("");
+				
+				String str = "    [ ";
+				if(curMine.getProtection().contains(Protection.BLOCK_BREAK)) {
+					if(curMine.getBreakBlacklist().getWhitelist()) str += ChatColor.YELLOW;
+					else str += ChatColor.GREEN;
+				}
+				else str += ChatColor.RED;
+				str += "Block Breaking" + ChatColor.WHITE + " ]     [ ";
+				if(curMine.getProtection().contains(Protection.PVP)) str += ChatColor.GREEN;
+				else str += ChatColor.RED;
+				str += "PVP" + ChatColor.WHITE + " ]    [ ";
+				if(curMine.getProtection().contains(Protection.BLOCK_PLACE)) {
+					if(curMine.getPlaceBlacklist().getWhitelist()) str += ChatColor.YELLOW;
+					else str += ChatColor.GREEN;
+				}
+				else str += ChatColor.RED;
+				str += "Block Placement" + ChatColor.WHITE + " ]";
+				
+				ChatUtil.sendMessage(str);
+				if(curMine.getAutomatic())
+					ChatUtil.sendMessage("    Resets every ->  " + ChatColor.GREEN + Util.parseSeconds(curMine.getResetPeriod()) + "    " + ChatColor.GOLD + Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20) + ChatColor.WHITE + "  <- Next Reset");
+				str = "    Generator: " + ChatColor.GOLD + curMine.getGenerator();
+				String parentName;
+				if(curMine.getParent() == null || curMine.getParent().equals(curMine.getName()))
+					parentName = "none";
+				else parentName = curMine.getParent();
+				for(int i = 0; i < (25 - parentName.length()); i++)
+					str += " ";
+				str += "Linked to: " + parentName;
+				ChatUtil.sendMessage(str);
+				
+				for(int i = 0; i < (finalList.size() - 1); i += 2) {
+					int spaces = 10;
+					String line = finalList.get(i);
+					if(line.length() > 25) spaces -= (line.length() - 25);
+					else if(line.length() < 25) spaces += (25 - line.length());
+					
+					str = "        " + line;
+					for(int j = 0; j < spaces; j++) str += " ";
+					str += finalList.get(i + 1);
+					ChatUtil.sendMessage(str);
+				}
+				if(finalList.size() % 2 != 0) ChatUtil.sendMessage("        " + finalList.get(finalList.size() - 1));
+				ChatUtil.sendMessage("");
 				return;
 			}
 		}

@@ -26,7 +26,7 @@ public class ResetCommand
 			return;
 		}
 		
-		if(source.equals(Reset.AUTOMATIC)) {
+		if(source.equals(Reset.MANUAL)) {
 			if(!Util.hasPermission("reset.manual." + curMine.getName()) && !Util.hasPermission("reset.manual")) {
 				ChatUtil.sendDenied(args);
 				return;

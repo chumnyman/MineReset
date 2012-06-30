@@ -146,14 +146,10 @@ public class MineUtil
 				String[] tempBlockName = {block.getBlock().getItemTypeId() + "", block.getBlock().getData() + ""};
 				blockName = Util.parseMetadata(tempBlockName, true) + " " + blockName;
 			}
-			String blockWeight = null;
-			if((block.getChance() * 100) < 10)
-				blockWeight = " " + Util.format(block.getChance());
-			else
-				blockWeight = Util.format(block.getChance());
+			String blockWeight = Util.format(block.getChance());
 			
-			if(!blockWeight.equalsIgnoreCase(" 0.0%"))
-				finalList.add(" - " + blockWeight + " " + ChatColor.GREEN + blockName);
+			if(!blockWeight.equalsIgnoreCase("0.0%"))
+				finalList.add(ChatColor.WHITE + blockWeight + " " + ChatColor.GREEN + blockName + ChatColor.WHITE);
 		}
 		
 		return finalList;

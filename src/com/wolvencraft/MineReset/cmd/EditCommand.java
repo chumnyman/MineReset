@@ -361,8 +361,9 @@ public class EditCommand {
 			}
 			
 			if(args[1].equalsIgnoreCase("none")) {
+				ChatUtil.sendNote(curMine.getName(), "Mine is no longer linked to " + ChatColor.RED + curMine.getParent());
 				curMine.setParent(null);
-				ChatUtil.sendNote(curMine.getName(), "Mine is no longer linked to " + ChatColor.RED + args[1]);
+				MineUtil.save(curMine);
 				return;
 			}
 			

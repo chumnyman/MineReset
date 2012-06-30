@@ -125,7 +125,7 @@ public class MineReset extends JavaPlugin
 						
 						if(nextReset <= 0) {
 							String[] args = {null, curMine.getName()};
-							ResetCommand.run(args, Reset.AUTOMATIC, null);
+							ResetCommand.run(args, Reset.AUTOMATIC, "");
 							stats.updateAutomatic();
 						}						
 

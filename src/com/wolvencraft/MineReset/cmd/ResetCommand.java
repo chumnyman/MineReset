@@ -43,12 +43,9 @@ public class ResetCommand
 		if(args.length == 3)
 			forcedGenerator = args[2];
 		
-		String generator;
-		if(forcedGenerator == null)
+		String generator = curMine.getGenerator();
+		if(forcedGenerator.equals(""))
 			generator = curMine.getGenerator();
-		else {
-			generator = forcedGenerator;
-		}
 		
 		if(!curMine.reset(generator)) return;
 		

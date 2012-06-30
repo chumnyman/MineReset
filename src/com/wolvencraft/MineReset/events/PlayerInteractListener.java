@@ -78,7 +78,7 @@ public class PlayerInteractListener implements Listener
 				}
 		     	
 		     	String[] args = {"reset", curMine.getName()};
-		     	ResetCommand.run(args, Reset.SIGN, null);
+		     	ResetCommand.run(args, Reset.SIGN, "");
 			}
 			return;
 		}

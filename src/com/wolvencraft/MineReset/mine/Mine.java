@@ -180,6 +180,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     }
 
     private void removePlayers() {
+    	if(world == null) return;
         for (Player p : world.getPlayers()) {
             if (isLocationInMine(p.getLocation())) {
                 p.teleport(tpPoint, PlayerTeleportEvent.TeleportCause.PLUGIN);

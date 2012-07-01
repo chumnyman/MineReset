@@ -169,24 +169,28 @@ public class Mine implements ConfigurationSerializable, Listener {
     }
 
     public boolean reset(String generator) {
-        removePlayers();
+        if(!removePlayers()) {
+        	ChatUtil.sendError("Mine on file is located in an invalid world!");
+        	return false;
+        }
         try {
         	return GeneratorUtil.get(generator).run(this);
         } catch (NullPointerException npe) {
         	ChatUtil.sendError("Invalid generator selected!");
         }
-        
+        ChatUtil.sendError("Reset generator returned an unexpected value");
         return false;
     }
 
-    private void removePlayers() {
-    	if(world == null) return;
+    private boolean removePlayers() {
+    	if(world == null) return false;
         for (Player p : world.getPlayers()) {
             if (isLocationInMine(p.getLocation())) {
                 p.teleport(tpPoint, PlayerTeleportEvent.TeleportCause.PLUGIN);
                 ChatUtil.sendPlayer(p, Util.parseVars(Language.getString("misc.mine-teleport"), this));
             }
         }
+        return true;
     }
 
     public boolean isLocationInMine(Location l) {

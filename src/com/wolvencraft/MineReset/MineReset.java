@@ -63,8 +63,11 @@ public class MineReset extends JavaPlugin
 	{
 		log = this.getLogger();
 		
+		log.info("MineReset is starting up");
+		
 		manager = new CommandManager(this);
 		getCommand("mine").setExecutor(manager);
+		ChatUtil.debug("Started up the command manager");
 		
 		new BlockBreakListener(this);
 		new BlockPlaceListener(this);
@@ -73,14 +76,18 @@ public class MineReset extends JavaPlugin
 		new PlayerInteractListener(this);
 		new PlayerLoginListener(this);
 		new PVPListener(this);
+		ChatUtil.debug("Started up event listeners");
 		
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		
 		getLanguageData().options().copyDefaults(true);
 		saveLanguageData();
+		ChatUtil.debug("Loaded configuration");
+		
 		Updater.checkVersion();
-
+		ChatUtil.debug("Checked plugin version");
+		
 		ConfigurationSerialization.registerClass(Mine.class, "Mine");
 		ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
 		ConfigurationSerialization.registerClass(Blacklist.class, "Blacklist");
@@ -88,6 +95,8 @@ public class MineReset extends JavaPlugin
 		ConfigurationSerialization.registerClass(Snapshot.class, "Snapshot");
 		ConfigurationSerialization.registerClass(DataBlock.class, "DataBlock");
 		ConfigurationSerialization.registerClass(SimpleLoc.class, "SimpleLoc");
+		
+		ChatUtil.debug("Registred serializable classes");
 		
 		mines = new ArrayList<Mine>();
 		mines = MineUtil.loadAll(mines);
@@ -102,14 +111,17 @@ public class MineReset extends JavaPlugin
 		generators = GeneratorUtil.loadDefault(generators);
 		generators = GeneratorLoader.load(generators);
 		
-		log.info("MineReset started");
-		log.info(mines.size() + " mine(s) found");
+		ChatUtil.debug("Loaded data from file");
 		
-		log.info("Starting PluginMetrics");
+		ChatUtil.debug("Starting PluginMetrics");
 		stats = new Statistics(this);
 		stats.gatherData();
 		stats.getMetrics().start();
 		
+		log.info("MineReset started");
+		log.info(mines.size() + " mine(s) found");
+		
+		ChatUtil.debug("Starting up timer");
 		final long checkEvery = getConfig().getLong("misc.check-time-every");
 		
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {

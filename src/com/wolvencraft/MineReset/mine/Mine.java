@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author jjkoletar
@@ -139,7 +140,15 @@ public class Mine implements ConfigurationSerializable, Listener {
      */
 	@SuppressWarnings("unchecked")
 	public Mine(Map<String, Object> me) {
-        world = Bukkit.getWorld((String) me.get("world"));
+		String worldString = (String) me.get("world");
+        world = Bukkit.getWorld(UUID.fromString(worldString));
+        if(world == null) {
+        	world = Bukkit.getWorld(worldString);
+        	if(world == null) {
+        		world = Bukkit.getServer().getWorlds().get(0);
+        		ChatUtil.sendError("Mine file contains an invalid world. Contact the administrator immediately");
+        	}
+        }
         one = ((Vector) me.get("one")).toLocation(world);
         two = ((Vector) me.get("two")).toLocation(world);
         tpPoint = ((SimpleLoc) me.get("tpPoint")).toLocation();
@@ -211,7 +220,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         Map<String, Object> me = new HashMap<String, Object>();
         me.put("one", one.toVector());
         me.put("two", two.toVector());
-        me.put("world", world.getName());
+        me.put("world", world.getUID().toString());
         me.put("tpPoint", new SimpleLoc(tpPoint));
         me.put("displayName", displayName);
         me.put("name", name);

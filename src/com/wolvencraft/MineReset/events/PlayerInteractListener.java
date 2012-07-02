@@ -48,6 +48,7 @@ public class PlayerInteractListener implements Listener
 			}
 			return;
 		}
+		
 		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			ItemStack wand = new ItemStack(Configuration.getInt("misc.wand-item"));
 			if(player.getItemInHand().equals(wand)) {

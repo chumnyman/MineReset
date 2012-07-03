@@ -74,14 +74,6 @@ public class Statistics {
 			@Override
 			public int getValue() { return MineReset.getGenerators().size(); }
 		});
-		
-		mines.addPlotter(new Metrics.Plotter("Snapshots") {
-			
-			@Override
-			public int getValue() {
-				return MineReset.getSnapshots().size();
-			}
-		});
 	}
 	
 	public Metrics getMetrics() {

@@ -53,8 +53,6 @@ public class CommandManager implements CommandExecutor
 			SelectCommand.run(args);
 		else if(args[0].equalsIgnoreCase("sign"))
 			SignCommand.run(args);
-		else if(args[0].equalsIgnoreCase("snapshot"))
-			SnapshotCommand.run(args);
 		else if(args[0].equalsIgnoreCase("timer") || args[0].equalsIgnoreCase("auto"))
 			TimerCommand.run(args);
 		else if(args[0].equalsIgnoreCase("wand"))

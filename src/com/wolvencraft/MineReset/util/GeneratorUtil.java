@@ -8,7 +8,6 @@ import org.bukkit.ChatColor;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.generation.BaseGenerator;
 import com.wolvencraft.MineReset.generation.RandomGenerator;
-import com.wolvencraft.MineReset.generation.SnapshotGenerator;
 
 public class GeneratorUtil {
 	public static List<BaseGenerator> loadDefault(List<BaseGenerator> generators) {
@@ -16,11 +15,6 @@ public class GeneratorUtil {
 		try {
 			BaseGenerator generator;
 			object = RandomGenerator.class.newInstance();
-			generator = (BaseGenerator) object;
-			generators.add(generator);
-			ChatUtil.log("Loaded generator: " + generator.getClass().getSimpleName());
-			
-			object = SnapshotGenerator.class.newInstance();
 			generator = (BaseGenerator) object;
 			generators.add(generator);
 			ChatUtil.log("Loaded generator: " + generator.getClass().getSimpleName());

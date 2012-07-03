@@ -17,7 +17,6 @@ import com.wolvencraft.MineReset.mine.MineBlock;
 import com.wolvencraft.MineReset.mine.Reset;
 import com.wolvencraft.MineReset.mine.SignClass;
 import com.wolvencraft.MineReset.mine.SimpleLoc;
-import com.wolvencraft.MineReset.mine.Snapshot;
 import com.wolvencraft.MineReset.util.MineUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -33,7 +32,6 @@ import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.GeneratorLoader;
 import com.wolvencraft.MineReset.util.GeneratorUtil;
 import com.wolvencraft.MineReset.util.SignUtil;
-import com.wolvencraft.MineReset.util.SnapshotUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 
@@ -55,7 +53,6 @@ public class MineReset extends JavaPlugin
 	private File languageDataFile = null;
 	private static List<Mine> mines;
 	private static List<SignClass> signs;
-	private static List<Snapshot> snapshots;
 	private static List<BaseGenerator> generators;
 	static Statistics stats;
 	
@@ -92,7 +89,6 @@ public class MineReset extends JavaPlugin
 		ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
 		ConfigurationSerialization.registerClass(Blacklist.class, "Blacklist");
 		ConfigurationSerialization.registerClass(SignClass.class, "SignClass");
-		ConfigurationSerialization.registerClass(Snapshot.class, "Snapshot");
 		ConfigurationSerialization.registerClass(DataBlock.class, "DataBlock");
 		ConfigurationSerialization.registerClass(SimpleLoc.class, "SimpleLoc");
 		
@@ -103,9 +99,6 @@ public class MineReset extends JavaPlugin
 		
 		signs = new ArrayList<SignClass>();
 		signs = SignUtil.loadAll(signs);
-		
-		snapshots = new ArrayList<Snapshot>();
-		snapshots = SnapshotUtil.loadAll(snapshots);
 		
 		generators = new ArrayList<BaseGenerator>();
 		generators = GeneratorUtil.loadDefault(generators);
@@ -158,7 +151,6 @@ public class MineReset extends JavaPlugin
 	{
 		MineUtil.saveAll(mines);
 		SignUtil.saveAll(signs);
-		SnapshotUtil.saveAll(snapshots);
 		
 		getServer().getScheduler().cancelTasks(this); // Got to stop the task
 		log.info("MineReset stopped");
@@ -213,14 +205,6 @@ public class MineReset extends JavaPlugin
 	
 	public static void setSigns(List<SignClass> signs) {
 		MineReset.signs = signs;
-	}
-	
-	public static List<Snapshot> getSnapshots() {
-		return snapshots;
-	}
-	
-	public static void setSnapshots(List<Snapshot> snapshots) {
-		MineReset.snapshots = snapshots;
 	}
 	
 	public static List<BaseGenerator> getGenerators() {

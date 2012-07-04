@@ -117,7 +117,7 @@ public class MineReset extends JavaPlugin
 		ChatUtil.debug("Starting up timer");
 		final long checkEvery = getConfig().getLong("misc.check-time-every");
 		
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
 			public void run() {
 				for(Mine curMine : mines) {
 					if(curMine.getAutomatic() && MineUtil.getMine(curMine.getParent()) == null) {

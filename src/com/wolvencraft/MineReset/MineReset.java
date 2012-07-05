@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.wolvencraft.AutoUpdater.Updater;
 import com.wolvencraft.Metrics.Statistics;
 import com.wolvencraft.MineReset.mine.Blacklist;
@@ -47,6 +48,8 @@ import com.wolvencraft.MineReset.util.Util;
 
 public class MineReset extends JavaPlugin
 {
+	WorldEditPlugin worldEditPlugin = null;
+	
 	Logger log;
 	public CommandManager manager;
 	private FileConfiguration languageData = null;
@@ -64,6 +67,9 @@ public class MineReset extends JavaPlugin
 		
 		manager = new CommandManager(this);
 		getCommand("mine").setExecutor(manager);
+		
+		worldEditPlugin = (WorldEditPlugin) this.getServer().getPluginManager().getPlugin("WorldEdit");
+		
 		ChatUtil.debug("Started up the command manager");
 		
 		new BlockBreakListener(this);

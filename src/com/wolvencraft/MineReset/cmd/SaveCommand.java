@@ -5,6 +5,8 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.bukkit.selections.Selection;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.mine.Mine;
@@ -36,8 +38,21 @@ public class SaveCommand
 		}
 		
 		if(!Util.locationsSet()) {
-			ChatUtil.sendError("Make a selection first");
-			return;
+			WorldEditPlugin we = MineReset.getWorldEditPlugin();
+			if(we == null) {
+				ChatUtil.sendError("Make a selection first");
+				return;
+			}
+			else {
+				Selection sel = we.getSelection(player);
+				if(sel == null) {
+					ChatUtil.sendError("Make a selection first");
+					return;
+				}
+				CommandManager.setLocation(we.getSelection(player).getMinimumPoint(), 0);
+				CommandManager.setLocation(we.getSelection(player).getMaximumPoint(), 1);
+			}
+			
 		}
 		
 		Location[] loc = CommandManager.getLocation();

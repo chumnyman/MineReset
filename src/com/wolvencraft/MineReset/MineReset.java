@@ -48,7 +48,7 @@ import com.wolvencraft.MineReset.util.Util;
 
 public class MineReset extends JavaPlugin
 {
-	WorldEditPlugin worldEditPlugin = null;
+	private static WorldEditPlugin worldEditPlugin = null;
 	
 	Logger log;
 	public CommandManager manager;
@@ -69,6 +69,7 @@ public class MineReset extends JavaPlugin
 		getCommand("mine").setExecutor(manager);
 		
 		worldEditPlugin = (WorldEditPlugin) this.getServer().getPluginManager().getPlugin("WorldEdit");
+		if(worldEditPlugin != null) log.info("WorldEdit found, using it for region selection");
 		
 		ChatUtil.debug("Started up the command manager");
 		
@@ -219,5 +220,9 @@ public class MineReset extends JavaPlugin
 	
 	public static Statistics getStats() {
 		return stats;
+	}
+	
+	public static WorldEditPlugin getWorldEditPlugin() {
+		return worldEditPlugin;
 	}
 }

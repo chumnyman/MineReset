@@ -21,6 +21,7 @@ public class ChatUtil
 		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		message = Util.parseColors(message);
 		CommandSender sender = CommandManager.getSender();
+		if(sender == null) return;
 		sender.sendMessage(ChatColor.WHITE + message);
 	}
 	
@@ -42,6 +43,7 @@ public class ChatUtil
 	public static void sendNote(String title, String message) {
 		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		CommandSender sender = CommandManager.getSender();
+		if(sender == null) return;
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
 		message = ChatColor.GOLD + "[" + title + "] " + ChatColor.WHITE + message;
@@ -100,6 +102,7 @@ public class ChatUtil
 	public static void sendSuccess(String message) {
 		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		CommandSender sender = CommandManager.getSender();
+		if(sender == null) return;
 		String title = Language.getString("general.title-success");
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
@@ -125,6 +128,7 @@ public class ChatUtil
 	public static void sendError(String message) {
 		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		CommandSender sender = CommandManager.getSender();
+		if(sender == null) return;
 		String title = Language.getString("general.title-error");
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
@@ -150,6 +154,7 @@ public class ChatUtil
 	 */
 	public static void sendInvalid(String[] args) {
 		CommandSender sender = CommandManager.getSender();
+		if(sender == null) return;
 		String title = Language.getString("general.title-error");
 		String message = Language.getString("error.command");
 		String command = "";
@@ -168,6 +173,7 @@ public class ChatUtil
 	 */
 	public static void sendInvalidArguments(String[] args) {
 		CommandSender sender = CommandManager.getSender();
+		if(sender == null) return;
 		String title = Language.getString("general.title-error");
 		String message = Language.getString("error.arguments");
 		String command = "";
@@ -187,6 +193,7 @@ public class ChatUtil
 	public static void sendDenied(String[] args)
 	{
 		CommandSender sender = CommandManager.getSender();
+		if(sender == null) return;
 		String title = Language.getString("general.title-error");
 		String message = Language.getString("error.access");
 		String command = "";

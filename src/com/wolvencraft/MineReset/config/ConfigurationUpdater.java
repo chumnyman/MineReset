@@ -55,7 +55,7 @@ public class ConfigurationUpdater {
 			}
 			
 			String gen = getRegionData().getString("mines." + mine + ".reset.generator");
-			if(gen == null) gen = "";
+			if(gen == null) gen = "RANDOM";
 			boolean automatic = getRegionData().getBoolean("mines." + mine + ".reset.auto.reset");
 			int automaticSeconds = getRegionData().getInt("mines." + mine + ".reset.auto.reset-every");
 			List<Integer> warnTimes = getRegionData().getIntegerList("mines" + mine + ".reset.auto.warn-times");

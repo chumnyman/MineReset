@@ -42,6 +42,7 @@ public class TimerCommand {
 			}
 			else {
 				curMine.setAutomatic(true);
+				if(curMine.getResetPeriod() == 0) curMine.setResetPeriod(900);
 				ChatUtil.sendNote(curMine.getName(), "Automatic mine reset is " + ChatColor.GREEN + "on");
 			}
 		}

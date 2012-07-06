@@ -205,17 +205,17 @@ public class Mine implements ConfigurationSerializable, Listener {
     }
 
     public boolean isLocationInMine(Location l) {
-        return (l.getX() >= one.getX() && l.getX() <= two.getX())     //if x matches
+        return (l.getWorld().equals(world)
+        		&& (l.getX() >= one.getX() && l.getX() <= two.getX())     //if x matches
                 && (l.getY() >= one.getY() && l.getY() <= two.getY()) //and y
-                && (l.getZ() >= one.getZ() && l.getZ() <= two.getZ()) //and z
-                && l.getWorld().equals(world);//and world
+                && (l.getZ() >= one.getZ() && l.getZ() <= two.getZ())); //and z
     }
     
     public boolean isLocationInProtection(Location l) {
-        return (l.getX() >= protOne.getX() && l.getX() <= protTwo.getX())     //if x matches
-                && (l.getY() >= protOne.getY() && l.getY() <= protTwo.getY()) //and y
-                && (l.getZ() >= protOne.getZ() && l.getZ() <= protTwo.getZ()) //and z
-                && l.getWorld().equals(world);//and world
+        return (l.getWorld().equals(world)
+        		&& (l.getX() >= protOne.getX() && l.getX() <= protTwo.getX())     //if x matches
+                && (l.getY() >= protOne.getY() && l.getY() <= protTwo.getY())     //and y
+                && (l.getZ() >= protOne.getZ() && l.getZ() <= protTwo.getZ()));   //and z
     }
 
     public Map<String, Object> serialize() {

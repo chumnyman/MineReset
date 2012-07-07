@@ -56,7 +56,7 @@ public class PVPListener implements Listener {
 				continue;
 			}
 			
-			ChatUtil.sendPlayerError(attacker, "PvP is not allowed in the mine!");
+			ChatUtil.sendError(attacker, "PvP is not allowed in the mine!");
 			event.setCancelled(true);
 			return;
 		}

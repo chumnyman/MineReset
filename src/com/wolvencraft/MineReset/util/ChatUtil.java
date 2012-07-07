@@ -26,14 +26,15 @@ public class ChatUtil
 	}
 	
 	/**
-	 * Sends a titled message directly to the player
+	 * Sends an untitled message directly to the player
 	 * @param p Player to send the message to
 	 * @param message Message to be sent
 	 */
-    public static void sendPlayer(Player p, String message) {
+	public static void sendMessage(Player player, String message) {
 		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
-        p.sendMessage(ChatColor.GREEN + "[" + Util.parseColors(Language.getString("general.title")) + "]" + ChatColor.WHITE + message);
-    }
+		message = Util.parseColors(message);
+		player.sendMessage(ChatColor.WHITE + message);
+	}
 	
     /**
      * Sends a message to the command sender with an custom title
@@ -50,17 +51,18 @@ public class ChatUtil
 		sender.sendMessage(message);
 	}
 	
-	/**
-     * Sends a message to a specific player with an custom title
+    /**
+     * Sends a message to the command sender with an custom title
+     * @param player Player to send the note to
      * @param title Title of the message
      * @param message Message to be sent
      */
-	public static void sendPlayerNote(Player p, String title, String message) {
+	public static void sendNote(Player player, String title, String message) {
 		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
 		message = ChatColor.GOLD + "[" + title + "] " + ChatColor.WHITE + message;
-		p.sendMessage(message);
+		player.sendMessage(message);
 	}
 
 	/**
@@ -80,7 +82,7 @@ public class ChatUtil
      * Broadcasts a green-titled message to all players in a specified world, the console logger, and to admins/ops.
      * @param message A message to be sent
      */
-    public static void broadcastWorld(String message, World world) {
+    public static void broadcast(String message, World world) {
         if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
         String title = Language.getString("general.title-success");
         title = Util.parseColors(title);
@@ -113,7 +115,7 @@ public class ChatUtil
 	 * Sends a green-titled message to a player
 	 * @param message A message to be sent
 	 */
-	public static void sendPlayerSuccess(Player player, String message) {
+	public static void sendSuccess(Player player, String message) {
 		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		String title = Language.getString("general.title-success");
 		title = Util.parseColors(title);
@@ -139,7 +141,7 @@ public class ChatUtil
 	 * Sends a red-titled message to a player
 	 * @param message A message to be sent
 	 */
-	public static void sendPlayerError(Player player, String message) {
+	public static void sendError(Player player, String message) {
 		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		String title = Language.getString("general.title-error");
 		title = Util.parseColors(title);

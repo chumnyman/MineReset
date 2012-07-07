@@ -69,7 +69,7 @@ public class ResetCommand
 		broadcastMessage = Util.parseVars(broadcastMessage, curMine);
 		
 		if(!curMine.getSilent()) {
-			ChatUtil.broadcastWorld(broadcastMessage, curMine.getWorld());
+			ChatUtil.broadcast(broadcastMessage, curMine.getWorld());
 		}
 		else if(!source.equals(Reset.AUTOMATIC)) {
 			ChatUtil.sendSuccess(broadcastMessage);

@@ -82,7 +82,7 @@ public class PlayerInteractListener implements Listener
 		     
 		     	Mine curMine = MineUtil.getMine(sign.getParent());
 				if(!Util.playerHasPermission(player, "reset.sign." + curMine.getName()) && !Util.playerHasPermission(player, "reset.sign")) {
-					ChatUtil.sendPlayerError(player, "You do not have permission to do this!");
+					ChatUtil.sendError(player, "You do not have permission to do this!");
 					return;
 				}
 				

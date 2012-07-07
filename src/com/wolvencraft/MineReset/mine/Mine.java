@@ -1,5 +1,6 @@
 package com.wolvencraft.MineReset.mine;
 
+import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.GeneratorUtil;
@@ -181,16 +182,16 @@ public class Mine implements ConfigurationSerializable, Listener {
 
     public boolean reset(String generator) {
         if(!removePlayers()) {
-        	ChatUtil.sendError("Mine on file is located in an invalid world!");
+        	ChatUtil.getLogger().severe("Mine on file is located in an invalid world!");
         	return false;
         }
         try {
         	return GeneratorUtil.get(generator).run(this);
         } catch (NullPointerException npe) {
-        	ChatUtil.sendError("Invalid generator selected!");
+        	if(CommandManager.getSender() != null) ChatUtil.sendError("Invalid generator selected!");
+        	else ChatUtil.getLogger().severe("Invalid generator selected!");
+        	return false;
         }
-        ChatUtil.sendError("Reset generator returned an unexpected value");
-        return false;
     }
 
     private boolean removePlayers() {
@@ -198,7 +199,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         for (Player p : world.getPlayers()) {
             if (isLocationInMine(p.getLocation())) {
                 p.teleport(tpPoint, PlayerTeleportEvent.TeleportCause.PLUGIN);
-                ChatUtil.sendPlayer(p, Util.parseVars(Language.getString("misc.mine-teleport"), this));
+                ChatUtil.sendSuccess(p, Util.parseVars(Language.getString("misc.mine-teleport"), this));
             }
         }
         return true;

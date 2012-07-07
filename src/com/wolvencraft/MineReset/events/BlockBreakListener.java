@@ -61,7 +61,7 @@ public class BlockBreakListener implements Listener
 			
 			if(!Util.playerHasPermission(player, "protection.break." + mine.getName()) && !Util.playerHasPermission(player, "protection.break")) {
 				ChatUtil.debug("Player " + event.getPlayer().getName() + " does not have permission to break blocks in the mine");
-				ChatUtil.sendPlayerError(player, "You are not allowed to break " + blockName + " in this area");
+				ChatUtil.sendError(player, "You are not allowed to break " + blockName + " in this area");
 				event.setCancelled(true);
 				return;
 			}
@@ -84,14 +84,14 @@ public class BlockBreakListener implements Listener
 				
 				if((mine.getBreakBlacklist().getWhitelist() && !found) || (!mine.getBreakBlacklist().getWhitelist() && found)) {
 					ChatUtil.debug("Player " + player.getName() + " broke a black/whitelisted block in the mine!");
-					ChatUtil.sendPlayerError(player, "You are not allowed to break " + blockName + " in this area");
+					ChatUtil.sendError(player, "You are not allowed to break " + blockName + " in this area");
 					event.setCancelled(true);
 					return;
 				}
 			}
 			else {
 				ChatUtil.debug("No block breaking blacklist detected");
-				ChatUtil.sendPlayerError(player, "You are not allowed to break " + blockName + " in this area");
+				ChatUtil.sendError(player, "You are not allowed to break " + blockName + " in this area");
 				event.setCancelled(true);
 			}
 		}
@@ -109,7 +109,7 @@ public class BlockBreakListener implements Listener
         	if(sign == null) return;
         	
         	SignUtil.delete(sign);
-        	ChatUtil.sendPlayerSuccess(event.getPlayer(), "Sign successfully removed");
+        	ChatUtil.sendSuccess(event.getPlayer(), "Sign successfully removed");
         	return;
         }
         else return;

@@ -73,7 +73,12 @@ public class MineUtil
             FileConfiguration mineConf = YamlConfiguration.loadConfiguration(mineFile);
             Object mine = mineConf.get("mine");
             if (mine instanceof Mine) {
-                mines.add((Mine) mine);
+            	try {
+            		mines.add((Mine) mine);
+            	}
+            	catch (IllegalArgumentException ex) {
+            		ChatUtil.getLogger().severe(ex.getMessage());
+            	}
             }
         }
         return mines;

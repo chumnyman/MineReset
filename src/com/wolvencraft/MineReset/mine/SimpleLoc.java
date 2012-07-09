@@ -37,7 +37,7 @@ public class SimpleLoc implements ConfigurationSerializable, Listener {
 		}
 		catch(IllegalArgumentException eie) {
 			world = Bukkit.getWorld(worldString);
-        	if(world == null) throw new IllegalArgumentException("Mine file contains an invalid world!");
+        	if(world == null) throw new IllegalArgumentException("Mine file contains an invalid world for the warp location!");
 		}
 		x = ((Double) me.get("x")).doubleValue();
 		y = ((Double) me.get("y")).doubleValue();

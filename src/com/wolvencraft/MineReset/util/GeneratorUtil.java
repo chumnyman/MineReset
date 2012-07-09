@@ -38,7 +38,7 @@ public class GeneratorUtil {
 			ChatUtil.log("Checking generator: " + generator.getClass().getSimpleName() + " (" + generator.getName() + ")");
 			if(generator.getName().equalsIgnoreCase(name)) return generator;
 		}
-		
+		if(name.equalsIgnoreCase("")) return generators.get(0);
 		return null;
 	}
 	

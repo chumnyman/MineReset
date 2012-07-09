@@ -147,10 +147,7 @@ public class Mine implements ConfigurationSerializable, Listener {
 		}
 		catch(IllegalArgumentException eie) {
 			world = Bukkit.getWorld(worldString);
-        	if(world == null) {
-        		world = Bukkit.getServer().getWorlds().get(0);
-        		ChatUtil.sendError("Mine file contains an invalid world, substituting the default world. Contact the administrator immediately");
-        	}
+        	if(world == null) throw new IllegalArgumentException("Mine file contains an invalid world!");
 		}
         one = ((Vector) me.get("one")).toLocation(world);
         two = ((Vector) me.get("two")).toLocation(world);

@@ -50,18 +50,18 @@ public class WarpCommand
 			return;
 		}
 		
-		if(MineUtil.getMine(args[1]) != null) {
-			Mine curMine = MineUtil.getMine(args[1]);
+		Mine curMine = MineUtil.getMine(args[1]);
+		if(curMine != null) {
+			if(!Util.hasPermission("warp.use." + curMine.getName()) && !Util.hasPermission("warp.use")) {
+				ChatUtil.sendDenied(args);
+				return;
+			}
 			player.teleport(curMine.getWarp());
 			String message = Util.parseVars(Language.getString("misc.mine-teleport"), curMine);
 			ChatUtil.sendSuccess(message);
 			return;
 		}
 		else {
-			if(!Util.hasPermission("warp.use")) {
-				ChatUtil.sendDenied(args);
-				return;
-			}
 			ChatUtil.sendInvalidMineName(args[1]);
 			return;
 		}

@@ -20,6 +20,7 @@ public class RandomBlock {
             weightedBlocks.add(new MineBlock(block.getBlock(), tally));
             ChatUtil.debug("Block " + block.getBlock().getItemTypeId() + " was assigned the tally weight of " + tally);
         }
+        ChatUtil.debug("RandomBlock initialized");
     }
     
     public MaterialData next()

@@ -56,8 +56,8 @@ public class ResetCommand
 		if(source.equals(Reset.AUTOMATIC)) {
 			List<Mine> mines = MineReset.getMines();
 			for(Mine childMine : mines) {
-				ChatUtil.debug(childMine.getParent());
 				if(childMine.getParent() != null) {
+					ChatUtil.debug(childMine.getParent());
 					String[] childArgs = {null, childMine.getName()};
 					run(childArgs, Reset.AUTOMATIC, null);
 				}

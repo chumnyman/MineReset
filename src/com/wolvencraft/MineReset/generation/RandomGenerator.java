@@ -6,6 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.MineReset.mine.Mine;
+import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.RandomBlock;
 
 public class RandomGenerator implements BaseGenerator {
@@ -35,6 +36,7 @@ public class RandomGenerator implements BaseGenerator {
 		                }
 		            }
 		        }
+    	        ChatUtil.debug("Reset complete! BL, WL");
     			return true;
     		}
     		else {
@@ -48,6 +50,7 @@ public class RandomGenerator implements BaseGenerator {
 		                }
 		            }
 		        }
+    	        ChatUtil.debug("Reset complete! BL, No WL");
     			return true;
     		}
     	}
@@ -61,6 +64,7 @@ public class RandomGenerator implements BaseGenerator {
 	                }
 	            }
 	        }
+	        ChatUtil.debug("Reset complete! No BL, No WL");
 	        return true;
     	}
 	}

@@ -177,6 +177,36 @@ public class Mine implements ConfigurationSerializable, Listener {
         placeBlacklist = (Blacklist) me.get("placeBlacklist");
     }
 
+    public Map<String, Object> serialize() {
+        Map<String, Object> me = new HashMap<String, Object>();
+        me.put("one", one.toVector());
+        me.put("two", two.toVector());
+        me.put("world", world.getUID().toString());
+        me.put("tpPoint", new SimpleLoc(tpPoint));
+        me.put("displayName", displayName);
+        me.put("name", name);
+        me.put("parent", parent);
+        me.put("blacklist", blacklist);
+        me.put("generator", generator);
+        me.put("silent", silent);
+        me.put("automatic", automatic);
+        me.put("automaticResetTime", automaticSeconds);
+        me.put("cooldownEnabled", cooldownEnabled);
+        me.put("cooldownSeconds", cooldownSeconds);
+        me.put("isWarned", warned);
+        me.put("warningTimes", warningTimes);
+        List<String> names = new ArrayList<String>();
+        for(Protection prot : enabledProtection)
+        	names.add(prot.name());
+        me.put("protectionTypes", names);
+        me.put("protOne", protOne.toVector());
+        me.put("protTwo", protTwo.toVector());
+        me.put("blocks", blocks);
+        me.put("breakBlacklist", breakBlacklist);
+        me.put("placeBlacklist", placeBlacklist);
+        return me;
+    }
+    
     public boolean reset(String generator) {
         if(!removePlayers()) {
         	ChatUtil.getLogger().severe("Mine on file is located in an invalid world!");
@@ -214,36 +244,6 @@ public class Mine implements ConfigurationSerializable, Listener {
         		&& (l.getX() >= protOne.getX() && l.getX() <= protTwo.getX())     //if x matches
                 && (l.getY() >= protOne.getY() && l.getY() <= protTwo.getY())     //and y
                 && (l.getZ() >= protOne.getZ() && l.getZ() <= protTwo.getZ()));   //and z
-    }
-
-    public Map<String, Object> serialize() {
-        Map<String, Object> me = new HashMap<String, Object>();
-        me.put("one", one.toVector());
-        me.put("two", two.toVector());
-        me.put("world", world.getUID().toString());
-        me.put("tpPoint", new SimpleLoc(tpPoint));
-        me.put("displayName", displayName);
-        me.put("name", name);
-        me.put("parent", parent);
-        me.put("blacklist", blacklist);
-        me.put("generator", generator);
-        me.put("silent", silent);
-        me.put("automatic", automatic);
-        me.put("automaticResetTime", automaticSeconds);
-        me.put("cooldownEnabled", cooldownEnabled);
-        me.put("cooldownSeconds", cooldownSeconds);
-        me.put("isWarned", warned);
-        me.put("warningTimes", warningTimes);
-        List<String> names = new ArrayList<String>();
-        for(Protection prot : enabledProtection)
-        	names.add(prot.name());
-        me.put("protectionTypes", names);
-        me.put("protOne", protOne.toVector());
-        me.put("protTwo", protTwo.toVector());
-        me.put("blocks", blocks);
-        me.put("breakBlacklist", breakBlacklist);
-        me.put("placeBlacklist", placeBlacklist);
-        return me;
     }
     
     public Location getFirstPoint() {

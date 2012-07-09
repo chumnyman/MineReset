@@ -1,6 +1,7 @@
 package com.wolvencraft.MineReset.mine;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.GeneratorUtil;
@@ -222,6 +223,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     }
 
     private boolean removePlayers() {
+    	if(!Configuration.getBoolean("misc.teleport-on-reset")) return true;
     	if(world == null) return false;
         for (Player p : world.getPlayers()) {
             if (isLocationInMine(p.getLocation())) {

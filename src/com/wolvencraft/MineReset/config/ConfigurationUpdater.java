@@ -65,7 +65,7 @@ public class ConfigurationUpdater {
 			mines.add(new Mine(one, two, world, tpPos, displayName, null, mine, blocks, gen, silent, automatic, automaticSeconds, false, 0, warnTimes, enabledProt, one, two));
 			ChatUtil.sendSuccess("Mine '" + mine + "' was successfully imported into the system");
 		}
-		MineUtil.saveAll(mines);
+		MineUtil.saveAll();
 	}
 	
 	public static void updateSigns() {
@@ -91,7 +91,7 @@ public class ConfigurationUpdater {
 			ChatUtil.sendSuccess("A sign at (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ") was imported into the system!");
 		}
 		
-		SignUtil.saveAll(signs);
+		SignUtil.saveAll();
 	}
 	
 	public static void reloadRegionData() {

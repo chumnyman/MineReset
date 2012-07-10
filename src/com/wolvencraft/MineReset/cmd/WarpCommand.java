@@ -2,7 +2,6 @@ package com.wolvencraft.MineReset.cmd;
 
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.MineUtil;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.CommandManager;
@@ -10,14 +9,11 @@ import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.Util;
 
-public class WarpCommand
-{
-	public static void run(String[] args)
-	{
+public class WarpCommand {
+	public static void run(String[] args) {
 		Player player;
-		if(CommandManager.getSender() instanceof Player) {
+		if(CommandManager.getSender() instanceof Player)
 			player = (Player) CommandManager.getSender();
-		}
 		else {
 			ChatUtil.sendError("This command cannot be executed via console");
 			return;
@@ -43,10 +39,9 @@ public class WarpCommand
 				return;
 			}
 			
-			Location loc = player.getLocation();
-			curMine.setWarp(loc);
+			curMine.setWarp(player.getLocation());
 			
-			ChatUtil.sendSuccess ("Mine spawn point set (" + (int)loc.getX() + ", " + (int)loc.getY() + ", " + (int)loc.getZ() + ")");
+			ChatUtil.sendSuccess ("Mine spawn point set at the current location!");
 			return;
 		}
 		

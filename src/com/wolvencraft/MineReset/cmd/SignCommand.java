@@ -36,7 +36,8 @@ public class SignCommand
 			HelpCommand.getSign();
 			return;
 		}
-		else if(args.length != 2) {
+		
+		if(args.length != 2) {
 			ChatUtil.sendInvalidArguments(args);
 			return;
 		}
@@ -67,7 +68,7 @@ public class SignCommand
 			MineReset.setSigns(signs);
 			
 			ChatUtil.sendNote(curMine.getName(), "A new sign was defined successfully");
-			SignUtil.saveAll(signs);
+			SignUtil.saveAll();
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("reset")) {
@@ -115,7 +116,7 @@ public class SignCommand
 			signs.remove(sign);
 			MineReset.setSigns(signs);
 			SignUtil.delete(sign);
-			SignUtil.saveAll(MineReset.getSigns());
+			SignUtil.saveAll();
 			ChatUtil.sendSuccess("This sign is no longer defined. You can destroy it now.");
 			return;
 		}

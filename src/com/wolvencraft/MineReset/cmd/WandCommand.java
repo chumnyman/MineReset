@@ -15,13 +15,13 @@ public class WandCommand {
 			return;
 		}
 		
-		if(args.length > 1) {
-			ChatUtil.sendInvalidArguments(args);
+		if(!Util.isPlayer()) {
+			ChatUtil.sendError("This command can only be executed by a living player");
 			return;
 		}
 		
-		if(!Util.isPlayer()) {
-			ChatUtil.sendError("This command can only be executed by a living player");
+		if(args.length > 1) {
+			ChatUtil.sendInvalidArguments(args);
 			return;
 		}
 		

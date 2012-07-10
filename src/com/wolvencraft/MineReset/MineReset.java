@@ -4,9 +4,7 @@ package com.wolvencraft.MineReset;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.wolvencraft.AutoUpdater.Updater;
@@ -30,7 +28,6 @@ import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.events.*;
 import com.wolvencraft.MineReset.generation.BaseGenerator;
 import com.wolvencraft.MineReset.util.ChatUtil;
-import com.wolvencraft.MineReset.util.GeneratorLoader;
 import com.wolvencraft.MineReset.util.GeneratorUtil;
 import com.wolvencraft.MineReset.util.SignUtil;
 import com.wolvencraft.MineReset.util.Util;
@@ -46,30 +43,25 @@ import com.wolvencraft.MineReset.util.Util;
  * (at your option) any later version.
  */
 
-public class MineReset extends JavaPlugin
-{
+public class MineReset extends JavaPlugin {
 	private static WorldEditPlugin worldEditPlugin = null;
 	
-	Logger log;
 	public CommandManager manager;
 	private FileConfiguration languageData = null;
 	private File languageDataFile = null;
 	private static List<Mine> mines;
 	private static List<SignClass> signs;
 	private static List<BaseGenerator> generators;
-	static Statistics stats;
+	private static Statistics stats;
 	
-	public void onEnable()
-	{
-		log = this.getLogger();
-		
-		log.info("MineReset is starting up");
+	public void onEnable() {
+		ChatUtil.log("MineReset is starting up");
 		
 		manager = new CommandManager(this);
 		getCommand("mine").setExecutor(manager);
 		
 		worldEditPlugin = (WorldEditPlugin) this.getServer().getPluginManager().getPlugin("WorldEdit");
-		if(worldEditPlugin != null) log.info("WorldEdit found, using it for region selection");
+		if(worldEditPlugin != null) ChatUtil.log("WorldEdit found, using it for region selection");
 		
 		ChatUtil.debug("Started up the command manager");
 		
@@ -89,9 +81,6 @@ public class MineReset extends JavaPlugin
 		saveLanguageData();
 		ChatUtil.debug("Loaded configuration");
 		
-		Updater.checkVersion();
-		ChatUtil.debug("Checked plugin version");
-		
 		ConfigurationSerialization.registerClass(Mine.class, "Mine");
 		ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
 		ConfigurationSerialization.registerClass(Blacklist.class, "Blacklist");
@@ -101,15 +90,9 @@ public class MineReset extends JavaPlugin
 		
 		ChatUtil.debug("Registred serializable classes");
 		
-		mines = new ArrayList<Mine>();
-		mines = MineUtil.loadAll(mines);
-		
-		signs = new ArrayList<SignClass>();
-		signs = SignUtil.loadAll(signs);
-		
-		generators = new ArrayList<BaseGenerator>();
-		generators = GeneratorUtil.loadDefault(generators);
-		generators = GeneratorLoader.load(generators);
+		mines = MineUtil.loadAll();
+		signs = SignUtil.loadAll();
+		generators = GeneratorUtil.loadAll();
 		
 		ChatUtil.debug("Loaded data from file");
 		
@@ -118,10 +101,12 @@ public class MineReset extends JavaPlugin
 		stats.gatherData();
 		stats.getMetrics().start();
 		
-		log.info("MineReset started");
-		log.info(mines.size() + " mine(s) found");
+		ChatUtil.log("MineReset started");
+		ChatUtil.log(mines.size() + " mine(s) and " + signs.size() + " signs found");
 		
-		ChatUtil.debug("Starting up timer");
+		Updater.checkVersion();
+		
+		ChatUtil.debug("Starting up the timer");
 		final long checkEvery = getConfig().getLong("misc.check-time-every");
 		
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
@@ -131,16 +116,14 @@ public class MineReset extends JavaPlugin
 						int nextReset = MineUtil.getNextReset(curMine);
 						List<Integer> warnTimes = curMine.getWarningTimes();
 						
-						if(!curMine.getSilent() && curMine.getWarned() && warnTimes.indexOf(new Integer(nextReset)) != -1) {
+						if(!curMine.getSilent() && curMine.getWarned() && warnTimes.indexOf(new Integer(nextReset)) != -1)
 							ChatUtil.broadcast(Util.parseVars(Language.getString("reset.automatic-reset-warning"), curMine), curMine.getWorld());
-						}
 						
 						if(nextReset <= 0) {
 							String[] args = {null, curMine.getName()};
 							ResetCommand.run(args, Reset.AUTOMATIC, "");
 							stats.updateAutomatic();
 						}						
-
 						curMine.updateTimer(checkEvery);
 					}
 				
@@ -156,23 +139,21 @@ public class MineReset extends JavaPlugin
 	
 	public void onDisable()
 	{
-		MineUtil.saveAll(mines);
-		SignUtil.saveAll(signs);
+		MineUtil.saveAll();
+		SignUtil.saveAll();
 		
-		getServer().getScheduler().cancelTasks(this); // Got to stop the task
-		log.info("MineReset stopped");
+		getServer().getScheduler().cancelTasks(this);
+		ChatUtil.log("MineReset stopped");
 	}
 	
 	public void reloadLanguageData() {
 		
 		String lang = this.getConfig().getString("configuration.language");
-		if(lang.equals(null)) lang = "english";
+		if(lang == null) lang = "english";
 		lang = lang + ".yml";
 		ChatUtil.log("Language file used: " + lang);
 		
-		if (languageDataFile == null) {
-		languageDataFile = new File(getDataFolder(), lang);
-		}
+		if (languageDataFile == null) languageDataFile = new File(getDataFolder(), lang);
 		languageData = YamlConfiguration.loadConfiguration(languageDataFile);
 		
 		InputStream defConfigStream = getResource(lang);
@@ -183,9 +164,7 @@ public class MineReset extends JavaPlugin
 	}
 	
 	public FileConfiguration getLanguageData() {
-		if (languageData == null) {
-			reloadLanguageData();
-		}
+		if (languageData == null) reloadLanguageData();
 		return languageData;
 	}
 

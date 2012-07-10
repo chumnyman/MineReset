@@ -38,7 +38,8 @@ public class MineUtil
 	 * Saves the mine data to disc
 	 * @param mines List of mines to save
 	 */
-	public static void saveAll(List<Mine> mines) {
+	public static void saveAll() {
+		List<Mine> mines = MineReset.getMines();
 		for (Mine mine : mines) {
             File mineFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "mines"), mine.getName() + ".yml");
             FileConfiguration mineConf =  YamlConfiguration.loadConfiguration(mineFile);
@@ -57,8 +58,8 @@ public class MineUtil
 	 * @param mines List of mines to write the data to
 	 * @return Loaded list of mines
 	 */
-	public static List<Mine> loadAll(List<Mine> mines) {
-		mines.clear();
+	public static List<Mine> loadAll() {
+		List<Mine> mines = new ArrayList<Mine>();
 		File mineFolder = new File(CommandManager.getPlugin().getDataFolder(), "mines");
         if (!mineFolder.exists() || !mineFolder.isDirectory()) {
             mineFolder.mkdir();

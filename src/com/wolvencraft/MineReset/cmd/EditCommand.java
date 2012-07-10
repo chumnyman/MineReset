@@ -235,7 +235,7 @@ public class EditCommand {
 			CommandManager.setMine(null);
 			ChatUtil.sendNote(curMine.getName(), "Mine successfully deleted");
 			MineUtil.delete(curMine);
-			MineUtil.saveAll(mines);
+			MineUtil.saveAll();
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("name")) {

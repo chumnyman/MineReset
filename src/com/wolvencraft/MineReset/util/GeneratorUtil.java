@@ -1,5 +1,6 @@
 package com.wolvencraft.MineReset.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -10,7 +11,10 @@ import com.wolvencraft.MineReset.generation.BaseGenerator;
 import com.wolvencraft.MineReset.generation.RandomGenerator;
 
 public class GeneratorUtil {
-	public static List<BaseGenerator> loadDefault(List<BaseGenerator> generators) {
+	public static List<BaseGenerator> loadAll() {
+		List<BaseGenerator> generators = new ArrayList<BaseGenerator>();
+		generators = GeneratorLoader.load(generators);
+		
 		Object object;
 		try {
 			BaseGenerator generator;

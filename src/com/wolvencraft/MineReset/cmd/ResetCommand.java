@@ -47,10 +47,10 @@ public class ResetCommand
 		if(forcedGenerator.equals(""))
 			generator = curMine.getGenerator();
 		
-		if(!curMine.reset(generator)) return;
-		
 		if(curMine.getAutomatic()) curMine.resetTimer();
 		if(curMine.getCooldown()) curMine.resetCooldown();
+		
+		if(!(curMine.reset(generator))) return;
 		
 		String broadcastMessage = Language.getString("reset.manual-reset-successful");
 		if(source.equals(Reset.AUTOMATIC)) {

@@ -3,6 +3,7 @@ package com.wolvencraft.MineReset.util;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -38,7 +39,8 @@ public class SignUtil {
 	 * Saves the mine data to disc
 	 * @param mines List of mines to save
 	 */
-	public static void saveAll(List<SignClass> signs) {
+	public static void saveAll() {
+		List<SignClass> signs = MineReset.getSigns();
 		for (SignClass sign : signs) {
 			File signFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "signs"), sign.getId() + ".yml");
 	        FileConfiguration signConf =  YamlConfiguration.loadConfiguration(signFile);
@@ -57,7 +59,8 @@ public class SignUtil {
 	 * @param mines List of mines to write the data to
 	 * @return Loaded list of mines
 	 */
-	public static List<SignClass> loadAll(List<SignClass> signs) {
+	public static List<SignClass> loadAll() {
+		List<SignClass> signs = new ArrayList<SignClass>();
 		File signFolder = new File(CommandManager.getPlugin().getDataFolder(), "signs");
         if (!signFolder.exists() || !signFolder.isDirectory()) {
             signFolder.mkdir();

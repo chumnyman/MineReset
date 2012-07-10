@@ -94,7 +94,7 @@ public class ChatUtil
                 p.sendMessage(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
             }
         }
-        ChatUtil.log(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
+        log(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
     }
 
 	/**

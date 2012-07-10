@@ -126,14 +126,12 @@ public class TimerCommand {
 				curMine.setWarningTimes(warnList);
 				ChatUtil.sendSuccess(curMine.getName() + " will no longer send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
 			}
-			else
-			{
+			else {
 				ChatUtil.sendInvalid(args);
 				return;
 			}
 		}
-		else
-		{
+		else {
 			ChatUtil.sendInvalid(args);
 			return;
 		}

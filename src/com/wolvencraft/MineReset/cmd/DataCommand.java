@@ -6,6 +6,7 @@ import com.wolvencraft.MineReset.config.ConfigurationUpdater;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.MineUtil;
+import com.wolvencraft.MineReset.util.SignUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class DataCommand
@@ -27,14 +28,16 @@ public class DataCommand
 		}
 		
 		if(args[1].equalsIgnoreCase("save")) {
-			MineUtil.saveAll(MineReset.getMines());
+			MineUtil.saveAll();
+			SignUtil.saveAll();
 			ChatUtil.sendSuccess("Configuration saved to disc");
 			return;
 		}
 		else if(args[1].equalsIgnoreCase("load")) {
 			CommandManager.getPlugin().reloadConfig();
 			CommandManager.getPlugin().reloadLanguageData();
-			MineReset.setMines(MineUtil.loadAll(MineReset.getMines()));
+			MineReset.setMines(MineUtil.loadAll());
+			MineReset.setSigns(SignUtil.loadAll());
 			ChatUtil.sendSuccess("Configuration loaded from disc");
 			return;
 		}

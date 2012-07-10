@@ -4,6 +4,7 @@ configuration:
 misc:
   wand-item: 294
   check-time-every: 20
+  teleport-on-reset: true
 updater:
   channel: "db"
   remind-on-login: true

@@ -3,6 +3,7 @@ package com.wolvencraft.MineReset.mine;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
+import com.wolvencraft.MineReset.generation.BaseGenerator;
 import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.GeneratorUtil;
 import com.wolvencraft.MineReset.util.Util;
@@ -147,7 +148,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         world = Bukkit.getWorld(UUID.fromString(worldString));
 		}
 		catch(IllegalArgumentException eie) {
-			world = Bukkit.getWorld(worldString);
+			ChatUtil.debug("WorldString = " + worldString);
+			world = Bukkit.getServer().getWorld(worldString);
         	if(world == null) throw new IllegalArgumentException("Mine file contains an invalid world!");
 		}
         one = ((Vector) me.get("one")).toLocation(world);
@@ -213,13 +215,13 @@ public class Mine implements ConfigurationSerializable, Listener {
         	ChatUtil.getLogger().severe("Mine on file is located in an invalid world!");
         	return false;
         }
-        try {
-        	return GeneratorUtil.get(generator).run(this);
-        } catch (NullPointerException npe) {
+        BaseGenerator gen = GeneratorUtil.get(generator);
+        if(gen == null) {
         	if(CommandManager.getSender() != null) ChatUtil.sendError("Invalid generator selected!");
-        	else ChatUtil.getLogger().severe("Invalid generator selected!");
-        	return false;
+            else ChatUtil.getLogger().severe("Invalid generator selected!");
+            return false;
         }
+        else return gen.run(this);
     }
 
     private boolean removePlayers() {
@@ -236,16 +238,16 @@ public class Mine implements ConfigurationSerializable, Listener {
 
     public boolean isLocationInMine(Location l) {
         return (l.getWorld().equals(world)
-        		&& (l.getX() >= one.getX() && l.getX() <= two.getX())     //if x matches
-                && (l.getY() >= one.getY() && l.getY() <= two.getY()) //and y
-                && (l.getZ() >= one.getZ() && l.getZ() <= two.getZ())); //and z
+        		&& (l.getX() >= one.getX() && l.getX() <= two.getX())
+                && (l.getY() >= one.getY() && l.getY() <= two.getY())
+                && (l.getZ() >= one.getZ() && l.getZ() <= two.getZ()));
     }
     
     public boolean isLocationInProtection(Location l) {
         return (l.getWorld().equals(world)
-        		&& (l.getX() >= protOne.getX() && l.getX() <= protTwo.getX())     //if x matches
-                && (l.getY() >= protOne.getY() && l.getY() <= protTwo.getY())     //and y
-                && (l.getZ() >= protOne.getZ() && l.getZ() <= protTwo.getZ()));   //and z
+        		&& (l.getX() >= protOne.getX() && l.getX() <= protTwo.getX())
+                && (l.getY() >= protOne.getY() && l.getY() <= protTwo.getY())
+                && (l.getZ() >= protOne.getZ() && l.getZ() <= protTwo.getZ()));
     }
     
     public Location getFirstPoint() {

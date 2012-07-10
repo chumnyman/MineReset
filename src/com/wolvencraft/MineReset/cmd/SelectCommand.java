@@ -9,14 +9,12 @@ import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
-public class SelectCommand
-{
-	public static void run(String[] args)
-	{
+public class SelectCommand {
+	public static void run(String[] args) {
+		
 		Player player;
-		if(CommandManager.getSender() instanceof Player) {
+		if(CommandManager.getSender() instanceof Player)
 			player = (Player) CommandManager.getSender();
-		}
 		else {
 			ChatUtil.sendError("This command cannot be executed via console");
 			return;
@@ -25,23 +23,20 @@ public class SelectCommand
 			ChatUtil.sendDenied(args);
 			return;
 		}
-		
-		
-		if(args.length > 2) {
+
+		if(args.length == 1) {
+			HelpCommand.getSelect();
+			return;
+		}
+		if(args.length != 2) {
 			ChatUtil.sendInvalidArguments(args);
 			return;
 		}
 		
+		Location loc = null;
+		String message = "";
 		
 		if(args[0].equalsIgnoreCase("select")) {
-			if(args.length == 1) {
-				HelpCommand.getSelect();
-				return;
-			}
-			if(args.length != 2) {
-				ChatUtil.sendInvalidArguments(args);
-				return;
-			}
 			
 			Mine curMine = MineUtil.getMine(args[1]);
 			if(curMine == null) {
@@ -54,40 +49,33 @@ public class SelectCommand
 			ChatUtil.sendNote(curMine.getName(), "Referents points of the mine are selected!");
 			return;
 		}
-		
-		Location loc = null;
-		String message = "";
-		
-		if(args[0].equalsIgnoreCase("hpos1")) {
+		else if(args[0].equalsIgnoreCase("hpos1")) {
 			loc = player.getTargetBlock(null, 100).getLocation();
 			CommandManager.setLocation(loc, 0);
-			message = "First point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")";
+			message = "First position set to (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")";
 		}
 		else if(args[0].equalsIgnoreCase("pos1")) {
 			loc = player.getLocation();
 			CommandManager.setLocation(loc, 0);
-			message = "First point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")";
+			message = "First position set to (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")";
 		}
 		else if(args[0].equalsIgnoreCase("hpos2")) {
 			loc = player.getTargetBlock(null, 100).getLocation();
 			CommandManager.setLocation(loc, 1);
-			message = "Second point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")";
+			message = "Second position set to (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")";
 		}
 		else if(args[0].equalsIgnoreCase("pos2")) {
 			loc = player.getLocation();
 			CommandManager.setLocation(loc, 1);
-			message = "Second point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")";
+			message = "Second position set to (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")";
 		}
 		else {
 			ChatUtil.sendInvalid(args);
 			return;
 		}
 		
-		if(Util.locationsSet()) message = message + ": " + Util.getBlockCount() + " blocks";
+		if(Util.locationsSet()) message = message + " [" + Util.getBlockCount() + "]";
 		ChatUtil.sendSuccess (message);
-		
-		if(Util.locationsSet())
-			ChatUtil.sendSuccess("Both reference points are set! You can now save the region.");
 		
 		return;
 	}

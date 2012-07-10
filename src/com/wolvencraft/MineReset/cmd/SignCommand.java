@@ -15,14 +15,11 @@ import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.SignUtil;
 import com.wolvencraft.MineReset.util.Util;
 
-public class SignCommand
-{
-	public static void run(String args[])
-	{
+public class SignCommand {
+	public static void run(String args[]) {
 		Player player;
-		if(CommandManager.getSender() instanceof Player) {
+		if(CommandManager.getSender() instanceof Player)
 			player = (Player) CommandManager.getSender();
-		}
 		else {
 			ChatUtil.sendError("This command cannot be executed via console");
 			return;
@@ -36,7 +33,6 @@ public class SignCommand
 			HelpCommand.getSign();
 			return;
 		}
-		
 		if(args.length != 2) {
 			ChatUtil.sendInvalidArguments(args);
 			return;
@@ -44,7 +40,7 @@ public class SignCommand
 		
 		Block b = player.getTargetBlock(null, 100);
 		if(b.getType() != Material.WALL_SIGN && b.getType() != Material.SIGN_POST) {
-			ChatUtil.sendError("The targeted block is not a sign");
+			ChatUtil.sendError("You are targeting " + b.getType().toString() + "; you can only use this command on signs");
 			return;
 		}
 		
@@ -101,17 +97,15 @@ public class SignCommand
 				Sign signBlock = (Sign) b.getState();
 				List<String> lines = sign.getLines();
 
-				for(int i = 0; i < lines.size(); i++) {
+				for(int i = 0; i < lines.size(); i++)
 					signBlock.setLine(i, lines.get(i));
-				}
 				signBlock.update(true);
 			}
 			else {
-				ChatUtil.sendError("You have to be targeting a sign you want removed");
+				ChatUtil.sendError("You are targeting " + b.getType().toString() + "; you can only use this command on signs");
 				return;
 			}
 			
-
 			List<SignClass> signs = MineReset.getSigns();
 			signs.remove(sign);
 			MineReset.setSigns(signs);

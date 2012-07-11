@@ -301,8 +301,10 @@ public class Util
 		str = str.replaceAll("%MINE%", curMine.getName());
 		str = str.replaceAll("%MINENAME%", displayName);
 		
-		str = str.replaceAll("%COOLTIME%", parseSeconds(curMine.getCooldownTime()));
-		str = str.replaceAll("%COOL%", parseSeconds(curMine.getNextCooldown()));
+		if(curMine.getCooldown()) {
+			str = str.replaceAll("%COOLTIME%", parseSeconds(curMine.getCooldownTime()));
+			str = str.replaceAll("%COOL%", parseSeconds(curMine.getNextCooldown()));
+		}
 		
 		if(curMine.getAutomatic()) {
 			// Reset period variable calculations
@@ -371,6 +373,7 @@ public class Util
 			str = str.replaceAll("%PSC%", psecClock);
 			
 			str = str.replaceAll("%PTC%", ptimeClock);			// Super-formatted variable
+			str = str.replaceAll("%PTIME%", ptimeClock);		// Super-formatted variable
 			
 			// Next Reset variables
 			str = str.replaceAll("%NHR%", nhour + "");			// Raw variables
@@ -386,6 +389,7 @@ public class Util
 			str = str.replaceAll("%NSC%", nsecClock);
 			
 			str = str.replaceAll("%NTC%", ntimeClock);			// Super-formatted variable
+			str = str.replaceAll("%NTIME%", ntimeClock);		// Super-formatted variable
 		}
 
 		str = parseColors(str);

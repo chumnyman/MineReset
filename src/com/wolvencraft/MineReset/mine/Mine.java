@@ -144,14 +144,9 @@ public class Mine implements ConfigurationSerializable, Listener {
 	@SuppressWarnings("unchecked")
 	public Mine(Map<String, Object> me) {
 		String worldString = (String) me.get("world");
-		try {
-        world = Bukkit.getWorld(UUID.fromString(worldString));
-		}
-		catch(IllegalArgumentException eie) {
-			ChatUtil.debug("WorldString = " + worldString);
-			world = Bukkit.getServer().getWorld(worldString);
-        	if(world == null) throw new IllegalArgumentException("Mine file contains an invalid world!");
-		}
+		world = Bukkit.getServer().getWorld(worldString);
+		if(world == null) world = Bukkit.getServer().getWorld(UUID.fromString(worldString));
+		if(world == null) throw new IllegalArgumentException("Mine file contains an invalid world!");
         one = ((Vector) me.get("one")).toLocation(world);
         two = ((Vector) me.get("two")).toLocation(world);
         tpPoint = ((SimpleLoc) me.get("tpPoint")).toLocation();

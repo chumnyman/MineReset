@@ -23,6 +23,7 @@ import com.wolvencraft.MineReset.cmd.WarpCommand;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Reset;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineError;
 
 public class CommandManager implements CommandExecutor
 {
@@ -74,7 +75,7 @@ public class CommandManager implements CommandExecutor
 			WandCommand.run(args);
 		else if(args[0].equalsIgnoreCase("warp") || args[0].equalsIgnoreCase("tp"))
 			WarpCommand.run(args);
-		else ChatUtil.sendInvalid(args);
+		else ChatUtil.sendInvalid(MineError.INVALID, args);
 			
 		String argString = "/mine";
         for (String arg : args) {

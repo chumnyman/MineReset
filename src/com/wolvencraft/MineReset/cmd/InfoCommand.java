@@ -12,6 +12,7 @@ import org.bukkit.material.MaterialData;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.Util;
 
 public class InfoCommand
@@ -33,12 +34,12 @@ public class InfoCommand
 		}
 		
 		if(curMine == null) {
-			ChatUtil.sendInvalidMineName(args[1]);
+			ChatUtil.sendInvalid(MineError.MINE_NAME, args, args[1]);
 			return;
 		}
 		
 		if(args.length > 3) {
-			ChatUtil.sendInvalidArguments(args);
+			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 			return;
 		}
 		
@@ -46,7 +47,7 @@ public class InfoCommand
 		if(args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("?")) {
 
 			if(!Util.hasPermission("info.all")) {
-				ChatUtil.sendDenied(args);
+				ChatUtil.sendInvalid(MineError.ACCESS, args);
 				return;
 			}
 			
@@ -130,7 +131,7 @@ public class InfoCommand
 				}
 				else
 				{
-					ChatUtil.sendInvalid(args);
+					ChatUtil.sendInvalid(MineError.INVALID, args);
 					return;
 				}
 			}
@@ -198,13 +199,13 @@ public class InfoCommand
 		}
 		if(args[0].equalsIgnoreCase("time")) {
 			if(!Util.hasPermission("info.time")) {
-				ChatUtil.sendDenied(args);
+				ChatUtil.sendInvalid(MineError.ACCESS, args);
 				return;
 			}
 			
 			
 			if(args.length != 2) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			String displayName = curMine.getDisplayName();

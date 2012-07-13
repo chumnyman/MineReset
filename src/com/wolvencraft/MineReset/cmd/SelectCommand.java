@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -20,7 +21,7 @@ public class SelectCommand {
 			return;
 		}
 		if(!Util.isPlayer() || !Util.hasPermission("edit.select")) {
-			ChatUtil.sendDenied(args);
+			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
 		}
 
@@ -29,7 +30,7 @@ public class SelectCommand {
 			return;
 		}
 		if(args.length != 2) {
-			ChatUtil.sendInvalidArguments(args);
+			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 			return;
 		}
 		
@@ -40,7 +41,7 @@ public class SelectCommand {
 			
 			Mine curMine = MineUtil.getMine(args[1]);
 			if(curMine == null) {
-				ChatUtil.sendInvalidMineName(args[1]);
+				ChatUtil.sendInvalid(MineError.MINE_NAME, args);
 				return;
 			}
 			
@@ -70,7 +71,7 @@ public class SelectCommand {
 			message = "Second position set to (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")";
 		}
 		else {
-			ChatUtil.sendInvalid(args);
+			ChatUtil.sendInvalid(MineError.INVALID, args);
 			return;
 		}
 		

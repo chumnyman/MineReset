@@ -11,6 +11,7 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -28,12 +29,12 @@ public class SaveCommand
 		}
 		
 		if(!Util.hasPermission("edit.save")) {
-			ChatUtil.sendDenied(args);
+			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
 		}
 		
 		if(args.length != 2) {
-			ChatUtil.sendInvalidArguments(args);
+			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 			return;
 		}
 		

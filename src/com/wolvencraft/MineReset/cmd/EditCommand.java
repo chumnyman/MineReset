@@ -14,12 +14,13 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.Util;
 
 public class EditCommand {
 	public static void run(String[] args) {
 		if(!Util.hasPermission("edit.info")) {
-				ChatUtil.sendDenied(args);
+			ChatUtil.sendInvalid(MineError.ACCESS, args);
 				return;
 		}
 		
@@ -28,19 +29,19 @@ public class EditCommand {
 			return;
 		}
 		if(args.length > 3) {
-			ChatUtil.sendInvalidArguments(args);
+			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 			return;
 		}
 		
 		if(args[0].equalsIgnoreCase("edit")) {
 			if(args.length != 2) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
 			Mine curMine = MineUtil.getMine(args[1]);
 			if(curMine == null) {
-				ChatUtil.sendInvalidMineName(args[1]);
+				ChatUtil.sendInvalid(MineError.MINE_NAME, args, args[1]);
 				return;
 			}
 			String message = Util.parseVars(Language.getString("editing.mine-selected-successfully"), curMine);
@@ -50,13 +51,13 @@ public class EditCommand {
 		}
 		else if(args[0].equalsIgnoreCase("none")) {
 			if(args.length != 1) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
-				ChatUtil.sendMineNotSelected();
+				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 				return;
 			}
 			
@@ -67,13 +68,13 @@ public class EditCommand {
 		}
 		else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+")) {
 			if(args.length != 2 && args.length != 3) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
-				ChatUtil.sendMineNotSelected();
+				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 				return;
 			}
 			
@@ -86,7 +87,7 @@ public class EditCommand {
 			MineBlock air = MineUtil.getBlock(curMine, new MaterialData(Material.AIR));
 			
 			if(block == null) {
-				ChatUtil.sendBlockDoesNotExist(args[1]);
+				ChatUtil.sendInvalid(MineError.INVALID_BLOCK, args, args[1]);
 				return;
 			}
 			if(block.equals(air.getBlock())) {
@@ -107,7 +108,7 @@ public class EditCommand {
 						percent = Double.parseDouble(args[2].replace("%", ""));
 					}
 					catch(NumberFormatException nfe) {
-						ChatUtil.sendInvalid(args);
+						ChatUtil.sendInvalid(MineError.INVALID, args);
 						return;
 					}
 				}
@@ -120,7 +121,7 @@ public class EditCommand {
 			}
 			
 			if(percent <= 0) {
-				ChatUtil.sendInvalid(args);
+				ChatUtil.sendInvalid(MineError.INVALID, args);
 				return;
 			}
 			
@@ -146,13 +147,13 @@ public class EditCommand {
 		}
 		else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-")) {
 			if(args.length != 2 && args.length != 3) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
-				ChatUtil.sendMineNotSelected();
+				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 				return;
 			}
 			
@@ -179,7 +180,7 @@ public class EditCommand {
 						percent = Double.parseDouble(args[2].replace("%", ""));
 					}
 					catch(NumberFormatException nfe) {
-						ChatUtil.sendInvalid(args);
+						ChatUtil.sendInvalid(MineError.INVALID, args);
 						return;
 					}
 				}
@@ -210,7 +211,7 @@ public class EditCommand {
 		}
 		else if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del")) {
 			if(args.length > 2) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
@@ -218,14 +219,14 @@ public class EditCommand {
 			if(args.length == 1) {
 				curMine = CommandManager.getMine();
 				if(curMine == null) {
-					ChatUtil.sendMineNotSelected();
+					ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 					return;
 				}
 			}
 			else {
 				curMine = MineUtil.getMine(args[1]);
 				if(curMine == null) {
-					ChatUtil.sendInvalidMineName(args[1]);
+					ChatUtil.sendInvalid(MineError.MINE_NAME, args, args[1]);
 					return;
 				}
 			}
@@ -240,13 +241,13 @@ public class EditCommand {
 		}
 		else if(args[0].equalsIgnoreCase("name")) {
 			if(args.length < 2) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
-				ChatUtil.sendMineNotSelected();
+				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 				return;
 			}
 			
@@ -263,13 +264,13 @@ public class EditCommand {
 		}
 		else if(args[0].equalsIgnoreCase("silent")) {
 			if(args.length != 1) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
-				ChatUtil.sendMineNotSelected();
+				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 				return;
 			}
 			
@@ -288,13 +289,13 @@ public class EditCommand {
 		}
 		else if(args[0].equalsIgnoreCase("cooldown")) {
 			if(args.length != 2) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
-				ChatUtil.sendMineNotSelected();
+				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 				return;
 			}
 			if(args[1].equalsIgnoreCase("toggle")) {
@@ -311,14 +312,14 @@ public class EditCommand {
 				try {
 					int seconds = Util.parseTime(args[1]);
 					if(seconds == -1) {
-						ChatUtil.sendInvalidArguments(args);
+						ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 						return;
 					}
 					curMine.setCooldownTime(seconds);
 					ChatUtil.sendNote(curMine.getName(), "Reset cooldown set to " + ChatColor.GREEN + Util.parseSeconds(seconds));
 				}
 				catch (NumberFormatException nfe) {
-					ChatUtil.sendInvalidArguments(args);
+					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				}
 			}
 
@@ -327,13 +328,13 @@ public class EditCommand {
 		}
 		else if(args[0].equalsIgnoreCase("generator")) {
 			if(args.length != 2) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
-				ChatUtil.sendMineNotSelected();
+				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 				return;
 			}
 			
@@ -345,18 +346,18 @@ public class EditCommand {
 		}
 		else if(args[0].equalsIgnoreCase("link") || args[0].equalsIgnoreCase("setparent")) {
 			if(args.length != 2) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
-				ChatUtil.sendMineNotSelected();
+				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 				return;
 			}
 			
 			if(!args[1].equalsIgnoreCase("none") && MineUtil.getMine(args[1]) == null) {
-				ChatUtil.sendInvalidMineName(args[1]);
+				ChatUtil.sendInvalid(MineError.MINE_NAME, args, args[1]);
 				return;
 			}
 			
@@ -373,7 +374,7 @@ public class EditCommand {
 			return;
 		}
 		else {
-			ChatUtil.sendInvalid(args);
+			ChatUtil.sendInvalid(MineError.INVALID, args);
 			return;
 		}
 	}

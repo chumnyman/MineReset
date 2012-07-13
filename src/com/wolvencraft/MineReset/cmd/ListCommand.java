@@ -5,6 +5,7 @@ import com.wolvencraft.MineReset.mine.Mine;
 import org.bukkit.ChatColor;
 
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.Util;
 
 public class ListCommand
@@ -12,12 +13,12 @@ public class ListCommand
 	public static void run(String[] args)
 	{
 		if(!Util.hasPermission("info.list")) {
-			ChatUtil.sendDenied(args);
+			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
 		}
 		
 		if(args.length > 2) {
-			ChatUtil.sendInvalidArguments(args);
+			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 			return;
 		}
 		

@@ -8,6 +8,7 @@ import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Reset;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -22,13 +23,13 @@ public class ResetCommand
 			curMine = MineUtil.getMine(args[1]);
 		
 		if(curMine == null) {
-			ChatUtil.sendMineNotSelected();
+			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 			return;
 		}
 		
 		if(source.equals(Reset.MANUAL)) {
 			if(!Util.hasPermission("reset.manual." + curMine.getName()) && !Util.hasPermission("reset.manual")) {
-				ChatUtil.sendDenied(args);
+				ChatUtil.sendInvalid(MineError.ACCESS, args);
 				return;
 			}
 			

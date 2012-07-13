@@ -12,6 +12,7 @@ import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.SignClass;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.SignUtil;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -25,7 +26,7 @@ public class SignCommand {
 			return;
 		}
 		if(!Util.hasPermission("edit.sign")) {
-			ChatUtil.sendDenied(args);
+			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
 		}
 		
@@ -34,7 +35,7 @@ public class SignCommand {
 			return;
 		}
 		if(args.length != 2) {
-			ChatUtil.sendInvalidArguments(args);
+			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 			return;
 		}
 		
@@ -46,7 +47,7 @@ public class SignCommand {
 		
 		Mine curMine = CommandManager.getMine();
 		if(curMine == null) {
-			ChatUtil.sendMineNotSelected();
+			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 			return;
 		}
 		
@@ -115,7 +116,7 @@ public class SignCommand {
 			return;
 		}
 		else {
-			ChatUtil.sendInvalid(args);
+			ChatUtil.sendInvalid(MineError.INVALID, args);
 			return;
 		}
 	}

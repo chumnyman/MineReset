@@ -10,13 +10,14 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Protection;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class ProtectionCommand {
 	public static void run(String[] args) {
 		if(!Util.hasPermission("edit.protection")) {
-			ChatUtil.sendDenied(args);
+			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
 		}
 		
@@ -25,18 +26,18 @@ public class ProtectionCommand {
 			return;
 		}
 		if(args.length > 5) {
-			ChatUtil.sendInvalidArguments(args);
+			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 		}
 		
 		Mine curMine = CommandManager.getMine();
 		if(curMine == null) {
-			ChatUtil.sendMineNotSelected();
+			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 			return;
 		}
 		
 		if(args[1].equalsIgnoreCase("save")) {
 			if(args.length != 2) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
@@ -83,7 +84,7 @@ public class ProtectionCommand {
 		}
 		else if(args[1].equalsIgnoreCase("pvp")) {
 			if(args.length != 2) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			if(curMine.getProtection().contains(Protection.PVP)) {
@@ -104,7 +105,7 @@ public class ProtectionCommand {
 			if(args[2].equalsIgnoreCase("toggle")) {
 
 				if(args.length != 3) {
-					ChatUtil.sendInvalidArguments(args);
+					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 					return;
 				}
 				
@@ -121,7 +122,7 @@ public class ProtectionCommand {
 			}
 			else if(args[2].equalsIgnoreCase("whitelist")) {
 				if(args.length != 3) {
-					ChatUtil.sendInvalidArguments(args);
+					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 					return;
 				}
 				if(curMine.getBreakBlacklist().getWhitelist()) {
@@ -135,13 +136,13 @@ public class ProtectionCommand {
 			}
 			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
 				if(args.length != 4) {
-					ChatUtil.sendInvalidArguments(args);
+					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 					return;
 				}
 				MaterialData block = Util.getBlock(args[3]);
 				
 				if(block == null) {
-					ChatUtil.sendBlockDoesNotExist(args[3]);
+					ChatUtil.sendInvalid(MineError.INVALID_BLOCK, args, args[3]);
 					return;
 				}
 				
@@ -153,13 +154,13 @@ public class ProtectionCommand {
 			}
 			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
 				if(args.length != 4) {
-					ChatUtil.sendInvalidArguments(args);
+					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 					return;
 				}
 				MaterialData block = Util.getBlock(args[3]);
 				
 				if(block == null) {
-					ChatUtil.sendBlockDoesNotExist(args[3]);
+					ChatUtil.sendInvalid(MineError.INVALID_BLOCK, args, args[3]);
 					return;
 				}
 				
@@ -176,7 +177,7 @@ public class ProtectionCommand {
 			}
 			else
 			{
-				ChatUtil.sendInvalid(args);
+				ChatUtil.sendInvalid(MineError.INVALID, args);
 				return;
 			}
 		}
@@ -189,7 +190,7 @@ public class ProtectionCommand {
 			if(args[2].equalsIgnoreCase("toggle")) {
 
 				if(args.length != 3) {
-					ChatUtil.sendInvalidArguments(args);
+					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 					return;
 				}
 				
@@ -206,7 +207,7 @@ public class ProtectionCommand {
 			}
 			else if(args[2].equalsIgnoreCase("whitelist")) {
 				if(args.length != 3) {
-					ChatUtil.sendInvalidArguments(args);
+					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 					return;
 				}
 				if(curMine.getPlaceBlacklist().getWhitelist()) {
@@ -220,13 +221,13 @@ public class ProtectionCommand {
 			}
 			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
 				if(args.length != 4) {
-					ChatUtil.sendInvalidArguments(args);
+					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 					return;
 				}
 				MaterialData block = Util.getBlock(args[3]);
 				
 				if(block == null) {
-					ChatUtil.sendBlockDoesNotExist(args[3]);
+					ChatUtil.sendInvalid(MineError.INVALID_BLOCK, args, args[3]);
 					return;
 				}
 				
@@ -238,13 +239,13 @@ public class ProtectionCommand {
 			}
 			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
 				if(args.length != 4) {
-					ChatUtil.sendInvalidArguments(args);
+					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 					return;
 				}
 				MaterialData block = Util.getBlock(args[3]);
 				
 				if(block == null) {
-					ChatUtil.sendBlockDoesNotExist(args[3]);
+					ChatUtil.sendInvalid(MineError.INVALID_BLOCK, args, args[3]);
 					return;
 				}
 				
@@ -261,13 +262,13 @@ public class ProtectionCommand {
 			}
 			else
 			{
-				ChatUtil.sendInvalid(args);
+				ChatUtil.sendInvalid(MineError.INVALID, args);
 				return;
 			}
 		}
 		else
 		{
-			ChatUtil.sendInvalid(args);
+			ChatUtil.sendInvalid(MineError.INVALID, args);
 			return;
 		}
 		

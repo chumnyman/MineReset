@@ -5,6 +5,7 @@ import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.ConfigurationUpdater;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.SignUtil;
 import com.wolvencraft.MineReset.util.Util;
@@ -14,7 +15,7 @@ public class DataCommand
 	public static void run(String[] args)
 	{
 		if(!Util.hasPermission("edit.admin")) {
-			ChatUtil.sendDenied(args);
+			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
 		}
 		
@@ -49,7 +50,7 @@ public class DataCommand
 			return;
 		}
 		else {
-			ChatUtil.sendInvalid(args);
+			ChatUtil.sendInvalid(MineError.INVALID, args);
 			return;
 		}
 	}

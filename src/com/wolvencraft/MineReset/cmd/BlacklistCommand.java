@@ -8,13 +8,14 @@ import org.bukkit.material.MaterialData;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class BlacklistCommand {
 	public static void run(String[] args) {
 		if(!Util.hasPermission("edit.blacklist")) {
-			ChatUtil.sendDenied(args);
+			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
 		}
 		
@@ -23,19 +24,19 @@ public class BlacklistCommand {
 			return;
 		}
 		else if(args.length > 3) {
-			ChatUtil.sendInvalid(args);
+			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 			return;
 		}
 		
 		Mine curMine = CommandManager.getMine();
 		if(curMine == null) {
-			ChatUtil.sendMineNotSelected();
+			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 			return;
 		}
 		
 		if(args[1].equalsIgnoreCase("toggle")) {
 			if(args.length != 2) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			if(curMine.getBlacklist().getEnabled()) {
@@ -60,13 +61,13 @@ public class BlacklistCommand {
 		}
 		else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
 			if(args.length != 3) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
 			MaterialData block = Util.getBlock(args[2]);
 			if(block == null) {
-				ChatUtil.sendBlockDoesNotExist(args[2]);
+				ChatUtil.sendInvalid(MineError.INVALID_BLOCK, args, args[2]);
 				return;
 			}
 			
@@ -78,13 +79,13 @@ public class BlacklistCommand {
 		}
 		else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-")) {
 			if(args.length != 3) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
 			MaterialData block = Util.getBlock(args[2]);
 			if(block == null) {
-				ChatUtil.sendBlockDoesNotExist(args[2]);
+				ChatUtil.sendInvalid(MineError.INVALID_BLOCK, args, args[2]);
 				return;
 			}
 			
@@ -94,7 +95,7 @@ public class BlacklistCommand {
 			ChatUtil.sendNote(curMine.getName(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been removed from the list");
 		}
 		else {
-			ChatUtil.sendInvalid(args);
+			ChatUtil.sendInvalid(MineError.INVALID, args);
 			return;
 		}
 		

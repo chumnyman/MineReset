@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -15,7 +16,7 @@ public class TimerCommand {
 	
 	public static void run(String[] args) {
 		if(!Util.hasPermission("edit.timer")) {
-			ChatUtil.sendDenied(args);
+			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
 		}
 		
@@ -26,13 +27,13 @@ public class TimerCommand {
 
 		Mine curMine = CommandManager.getMine();
 		if(curMine == null) {
-			ChatUtil.sendMineNotSelected();
+			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 			return;
 		}
 		
 		if(args[1].equalsIgnoreCase("toggle")) {
 			if(args.length != 2) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
@@ -48,7 +49,7 @@ public class TimerCommand {
 		}
 		else if(args[1].equalsIgnoreCase("set")) {
 			if(args.length != 3) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			int time = Util.parseTime(args[2]);
@@ -62,13 +63,13 @@ public class TimerCommand {
 		}
 		else if(args[1].equalsIgnoreCase("warning")) {
 			if(args.length < 3) {
-				ChatUtil.sendInvalidArguments(args);
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
 			if(args[2].equalsIgnoreCase("toggle")) {
 				if(args.length != 3) {
-					ChatUtil.sendInvalidArguments(args);
+					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 					return;
 				}
 				
@@ -83,7 +84,7 @@ public class TimerCommand {
 			}
 			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
 				if(args.length != 4) {
-					ChatUtil.sendInvalidArguments(args);
+					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 					return;
 				}
 				
@@ -105,7 +106,7 @@ public class TimerCommand {
 			}
 			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
 				if(args.length != 4) {
-					ChatUtil.sendInvalidArguments(args);
+					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 					return;
 				}
 				
@@ -127,12 +128,12 @@ public class TimerCommand {
 				ChatUtil.sendSuccess(curMine.getName() + " will no longer send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
 			}
 			else {
-				ChatUtil.sendInvalid(args);
+				ChatUtil.sendInvalid(MineError.INVALID, args);
 				return;
 			}
 		}
 		else {
-			ChatUtil.sendInvalid(args);
+			ChatUtil.sendInvalid(MineError.INVALID, args);
 			return;
 		}
 		

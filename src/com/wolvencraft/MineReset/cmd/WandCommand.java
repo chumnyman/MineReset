@@ -6,12 +6,13 @@ import org.bukkit.inventory.ItemStack;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.Util;
 
 public class WandCommand {
 	public static void run(String[] args) {
 		if(!Util.hasPermission("edit.wand")) {
-			ChatUtil.sendDenied(args);
+			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
 		}
 		
@@ -21,7 +22,7 @@ public class WandCommand {
 		}
 		
 		if(args.length > 1) {
-			ChatUtil.sendInvalidArguments(args);
+			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 			return;
 		}
 		

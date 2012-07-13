@@ -148,16 +148,17 @@ public class ChatUtil
 		message = Util.parseColors(message);
 		player.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
-
+	
+	/**
+	 * Handles all the input errors
+	 * @param error Error that has occurred
+	 * @param args Arguments of the command, or null if extra is in place
+	 * @param extra An extra variable, used for mine name and block name, or null if args is in place
+	 */
 	public static void sendInvalid(MineError error, String[] args, String extra) {
 		CommandSender sender = CommandManager.getSender();
 		if(sender == null) sender = CommandManager.getPlugin().getServer().getConsoleSender();
-		
 		String title = Language.getString("general.title-error");
-		
-		String command = "";
-        for (String arg : args) { command = command + " " + arg; }
-    	log(sender.getName() + " sent an invalid command: /mine" + command);
         
         String message;
 		
@@ -177,37 +178,46 @@ public class ChatUtil
 			message = "An unknown error has occurred";
 
 		sender.sendMessage(Util.parseColors(ChatColor.RED + title + " " + ChatColor.WHITE + message));
+		
+		String command = "";
+        for (String arg : args) { command = command + " " + arg; }
+    	if(error.equals(MineError.ACCESS)) log(sender.getName() + " was denied access to command: /mine" + command);
+    	else log(sender.getName() + " sent an invalid command: /mine" + command);
+	}
+	
+	/**
+	 * Handles all the input errors<br />
+	 * Cannot be used with <b>MineError.MINE_NAME</b> an <b>MineError.INVALID_BLOCK</b>
+	 * @param error Error that has occurred
+	 * @param args Arguments of the command
+	 */
+	public static void sendInvalid(MineError error, String[] args) {
+		sendInvalid(error, args, null);
+		return; 
 	}
 	
     /**
      * Sends a message into the server log if debug is enabled
      * @param message A message to be sent
      */
-    public static void debug(String message)
-    {
-        if (Util.debugEnabled()) {
-            ChatUtil.log(message);
-        }
+    public static void debug(String message) {
+        if (Util.debugEnabled()) ChatUtil.log(message);
     }
     
     /**
      * Returns the logger
      * @return Logger
      */
-	public static Logger getLogger()
-	{
-		Logger log = Logger.getLogger("MineReset");
-		return log;
+	public static Logger getLogger() {
+		return Logger.getLogger("MineReset");
 	}
 	
 	/**
 	 * Sends a message into the server log
 	 * @param message A message to be sent
 	 */
-	public static void log(String message)
-	{
-		Logger log = Logger.getLogger("MineReset");
-		log.info(message);
+	public static void log(String message) {
+		Logger.getLogger("MineReset").info(message);
 	}
 	
 	public static void formatHelp(String command, String arguments, String description, String node) {

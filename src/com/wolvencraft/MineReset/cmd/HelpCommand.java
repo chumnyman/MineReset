@@ -26,17 +26,6 @@ public class HelpCommand {
 		return;
 	}
 	
-	public static void getInfo() {
-		formatHeader(20, "Information");
-		formatHelp("info", "<name>", "Returns the information about a mine", "info.all");
-		formatHelp("info", "<name> blacklist", "Returns the information about mine blacklist", "info.all");
-		formatHelp("info", "<name> protection", "Returns the information about mine protection", "info.all");
-		formatHelp("info", "<name> signs", "Returns the information about signs", "info.all");
-		formatHelp("info", "<name> reset", "Returns the information about resets", "info.all");
-		formatHelp("time", "<name>", "Returns the next reset time for the mine", "info.time");
-		return;
-	}
-	
 	public static void getProtection() {
 		formatHeader(20, "Protection");
 		formatHelp("prot", "pvp", "Toggles the PVP on and off for the current mine");

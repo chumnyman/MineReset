@@ -14,6 +14,7 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.GeneratorUtil;
 import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.Util;
 
@@ -21,15 +22,17 @@ public class EditCommand {
 	public static void run(String[] args) {
 		if(!Util.hasPermission("edit.info")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
-				return;
-		}
-		
-		if(!args[0].equalsIgnoreCase("none") && !args[0].equalsIgnoreCase("delete") && args.length == 1) {
-			HelpCommand.getEdit();
 			return;
 		}
-		if(args.length > 3) {
-			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
+		
+		if(args.length == 1 && !args[0].equalsIgnoreCase("none") && !args[0].equalsIgnoreCase("delete")) {
+			getHelp();
+			return;
+		}
+		
+		Mine curMine = CommandManager.getMine();
+		if(!args[0].equalsIgnoreCase("edit") && !args[0].equalsIgnoreCase("delete") && curMine == null) {
+			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 			return;
 		}
 		
@@ -39,14 +42,14 @@ public class EditCommand {
 				return;
 			}
 			
-			Mine curMine = MineUtil.getMine(args[1]);
+			curMine = MineUtil.getMine(args[1]);
 			if(curMine == null) {
 				ChatUtil.sendInvalid(MineError.MINE_NAME, args, args[1]);
 				return;
 			}
-			String message = Util.parseVars(Language.getString("editing.mine-selected-successfully"), curMine);
+			
 			CommandManager.setMine(curMine);
-			ChatUtil.sendSuccess(message);
+			ChatUtil.sendSuccess(Util.parseVars(Language.getString("editing.mine-selected-successfully"), curMine));
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("none")) {
@@ -54,16 +57,9 @@ public class EditCommand {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
-			
-			Mine curMine = CommandManager.getMine();
-			if(curMine == null) {
-				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-				return;
-			}
-			
-			String message = Util.parseVars(Language.getString("editing.mine-deselected-successfully"), curMine);
+
+			ChatUtil.sendSuccess(Util.parseVars(Language.getString("editing.mine-deselected-successfully"), curMine));
 			CommandManager.setMine(null);
-			ChatUtil.sendSuccess(message);
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+")) {
@@ -72,16 +68,8 @@ public class EditCommand {
 				return;
 			}
 			
-			Mine curMine = CommandManager.getMine();
-			if(curMine == null) {
-				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-				return;
-			}
-			
 			List<MineBlock> blocks = curMine.getBlocks();
-			
-			if(blocks.size() == 0)
-				blocks.add(new MineBlock(new MaterialData(Material.AIR), 1));
+			if(blocks.size() == 0) blocks.add(new MineBlock(new MaterialData(Material.AIR), 1));
 			
 			MaterialData block = Util.getBlock(args[1]);
 			MineBlock air = MineUtil.getBlock(curMine, new MaterialData(Material.AIR));
@@ -91,22 +79,17 @@ public class EditCommand {
 				return;
 			}
 			if(block.equals(air.getBlock())) {
-				ChatUtil.sendError(Language.getString("error.removing-air"));
+				ChatUtil.sendError("This value is calculated automatically");
 				return;
 			}
 
-			double percent;
-			double percentAvailable = air.getChance();
+			double percent, percentAvailable = air.getChance();
 			
 			if(args.length == 3) {
-				if(Util.isNumeric(args[2])) {
-					percent = Double.parseDouble(args[2]);
-				}
+				if(Util.isNumeric(args[2])) percent = Double.parseDouble(args[2]);
 				else {
 					ChatUtil.debug("Argument is not numeric, attempting to parse");
-					try {
-						percent = Double.parseDouble(args[2].replace("%", ""));
-					}
+					try { percent = Double.parseDouble(args[2].replace("%", "")); }
 					catch(NumberFormatException nfe) {
 						ChatUtil.sendInvalid(MineError.INVALID, args);
 						return;
@@ -116,9 +99,7 @@ public class EditCommand {
 				percent = percent / 100;
 				ChatUtil.debug("Chance value is " + percent);
 			}
-			else {
-				percent = percentAvailable;
-			}
+			else percent = percentAvailable;
 			
 			if(percent <= 0) {
 				ChatUtil.sendInvalid(MineError.INVALID, args);
@@ -130,15 +111,12 @@ public class EditCommand {
 				return;
 			}
 			else percentAvailable -= percent;
-			
 			air.setChance(percentAvailable);
 			
 			MineBlock index = MineUtil.getBlock(curMine, block);
 			
-			if(index == null)
-				blocks.add(new MineBlock(block, percent));
-			else
-				index.setChance(index.getChance() + percent);
+			if(index == null) blocks.add(new MineBlock(block, percent));
+			else index.setChance(index.getChance() + percent);
 			
 			ChatUtil.sendNote(curMine.getName(), Util.format(percent) + " of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
 			ChatUtil.sendNote(curMine.getName(), "Reset the mine for the changes to take effect");
@@ -151,29 +129,22 @@ public class EditCommand {
 				return;
 			}
 			
-			Mine curMine = CommandManager.getMine();
-			if(curMine == null) {
-				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-				return;
-			}
-			
 			MineBlock blockData = MineUtil.getBlock(curMine, Util.getBlock(args[1]));
-			MineBlock air = MineUtil.getBlock(curMine, new MaterialData(Material.AIR));
 			if(blockData == null) {
 				ChatUtil.sendError("There is no '" + args[1] + "' in mine '" + curMine + "'");
 				return;
 			}
+
+			MineBlock air = MineUtil.getBlock(curMine, new MaterialData(Material.AIR));
 			if(blockData.equals(air)) {
-				ChatUtil.sendError(Language.getString("error.removing-air"));
+				ChatUtil.sendError("This value is calculated automatically");
 				return;
 			}
 			
 			double percent;
 			
 			if(args.length == 3) {
-				if(Util.isNumeric(args[2])) {
-					percent = Double.parseDouble(args[2]);
-				}
+				if(Util.isNumeric(args[2])) percent = Double.parseDouble(args[2]);
 				else {
 					ChatUtil.debug("Argument is not numeric, attempting to parse");
 					try {
@@ -188,8 +159,7 @@ public class EditCommand {
 				percent = percent / 100;
 				ChatUtil.debug("Chance value is " + percent);
 				
-				if(percent > blockData.getChance())
-					percent = blockData.getChance();
+				if(percent > blockData.getChance()) percent = blockData.getChance();
 				
 				air.setChance(air.getChance() + percent);
 				blockData.setChance(blockData.getChance() - percent);
@@ -201,7 +171,6 @@ public class EditCommand {
 
 				air.setChance(air.getChance() + blockData.getChance());
 				blocks.remove(blockData);
-				
 				curMine.setBlocks(blocks);
 				
 				ChatUtil.sendNote(curMine.getName(), args[1] + " was successfully removed from the mine");
@@ -215,7 +184,6 @@ public class EditCommand {
 				return;
 			}
 			
-			Mine curMine;
 			if(args.length == 1) {
 				curMine = CommandManager.getMine();
 				if(curMine == null) {
@@ -245,20 +213,11 @@ public class EditCommand {
 				return;
 			}
 			
-			Mine curMine = CommandManager.getMine();
-			if(curMine == null) {
-				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-				return;
-			}
-			
 			String name = args[1];
-			for(int i = 2; i < args.length; i++) {
-				name = name + " " + args[i];
-			}
+			for(int i = 2; i < args.length; i++) name = name + " " + args[i];
 			
 			curMine.setDisplayName(name);
 			ChatUtil.sendNote(curMine.getName(), "Mine now has a display name '" + ChatColor.GOLD + name + ChatColor.WHITE + "'");
-
 			MineUtil.save(curMine);
 			return;
 		}
@@ -268,19 +227,11 @@ public class EditCommand {
 				return;
 			}
 			
-			Mine curMine = CommandManager.getMine();
-			if(curMine == null) {
-				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-				return;
-			}
-			
-			
 			if(curMine.getSilent()) {
 				curMine.setSilent(false);
 				ChatUtil.sendNote(curMine.getName(), "Silent mode " + ChatColor.RED + "off");
 			}
-			else
-			{
+			else {
 				curMine.setSilent(true);
 				ChatUtil.sendNote(curMine.getName(), "Silent mode " + ChatColor.GREEN + "on");
 			}
@@ -293,11 +244,6 @@ public class EditCommand {
 				return;
 			}
 			
-			Mine curMine = CommandManager.getMine();
-			if(curMine == null) {
-				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-				return;
-			}
 			if(args[1].equalsIgnoreCase("toggle")) {
 				if(curMine.getCooldown()) {
 					curMine.setCooldown(false);
@@ -322,7 +268,6 @@ public class EditCommand {
 					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				}
 			}
-
 			MineUtil.save(curMine);
 			return;
 		}
@@ -332,32 +277,15 @@ public class EditCommand {
 				return;
 			}
 			
-			Mine curMine = CommandManager.getMine();
-			if(curMine == null) {
-				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-				return;
-			}
-			
 			curMine.setGenerator(args[1].toUpperCase());
 			ChatUtil.sendNote(curMine.getName(), "Mine generator has been set to " + ChatColor.GREEN + args[1].toUpperCase());
 
 			MineUtil.save(curMine);
 			return;
 		}
-		else if(args[0].equalsIgnoreCase("link") || args[0].equalsIgnoreCase("setparent")) {
+		else if(args[0].equalsIgnoreCase("setparent") || args[0].equalsIgnoreCase("link")) {
 			if(args.length != 2) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
-			}
-			
-			Mine curMine = CommandManager.getMine();
-			if(curMine == null) {
-				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-				return;
-			}
-			
-			if(!args[1].equalsIgnoreCase("none") && MineUtil.getMine(args[1]) == null) {
-				ChatUtil.sendInvalid(MineError.MINE_NAME, args, args[1]);
 				return;
 			}
 			
@@ -368,8 +296,13 @@ public class EditCommand {
 				return;
 			}
 			
+			if(MineUtil.getMine(args[1]) == null) {
+				ChatUtil.sendInvalid(MineError.MINE_NAME, args, args[1]);
+				return;
+			}
+			
 			curMine.setParent(args[1]);
-			ChatUtil.sendNote(curMine.getName(), "Mine will use the timers of " + ChatColor.GREEN + args[1]);
+			ChatUtil.sendNote(curMine.getName(), "Mine will is now linked to " + ChatColor.GREEN + args[1]);
 			MineUtil.save(curMine);
 			return;
 		}
@@ -377,5 +310,27 @@ public class EditCommand {
 			ChatUtil.sendInvalid(MineError.INVALID, args);
 			return;
 		}
+	}
+	
+
+	public static void getHelp() {
+		ChatUtil.formatHeader(20, "Editing");
+		ChatUtil.formatHelp("edit", "<id>", "Selects a mine to edit its properties");
+		ChatUtil.formatHelp("none", "", "De-selects the mine");
+		ChatUtil.formatHelp("name", "<id>", "Creates a display name for a mine");
+		ChatUtil.formatHelp("+", "<block> [percentage]", "Adds a block type to the mine");
+		ChatUtil.formatMessage("If no persentage is provided, the block will fill up all the space available");
+		ChatUtil.formatHelp("-", "<block> [persentage]", "Removes the specified persentage of a block from the mine");
+		ChatUtil.formatMessage("If no persentage is provided, the block will be removed completely");
+		ChatUtil.formatHelp("delete", "", "Completely deletes all the data about the selected mine");
+		ChatUtil.formatHelp("name", "", "Set a display name for a mine");
+		ChatUtil.formatHelp("silent", "", "Toggles the public notifications on and off");
+		ChatUtil.formatHelp("setparent", "<id>", "Links the timers of the mine to the timers of another");
+		ChatUtil.formatHelp("generator", "<generator>", "Changes the active generator for the mine");
+		ChatUtil.formatMessage("The following generators are supported: ");
+		ChatUtil.formatMessage(GeneratorUtil.list());
+		ChatUtil.formatHelp("cooldown toggle", "", "Turn the reset cooldown on and off for the mine");
+		ChatUtil.formatHelp("cooldown <time>", "", "Sets the cooldown time to the value specified");
+		return;
 	}
 }

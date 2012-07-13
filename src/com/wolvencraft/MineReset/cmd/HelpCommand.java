@@ -10,15 +10,6 @@ import com.wolvencraft.MineReset.util.GeneratorUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class HelpCommand {
-	public static void getBlacklist() {
-		formatHeader(20, "Blacklist");
-		formatHelp("blacklist", "toggle", "Enables the use of blacklist for the mine");
-		formatHelp("blacklist", "whitelist", "Should the blacklist be treated as a whitelist?");
-		formatHelp("blacklist", "+ <block>", "Add <block> to the list");
-		formatHelp("blacklist", "- <block>", "Remove <block> from the list");
-		return;
-	}
-	
 	public static void getConfig() {
 		formatHeader(20, "Data");
 		formatHelp("data", "save", "Saves the mine data to file");

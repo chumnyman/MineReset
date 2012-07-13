@@ -18,13 +18,9 @@ public class BlacklistCommand {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
 		}
-		
+
 		if(args.length == 1) {
-			HelpCommand.getBlacklist();
-			return;
-		}
-		else if(args.length > 3) {
-			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
+			getHelp();
 			return;
 		}
 		
@@ -43,8 +39,7 @@ public class BlacklistCommand {
 				curMine.getBlacklist().setEnabled(false);
 				ChatUtil.sendNote(curMine.getName(), "Blacklist turned " + ChatColor.RED + "off");
 			}
-			else
-			{
+			else {
 				curMine.getBlacklist().setEnabled(true);
 				ChatUtil.sendNote(curMine.getName(), "Blacklist turned " + ChatColor.GREEN + "on");
 			}
@@ -74,7 +69,6 @@ public class BlacklistCommand {
 			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
 			blocks.add(block);
 			curMine.getBlacklist().setBlocks(blocks);
-			
 			ChatUtil.sendNote(curMine.getName(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been added to the blacklistlist");
 		}
 		else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-")) {
@@ -100,6 +94,15 @@ public class BlacklistCommand {
 		}
 		
 		MineUtil.save(curMine);
+		return;
+	}
+	
+	public static void getHelp() {
+		ChatUtil.formatHeader(20, "Blacklist");
+		ChatUtil.formatHelp("blacklist", "toggle", "Enables the use of blacklist for the mine");
+		ChatUtil.formatHelp("blacklist", "whitelist", "Should the blacklist be treated as a whitelist?");
+		ChatUtil.formatHelp("blacklist", "+ <block>", "Add <block> to the list");
+		ChatUtil.formatHelp("blacklist", "- <block>", "Remove <block> from the list");
 		return;
 	}
 }

@@ -1,64 +1,71 @@
 package com.wolvencraft.MineReset.cmd;
 
-import com.wolvencraft.MineReset.mine.Mine;
-import com.wolvencraft.MineReset.util.MineUtil;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
+import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class WarpCommand {
-	public static void run(String[] args) {
+	
+	public static boolean run(String[] args) {
+		if(args.length == 1) {
+			getHelp();
+			return true;
+		}
+		
 		Player player;
-		if(CommandManager.getSender() instanceof Player)
-			player = (Player) CommandManager.getSender();
+		if(Util.isPlayer()) player = (Player) CommandManager.getSender();
 		else {
 			ChatUtil.sendError("This command cannot be executed via console");
-			return;
+			return false;
 		}
 		
-		if(args.length == 1) {
-			HelpCommand.getWarp();
-			return;
-		}
-		else if(args.length != 2) {
+		if(args.length != 2) {
 			ChatUtil.sendInvalidArguments(args);
-			return;
+			return false;
 		}
 		
-		if(args[1].equalsIgnoreCase("set")) {
+		if(args[0].equalsIgnoreCase("set")) {
 			if(!Util.hasPermission("warp.set")) {
 				ChatUtil.sendDenied(args);
-				return;
+				return false;
 			}
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
 				ChatUtil.sendMineNotSelected();
-				return;
+				return false;
 			}
 			
 			curMine.setWarp(player.getLocation());
 			
 			ChatUtil.sendSuccess ("Mine spawn point set at the current location!");
-			return;
+			return true;
 		}
 		
 		Mine curMine = MineUtil.getMine(args[1]);
 		if(curMine != null) {
 			if(!Util.hasPermission("warp.use." + curMine.getName()) && !Util.hasPermission("warp.use")) {
 				ChatUtil.sendDenied(args);
-				return;
+				return false;
 			}
 			player.teleport(curMine.getWarp());
 			String message = Util.parseVars(Language.getString("misc.mine-teleport"), curMine);
 			ChatUtil.sendSuccess(message);
-			return;
+			return true;
 		}
 		else {
 			ChatUtil.sendInvalidMineName(args[1]);
-			return;
+			return false;
 		}
+	}
+
+	public static void getHelp() {
+		ChatUtil.formatHeader(20, "Teleportation");
+		ChatUtil.formatHelp("warp", "<name>", "Teleports you to the mine warp location");
+		ChatUtil.formatHelp("warp", "set", "Sets a warp for the current mine");
 	}
 }

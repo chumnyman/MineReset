@@ -21,7 +21,7 @@ public class ChatUtil
 		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		message = Util.parseColors(message);
 		CommandSender sender = CommandManager.getSender();
-		if(sender == null) return;
+		if(sender == null) log(message);
 		sender.sendMessage(ChatColor.WHITE + message);
 	}
 	
@@ -44,7 +44,7 @@ public class ChatUtil
 	public static void sendNote(String title, String message) {
 		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		CommandSender sender = CommandManager.getSender();
-		if(sender == null) return;
+		if(sender == null) log(message);
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
 		message = ChatColor.GOLD + "[" + title + "] " + ChatColor.WHITE + message;
@@ -104,7 +104,7 @@ public class ChatUtil
 	public static void sendSuccess(String message) {
 		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		CommandSender sender = CommandManager.getSender();
-		if(sender == null) return;
+		if(sender == null) log(message);
 		String title = Language.getString("general.title-success");
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
@@ -130,7 +130,7 @@ public class ChatUtil
 	public static void sendError(String message) {
 		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
 		CommandSender sender = CommandManager.getSender();
-		if(sender == null) return;
+		if(sender == null) log(message);
 		String title = Language.getString("general.title-error");
 		title = Util.parseColors(title);
 		message = Util.parseColors(message);
@@ -149,86 +149,34 @@ public class ChatUtil
 		player.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
 	}
 
-	
-	/**
-	 * Sends a message that the command is invalid
-	 * @param args Arguments of the command
-	 */
-	public static void sendInvalid(String[] args) {
+	public static void sendInvalid(MineError error, String[] args, String extra) {
 		CommandSender sender = CommandManager.getSender();
-		if(sender == null) return;
+		if(sender == null) sender = CommandManager.getPlugin().getServer().getConsoleSender();
+		
 		String title = Language.getString("general.title-error");
-		String message = Language.getString("error.command");
+		
 		String command = "";
-        for (String arg : args) {
-            command = command + " " + arg;
-        }
-		log(sender.getName() + " sent an invalid command: /mine" + command);
-		title = Util.parseColors(title);
-		message = Util.parseColors(message);
-		sender.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
-	}
-	
-	/**
-	 * Sends a message that the arguments of a command are invalid
-	 * @param name
-	 */
-	public static void sendInvalidArguments(String[] args) {
-		CommandSender sender = CommandManager.getSender();
-		if(sender == null) return;
-		String title = Language.getString("general.title-error");
-		String message = Language.getString("error.arguments");
-		String command = "";
-        for (String arg : args) {
-            command = command + " " + arg;
-        }
-		log(sender.getName() + " sent an invalid command: /mine" + command);
-		title = Util.parseColors(title);
-		message = Util.parseColors(message);
-		sender.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
-	}
-	
-	/**
-	 * Message sent when the user is denied to perform an action
-	 * @param command Command used
-	 */
-	public static void sendDenied(String[] args)
-	{
-		CommandSender sender = CommandManager.getSender();
-		if(sender == null) return;
-		String title = Language.getString("general.title-error");
-		String message = Language.getString("error.access");
-		String command = "";
-        for (String arg : args) {
-            command = command + " " + arg;
-        }
-		log(sender.getName() + " was denied access to /mine" + command);
-		title = Util.parseColors(title);
-		message = Util.parseColors(message);
-		sender.sendMessage(ChatColor.RED + title + " " + ChatColor.WHITE + message);
-	}
-	
-	/**
-	 * Message sent when the mine with a name specified does not exist
-	 * @param name Name of the mine
-	 */
-	public static void sendInvalidMineName(String name) {
-		sendError(Language.getString("error.mine-name").replaceAll("%MINE%", name));
-	}
-	
-	/**
-	 * Sends a message that no mine is selected
-	 */
-	public static void sendMineNotSelected() {
-		sendError(Language.getString("error.mine-not-selected"));
-	}
-	
-	/**
-	 * Sends a message that a block does not exist
-	 * @param block
-	 */
-	public static void sendBlockDoesNotExist(String block) {
-		sendError(Language.getString("error.block-does-not-exist").replaceAll("%BLOCK%", block));
+        for (String arg : args) { command = command + " " + arg; }
+    	log(sender.getName() + " sent an invalid command: /mine" + command);
+        
+        String message;
+		
+		if(error.equals(MineError.INVALID))
+			message = Language.getString("error.command");
+		else if(error.equals(MineError.ARGUMENTS))
+			message = Language.getString("error.arguments");
+		else if(error.equals(MineError.ACCESS))
+			message = Language.getString("error.access");
+		else if(error.equals(MineError.MINE_NAME))
+			message = Language.getString("error.mine-name").replaceAll("%MINE%", extra);
+		else if(error.equals(MineError.MINE_NOT_SELECTED))
+			message = Language.getString("error.mine-not-selected");
+		else if(error.equals(MineError.INVALID_BLOCK))
+			message = Language.getString("error.block-does-not-exist").replaceAll("%BLOCK%", extra);
+		else
+			message = "An unknown error has occurred";
+
+		sender.sendMessage(Util.parseColors(ChatColor.RED + title + " " + ChatColor.WHITE + message));
 	}
 	
     /**
@@ -260,5 +208,31 @@ public class ChatUtil
 	{
 		Logger log = Logger.getLogger("MineReset");
 		log.info(message);
+	}
+	
+	public static void formatHelp(String command, String arguments, String description, String node) {
+		CommandSender sender = CommandManager.getSender();
+		if(!arguments.equalsIgnoreCase("")) arguments = " " + arguments;
+		if(Util.hasPermission(node) || node.equals(""))
+			sender.sendMessage(ChatColor.GOLD + "/mine " + command + ChatColor.GRAY + arguments + ChatColor.WHITE + " " + description);
+		return;
+	}
+	
+	public static void formatHelp(String command, String arguments, String description) {
+		formatHelp(command, arguments, description, "");
+		return;
+	}
+	
+	public static void formatHeader(int padding, String name) {
+		CommandSender sender = CommandManager.getSender();
+		String spaces = "";
+		for(int i = 0; i < padding; i++)
+			spaces = spaces + " ";
+		sender.sendMessage(spaces + "-=[ " + ChatColor.BLUE + name + ChatColor.WHITE + " ]=-");
+	}
+	
+	public static void formatMessage(String message) {
+		CommandSender sender = CommandManager.getSender();
+		sender.sendMessage(" " + message);
 	}
 }

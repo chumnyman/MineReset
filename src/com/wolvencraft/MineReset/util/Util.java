@@ -351,44 +351,34 @@ public class Util
 
 
 			// Legacy variables
-			str = str.replaceAll("%HOUR%", phour + "");
-			str = str.replaceAll("%MIN%", pminFormatted + "");
-			str = str.replaceAll("%SEC%", psecFormatted + "");
+			str = str.replaceAll("%HOUR%", nhourFormatted + "");
+			str = str.replaceAll("%MIN%", nminFormatted + "");
+			str = str.replaceAll("%SEC%", nsecFormatted + "");
 			str = str.replaceAll("%TIME%", ptimeClock);
 			str = str.replaceAll("%NEXT%", ntimeClock);
 			
 			// New variables
 			
 			// Reset Period variables
-			str = str.replaceAll("%PHR%", phour + "");			// Raw variables
-			str = str.replaceAll("%PMR%", pmin + "");
-			str = str.replaceAll("%PSR%", psec + "");
+			str = str.replaceAll("%PHOURR%", phour + "");			// Raw variables
+			str = str.replaceAll("%PMINR%", pmin + "");
+			str = str.replaceAll("%PSECR%", psec + "");
 			
 			str = str.replaceAll("%PHOUR%", phourFormatted + "");	// Formatted variables
 			str = str.replaceAll("%PMIN%", pminFormatted + "");
 			str = str.replaceAll("%PSEC%", psecFormatted + "");
 			
-			str = str.replaceAll("%PHC%", phourClock);			// Extra-formatted variables
-			str = str.replaceAll("%PMC%", pminClock);
-			str = str.replaceAll("%PSC%", psecClock);
-			
-			str = str.replaceAll("%PTC%", ptimeClock);			// Super-formatted variable
 			str = str.replaceAll("%PTIME%", ptimeClock);		// Super-formatted variable
 			
 			// Next Reset variables
-			str = str.replaceAll("%NHR%", nhour + "");			// Raw variables
-			str = str.replaceAll("%NMR%", nmin + "");
-			str = str.replaceAll("%NSR%", nsec + "");
+			str = str.replaceAll("%NHOURR%", nhour + "");			// Raw variables
+			str = str.replaceAll("%NMINR%", nmin + "");
+			str = str.replaceAll("%NSECR%", nsec + "");
 			
 			str = str.replaceAll("%NHOUR%", nhourFormatted + "");	// Formatted variables
 			str = str.replaceAll("%NMIN%", nminFormatted + "");
 			str = str.replaceAll("%NSEC%", nsecFormatted + "");
 			
-			str = str.replaceAll("%NHC%", nhourClock);			// Extra-formatted variables
-			str = str.replaceAll("%NMC%", nminClock);
-			str = str.replaceAll("%NSC%", nsecClock);
-			
-			str = str.replaceAll("%NTC%", ntimeClock);			// Super-formatted variable
 			str = str.replaceAll("%NTIME%", ntimeClock);		// Super-formatted variable
 		}
 

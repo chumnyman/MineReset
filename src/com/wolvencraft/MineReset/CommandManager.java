@@ -5,7 +5,21 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.wolvencraft.MineReset.cmd.*;
+import com.wolvencraft.MineReset.cmd.BlacklistCommand;
+import com.wolvencraft.MineReset.cmd.DataCommand;
+import com.wolvencraft.MineReset.cmd.EditCommand;
+import com.wolvencraft.MineReset.cmd.HelpCommand;
+import com.wolvencraft.MineReset.cmd.InfoCommand;
+import com.wolvencraft.MineReset.cmd.ListCommand;
+import com.wolvencraft.MineReset.cmd.MetaCommand;
+import com.wolvencraft.MineReset.cmd.ProtectionCommand;
+import com.wolvencraft.MineReset.cmd.ResetCommand;
+import com.wolvencraft.MineReset.cmd.SaveCommand;
+import com.wolvencraft.MineReset.cmd.SelectCommand;
+import com.wolvencraft.MineReset.cmd.SignCommand;
+import com.wolvencraft.MineReset.cmd.TimerCommand;
+import com.wolvencraft.MineReset.cmd.WandCommand;
+import com.wolvencraft.MineReset.cmd.WarpCommand;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Reset;
 import com.wolvencraft.MineReset.util.ChatUtil;
@@ -26,6 +40,7 @@ public class CommandManager implements CommandExecutor
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		CommandManager.sender = sender;
 		if(!command.getName().equalsIgnoreCase("mine")) return false;
+		
 		
 		if(args.length == 0)
 			HelpCommand.getHelp();

@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.util.ChatUtil;
-import com.wolvencraft.MineReset.util.GeneratorUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class HelpCommand {
@@ -51,15 +50,6 @@ public class HelpCommand {
 		formatHelp("prot", "place whitelist", "Should the blacklist be treated as a whitelist?");
 		formatHelp("prot", "place + <block>", "Add <block> to the block placement blacklist");
 		formatHelp("prot", "place - <block>", "Remove <block> from the block placement blacklist");
-		return;
-	}
-	
-	public static void getReset() {
-		formatHeader(20, "Reset");
-		formatHelp("reset", "<name> [generator]", "Resets the mine manually");
-		formatNote("Resets the mine according to the generator defined by the configuration.");
-		formatNote("The following generators are supported: ");
-		formatNote(GeneratorUtil.list());
 		return;
 	}
 	

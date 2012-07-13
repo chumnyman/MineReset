@@ -8,6 +8,7 @@ import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Reset;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.GeneratorUtil;
 import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
@@ -17,12 +18,11 @@ public class ResetCommand
 	public static void run(String[] args, Reset source, String forcedGenerator)
 	{	
 		Mine curMine;
-		if(args.length == 1)
-			curMine = CommandManager.getMine();
-		else
-			curMine = MineUtil.getMine(args[1]);
+		if(args.length == 1) curMine = CommandManager.getMine();
+		else curMine = MineUtil.getMine(args[1]);
 		
 		if(curMine == null) {
+			if(args.length == 1) getHelp();
 			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 			return;
 		}
@@ -41,19 +41,17 @@ public class ResetCommand
 			MineReset.getStats().updateViaCommand();
 		}
 		
-		if(args.length == 3)
-			forcedGenerator = args[2];
+		if(args.length == 3) forcedGenerator = args[2];
 		
 		String generator = curMine.getGenerator();
-		if(forcedGenerator.equals(""))
-			generator = curMine.getGenerator();
+		if(forcedGenerator.equals("")) generator = curMine.getGenerator();
 		
 		if(curMine.getAutomatic()) curMine.resetTimer();
 		if(curMine.getCooldown()) curMine.resetCooldown();
 		
 		if(!(curMine.reset(generator))) return;
 		
-		String broadcastMessage = Language.getString("reset.manual-reset-successful");
+		String broadcastMessage;
 		if(source.equals(Reset.AUTOMATIC)) {
 			List<Mine> mines = MineReset.getMines();
 			for(Mine childMine : mines) {
@@ -66,15 +64,21 @@ public class ResetCommand
 			
 			broadcastMessage = Language.getString("reset.automatic-reset-successful");
 		}
+		else broadcastMessage = Language.getString("reset.manual-reset-successful");
 		
 		broadcastMessage = Util.parseVars(broadcastMessage, curMine);
 		
-		if(!curMine.getSilent()) {
-			ChatUtil.broadcast(broadcastMessage, curMine.getWorld());
-		}
-		else if(!source.equals(Reset.AUTOMATIC)) {
-			ChatUtil.sendSuccess(broadcastMessage);
-		}
+		if(!curMine.getSilent()) ChatUtil.broadcast(broadcastMessage, curMine.getWorld());
+		else if(!source.equals(Reset.AUTOMATIC)) ChatUtil.sendSuccess(broadcastMessage);
+		return;
+	}
+	
+	public static void getHelp() {
+		ChatUtil.formatHeader(20, "Reset");
+		ChatUtil.formatHelp("reset", "<name> [generator]", "Resets the mine manually");
+		ChatUtil.formatMessage("Resets the mine according to the generator defined by the configuration.");
+		ChatUtil.formatMessage("The following generators are supported: ");
+		ChatUtil.formatMessage(GeneratorUtil.list());
 		return;
 	}
 }

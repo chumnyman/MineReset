@@ -5,7 +5,6 @@ import org.bukkit.command.CommandSender;
 
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
-import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class HelpCommand {
@@ -23,28 +22,6 @@ public class HelpCommand {
 		formatHelp("delete", "<name>", "Completely deletes a mine", "edit.info");
 		formatHelp("timer", "", "Shows a help page on how to automate the mine", "edit.timer");
 		formatHelp("protection", "", "Shows how to set up a mine protection", "edit.protection");
-		return;
-	}
-	
-	public static void getProtection() {
-		formatHeader(20, "Protection");
-		formatHelp("prot", "pvp", "Toggles the PVP on and off for the current mine");
-		ChatUtil.sendMessage(" ");
-		formatHelp("prot", "break toggle", "Enables or disables the block breaking protection");
-		formatHelp("prot", "break whitelist", "Should the blacklist be treated as a whitelist?");
-		formatHelp("prot", "break + <block>", "Add <block> to the block breaking blacklist");
-		formatHelp("prot", "break - <block>", "Remove <block> from the block breaking blacklist");
-		ChatUtil.sendMessage(" ");
-		formatHelp("prot", "place toggle", "Enables or disables the block breaking blacklist");
-		formatHelp("prot", "place whitelist", "Should the blacklist be treated as a whitelist?");
-		formatHelp("prot", "place + <block>", "Add <block> to the block placement blacklist");
-		formatHelp("prot", "place - <block>", "Remove <block> from the block placement blacklist");
-		return;
-	}
-	
-	public static void getSave() {
-		formatHeader(20, "Save");
-		formatHelp("save", "<name>", "Saves the region for future use");
 		return;
 	}
 	

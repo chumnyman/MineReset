@@ -10,7 +10,6 @@ import com.wolvencraft.MineReset.cmd.DataCommand;
 import com.wolvencraft.MineReset.cmd.EditCommand;
 import com.wolvencraft.MineReset.cmd.HelpCommand;
 import com.wolvencraft.MineReset.cmd.InfoCommand;
-import com.wolvencraft.MineReset.cmd.ListCommand;
 import com.wolvencraft.MineReset.cmd.MetaCommand;
 import com.wolvencraft.MineReset.cmd.ProtectionCommand;
 import com.wolvencraft.MineReset.cmd.ResetCommand;
@@ -52,10 +51,8 @@ public class CommandManager implements CommandExecutor
 			EditCommand.run(args);
 		else if(args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?"))
 			HelpCommand.getHelp();
-		else if(args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("time"))
+		else if(args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("time") || args[0].equalsIgnoreCase("list"))
 			InfoCommand.run(args);
-		else if(args[0].equalsIgnoreCase("list"))
-			ListCommand.run(args);
         else if(args[0].equalsIgnoreCase("meta") || args[0].equalsIgnoreCase("about"))
             MetaCommand.run(args);
 		else if(args[0].equalsIgnoreCase("protection") || args[0].equalsIgnoreCase("prot"))
@@ -117,6 +114,11 @@ public class CommandManager implements CommandExecutor
 	public static void setLocation(Location newLoc, int id) {
 		loc[id] = newLoc;
 		return;
+	}
+	
+	public static void resetLocation() {
+		loc[0] = null;
+		loc[1] = null;
 	}
 	
 	/**

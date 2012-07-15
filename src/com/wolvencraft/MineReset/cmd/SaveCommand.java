@@ -1,7 +1,5 @@
 package com.wolvencraft.MineReset.cmd;
 
-import java.util.List;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -20,9 +18,8 @@ public class SaveCommand
 	public static void run(String[] args)
 	{
 		Player player;
-		if(CommandManager.getSender() instanceof Player) {
+		if(CommandManager.getSender() instanceof Player)
 			player = (Player) CommandManager.getSender();
-		}
 		else {
 			ChatUtil.sendError("This command cannot be executed via console");
 			return;
@@ -30,6 +27,11 @@ public class SaveCommand
 		
 		if(!Util.hasPermission("edit.save")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
+			return;
+		}
+		
+		if(args.length == 1) {
+			getHelp();
 			return;
 		}
 		
@@ -69,7 +71,6 @@ public class SaveCommand
 
         ChatUtil.debug("Mine existance check passed");
         
-        // Parsing the coordinates
         double temp = 0;
 		
 		if((int)loc[0].getX() > (int)loc[1].getX()) {
@@ -92,21 +93,20 @@ public class SaveCommand
 		
 		Mine newMine = new Mine(loc[0], loc[1], player.getLocation(), loc[0].getWorld(), args[1], 900);
 		
-		// = = Adding to the mine list
-		List<Mine> mines = MineReset.getMines();
-		mines.add(newMine);
-		MineReset.setMines(mines);
-		
+		MineReset.getMines().add(newMine);
 		MineUtil.save(newMine);
 
         ChatUtil.debug("Mine creation completed");
 		
-		CommandManager.setLocation(null, 0);
-		CommandManager.setLocation(null, 1);
-
-        ChatUtil.debug("Data saved successfully");
+		CommandManager.resetLocation();
 		CommandManager.setMine(newMine);
-		ChatUtil.sendSuccess("Mine '" + newMine.getName() + "' created successfully!");
+		ChatUtil.sendNote(newMine.getName(), "Mine created successfully!");
+		return;
+	}
+	
+	public static void getHelp() {
+		ChatUtil.formatHeader(20, "Save");
+		ChatUtil.formatHelp("save", "<name>", "Saves the region for future use");
 		return;
 	}
 }

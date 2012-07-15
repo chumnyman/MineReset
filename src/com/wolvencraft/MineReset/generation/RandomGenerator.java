@@ -78,4 +78,10 @@ public class RandomGenerator implements BaseGenerator {
 	public String getDescription() {
 		return DESCRIPTION;
 	}
+
+	@Override
+	public boolean init(Mine mine) {
+		// Does nothing, since we do not need to initialize the RandomGenerator
+		return true;
+	}
 }

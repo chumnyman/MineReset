@@ -44,7 +44,7 @@ public class SaveCommand
 		String generator;
 		if(args.length == 3) {
 			if(GeneratorUtil.get(args[2]) != null) {
-				generator = args[2];
+				generator = args[2].toUpperCase();
 			}
 			else {
 				ChatUtil.sendError("Invalid generator provided!");
@@ -106,6 +106,8 @@ public class SaveCommand
 		
 		Mine newMine = new Mine(loc[0], loc[1], player.getLocation(), loc[0].getWorld(), args[1], generator, 900);
 		
+		GeneratorUtil.get(generator).init(newMine);
+		
 		MineReset.getMines().add(newMine);
 		MineUtil.save(newMine);
 
@@ -119,7 +121,9 @@ public class SaveCommand
 	
 	public static void getHelp() {
 		ChatUtil.formatHeader(20, "Save");
-		ChatUtil.formatHelp("save", "<name>", "Saves the region for future use");
+		ChatUtil.formatHelp("save", "<name> [generator]", "Saves the region for future use, with an optional generator");
+		ChatUtil.formatMessage("If no generator is specified, RandomGenerator will be used. Available generators:");
+		ChatUtil.formatMessage(GeneratorUtil.list());
 		return;
 	}
 }

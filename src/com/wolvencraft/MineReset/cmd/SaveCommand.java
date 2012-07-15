@@ -9,6 +9,7 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.GeneratorUtil;
 import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
@@ -35,10 +36,22 @@ public class SaveCommand
 			return;
 		}
 		
-		if(args.length != 2) {
+		if(args.length != 2 && args.length != 3) {
 			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 			return;
 		}
+		
+		String generator;
+		if(args.length == 3) {
+			if(GeneratorUtil.get(args[2]) != null) {
+				generator = args[2];
+			}
+			else {
+				ChatUtil.sendError("Invalid generator provided!");
+				return;
+			}
+		}
+		else generator = "RANDOM";
 		
 		if(!Util.locationsSet()) {
 			WorldEditPlugin we = MineReset.getWorldEditPlugin();
@@ -91,7 +104,7 @@ public class SaveCommand
 			loc[1].setZ(temp);
 		}
 		
-		Mine newMine = new Mine(loc[0], loc[1], player.getLocation(), loc[0].getWorld(), args[1], 900);
+		Mine newMine = new Mine(loc[0], loc[1], player.getLocation(), loc[0].getWorld(), args[1], generator, 900);
 		
 		MineReset.getMines().add(newMine);
 		MineUtil.save(newMine);

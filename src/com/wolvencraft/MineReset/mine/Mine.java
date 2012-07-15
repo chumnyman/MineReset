@@ -62,9 +62,10 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @param tpPoint Teleport point to TP players out of mine to.
      * @param world World mine resides in.
      * @param name Name for the mine.
+     * @param generator Generator to be used with the mine
      * @param automaticSeconds Number of seconds between automatic resets.
      */
-    public Mine(Location one, Location two, Location tpPoint, World world, String name, int automaticSeconds) {
+    public Mine(Location one, Location two, Location tpPoint, World world, String name, String generator, int automaticSeconds) {
     	this.one = one;
     	this.two = two;
     	this.tpPoint = tpPoint;

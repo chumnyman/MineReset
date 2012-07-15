@@ -40,17 +40,24 @@ public class GeneratorUtil {
 		return null;
 	}
 	
+	/**
+	 * Returns the generator object that is represented by the name provided
+	 * @param name Name of the generator, case insensitive
+	 * @return Generator object, or null if none found
+	 */
 	public static BaseGenerator get(String name) {
 		List<BaseGenerator> generators = MineReset.getGenerators();
 		ChatUtil.debug(generators.size() + " generators found!");
-		for(BaseGenerator generator: generators) {
-			ChatUtil.log("Checking generator: " + generator.getClass().getSimpleName() + " (" + generator.getName() + ")");
+		for(BaseGenerator generator: generators)
 			if(generator.getName().equalsIgnoreCase(name)) return generator;
-		}
 		if(name.equalsIgnoreCase("")) return generators.get(0);
 		return null;
 	}
 	
+	/**
+	 * Returns a user-friendly string with a list of generator names
+	 * @return List of generator names
+	 */
 	public static String list() {
 		List<BaseGenerator> generators = MineReset.getGenerators();
 		String list = "";

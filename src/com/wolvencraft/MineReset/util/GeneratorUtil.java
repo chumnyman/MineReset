@@ -11,10 +11,14 @@ import com.wolvencraft.MineReset.generation.BaseGenerator;
 import com.wolvencraft.MineReset.generation.RandomGenerator;
 
 public class GeneratorUtil {
+	
+	/**
+	 * Loads all the generators from file. Always loads the default <b>RandomGenerator</b> first, then loads everything else.<br />
+	 * Invalid generators will be skipped.
+	 * @return
+	 */
 	public static List<BaseGenerator> loadAll() {
 		List<BaseGenerator> generators = new ArrayList<BaseGenerator>();
-		generators = GeneratorLoader.load(generators);
-		
 		Object object;
 		try {
 			BaseGenerator generator;
@@ -23,7 +27,8 @@ public class GeneratorUtil {
 			generators.add(generator);
 			ChatUtil.log("Loaded generator: " + generator.getClass().getSimpleName());
 
-			ChatUtil.debug(generators.size() + " default generators loaded");
+			generators = GeneratorLoader.load(generators);
+			
 			return generators;
 		} catch (InstantiationException e) {
 			ChatUtil.getLogger().log(Level.SEVERE, "Error occurred while loading RandomGenerator!");

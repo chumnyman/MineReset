@@ -184,7 +184,7 @@ public class InfoCommand {
 				return;
 			}
 		}
-		if(args[0].equalsIgnoreCase("time")) {
+		else if(args[0].equalsIgnoreCase("time")) {
 			if(!Util.hasPermission("info.time")) {
 				ChatUtil.sendInvalid(MineError.ACCESS, args);
 				return;
@@ -201,12 +201,33 @@ public class InfoCommand {
 			Mine parentMine = MineUtil.getMine(curMine.getParent());
 			if(parentMine == null) parentMine = curMine;
 			
-			String autoResetFormatted = Util.parseSeconds(curMine.getResetPeriod());
-			String nextResetFormatted = Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20);
+			String autoResetFormatted = Util.parseSeconds(MineUtil.getResetTime(curMine));
+			String nextResetFormatted = Util.parseSeconds(MineUtil.getNextReset(curMine));
 			
 			if(curMine.getAutomatic())
 				ChatUtil.sendSuccess(displayName + " resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes.");
 			else ChatUtil.sendSuccess(displayName + " has to be reset manually");
+		}
+		else if(args[0].equalsIgnoreCase("list")) {
+			if(!Util.hasPermission("info.list")) {
+				ChatUtil.sendInvalid(MineError.ACCESS, args);
+				return;
+			}
+			
+			if(args.length != 1) {
+				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
+				return;
+			}
+			
+			ChatUtil.sendMessage(ChatColor.DARK_RED + "                    -=[ " + ChatColor.GREEN + ChatColor.BOLD + "Public Mines" + ChatColor.DARK_RED + " ]=-");
+			
+			for(Mine mine : MineReset.getMines()) {
+				String displayName = mine.getDisplayName();
+				if(displayName.equals(""))
+					ChatUtil.sendMessage(" - " + ChatColor.GREEN + mine.getName() + "");
+				else
+					ChatUtil.sendMessage(" - " + ChatColor.GREEN + displayName + ChatColor.WHITE + " (" + mine.getName() + ")");
+			}
 		}
 	}
 	
@@ -218,6 +239,7 @@ public class InfoCommand {
 		ChatUtil.formatHelp("info", "<name> signs", "Returns the information about signs", "info.all");
 		ChatUtil.formatHelp("info", "<name> reset", "Returns the information about resets", "info.all");
 		ChatUtil.formatHelp("time", "<name>", "Returns the next reset time for the mine", "info.time");
+		ChatUtil.formatHelp("list", "", "Lists all the available mines", "info.list");
 		return;
 	}
 }

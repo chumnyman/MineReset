@@ -62,7 +62,8 @@ public class ResetCommand
 		if(source.equals(Reset.AUTOMATIC)) {
 			List<Mine> mines = MineReset.getMines();
 			for(Mine childMine : mines) {
-				if(MineUtil.getMine(childMine.getParent()).equals(curMine.getName())) {
+				Mine parent = MineUtil.getMine(childMine.getParent());
+				if(parent != null & parent.equals(curMine)) {
 					run(childMine.getName(), Reset.AUTOMATIC, null);
 				}
 			}

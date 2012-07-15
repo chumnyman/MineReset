@@ -25,51 +25,6 @@ public class HelpCommand {
 		return;
 	}
 	
-	public static void getSelect() {
-		formatHeader(20, "Selecting");
-		formatHelp("hpos1", "", "Creates a reference point 1 at the block you are looking at");
-		formatHelp("hpos2", "", "Creates a reference point 2 at the block you are looking at");
-		formatNote("Your field of view is limited to 100 blocks");
-		formatHelp("pos1", "", "Creates a reference point 1 at your immediate location");
-		formatHelp("pos2", "", "Creates a reference point 2 at your immediate location");
-		formatNote("You can also select a region with your normal World Edit tool");
-		return;
-	}
-	
-	public static void getSign() {
-		formatHeader(20, "Signs");
-		formatHelp("sign", "create", "Saves the targeted sign into a file");
-		formatHelp("sign", "setparent <id>", "Sets the sign's parent to the one specified");
-		formatHelp("sign", "reset", "Marks the targeted sign as mine-resetting");
-		formatHelp("sign", "remove", "Removes the targeted sign from data");
-		return;
-	}
-	
-	public static void getSnapshot() {
-		formatHeader(20, "Snapshot");
-		formatHelp("snapshot", "save", "Saves the snapshot of the selected region to file");
-		formatHelp("snapshot", "restore", "Restores the snapshot of a selected mine");
-		formatHelp("snapshot", "delete", "Removes the snapshot data completely");
-		return;
-	}
-
-	public static void getTimer() {
-		formatHeader(20, "Timer");
-		formatHelp("timer", "toggle", "Toggles the automatic resets on and off");
-		formatHelp("timer", "set <time>", "Changes the automatic reset time to the value specified");
-		formatHelp("timer", "warning toggle", "Toggles reset warnings on and off");
-		formatHelp("timer", "warning + <time>", "Adds a warning at time specified");
-		formatHelp("timer", "warning - <time>", "Adds a warning at time specified");
-		return;
-	}
-	
-	public static void getWarp() {
-		formatHeader(20, "Teleportation");
-		formatHelp("warp", "<name>", "Teleports you to the mine warp location");
-		formatHelp("warp", "set", "Sets a warp for the current mine");
-		return;
-	}
-	
 	private static void formatHelp(String command, String arguments, String description, String node) {
 		CommandSender sender = CommandManager.getSender();
 		if(!arguments.equalsIgnoreCase("")) arguments = " " + arguments;
@@ -89,10 +44,5 @@ public class HelpCommand {
 		for(int i = 0; i < padding; i++)
 			spaces = spaces + " ";
 		sender.sendMessage(spaces + "-=[ " + ChatColor.BLUE + name + ChatColor.WHITE + " ]=-");
-	}
-	
-	private static void formatNote(String message) {
-		CommandSender sender = CommandManager.getSender();
-		sender.sendMessage(" " + message);
 	}
 }

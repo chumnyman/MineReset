@@ -21,7 +21,7 @@ public class TimerCommand {
 		}
 		
 		if(args.length == 1) {
-			HelpCommand.getTimer();
+			getHelp();
 			return;
 		}
 
@@ -138,6 +138,16 @@ public class TimerCommand {
 		}
 		
 		MineUtil.save(curMine);
+		return;
+	}
+
+	public static void getHelp() {
+		ChatUtil.formatHeader(20, "Timer");
+		ChatUtil.formatHelp("timer", "toggle", "Toggles the automatic resets on and off");
+		ChatUtil.formatHelp("timer", "set <time>", "Changes the automatic reset time to the value specified");
+		ChatUtil.formatHelp("timer", "warning toggle", "Toggles reset warnings on and off");
+		ChatUtil.formatHelp("timer", "warning + <time>", "Adds a warning at time specified");
+		ChatUtil.formatHelp("timer", "warning - <time>", "Adds a warning at time specified");
 		return;
 	}
 }

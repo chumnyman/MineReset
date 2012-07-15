@@ -67,6 +67,6 @@ public class WarpCommand {
 	public static void getHelp() {
 		ChatUtil.formatHeader(20, "Teleportation");
 		ChatUtil.formatHelp("warp", "<name>", "Teleports you to the mine warp location");
-		ChatUtil.formatHelp("warp", "set", "Sets a warp for the current mine");
+		ChatUtil.formatHelp("warp", "set", "Sets a warp for the current mine", "warp.set");
 	}
 }

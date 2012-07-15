@@ -20,15 +20,17 @@ public class SelectCommand {
 			ChatUtil.sendError("This command cannot be executed via console");
 			return;
 		}
+		
 		if(!Util.isPlayer() || !Util.hasPermission("edit.select")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
 		}
 
 		if(args.length == 1) {
-			HelpCommand.getSelect();
+			getHelp();
 			return;
 		}
+		
 		if(args.length != 2) {
 			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 			return;
@@ -78,6 +80,17 @@ public class SelectCommand {
 		if(Util.locationsSet()) message = message + " [" + Util.getBlockCount() + "]";
 		ChatUtil.sendSuccess (message);
 		
+		return;
+	}
+	
+	public static void getHelp() {
+		ChatUtil.formatHeader(20, "Selecting");
+		ChatUtil.formatHelp("hpos1", "", "Creates a reference point 1 at the block you are looking at");
+		ChatUtil.formatHelp("hpos2", "", "Creates a reference point 2 at the block you are looking at");
+		ChatUtil.formatMessage("Your field of view is limited to 100 blocks");
+		ChatUtil.formatHelp("pos1", "", "Creates a reference point 1 at your immediate location");
+		ChatUtil.formatHelp("pos2", "", "Creates a reference point 2 at your immediate location");
+		ChatUtil.formatMessage("You can also select a region with your normal World Edit tool");
 		return;
 	}
 }

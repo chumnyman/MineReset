@@ -31,9 +31,10 @@ public class SignCommand {
 		}
 		
 		if(args.length == 1) {
-			HelpCommand.getSign();
+			getHelp();
 			return;
 		}
+		
 		if(args.length != 2) {
 			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 			return;
@@ -119,5 +120,14 @@ public class SignCommand {
 			ChatUtil.sendInvalid(MineError.INVALID, args);
 			return;
 		}
+	}
+	
+	public static void getHelp() {
+		ChatUtil.formatHeader(20, "Signs");
+		ChatUtil.formatHelp("sign", "create", "Saves the targeted sign into a file");
+		ChatUtil.formatHelp("sign", "setparent <id>", "Sets the sign's parent to the one specified");
+		ChatUtil.formatHelp("sign", "reset", "Marks the targeted sign as mine-resetting");
+		ChatUtil.formatHelp("sign", "remove", "Removes the targeted sign from data");
+		return;
 	}
 }

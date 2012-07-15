@@ -105,8 +105,8 @@ public class InfoCommand {
 					return;
 				}
 				else if(args[2].equalsIgnoreCase("reset")) {
-					String autoResetFormatted = Util.parseSeconds(curMine.getResetPeriod());
-					String nextResetFormatted = Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20);
+					String autoResetFormatted = Util.parseSeconds(MineUtil.getResetTime(curMine));
+					String nextResetFormatted = Util.parseSeconds(MineUtil.getNextReset(curMine));
 					
 					if(curMine.getAutomatic()) {
 						ChatUtil.sendMessage("Mine resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes.");
@@ -153,7 +153,7 @@ public class InfoCommand {
 				
 				// Timer. Not displayed if it is disabled
 				if(curMine.getAutomatic())
-					ChatUtil.sendMessage("    Resets every ->  " + ChatColor.GREEN + Util.parseSeconds(curMine.getResetPeriod()) + "    " + ChatColor.GOLD + Util.parseSeconds((int)curMine.getNextAutomaticResetTick() / 20) + ChatColor.WHITE + "  <- Next Reset");
+					ChatUtil.sendMessage("    Resets every ->  " + ChatColor.GREEN + Util.parseSeconds(MineUtil.getResetTime(curMine)) + "    " + ChatColor.GOLD + Util.parseSeconds(MineUtil.getNextReset(curMine)) + ChatColor.WHITE + "  <- Next Reset");
 				
 				// Generator & parent mine
 				str = "    Generator: " + ChatColor.GOLD + curMine.getGenerator();

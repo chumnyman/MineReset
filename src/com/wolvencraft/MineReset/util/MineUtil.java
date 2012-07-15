@@ -109,10 +109,8 @@ public class MineUtil
 	 * @param id Name of the mine being checked
 	 * @return Mine object if it exists, null if it does not
 	 */
-	public static Mine getMine(String id)
-	{
-		for(Mine curMine : MineReset.getMines())
-		{
+	public static Mine getMine(String id) {
+		for(Mine curMine : MineReset.getMines()) {
 			if(curMine.getName().equalsIgnoreCase(id)) return curMine;
 		}
 		return null;
@@ -124,18 +122,14 @@ public class MineUtil
 	 * @param curMine Mine to check
 	 * @return Formatted list
 	 */
-	public static List<String> getSortedList(Mine curMine)
-	{
+	public static List<String> getSortedList(Mine curMine) {
 		List<MineBlock> blocks = curMine.getBlocks();
 		List<String> finalList = new ArrayList<String>(blocks.size());
 		
 		MineBlock tempBlock;
-		for(int j = blocks.size(); j > 0; j--)
-		{
-			for(int i = 0; i < (j - 1); i++)
-			{
-				if(blocks.get(i + 1).getChance() > blocks.get(i).getChance())
-				{
+		for(int j = blocks.size(); j > 0; j--) {
+			for(int i = 0; i < (j - 1); i++) {
+				if(blocks.get(i + 1).getChance() > blocks.get(i).getChance()) {
 					tempBlock = blocks.get(i).clone();
 					blocks.set(i, blocks.get(i + 1).clone());
 					blocks.set(i + 1, tempBlock.clone());
@@ -144,11 +138,9 @@ public class MineUtil
 			}
 		}
 		
-		for(MineBlock block : blocks)
-		{
+		for(MineBlock block : blocks) {
 			String blockName = block.getBlock().getItemType().toString().toLowerCase().replace("_", " ");
-			if(block.getBlock().getData() != 0)
-			{
+			if(block.getBlock().getData() != 0) {
 				String[] tempBlockName = {block.getBlock().getItemTypeId() + "", block.getBlock().getData() + ""};
 				blockName = Util.parseMetadata(tempBlockName, true) + " " + blockName;
 			}
@@ -171,8 +163,7 @@ public class MineUtil
 	public static MineBlock getMostCommon(Mine curMine) {
 		List<MineBlock> blocks = curMine.getBlocks();
 		MineBlock mostCommon = blocks.get(0);
-		for(MineBlock curBlock : blocks)
-		{
+		for(MineBlock curBlock : blocks) {
 			if(curBlock.getChance() > mostCommon.getChance())
 				mostCommon = curBlock;
 		}
@@ -200,8 +191,7 @@ public class MineUtil
 	 * @param curMine Mine to check
 	 * @return Time period at which the mine is reset
 	 */
-	public static int getResetTime(Mine curMine)
-	{
+	public static int getResetTime(Mine curMine) {
 		if(curMine.getParent() == null)
 			return curMine.getResetPeriod();
 		else
@@ -213,8 +203,7 @@ public class MineUtil
 	 * @param curMine Mine to check
 	 * @return Seconds until the next reset
 	 */
-	public static int getNextReset(Mine curMine)
-	{
+	public static int getNextReset(Mine curMine) {
 		if(!curMine.hasParent())
 			return (int)(curMine.getNextAutomaticResetTick() / 20);
 		else

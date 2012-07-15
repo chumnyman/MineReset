@@ -53,7 +53,6 @@ public class SaveCommand
 				CommandManager.setLocation(we.getSelection(player).getMinimumPoint(), 0);
 				CommandManager.setLocation(we.getSelection(player).getMaximumPoint(), 1);
 			}
-			
 		}
 		
 		Location[] loc = CommandManager.getLocation();

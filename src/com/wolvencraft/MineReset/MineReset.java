@@ -123,7 +123,7 @@ public class MineReset extends JavaPlugin {
 							String[] args = {null, curMine.getName()};
 							ResetCommand.run(args, Reset.AUTOMATIC, "");
 							stats.updateAutomatic();
-						}						
+						}
 						curMine.updateTimer(checkEvery);
 					}
 				

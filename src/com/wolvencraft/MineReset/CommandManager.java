@@ -42,7 +42,6 @@ public class CommandManager implements CommandExecutor
 		CommandManager.sender = sender;
 		if(!command.getName().equalsIgnoreCase("mine")) return false;
 		
-		
 		if(args.length == 0)
 			HelpCommand.getHelp();
 		else if(args[0].equalsIgnoreCase("blacklist") || args[0].equalsIgnoreCase("bl"))

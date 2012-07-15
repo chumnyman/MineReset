@@ -4,9 +4,13 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.bukkit.selections.Selection;
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.Protection;
 import com.wolvencraft.MineReset.util.ChatUtil;
@@ -22,11 +26,8 @@ public class ProtectionCommand {
 		}
 		
 		if(args.length == 1) {
-			HelpCommand.getProtection();
+			getHelp();
 			return;
-		}
-		if(args.length > 5) {
-			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 		}
 		
 		Mine curMine = CommandManager.getMine();
@@ -36,14 +37,35 @@ public class ProtectionCommand {
 		}
 		
 		if(args[1].equalsIgnoreCase("save")) {
+			Player player;
+			if(CommandManager.getSender() instanceof Player) {
+				player = (Player) CommandManager.getSender();
+			}
+			else {
+				ChatUtil.sendError("This command cannot be executed via console");
+				return;
+			}
+			
 			if(args.length != 2) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
 			
 			if(!Util.locationsSet()) {
-				ChatUtil.sendError("Make a selection first");
-				return;
+				WorldEditPlugin we = MineReset.getWorldEditPlugin();
+				if(we == null) {
+					ChatUtil.sendError("Make a selection first");
+					return;
+				}
+				else {
+					Selection sel = we.getSelection(player);
+					if(sel == null) {
+						ChatUtil.sendError("Make a selection first");
+						return;
+					}
+					CommandManager.setLocation(we.getSelection(player).getMinimumPoint(), 0);
+					CommandManager.setLocation(we.getSelection(player).getMaximumPoint(), 1);
+				}
 			}
 			
 			Location[] loc = CommandManager.getLocation();
@@ -58,7 +80,6 @@ public class ProtectionCommand {
 				return;
 			}
 	        
-	        // Parsing the coordinates
 	        double temp = 0;
 			
 			if((int)loc[0].getX() > (int)loc[1].getX()) {
@@ -87,6 +108,7 @@ public class ProtectionCommand {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
 			}
+			
 			if(curMine.getProtection().contains(Protection.PVP)) {
 				curMine.getProtection().remove(Protection.PVP);
 				ChatUtil.sendNote(curMine.getName(), "PVP protection has been turned " + ChatColor.RED + "off");
@@ -273,6 +295,22 @@ public class ProtectionCommand {
 		}
 		
 		MineUtil.save(curMine);
+		return;
+	}
+	
+	public static void getHelp() {
+		ChatUtil.formatHeader(20, "Protection");
+		ChatUtil.formatHelp("prot", "pvp", "Toggles the PVP on and off for the current mine");
+		ChatUtil.sendMessage(" ");
+		ChatUtil.formatHelp("prot", "break toggle", "Enables or disables the block breaking protection");
+		ChatUtil.formatHelp("prot", "break whitelist", "Should the blacklist be treated as a whitelist?");
+		ChatUtil.formatHelp("prot", "break + <block>", "Add <block> to the block breaking blacklist");
+		ChatUtil.formatHelp("prot", "break - <block>", "Remove <block> from the block breaking blacklist");
+		ChatUtil.sendMessage(" ");
+		ChatUtil.formatHelp("prot", "place toggle", "Enables or disables the block breaking blacklist");
+		ChatUtil.formatHelp("prot", "place whitelist", "Should the blacklist be treated as a whitelist?");
+		ChatUtil.formatHelp("prot", "place + <block>", "Add <block> to the block placement blacklist");
+		ChatUtil.formatHelp("prot", "place - <block>", "Remove <block> from the block placement blacklist");
 		return;
 	}
 }

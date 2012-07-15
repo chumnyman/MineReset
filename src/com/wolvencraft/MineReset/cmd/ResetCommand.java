@@ -15,6 +15,11 @@ import com.wolvencraft.MineReset.util.Util;
 
 public class ResetCommand
 {	
+	public static void run(String mineName, Reset source, String forcedGenerator) {
+		String[] args = {null, mineName};
+		run(args, source, forcedGenerator);
+	}
+	
 	public static void run(String[] args, Reset source, String forcedGenerator)
 	{	
 		Mine curMine;
@@ -26,6 +31,8 @@ public class ResetCommand
 			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 			return;
 		}
+
+		ChatUtil.debug("Resettign mine: " + curMine.getName());
 		
 		if(source.equals(Reset.MANUAL)) {
 			if(!Util.hasPermission("reset.manual." + curMine.getName()) && !Util.hasPermission("reset.manual")) {
@@ -55,10 +62,8 @@ public class ResetCommand
 		if(source.equals(Reset.AUTOMATIC)) {
 			List<Mine> mines = MineReset.getMines();
 			for(Mine childMine : mines) {
-				if(childMine.getParent() != null) {
-					ChatUtil.debug(childMine.getParent());
-					String[] childArgs = {null, childMine.getName()};
-					run(childArgs, Reset.AUTOMATIC, null);
+				if(MineUtil.getMine(childMine.getParent()).equals(curMine.getName())) {
+					run(childMine.getName(), Reset.AUTOMATIC, null);
 				}
 			}
 			

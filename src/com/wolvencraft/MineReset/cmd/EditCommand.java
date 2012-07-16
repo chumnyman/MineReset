@@ -13,6 +13,7 @@ import org.bukkit.material.MaterialData;
 import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Language;
+import com.wolvencraft.MineReset.generation.BaseGenerator;
 import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.GeneratorUtil;
 import com.wolvencraft.MineReset.util.MineError;
@@ -20,12 +21,12 @@ import com.wolvencraft.MineReset.util.Util;
 
 public class EditCommand {
 	public static void run(String[] args) {
-		if(!Util.hasPermission("edit.info")) {
+		if(!Util.hasPermission("edit.info") && !Util.hasPermission("edit")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
 		}
 		
-		if(args.length == 1 && !args[0].equalsIgnoreCase("none") && !args[0].equalsIgnoreCase("delete")) {
+		if(args.length == 1 && !args[0].equalsIgnoreCase("none") && !args[0].equalsIgnoreCase("delete") && !args[0].equalsIgnoreCase("generator")) {
 			getHelp();
 			return;
 		}
@@ -272,6 +273,11 @@ public class EditCommand {
 			return;
 		}
 		else if(args[0].equalsIgnoreCase("generator")) {
+			if(args.length == 1) {
+				getGenerators();
+				return;
+			}
+			
 			if(args.length != 2) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 				return;
@@ -333,6 +339,14 @@ public class EditCommand {
 		ChatUtil.formatMessage(GeneratorUtil.list());
 		ChatUtil.formatHelp("cooldown toggle", "", "Turn the reset cooldown on and off for the mine");
 		ChatUtil.formatHelp("cooldown <time>", "", "Sets the cooldown time to the value specified");
+		return;
+	}
+	
+	public static void getGenerators() {
+		ChatUtil.formatHelp("generator", "<generator>", "Changes the active generator for the mine");
+		ChatUtil.formatMessage("The following generators are available:");
+		for(BaseGenerator gen : MineReset.getGenerators())
+			ChatUtil.formatMessage(gen.getName() + ": " + gen.getDescription());
 		return;
 	}
 }

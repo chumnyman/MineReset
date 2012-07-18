@@ -12,9 +12,8 @@ import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 
-public class TimerCommand {
-	
-	public static void run(String[] args) {
+public class TimerCommand  implements BaseCommand {
+	public void run(String[] args) {
 		if(!Util.hasPermission("edit.timer")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
@@ -141,7 +140,7 @@ public class TimerCommand {
 		return;
 	}
 
-	public static void getHelp() {
+	public void getHelp() {
 		ChatUtil.formatHeader(20, "Timer");
 		ChatUtil.formatHelp("timer", "toggle", "Toggles the automatic resets on and off");
 		ChatUtil.formatHelp("timer", "set <time>", "Changes the automatic reset time to the value specified");

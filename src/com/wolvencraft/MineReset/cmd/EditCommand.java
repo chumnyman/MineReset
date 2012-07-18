@@ -19,8 +19,8 @@ import com.wolvencraft.MineReset.util.GeneratorUtil;
 import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.Util;
 
-public class EditCommand {
-	public static void run(String[] args) {
+public class EditCommand  implements BaseCommand {
+	public void run(String[] args) {
 		if(!Util.hasPermission("edit.info") && !Util.hasPermission("edit")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
@@ -321,7 +321,7 @@ public class EditCommand {
 	}
 	
 
-	public static void getHelp() {
+	public void getHelp() {
 		ChatUtil.formatHeader(20, "Editing");
 		ChatUtil.formatHelp("edit", "<id>", "Selects a mine to edit its properties");
 		ChatUtil.formatHelp("none", "", "De-selects the mine");
@@ -342,7 +342,7 @@ public class EditCommand {
 		return;
 	}
 	
-	public static void getGenerators() {
+	public void getGenerators() {
 		ChatUtil.formatHelp("generator", "<generator>", "Changes the active generator for the mine");
 		ChatUtil.formatMessage("The following generators are available:");
 		for(BaseGenerator gen : MineReset.getGenerators())

@@ -9,8 +9,8 @@ import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.SignUtil;
 import com.wolvencraft.MineReset.util.Util;
 
-public class DataCommand {
-	public static void run(String[] args) {
+public class DataCommand implements BaseCommand {
+	public void run(String[] args) {
 		if(!Util.hasPermission("edit.admin")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
@@ -53,7 +53,7 @@ public class DataCommand {
 		}
 	}
 	
-	public static void getHelp() {
+	public void getHelp() {
 		ChatUtil.formatHeader(20, "Data");
 		ChatUtil.formatHelp("data", "save", "Saves the mine data to file");
 		ChatUtil.formatHelp("data", "load", "Loads the mine data from file");

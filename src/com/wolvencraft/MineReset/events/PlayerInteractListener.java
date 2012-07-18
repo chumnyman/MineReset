@@ -11,12 +11,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.MineCommand;
 import com.wolvencraft.MineReset.MineReset;
-import com.wolvencraft.MineReset.cmd.ResetCommand;
 import com.wolvencraft.MineReset.config.Configuration;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.mine.Mine;
-import com.wolvencraft.MineReset.mine.Reset;
 import com.wolvencraft.MineReset.mine.SignClass;
 import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.MineUtil;
@@ -91,8 +90,7 @@ public class PlayerInteractListener implements Listener
 					return;
 				}
 		     	
-		     	String[] args = {"reset", curMine.getName()};
-		     	ResetCommand.run(args, Reset.SIGN, "");
+		     	MineCommand.RESET.run(curMine.getName());
 			}
 			return;
 		}

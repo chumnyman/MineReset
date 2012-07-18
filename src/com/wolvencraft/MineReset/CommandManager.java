@@ -5,22 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.wolvencraft.MineReset.cmd.BlacklistCommand;
-import com.wolvencraft.MineReset.cmd.DataCommand;
-import com.wolvencraft.MineReset.cmd.EditCommand;
-import com.wolvencraft.MineReset.cmd.HelpCommand;
-import com.wolvencraft.MineReset.cmd.InfoCommand;
-import com.wolvencraft.MineReset.cmd.MetaCommand;
-import com.wolvencraft.MineReset.cmd.ProtectionCommand;
-import com.wolvencraft.MineReset.cmd.ResetCommand;
-import com.wolvencraft.MineReset.cmd.SaveCommand;
-import com.wolvencraft.MineReset.cmd.SelectCommand;
-import com.wolvencraft.MineReset.cmd.SignCommand;
-import com.wolvencraft.MineReset.cmd.TimerCommand;
-import com.wolvencraft.MineReset.cmd.WandCommand;
-import com.wolvencraft.MineReset.cmd.WarpCommand;
 import com.wolvencraft.MineReset.mine.Mine;
-import com.wolvencraft.MineReset.mine.Reset;
 import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.MineError;
 
@@ -41,45 +26,21 @@ public class CommandManager implements CommandExecutor
 		CommandManager.sender = sender;
 		if(!command.getName().equalsIgnoreCase("mine")) return false;
 		
-		if(args.length == 0)
-			HelpCommand.getHelp();
-		else if(args[0].equalsIgnoreCase("blacklist") || args[0].equalsIgnoreCase("bl"))
-			BlacklistCommand.run(args);
-		else if(args[0].equalsIgnoreCase("data"))
-			DataCommand.run(args);
-		else if(args[0].equalsIgnoreCase("edit") || args[0].equalsIgnoreCase("none") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+") || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-") || args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del") || args[0].equalsIgnoreCase("name") || args[0].equalsIgnoreCase("silent") || args[0].equalsIgnoreCase("generator") || args[0].equalsIgnoreCase("link")  || args[0].equalsIgnoreCase("setparent") || args[0].equalsIgnoreCase("cooldown"))
-			EditCommand.run(args);
-		else if(args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?"))
-			HelpCommand.getHelp();
-		else if(args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("time") || args[0].equalsIgnoreCase("list"))
-			InfoCommand.run(args);
-        else if(args[0].equalsIgnoreCase("meta") || args[0].equalsIgnoreCase("about"))
-            MetaCommand.run(args);
-		else if(args[0].equalsIgnoreCase("protection") || args[0].equalsIgnoreCase("prot"))
-			ProtectionCommand.run(args);
-		else if(args[0].equalsIgnoreCase("reset"))
-			ResetCommand.run(args, Reset.MANUAL, "");
-		else if(args[0].equalsIgnoreCase("save"))
-			SaveCommand.run(args);
-		else if(args[0].equalsIgnoreCase("select") || args[0].equalsIgnoreCase("pos1") || args[0].equalsIgnoreCase("pos2") || args[0].equalsIgnoreCase("hpos1") || args[0].equalsIgnoreCase("hpos2"))
-			SelectCommand.run(args);
-		else if(args[0].equalsIgnoreCase("sign"))
-			SignCommand.run(args);
-		else if(args[0].equalsIgnoreCase("timer") || args[0].equalsIgnoreCase("auto"))
-			TimerCommand.run(args);
-		else if(args[0].equalsIgnoreCase("wand"))
-			WandCommand.run(args);
-		else if(args[0].equalsIgnoreCase("warp") || args[0].equalsIgnoreCase("tp"))
-			WarpCommand.run(args);
-		else ChatUtil.sendInvalid(MineError.INVALID, args);
-			
-		String argString = "/mine";
-        for (String arg : args) {
-            argString = argString + " " + arg;
-        }
-		ChatUtil.debug(sender.getName() + ": " + argString);
+		if(args.length == 0) MineCommand.HELP.getHelp();
+		for(MineCommand cmd : MineCommand.values()) {
+			if(cmd.isCommand(args[0])) {
+				cmd.run(args);
+				String argString = "/mine";
+		        for (String arg : args) {
+		            argString = argString + " " + arg;
+		        }
+				ChatUtil.debug(sender.getName() + ": " + argString);
+				return true;
+			}
+		}
 		
-		return true;
+		ChatUtil.sendInvalid(MineError.INVALID, args);
+		return false;
 	}
 	
 	/**

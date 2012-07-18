@@ -3,6 +3,7 @@ package com.wolvencraft.MineReset.cmd;
 import java.util.List;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.MineCommand;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.mine.Mine;
@@ -13,15 +14,9 @@ import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
-public class ResetCommand
+public class ResetCommand implements BaseCommand
 {	
-	public static void run(String mineName, Reset source, String forcedGenerator) {
-		String[] args = {null, mineName};
-		run(args, source, forcedGenerator);
-	}
-	
-	public static void run(String[] args, Reset source, String forcedGenerator)
-	{	
+	public void run(String[] args) {
 		Mine curMine;
 		if(args.length == 1) curMine = CommandManager.getMine();
 		else curMine = MineUtil.getMine(args[1]);
@@ -31,8 +26,11 @@ public class ResetCommand
 			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 			return;
 		}
-
+		
 		ChatUtil.debug("Resettign mine: " + curMine.getName());
+		Reset source;
+		if(CommandManager.getSender() == null) source = Reset.AUTOMATIC;
+		else source = Reset.MANUAL;
 		
 		if(source.equals(Reset.MANUAL)) {
 			if(!Util.hasPermission("reset.manual." + curMine.getName()) && !Util.hasPermission("reset.manual")) {
@@ -48,6 +46,7 @@ public class ResetCommand
 			MineReset.getStats().updateViaCommand();
 		}
 		
+		String forcedGenerator = "";
 		if(args.length == 3) forcedGenerator = args[2];
 		
 		String generator = curMine.getGenerator();
@@ -64,7 +63,7 @@ public class ResetCommand
 			for(Mine childMine : mines) {
 				Mine parent = MineUtil.getMine(childMine.getParent());
 				if(parent != null & parent.equals(curMine)) {
-					run(childMine.getName(), Reset.AUTOMATIC, null);
+					MineCommand.RESET.run(childMine.getName());
 				}
 			}
 			
@@ -79,7 +78,7 @@ public class ResetCommand
 		return;
 	}
 	
-	public static void getHelp() {
+	public void getHelp() {
 		ChatUtil.formatHeader(20, "Reset");
 		ChatUtil.formatHelp("reset", "<name> [generator]", "Resets the mine manually");
 		ChatUtil.formatMessage("Resets the mine according to the generator defined by the configuration.");

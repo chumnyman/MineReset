@@ -10,8 +10,8 @@ import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
-public class SelectCommand {
-	public static void run(String[] args) {
+public class SelectCommand  implements BaseCommand {
+	public void run(String[] args) {
 		
 		Player player;
 		if(CommandManager.getSender() instanceof Player)
@@ -83,7 +83,7 @@ public class SelectCommand {
 		return;
 	}
 	
-	public static void getHelp() {
+	public void getHelp() {
 		ChatUtil.formatHeader(20, "Selecting");
 		ChatUtil.formatHelp("hpos1", "", "Creates a reference point 1 at the block you are looking at");
 		ChatUtil.formatHelp("hpos2", "", "Creates a reference point 2 at the block you are looking at");

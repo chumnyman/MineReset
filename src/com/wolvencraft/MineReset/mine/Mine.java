@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * @author jjkoletar
+ * @author jjkoletar, bitWolfy
  */
 @SerializableAs("Mine")
 public class Mine implements ConfigurationSerializable, Listener {

@@ -18,8 +18,8 @@ import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
-public class ProtectionCommand {
-	public static void run(String[] args) {
+public class ProtectionCommand  implements BaseCommand {
+	public void run(String[] args) {
 		if(!Util.hasPermission("edit.protection")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
@@ -298,7 +298,7 @@ public class ProtectionCommand {
 		return;
 	}
 	
-	public static void getHelp() {
+	public void getHelp() {
 		ChatUtil.formatHeader(20, "Protection");
 		ChatUtil.formatHelp("prot", "pvp", "Toggles the PVP on and off for the current mine");
 		ChatUtil.sendMessage(" ");

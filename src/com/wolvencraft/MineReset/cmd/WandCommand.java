@@ -9,8 +9,8 @@ import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.Util;
 
-public class WandCommand {
-	public static void run(String[] args) {
+public class WandCommand  implements BaseCommand {
+	public void run(String[] args) {
 		if(!Util.hasPermission("edit.wand")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
@@ -38,4 +38,6 @@ public class WandCommand {
 		ChatUtil.sendSuccess("Here is your " + wand.getType().toString().toLowerCase().replace("_", " "));
 		return;
 	}
+	
+	public void getHelp() {}
 }

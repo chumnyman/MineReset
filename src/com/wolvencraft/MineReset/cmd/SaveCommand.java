@@ -14,9 +14,8 @@ import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
-public class SaveCommand
-{
-	public static void run(String[] args)
+public class SaveCommand implements BaseCommand {
+	public void run(String[] args)
 	{
 		Player player;
 		if(CommandManager.getSender() instanceof Player)
@@ -119,7 +118,7 @@ public class SaveCommand
 		return;
 	}
 	
-	public static void getHelp() {
+	public void getHelp() {
 		ChatUtil.formatHeader(20, "Save");
 		ChatUtil.formatHelp("save", "<name> [generator]", "Saves the region for future use, with an optional generator");
 		ChatUtil.formatMessage("If no generator is specified, RandomGenerator will be used. Available generators:");

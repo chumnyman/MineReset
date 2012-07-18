@@ -15,8 +15,8 @@ import com.wolvencraft.MineReset.util.ChatUtil;
 import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.Util;
 
-public class InfoCommand {
-	public static void run(String[] args) {
+public class InfoCommand  implements BaseCommand {
+	public void run(String[] args) {
 		Mine curMine = null;
 		if(args.length == 1 && !args[0].equalsIgnoreCase("list")) {
 			if(CommandManager.getMine() != null) curMine = CommandManager.getMine();
@@ -231,7 +231,7 @@ public class InfoCommand {
 		}
 	}
 	
-	public static void getHelp() {
+	public void getHelp() {
 		ChatUtil.formatHeader(20, "Information");
 		ChatUtil.formatHelp("info", "<name>", "Returns the information about a mine", "info.all");
 		ChatUtil.formatHelp("info", "<name> blacklist", "Returns the information about mine blacklist", "info.all");

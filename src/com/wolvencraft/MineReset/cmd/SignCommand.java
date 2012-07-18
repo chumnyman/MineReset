@@ -16,8 +16,8 @@ import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.SignUtil;
 import com.wolvencraft.MineReset.util.Util;
 
-public class SignCommand {
-	public static void run(String args[]) {
+public class SignCommand  implements BaseCommand {
+	public void run(String args[]) {
 		Player player;
 		if(CommandManager.getSender() instanceof Player)
 			player = (Player) CommandManager.getSender();
@@ -122,7 +122,7 @@ public class SignCommand {
 		}
 	}
 	
-	public static void getHelp() {
+	public void getHelp() {
 		ChatUtil.formatHeader(20, "Signs");
 		ChatUtil.formatHelp("sign", "create", "Saves the targeted sign into a file");
 		ChatUtil.formatHelp("sign", "setparent <id>", "Sets the sign's parent to the one specified");

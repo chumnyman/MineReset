@@ -7,8 +7,10 @@ import com.wolvencraft.MineReset.CommandManager;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.util.Util;
 
-public class HelpCommand {
-	public static void getHelp() {
+public class HelpCommand implements BaseCommand {
+	public void run(String[] args) { getHelp(); }
+	
+	public void getHelp() {
 		formatHeader(20, Language.getString("general.title"));
         formatHelp("about", "", "Returns version and project info about MineReset");
 		formatHelp("info", "<name>", "Returns the information about a mine", "info.all");	

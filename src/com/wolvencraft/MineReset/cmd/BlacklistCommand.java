@@ -12,8 +12,9 @@ import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
-public class BlacklistCommand {
-	public static void run(String[] args) {
+public class BlacklistCommand implements BaseCommand {
+	
+	public void run(String[] args) {
 		if(!Util.hasPermission("edit.blacklist")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
@@ -97,7 +98,7 @@ public class BlacklistCommand {
 		return;
 	}
 	
-	public static void getHelp() {
+	public void getHelp() {
 		ChatUtil.formatHeader(20, "Blacklist");
 		ChatUtil.formatHelp("blacklist", "toggle", "Enables the use of blacklist for the mine");
 		ChatUtil.formatHelp("blacklist", "whitelist", "Should the blacklist be treated as a whitelist?");

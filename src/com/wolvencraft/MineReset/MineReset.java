@@ -12,7 +12,6 @@ import com.wolvencraft.MineReset.mine.Blacklist;
 import com.wolvencraft.MineReset.mine.DataBlock;
 import com.wolvencraft.MineReset.mine.Mine;
 import com.wolvencraft.MineReset.mine.MineBlock;
-import com.wolvencraft.MineReset.mine.Reset;
 import com.wolvencraft.MineReset.mine.SignClass;
 import com.wolvencraft.MineReset.mine.SimpleLoc;
 import com.wolvencraft.MineReset.util.MineUtil;
@@ -22,7 +21,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.wolvencraft.MineReset.cmd.*;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.events.*;
 import com.wolvencraft.MineReset.generation.BaseGenerator;
@@ -119,8 +117,7 @@ public class MineReset extends JavaPlugin {
 							ChatUtil.broadcast(Util.parseVars(Language.getString("reset.automatic-reset-warning"), curMine), curMine.getWorld());
 						
 						if(nextReset <= 0) {
-							String[] args = {null, curMine.getName()};
-							ResetCommand.run(args, Reset.AUTOMATIC, "");
+							MineCommand.RESET.run(curMine.getName());
 							stats.updateAutomatic();
 						}
 						curMine.updateTimer(checkEvery);

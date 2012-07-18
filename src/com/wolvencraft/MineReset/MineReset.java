@@ -1,4 +1,3 @@
-
 package com.wolvencraft.MineReset;
 
 import java.io.File;

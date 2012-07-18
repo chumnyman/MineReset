@@ -18,7 +18,7 @@ import com.wolvencraft.MineReset.util.Util;
 public class InfoCommand {
 	public static void run(String[] args) {
 		Mine curMine = null;
-		if(args.length == 1) {
+		if(args.length == 1 && !args[0].equalsIgnoreCase("list")) {
 			if(CommandManager.getMine() != null) curMine = CommandManager.getMine();
 			else {
 				getHelp();

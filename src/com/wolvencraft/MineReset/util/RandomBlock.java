@@ -11,7 +11,11 @@ import org.bukkit.material.MaterialData;
 public class RandomBlock {
  
     List<MineBlock> weightedBlocks;
-
+    
+    /**
+     * Creates a new RandomBlock instance with the composition provided
+     * @param blocks Mine composition
+     */
     public RandomBlock(List<MineBlock> blocks) {
     	weightedBlocks = new ArrayList<MineBlock>();
         double tally = 0;
@@ -23,6 +27,10 @@ public class RandomBlock {
         ChatUtil.debug("RandomBlock initialized");
     }
     
+    /**
+     * Returns a random block according to the mine's composition
+     * @return Random block
+     */
     public MaterialData next()
     {
     	double r = new Random().nextDouble();

@@ -295,6 +295,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     }
     
     public String getGenerator() {
+    	if(generator == null) generator = "RANDOM";
     	return generator.toUpperCase();
     }
     

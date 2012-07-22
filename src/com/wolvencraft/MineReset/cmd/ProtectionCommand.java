@@ -300,17 +300,17 @@ public class ProtectionCommand  implements BaseCommand {
 	
 	public void getHelp() {
 		ChatUtil.formatHeader(20, "Protection");
-		ChatUtil.formatHelp("prot", "pvp", "Toggles the PVP on and off for the current mine");
-		ChatUtil.sendMessage(" ");
-		ChatUtil.formatHelp("prot", "break toggle", "Enables or disables the block breaking protection");
-		ChatUtil.formatHelp("prot", "break whitelist", "Should the blacklist be treated as a whitelist?");
-		ChatUtil.formatHelp("prot", "break + <block>", "Add <block> to the block breaking blacklist");
-		ChatUtil.formatHelp("prot", "break - <block>", "Remove <block> from the block breaking blacklist");
-		ChatUtil.sendMessage(" ");
-		ChatUtil.formatHelp("prot", "place toggle", "Enables or disables the block breaking blacklist");
-		ChatUtil.formatHelp("prot", "place whitelist", "Should the blacklist be treated as a whitelist?");
-		ChatUtil.formatHelp("prot", "place + <block>", "Add <block> to the block placement blacklist");
-		ChatUtil.formatHelp("prot", "place - <block>", "Remove <block> from the block placement blacklist");
+		ChatUtil.formatHelp("prot", "pvp", "Toggles the PVP for the current mine");
+		ChatUtil.sendMessage(ChatColor.RED + " Block Breaking Protection:");
+		ChatUtil.formatHelp("prot", "break toggle", "Toggles the protection");
+		ChatUtil.formatHelp("prot", "break whitelist", "Toggles whitelist mode");
+		ChatUtil.formatHelp("prot", "break + <block>", "Add <block> to the blacklist");
+		ChatUtil.formatHelp("prot", "break - <block>", "Remove <block> from theblacklist");
+		ChatUtil.sendMessage(ChatColor.RED + " Block Placement Protection:");
+		ChatUtil.formatHelp("prot", "place toggle", "Toggles the protection");
+		ChatUtil.formatHelp("prot", "place whitelist", "Toggles whitelist mode");
+		ChatUtil.formatHelp("prot", "place + <block>", "Add <block> to the blacklist");
+		ChatUtil.formatHelp("prot", "place - <block>", "Remove <block> from theblacklist");
 		return;
 	}
 }

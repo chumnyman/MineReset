@@ -18,18 +18,20 @@ import com.wolvencraft.MineReset.util.Util;
 public class InfoCommand  implements BaseCommand {
 	public void run(String[] args) {
 		Mine curMine = null;
-		if(args.length == 1 && !args[0].equalsIgnoreCase("list")) {
-			if(CommandManager.getMine() != null) curMine = CommandManager.getMine();
-			else {
-				getHelp();
+		if(!args[0].equalsIgnoreCase("list")) {
+			if(args.length == 1) {
+				if(CommandManager.getMine() != null) curMine = CommandManager.getMine();
+				else {
+					getHelp();
+					return;
+				}
+			}
+			else curMine = MineUtil.getMine(args[1]);
+		
+			if(curMine == null) {
+				ChatUtil.sendInvalid(MineError.MINE_NAME, args, args[1]);
 				return;
 			}
-		}
-		else curMine = MineUtil.getMine(args[1]);
-		
-		if(curMine == null) {
-			ChatUtil.sendInvalid(MineError.MINE_NAME, args, args[1]);
-			return;
 		}
 		
 		if(args.length > 3) {

@@ -30,7 +30,7 @@ public class WarpCommand implements BaseCommand {
 			return;
 		}
 		
-		if(args[0].equalsIgnoreCase("set")) {
+		if(args[1].equalsIgnoreCase("set")) {
 			if(!Util.hasPermission("warp.set")) {
 				ChatUtil.sendInvalid(MineError.ACCESS, args);
 				return;

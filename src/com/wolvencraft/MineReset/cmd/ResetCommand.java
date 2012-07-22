@@ -62,7 +62,7 @@ public class ResetCommand implements BaseCommand
 			List<Mine> mines = MineReset.getMines();
 			for(Mine childMine : mines) {
 				Mine parent = MineUtil.getMine(childMine.getParent());
-				if(parent != null & parent.equals(curMine)) {
+				if(parent != null && parent.equals(curMine)) {
 					MineCommand.RESET.run(childMine.getName());
 				}
 			}

@@ -25,11 +25,6 @@ public class SelectCommand  implements BaseCommand {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
 			return;
 		}
-
-		if(args.length == 1) {
-			getHelp();
-			return;
-		}
 		
 		if(args.length != 2) {
 			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
@@ -40,6 +35,11 @@ public class SelectCommand  implements BaseCommand {
 		String message = "";
 		
 		if(args[0].equalsIgnoreCase("select")) {
+			
+			if(args.length == 1) {
+				getHelp();
+				return;
+			}
 			
 			Mine curMine = MineUtil.getMine(args[1]);
 			if(curMine == null) {

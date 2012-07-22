@@ -159,7 +159,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         silent = (Boolean) me.get("silent");
         automatic = (Boolean) me.get("automatic");
         automaticSeconds = (Integer) me.get("automaticResetTime");
-    	nextAutomaticResetTick = automaticSeconds * 20;
+    	if(me.get("automaticResetTime") == null) nextAutomaticResetTick = automaticSeconds * 20;
+    	else nextAutomaticResetTick = (Long) me.get("automaticResetTime");
         cooldownEnabled = (Boolean) me.get("cooldownEnabled");
         cooldownSeconds = (Integer) me.get("cooldownSeconds");
         nextCooldownTicks = cooldownSeconds * 20;
@@ -190,6 +191,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("silent", silent);
         me.put("automatic", automatic);
         me.put("automaticResetTime", automaticSeconds);
+        me.put("nextAutomaticResetTick", nextAutomaticResetTick);
         me.put("cooldownEnabled", cooldownEnabled);
         me.put("cooldownSeconds", cooldownSeconds);
         me.put("isWarned", warned);

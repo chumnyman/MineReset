@@ -159,7 +159,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         silent = (Boolean) me.get("silent");
         automatic = (Boolean) me.get("automatic");
         automaticSeconds = (Integer) me.get("automaticResetTime");
-    	if(me.containsKey("nextAutomaticResetTick")) Long.getLong(me.get("nextAutomaticResetTick").toString());
+    	if(me.containsKey("nextAutomaticResetTick")) nextAutomaticResetTick = ((Integer) me.get("nextAutomaticResetTick")).longValue();
     	else nextAutomaticResetTick = automaticSeconds * 20;
         cooldownEnabled = (Boolean) me.get("cooldownEnabled");
         cooldownSeconds = (Integer) me.get("cooldownSeconds");

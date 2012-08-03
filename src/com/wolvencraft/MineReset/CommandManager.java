@@ -35,11 +35,13 @@ public class CommandManager implements CommandExecutor
 		        }
 				ChatUtil.debug(sender.getName() + ": " + argString);
 				
+				sender = null;
 				return cmd.run(args);
 			}
 		}
 		
 		ChatUtil.sendInvalid(MineError.INVALID, args);
+		sender = null;
 		return false;
 	}
 	

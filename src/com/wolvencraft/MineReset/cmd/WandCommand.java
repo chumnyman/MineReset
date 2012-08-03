@@ -10,20 +10,20 @@ import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.Util;
 
 public class WandCommand  implements BaseCommand {
-	public void run(String[] args) {
+	public boolean run(String[] args) {
 		if(!Util.hasPermission("edit.wand")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
-			return;
+			return false;
 		}
 		
 		if(!Util.isPlayer()) {
 			ChatUtil.sendError("This command can only be executed by a living player");
-			return;
+			return false;
 		}
 		
 		if(args.length > 1) {
 			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-			return;
+			return false;
 		}
 		
 		Player player = (Player) CommandManager.getSender();
@@ -31,12 +31,12 @@ public class WandCommand  implements BaseCommand {
 		
 		if(player.getInventory().contains(wand)) {
 			ChatUtil.sendError("You already have a " + wand.getType().toString().toLowerCase().replace("_", " "));
-			return;
+			return false;
 		}
 		
 		player.getInventory().addItem(wand);
 		ChatUtil.sendSuccess("Here is your " + wand.getType().toString().toLowerCase().replace("_", " "));
-		return;
+		return true;
 	}
 	
 	public void getHelp() {}

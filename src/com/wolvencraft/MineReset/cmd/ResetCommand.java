@@ -16,7 +16,7 @@ import com.wolvencraft.MineReset.util.Util;
 
 public class ResetCommand implements BaseCommand
 {	
-	public void run(String[] args) {
+	public boolean run(String[] args) {
 		Mine curMine;
 		if(args.length == 1) curMine = CommandManager.getMine();
 		else curMine = MineUtil.getMine(args[1]);
@@ -24,7 +24,7 @@ public class ResetCommand implements BaseCommand
 		if(curMine == null) {
 			if(args.length == 1) getHelp();
 			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-			return;
+			return true;
 		}
 		
 		ChatUtil.debug("Resettign mine: " + curMine.getName());
@@ -35,12 +35,12 @@ public class ResetCommand implements BaseCommand
 		if(source.equals(Reset.MANUAL)) {
 			if(!Util.hasPermission("reset.manual." + curMine.getName()) && !Util.hasPermission("reset.manual")) {
 				ChatUtil.sendInvalid(MineError.ACCESS, args);
-				return;
+				return false;
 			}
 			
 			if(curMine.getCooldown() && curMine.getNextCooldown() > 0 && !Util.hasPermission("reset.bypass")) {
 				ChatUtil.sendError(Util.parseVars(Language.getString("reset.mine-cooldown"), curMine));
-				return;
+				return false;
 			}
 			
 			MineReset.getStats().updateViaCommand();
@@ -55,7 +55,7 @@ public class ResetCommand implements BaseCommand
 		if(curMine.getAutomatic()) curMine.resetTimer();
 		if(curMine.getCooldown()) curMine.resetCooldown();
 		
-		if(!(curMine.reset(generator))) return;
+		if(!(curMine.reset(generator))) return false;
 		
 		String broadcastMessage;
 		if(source.equals(Reset.AUTOMATIC)) {
@@ -75,7 +75,7 @@ public class ResetCommand implements BaseCommand
 		
 		if(!curMine.getSilent()) ChatUtil.broadcast(broadcastMessage, curMine.getWorld());
 		else if(!source.equals(Reset.AUTOMATIC)) ChatUtil.sendSuccess(broadcastMessage);
-		return;
+		return true;
 	}
 	
 	public void getHelp() {

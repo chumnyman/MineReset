@@ -13,27 +13,27 @@ import com.wolvencraft.MineReset.util.Util;
 
 
 public class TimerCommand  implements BaseCommand {
-	public void run(String[] args) {
+	public boolean run(String[] args) {
 		if(!Util.hasPermission("edit.timer")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
-			return;
+			return false;
 		}
 		
 		if(args.length == 1) {
 			getHelp();
-			return;
+			return true;
 		}
 
 		Mine curMine = CommandManager.getMine();
 		if(curMine == null) {
 			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-			return;
+			return false;
 		}
 		
 		if(args[1].equalsIgnoreCase("toggle")) {
 			if(args.length != 2) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			if(curMine.getAutomatic()) {
@@ -49,12 +49,12 @@ public class TimerCommand  implements BaseCommand {
 		else if(args[1].equalsIgnoreCase("set")) {
 			if(args.length != 3) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			int time = Util.parseTime(args[2]);
 			if(time <= 0) {
 				ChatUtil.sendError("Invalid time provided");
-				return;
+				return false;
 			}
 			curMine.setResetPeriod(time);
 			String parsedTime = Util.parseSeconds(time);
@@ -63,13 +63,13 @@ public class TimerCommand  implements BaseCommand {
 		else if(args[1].equalsIgnoreCase("warning")) {
 			if(args.length < 3) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			if(args[2].equalsIgnoreCase("toggle")) {
 				if(args.length != 3) {
 					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-					return;
+					return false;
 				}
 				
 				if(curMine.getWarned()) {
@@ -84,17 +84,17 @@ public class TimerCommand  implements BaseCommand {
 			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
 				if(args.length != 4) {
 					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-					return;
+					return false;
 				}
 				
 				int time = Util.parseTime(args[3]);
 				if(time <= 0) {
 					ChatUtil.sendError("Invalid time provided");
-					return;
+					return false;
 				}
 				if(time > curMine.getResetPeriod()) {
 					ChatUtil.sendError("Time cannot be set to a value greater then the reset time");
-					return;
+					return false;
 				}
 				
 				List<Integer> warnList = curMine.getWarningTimes();
@@ -106,20 +106,20 @@ public class TimerCommand  implements BaseCommand {
 			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
 				if(args.length != 4) {
 					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-					return;
+					return false;
 				}
 				
 				int time = Util.parseTime(args[3]);
 				if(time <= 0) {
 					ChatUtil.sendError("Invalid time provided");
-					return;
+					return false;
 				}
 				
 				List<Integer> warnList = curMine.getWarningTimes();
 				int index = warnList.indexOf(time);
 				if(index == -1) {
 					ChatUtil.sendError("'" + curMine.getName() + "' does not send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
-					return;
+					return false;
 				}
 				
 				warnList.remove(index);
@@ -128,16 +128,16 @@ public class TimerCommand  implements BaseCommand {
 			}
 			else {
 				ChatUtil.sendInvalid(MineError.INVALID, args);
-				return;
+				return false;
 			}
 		}
 		else {
 			ChatUtil.sendInvalid(MineError.INVALID, args);
-			return;
+			return false;
 		}
 		
 		MineUtil.save(curMine);
-		return;
+		return true;
 	}
 
 	public void getHelp() {

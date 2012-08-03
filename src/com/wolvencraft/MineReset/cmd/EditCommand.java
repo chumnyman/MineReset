@@ -20,10 +20,10 @@ import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.Util;
 
 public class EditCommand  implements BaseCommand {
-	public void run(String[] args) {
+	public boolean run(String[] args) {
 		if(!Util.hasPermission("edit.info") && !Util.hasPermission("edit")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
-			return;
+			return false;
 		}
 		
 		if(args.length == 1
@@ -32,45 +32,45 @@ public class EditCommand  implements BaseCommand {
 				&& !args[0].equalsIgnoreCase("generator")
 				&& !args[0].equalsIgnoreCase("silent")) {
 			getHelp();
-			return;
+			return true;
 		}
 		
 		Mine curMine = CommandManager.getMine();
 		if(!args[0].equalsIgnoreCase("edit") && !args[0].equalsIgnoreCase("delete") && curMine == null) {
 			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-			return;
+			return false;
 		}
 		
 		if(args[0].equalsIgnoreCase("edit")) {
 			if(args.length != 2) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			curMine = MineUtil.getMine(args[1]);
 			if(curMine == null) {
 				ChatUtil.sendInvalid(MineError.MINE_NAME, args, args[1]);
-				return;
+				return false;
 			}
 			
 			CommandManager.setMine(curMine);
 			ChatUtil.sendSuccess(Util.parseVars(Language.getString("editing.mine-selected-successfully"), curMine));
-			return;
+			return true;
 		}
 		else if(args[0].equalsIgnoreCase("none")) {
 			if(args.length != 1) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 
 			ChatUtil.sendSuccess(Util.parseVars(Language.getString("editing.mine-deselected-successfully"), curMine));
 			CommandManager.setMine(null);
-			return;
+			return true;
 		}
 		else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+")) {
 			if(args.length != 2 && args.length != 3) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			List<MineBlock> blocks = curMine.getBlocks();
@@ -81,11 +81,11 @@ public class EditCommand  implements BaseCommand {
 			
 			if(block == null) {
 				ChatUtil.sendInvalid(MineError.INVALID_BLOCK, args, args[1]);
-				return;
+				return false;
 			}
 			if(block.equals(air.getBlock())) {
 				ChatUtil.sendError("This value is calculated automatically");
-				return;
+				return false;
 			}
 
 			double percent, percentAvailable = air.getChance();
@@ -97,7 +97,7 @@ public class EditCommand  implements BaseCommand {
 					try { percent = Double.parseDouble(args[2].replace("%", "")); }
 					catch(NumberFormatException nfe) {
 						ChatUtil.sendInvalid(MineError.INVALID, args);
-						return;
+						return false;
 					}
 				}
 				
@@ -108,12 +108,12 @@ public class EditCommand  implements BaseCommand {
 			
 			if(percent <= 0) {
 				ChatUtil.sendInvalid(MineError.INVALID, args);
-				return;
+				return false;
 			}
 			
 			if((percentAvailable - percent) < 0) {
 				ChatUtil.sendError("Invalid percentage. Use /mine info " + curMine.getName() + " to review the percentages");
-				return;
+				return false;
 			}
 			else percentAvailable -= percent;
 			air.setChance(percentAvailable);
@@ -126,24 +126,24 @@ public class EditCommand  implements BaseCommand {
 			ChatUtil.sendNote(curMine.getName(), Util.format(percent) + " of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
 			ChatUtil.sendNote(curMine.getName(), "Reset the mine for the changes to take effect");
 			MineUtil.save(curMine);
-			return;
+			return true;
 		}
 		else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-")) {
 			if(args.length != 2 && args.length != 3) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			MineBlock blockData = MineUtil.getBlock(curMine, Util.getBlock(args[1]));
 			if(blockData == null) {
 				ChatUtil.sendError("There is no '" + args[1] + "' in mine '" + curMine + "'");
-				return;
+				return false;
 			}
 
 			MineBlock air = MineUtil.getBlock(curMine, new MaterialData(Material.AIR));
 			if(blockData.equals(air)) {
 				ChatUtil.sendError("This value is calculated automatically");
-				return;
+				return false;
 			}
 			
 			double percent;
@@ -157,7 +157,7 @@ public class EditCommand  implements BaseCommand {
 					}
 					catch(NumberFormatException nfe) {
 						ChatUtil.sendInvalid(MineError.INVALID, args);
-						return;
+						return false;
 					}
 				}
 				
@@ -181,26 +181,26 @@ public class EditCommand  implements BaseCommand {
 				ChatUtil.sendNote(curMine.getName(), args[1] + " was successfully removed from the mine");
 			}
 			MineUtil.save(curMine);
-			return;
+			return true;
 		}
 		else if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del")) {
 			if(args.length > 2) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			if(args.length == 1) {
 				curMine = CommandManager.getMine();
 				if(curMine == null) {
 					ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-					return;
+					return false;
 				}
 			}
 			else {
 				curMine = MineUtil.getMine(args[1]);
 				if(curMine == null) {
 					ChatUtil.sendInvalid(MineError.MINE_NAME, args, args[1]);
-					return;
+					return false;
 				}
 			}
 			
@@ -210,12 +210,12 @@ public class EditCommand  implements BaseCommand {
 			ChatUtil.sendNote(curMine.getName(), "Mine successfully deleted");
 			MineUtil.delete(curMine);
 			MineUtil.saveAll();
-			return;
+			return true;
 		}
 		else if(args[0].equalsIgnoreCase("name")) {
 			if(args.length < 2) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			String name = args[1];
@@ -224,12 +224,12 @@ public class EditCommand  implements BaseCommand {
 			curMine.setDisplayName(name);
 			ChatUtil.sendNote(curMine.getName(), "Mine now has a display name '" + ChatColor.GOLD + name + ChatColor.WHITE + "'");
 			MineUtil.save(curMine);
-			return;
+			return true;
 		}
 		else if(args[0].equalsIgnoreCase("silent")) {
 			if(args.length != 1) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			if(curMine.getSilent()) {
@@ -241,12 +241,12 @@ public class EditCommand  implements BaseCommand {
 				ChatUtil.sendNote(curMine.getName(), "Silent mode " + ChatColor.GREEN + "on");
 			}
 			MineUtil.save(curMine);
-			return;
+			return true;
 		}
 		else if(args[0].equalsIgnoreCase("cooldown")) {
 			if(args.length != 2) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			if(args[1].equalsIgnoreCase("toggle")) {
@@ -264,7 +264,7 @@ public class EditCommand  implements BaseCommand {
 					int seconds = Util.parseTime(args[1]);
 					if(seconds == -1) {
 						ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-						return;
+						return false;
 					}
 					curMine.setCooldownTime(seconds);
 					ChatUtil.sendNote(curMine.getName(), "Reset cooldown set to " + ChatColor.GREEN + Util.parseSeconds(seconds));
@@ -274,17 +274,17 @@ public class EditCommand  implements BaseCommand {
 				}
 			}
 			MineUtil.save(curMine);
-			return;
+			return true;
 		}
 		else if(args[0].equalsIgnoreCase("generator")) {
 			if(args.length == 1) {
 				getGenerators();
-				return;
+				return false;
 			}
 			
 			if(args.length != 2) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			curMine.setGenerator(args[1].toUpperCase());
@@ -293,34 +293,34 @@ public class EditCommand  implements BaseCommand {
 			ChatUtil.sendNote(curMine.getName(), "Mine generator has been set to " + ChatColor.GREEN + args[1].toUpperCase());
 
 			MineUtil.save(curMine);
-			return;
+			return true;
 		}
 		else if(args[0].equalsIgnoreCase("setparent") || args[0].equalsIgnoreCase("link")) {
 			if(args.length != 2) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			if(args[1].equalsIgnoreCase("none")) {
 				ChatUtil.sendNote(curMine.getName(), "Mine is no longer linked to " + ChatColor.RED + curMine.getParent());
 				curMine.setParent(null);
 				MineUtil.save(curMine);
-				return;
+				return true;
 			}
 			
 			if(MineUtil.getMine(args[1]) == null) {
 				ChatUtil.sendInvalid(MineError.MINE_NAME, args, args[1]);
-				return;
+				return false;
 			}
 			
 			curMine.setParent(args[1]);
 			ChatUtil.sendNote(curMine.getName(), "Mine will is now linked to " + ChatColor.GREEN + args[1]);
 			MineUtil.save(curMine);
-			return;
+			return true;
 		}
 		else {
 			ChatUtil.sendInvalid(MineError.INVALID, args);
-			return;
+			return false;
 		}
 	}
 	

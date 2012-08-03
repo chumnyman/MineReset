@@ -29,13 +29,13 @@ public class CommandManager implements CommandExecutor
 		if(args.length == 0) MineCommand.HELP.getHelp();
 		for(MineCommand cmd : MineCommand.values()) {
 			if(cmd.isCommand(args[0])) {
-				cmd.run(args);
 				String argString = "/mine";
 		        for (String arg : args) {
 		            argString = argString + " " + arg;
 		        }
 				ChatUtil.debug(sender.getName() + ": " + argString);
-				return true;
+				
+				return cmd.run(args);
 			}
 		}
 		

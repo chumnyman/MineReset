@@ -17,46 +17,46 @@ import com.wolvencraft.MineReset.util.SignUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class SignCommand  implements BaseCommand {
-	public void run(String args[]) {
+	public boolean run(String args[]) {
 		Player player;
 		if(CommandManager.getSender() instanceof Player)
 			player = (Player) CommandManager.getSender();
 		else {
 			ChatUtil.sendError("This command cannot be executed via console");
-			return;
+			return false;
 		}
 		if(!Util.hasPermission("edit.sign")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
-			return;
+			return false;
 		}
 		
 		if(args.length == 1) {
 			getHelp();
-			return;
+			return false;
 		}
 		
 		if(args.length != 2) {
 			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-			return;
+			return false;
 		}
 		
 		Block b = player.getTargetBlock(null, 100);
 		if(b.getType() != Material.WALL_SIGN && b.getType() != Material.SIGN_POST) {
 			ChatUtil.sendError("You are targeting " + b.getType().toString() + "; you can only use this command on signs");
-			return;
+			return false;
 		}
 		
 		Mine curMine = CommandManager.getMine();
 		if(curMine == null) {
 			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-			return;
+			return false;
 		}
 		
 		
 		if(args[1].equalsIgnoreCase("create")) {	
 			if(SignUtil.exists(b.getLocation())) {
 				ChatUtil.sendError("This sign has been defined already.");
-				return;
+				return false;
 			}
 			
 			SignClass sign = new SignClass(curMine.getName(), b.getLocation(), (Sign) b.getState());
@@ -67,12 +67,12 @@ public class SignCommand  implements BaseCommand {
 			
 			ChatUtil.sendNote(curMine.getName(), "A new sign was defined successfully");
 			SignUtil.saveAll();
-			return;
+			return false;
 		}
 		else if(args[1].equalsIgnoreCase("reset")) {
 			if(!SignUtil.exists(b.getLocation())) {
 				ChatUtil.sendError("This sign has not been defined for this mine yet");
-				return;
+				return false;
 			}
 			SignClass sign = SignUtil.getSignAt(b.getLocation());
 			
@@ -86,12 +86,12 @@ public class SignCommand  implements BaseCommand {
 			}
 
 			SignUtil.save(sign);
-			return;
+			return true;
 		}
 		else if(args[1].equalsIgnoreCase("remove")) {
 			if(!SignUtil.exists(b.getLocation())) {
 				ChatUtil.sendError("This sign has not been defined yet");
-				return;
+				return false;
 			}
 			
 			SignClass sign = SignUtil.getSignAt(b.getLocation());
@@ -105,7 +105,7 @@ public class SignCommand  implements BaseCommand {
 			}
 			else {
 				ChatUtil.sendError("You are targeting " + b.getType().toString() + "; you can only use this command on signs");
-				return;
+				return false;
 			}
 			
 			List<SignClass> signs = MineReset.getSigns();
@@ -114,11 +114,11 @@ public class SignCommand  implements BaseCommand {
 			SignUtil.delete(sign);
 			SignUtil.saveAll();
 			ChatUtil.sendSuccess("This sign is no longer defined. You can destroy it now.");
-			return;
+			return true;
 		}
 		else {
 			ChatUtil.sendInvalid(MineError.INVALID, args);
-			return;
+			return false;
 		}
 	}
 	

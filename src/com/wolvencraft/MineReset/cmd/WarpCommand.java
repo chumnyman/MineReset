@@ -12,55 +12,55 @@ import com.wolvencraft.MineReset.util.Util;
 
 public class WarpCommand implements BaseCommand {
 	
-	public void run(String[] args) {
+	public boolean run(String[] args) {
 		if(args.length == 1) {
 			getHelp();
-			return;
+			return true;
 		}
 		
 		Player player;
 		if(Util.isPlayer()) player = (Player) CommandManager.getSender();
 		else {
 			ChatUtil.sendError("This command cannot be executed via console");
-			return;
+			return false;
 		}
 		
 		if(args.length != 2) {
 			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-			return;
+			return false;
 		}
 		
 		if(args[1].equalsIgnoreCase("set")) {
 			if(!Util.hasPermission("warp.set")) {
 				ChatUtil.sendInvalid(MineError.ACCESS, args);
-				return;
+				return false;
 			}
 			Mine curMine = CommandManager.getMine();
 			if(curMine == null) {
 				ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-				return;
+				return false;
 			}
 			
 			curMine.setWarp(player.getLocation());
 			
 			ChatUtil.sendSuccess("Mine spawn point set at the current location!");
-			return;
+			return true;
 		}
 		
 		Mine curMine = MineUtil.getMine(args[1]);
 		if(curMine != null) {
 			if(!Util.hasPermission("warp.use." + curMine.getName()) && !Util.hasPermission("warp.use")) {
 				ChatUtil.sendInvalid(MineError.ACCESS, args);
-				return;
+				return false;
 			}
 			player.teleport(curMine.getWarp());
 			String message = Util.parseVars(Language.getString("misc.mine-teleport"), curMine);
 			ChatUtil.sendSuccess(message);
-			return;
+			return true;
 		}
 		else {
 			ChatUtil.sendInvalid(MineError.MINE_NAME, args, args[1]);
-			return;
+			return false;
 		}
 	}
 

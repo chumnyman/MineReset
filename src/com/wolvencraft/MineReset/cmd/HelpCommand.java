@@ -8,7 +8,10 @@ import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.util.Util;
 
 public class HelpCommand implements BaseCommand {
-	public void run(String[] args) { getHelp(); }
+	public boolean run(String[] args) { 
+		getHelp();
+		return true;
+	}
 	
 	public void getHelp() {
 		formatHeader(20, Language.getString("general.title"));

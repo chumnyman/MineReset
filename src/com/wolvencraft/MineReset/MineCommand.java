@@ -46,17 +46,17 @@ public enum MineCommand {
 		return clazz;
 	}
 	
-	public void run(String[] args) {
-		clazz.run(args);
+	public boolean run(String[] args) {
+		return clazz.run(args);
 	}
 	
 	public boolean isCommand(String arg) {
 		return alias.contains(arg);
 	}
 	
-	public void run(String arg) {
+	public boolean run(String arg) {
 		String[] args = {"", arg};
-		clazz.run(args);
+		return clazz.run(args);
 	}
 	
 	public void getHelp() {

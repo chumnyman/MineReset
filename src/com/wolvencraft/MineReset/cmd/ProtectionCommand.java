@@ -19,21 +19,21 @@ import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class ProtectionCommand  implements BaseCommand {
-	public void run(String[] args) {
+	public boolean run(String[] args) {
 		if(!Util.hasPermission("edit.protection")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
-			return;
+			return false;
 		}
 		
 		if(args.length == 1) {
 			getHelp();
-			return;
+			return true;
 		}
 		
 		Mine curMine = CommandManager.getMine();
 		if(curMine == null) {
 			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-			return;
+			return false;
 		}
 		
 		if(args[1].equalsIgnoreCase("save")) {
@@ -43,25 +43,25 @@ public class ProtectionCommand  implements BaseCommand {
 			}
 			else {
 				ChatUtil.sendError("This command cannot be executed via console");
-				return;
+				return false;
 			}
 			
 			if(args.length != 2) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			if(!Util.locationsSet()) {
 				WorldEditPlugin we = MineReset.getWorldEditPlugin();
 				if(we == null) {
 					ChatUtil.sendError("Make a selection first");
-					return;
+					return false;
 				}
 				else {
 					Selection sel = we.getSelection(player);
 					if(sel == null) {
 						ChatUtil.sendError("Make a selection first");
-						return;
+						return false;
 					}
 					CommandManager.setLocation(we.getSelection(player).getMinimumPoint(), 0);
 					CommandManager.setLocation(we.getSelection(player).getMaximumPoint(), 1);
@@ -72,12 +72,12 @@ public class ProtectionCommand  implements BaseCommand {
 			
 			if(!loc[0].getWorld().equals(loc[1].getWorld())) {
 				ChatUtil.sendError("Your selection points are in different worlds");
-				return;
+				return false;
 			}
 			
 			if(!loc[0].getWorld().equals(curMine.getWorld())) {
 				ChatUtil.sendError("Mine and protection regions are in different worlds");
-				return;
+				return false;
 			}
 	        
 	        double temp = 0;
@@ -106,7 +106,7 @@ public class ProtectionCommand  implements BaseCommand {
 		else if(args[1].equalsIgnoreCase("pvp")) {
 			if(args.length != 2) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			if(curMine.getProtection().contains(Protection.PVP)) {
@@ -121,14 +121,14 @@ public class ProtectionCommand  implements BaseCommand {
 		else if(args[1].equalsIgnoreCase("breaking") || args[1].equalsIgnoreCase("break")) {
 			if(args.length < 3) {
 				ChatUtil.sendError("Invalid parameters. Check your argument count!");
-				return;
+				return false;
 			}
 			
 			if(args[2].equalsIgnoreCase("toggle")) {
 
 				if(args.length != 3) {
 					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-					return;
+					return false;
 				}
 				
 				if(curMine.getProtection().contains(Protection.BLOCK_BREAK)) {
@@ -145,7 +145,7 @@ public class ProtectionCommand  implements BaseCommand {
 			else if(args[2].equalsIgnoreCase("whitelist")) {
 				if(args.length != 3) {
 					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-					return;
+					return false;
 				}
 				if(curMine.getBreakBlacklist().getWhitelist()) {
 					curMine.getBreakBlacklist().setWhitelist(false);
@@ -159,13 +159,13 @@ public class ProtectionCommand  implements BaseCommand {
 			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
 				if(args.length != 4) {
 					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-					return;
+					return false;
 				}
 				MaterialData block = Util.getBlock(args[3]);
 				
 				if(block == null) {
 					ChatUtil.sendInvalid(MineError.INVALID_BLOCK, args, args[3]);
-					return;
+					return false;
 				}
 				
 				List<MaterialData> blockList = curMine.getBreakBlacklist().getBlocks();
@@ -177,20 +177,20 @@ public class ProtectionCommand  implements BaseCommand {
 			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
 				if(args.length != 4) {
 					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-					return;
+					return false;
 				}
 				MaterialData block = Util.getBlock(args[3]);
 				
 				if(block == null) {
 					ChatUtil.sendInvalid(MineError.INVALID_BLOCK, args, args[3]);
-					return;
+					return false;
 				}
 				
 				List<MaterialData> blockList = curMine.getBreakBlacklist().getBlocks();
 				
 				if(blockList.indexOf(block) == -1) {
 					ChatUtil.sendError("There is no '" + args[3] + "' in break protection blacklist of mine '" + curMine.getName() + "'");
-					return;
+					return false;
 				}
 				blockList.remove(block);
 				curMine.getBreakBlacklist().setBlocks(blockList);
@@ -200,20 +200,20 @@ public class ProtectionCommand  implements BaseCommand {
 			else
 			{
 				ChatUtil.sendInvalid(MineError.INVALID, args);
-				return;
+				return false;
 			}
 		}
 		else if(args[1].equalsIgnoreCase("placement") || args[1].equalsIgnoreCase("place")) {
 			if(args.length < 3) {
 				ChatUtil.sendError("Invalid parameters. Check your argument count!");
-				return;
+				return false;
 			}
 			
 			if(args[2].equalsIgnoreCase("toggle")) {
 
 				if(args.length != 3) {
 					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-					return;
+					return false;
 				}
 				
 				if(curMine.getProtection().contains(Protection.BLOCK_PLACE)) {
@@ -230,7 +230,7 @@ public class ProtectionCommand  implements BaseCommand {
 			else if(args[2].equalsIgnoreCase("whitelist")) {
 				if(args.length != 3) {
 					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-					return;
+					return false;
 				}
 				if(curMine.getPlaceBlacklist().getWhitelist()) {
 					curMine.getPlaceBlacklist().setWhitelist(false);
@@ -244,13 +244,13 @@ public class ProtectionCommand  implements BaseCommand {
 			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
 				if(args.length != 4) {
 					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-					return;
+					return false;
 				}
 				MaterialData block = Util.getBlock(args[3]);
 				
 				if(block == null) {
 					ChatUtil.sendInvalid(MineError.INVALID_BLOCK, args, args[3]);
-					return;
+					return false;
 				}
 				
 				List<MaterialData> blockList = curMine.getPlaceBlacklist().getBlocks();
@@ -262,20 +262,20 @@ public class ProtectionCommand  implements BaseCommand {
 			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
 				if(args.length != 4) {
 					ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-					return;
+					return false;
 				}
 				MaterialData block = Util.getBlock(args[3]);
 				
 				if(block == null) {
 					ChatUtil.sendInvalid(MineError.INVALID_BLOCK, args, args[3]);
-					return;
+					return false;
 				}
 				
 				List<MaterialData> blockList = curMine.getPlaceBlacklist().getBlocks();
 				
 				if(blockList.indexOf(block) == -1) {
 					ChatUtil.sendError("There is no '" + args[3] + "' in place protection blacklist of mine '" + curMine.getName() + "'");
-					return;
+					return false;
 				}
 				blockList.remove(block);
 				curMine.getPlaceBlacklist().setBlocks(blockList);
@@ -285,17 +285,17 @@ public class ProtectionCommand  implements BaseCommand {
 			else
 			{
 				ChatUtil.sendInvalid(MineError.INVALID, args);
-				return;
+				return false;
 			}
 		}
 		else
 		{
 			ChatUtil.sendInvalid(MineError.INVALID, args);
-			return;
+			return false;
 		}
 		
 		MineUtil.save(curMine);
-		return;
+		return true;
 	}
 	
 	public void getHelp() {

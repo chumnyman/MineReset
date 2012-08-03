@@ -10,27 +10,27 @@ import com.wolvencraft.MineReset.util.SignUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class DataCommand implements BaseCommand {
-	public void run(String[] args) {
+	public boolean run(String[] args) {
 		if(!Util.hasPermission("edit.admin")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
-			return;
+			return false;
 		}
 		
 		if(args.length == 1) {
 			getHelp();
-			return;
+			return true;
 		}
 		
 		if(args.length != 2) {
 			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-			return;
+			return false;
 		}
 		
 		if(args[1].equalsIgnoreCase("save")) {
 			MineUtil.saveAll();
 			SignUtil.saveAll();
 			ChatUtil.sendSuccess("Mine and sign data saved to disc");
-			return;
+			return true;
 		}
 		else if(args[1].equalsIgnoreCase("load")) {
 			CommandManager.getPlugin().reloadConfig();
@@ -38,18 +38,18 @@ public class DataCommand implements BaseCommand {
 			MineReset.setMines(MineUtil.loadAll());
 			MineReset.setSigns(SignUtil.loadAll());
 			ChatUtil.sendSuccess("Mine and sign data loaded from disc");
-			return;
+			return true;
 		}
 		else if(args[1].equalsIgnoreCase("import")) {
 			ChatUtil.sendSuccess("Data import started");
 			ConfigurationUpdater.updateRegions();
 			ConfigurationUpdater.updateSigns();
 			ChatUtil.sendSuccess("Data import finished");
-			return;
+			return true;
 		}
 		else {
 			ChatUtil.sendInvalid(MineError.INVALID, args);
-			return;
+			return false;
 		}
 	}
 	

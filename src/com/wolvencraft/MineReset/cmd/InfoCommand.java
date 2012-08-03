@@ -16,27 +16,27 @@ import com.wolvencraft.MineReset.util.MineError;
 import com.wolvencraft.MineReset.util.Util;
 
 public class InfoCommand  implements BaseCommand {
-	public void run(String[] args) {
+	public boolean run(String[] args) {
 		Mine curMine = null;
 		if(!args[0].equalsIgnoreCase("list")) {
 			if(args.length == 1) {
 				if(CommandManager.getMine() != null) curMine = CommandManager.getMine();
 				else {
 					getHelp();
-					return;
+					return true;
 				}
 			}
 			else curMine = MineUtil.getMine(args[1]);
 		
 			if(curMine == null) {
 				ChatUtil.sendInvalid(MineError.MINE_NAME, args, args[1]);
-				return;
+				return false;
 			}
 		}
 		
 		if(args.length > 3) {
 			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-			return;
+			return false;
 		}
 		
 		
@@ -44,15 +44,8 @@ public class InfoCommand  implements BaseCommand {
 
 			if(!Util.hasPermission("info.all")) {
 				ChatUtil.sendInvalid(MineError.ACCESS, args);
-				return;
-			}
-			
-			// SPACING INFO - IMPORTANT
-			// 51 symbols
-			// 87 spaces
-			// 0.586206897 | 1.70588235
-			//ChatUtil.sendMessage("|                                                                              |");
-			//ChatUtil.sendMessage("/---------------------------------------------------\\");			
+				return false;
+			}			
 			
 			// Reset
 			Mine parentMine = MineUtil.getMine(curMine.getParent());
@@ -76,6 +69,7 @@ public class InfoCommand  implements BaseCommand {
 						String[] parts = {block.getItemTypeId() + "", block.getData() + ""};
 						ChatUtil.sendMessage(" - " + Util.parseMetadata(parts, true) + " " + Util.parseMaterial(block.getItemType()));
 					}
+					return true;
 				}
 				else if(args[2].equalsIgnoreCase("protection") || args[2].equalsIgnoreCase("pt")) {
 					boolean pvp = curMine.getProtection().contains(Protection.PVP);
@@ -95,7 +89,7 @@ public class InfoCommand  implements BaseCommand {
 					if(pvp) str += ChatColor.GREEN + "Enabled";
 					else str += ChatColor.RED + "Disabled";
 					ChatUtil.sendMessage(str);
-					return;
+					return true;
 				}
 				else if(args[2].equalsIgnoreCase("sign")) {
 					ChatUtil.sendMessage("Signs associated with this mine: ");
@@ -104,7 +98,7 @@ public class InfoCommand  implements BaseCommand {
 						if(sign.getParent().equals(curMine))
 							ChatUtil.sendMessage(" - " + sign.getLocation().getBlockX() + ", " + sign.getLocation().getBlockY() + ", " + sign.getLocation().getBlockZ());
 					}
-					return;
+					return true;
 				}
 				else if(args[2].equalsIgnoreCase("reset")) {
 					String autoResetFormatted = Util.parseSeconds(MineUtil.getResetTime(curMine));
@@ -117,11 +111,12 @@ public class InfoCommand  implements BaseCommand {
 						for(int time : warnings) ChatUtil.sendMessage(" - " + Util.parseSeconds(time));
 					}
 					else ChatUtil.sendMessage("Mine has to be reset manually");
-					return;
+					
+					return true;
 				}
 				else{
 					ChatUtil.sendInvalid(MineError.INVALID, args);
-					return;
+					return false;
 				}
 			}
 			else {
@@ -183,18 +178,19 @@ public class InfoCommand  implements BaseCommand {
 				}
 				if(finalList.size() % 2 != 0) ChatUtil.sendMessage("        " + finalList.get(finalList.size() - 1));
 				ChatUtil.sendMessage("");
-				return;
+				
+				return true;
 			}
 		}
 		else if(args[0].equalsIgnoreCase("time")) {
 			if(!Util.hasPermission("info.time")) {
 				ChatUtil.sendInvalid(MineError.ACCESS, args);
-				return;
+				return false;
 			}
 			
 			if(args.length != 2) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			String displayName = curMine.getDisplayName();
@@ -209,16 +205,18 @@ public class InfoCommand  implements BaseCommand {
 			if(curMine.getAutomatic())
 				ChatUtil.sendSuccess(displayName + " resets every " + ChatColor.GOLD +  autoResetFormatted + ChatColor.WHITE + " minutes. Next reset in " + ChatColor.GOLD + nextResetFormatted + ChatColor.WHITE + " minutes.");
 			else ChatUtil.sendSuccess(displayName + " has to be reset manually");
+			
+			return true;
 		}
 		else if(args[0].equalsIgnoreCase("list")) {
 			if(!Util.hasPermission("info.list")) {
 				ChatUtil.sendInvalid(MineError.ACCESS, args);
-				return;
+				return false;
 			}
 			
 			if(args.length != 1) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			ChatUtil.sendMessage(ChatColor.DARK_RED + "                    -=[ " + ChatColor.GREEN + ChatColor.BOLD + "Public Mines" + ChatColor.DARK_RED + " ]=-");
@@ -230,7 +228,10 @@ public class InfoCommand  implements BaseCommand {
 				else
 					ChatUtil.sendMessage(" - " + ChatColor.GREEN + displayName + ChatColor.WHITE + " (" + mine.getName() + ")");
 			}
+			
+			return true;
 		}
+		return false;
 	}
 	
 	public void getHelp() {

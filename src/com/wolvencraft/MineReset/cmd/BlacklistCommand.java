@@ -14,27 +14,27 @@ import com.wolvencraft.MineReset.util.Util;
 
 public class BlacklistCommand implements BaseCommand {
 	
-	public void run(String[] args) {
+	public boolean run(String[] args) {
 		if(!Util.hasPermission("edit.blacklist")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
-			return;
+			return false;
 		}
 
 		if(args.length == 1) {
 			getHelp();
-			return;
+			return true;
 		}
 		
 		Mine curMine = CommandManager.getMine();
 		if(curMine == null) {
 			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
-			return;
+			return false;
 		}
 		
 		if(args[1].equalsIgnoreCase("toggle")) {
 			if(args.length != 2) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			if(curMine.getBlacklist().getEnabled()) {
 				curMine.getBlacklist().setEnabled(false);
@@ -58,13 +58,13 @@ public class BlacklistCommand implements BaseCommand {
 		else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
 			if(args.length != 3) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			MaterialData block = Util.getBlock(args[2]);
 			if(block == null) {
 				ChatUtil.sendInvalid(MineError.INVALID_BLOCK, args, args[2]);
-				return;
+				return false;
 			}
 			
 			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
@@ -75,13 +75,13 @@ public class BlacklistCommand implements BaseCommand {
 		else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-")) {
 			if(args.length != 3) {
 				ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-				return;
+				return false;
 			}
 			
 			MaterialData block = Util.getBlock(args[2]);
 			if(block == null) {
 				ChatUtil.sendInvalid(MineError.INVALID_BLOCK, args, args[2]);
-				return;
+				return false;
 			}
 			
 			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
@@ -91,11 +91,11 @@ public class BlacklistCommand implements BaseCommand {
 		}
 		else {
 			ChatUtil.sendInvalid(MineError.INVALID, args);
-			return;
+			return false;
 		}
 		
 		MineUtil.save(curMine);
-		return;
+		return true;
 	}
 	
 	public void getHelp() {

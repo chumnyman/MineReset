@@ -9,7 +9,7 @@ import org.bukkit.ChatColor;
  * @author jjkoletar
  */
 public class MetaCommand  implements BaseCommand {
-    public void run(String[] args) {
+    public boolean run(String[] args) {
         String title = Language.getString("general.title");
         HelpCommand.formatHeader(20, title);
         ChatUtil.sendMessage(ChatColor.GREEN + "MineReset" + ChatColor.WHITE + " version " + ChatColor.BLUE + Updater.getCurVersion() + "." + Updater.getCurSubVersion());
@@ -17,6 +17,8 @@ public class MetaCommand  implements BaseCommand {
         ChatUtil.sendMessage("Creator: " + ChatColor.AQUA + "bitWolfy");
         ChatUtil.sendMessage("Maintainers: " + ChatColor.AQUA + "bitWolfy " + ChatColor.WHITE + "and " + ChatColor.AQUA + "jjkoletar");
         ChatUtil.sendMessage("Testers: " + ChatColor.AQUA + "ProGamerzFTW");
+        
+        return true;
     }
     
     public void getHelp() {}

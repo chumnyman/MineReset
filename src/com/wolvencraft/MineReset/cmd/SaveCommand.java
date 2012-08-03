@@ -15,29 +15,29 @@ import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.Util;
 
 public class SaveCommand implements BaseCommand {
-	public void run(String[] args)
+	public boolean run(String[] args)
 	{
 		Player player;
 		if(CommandManager.getSender() instanceof Player)
 			player = (Player) CommandManager.getSender();
 		else {
 			ChatUtil.sendError("This command cannot be executed via console");
-			return;
+			return false;
 		}
 		
 		if(!Util.hasPermission("edit.save")) {
 			ChatUtil.sendInvalid(MineError.ACCESS, args);
-			return;
+			return false;
 		}
 		
 		if(args.length == 1) {
 			getHelp();
-			return;
+			return true;
 		}
 		
 		if(args.length != 2 && args.length != 3) {
 			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
-			return;
+			return false;
 		}
 		
 		String generator;
@@ -47,7 +47,7 @@ public class SaveCommand implements BaseCommand {
 			}
 			else {
 				ChatUtil.sendError("Invalid generator provided!");
-				return;
+				return false;
 			}
 		}
 		else generator = "RANDOM";
@@ -56,13 +56,13 @@ public class SaveCommand implements BaseCommand {
 			WorldEditPlugin we = MineReset.getWorldEditPlugin();
 			if(we == null) {
 				ChatUtil.sendError("Make a selection first");
-				return;
+				return false;
 			}
 			else {
 				Selection sel = we.getSelection(player);
 				if(sel == null) {
 					ChatUtil.sendError("Make a selection first");
-					return;
+					return false;
 				}
 				CommandManager.setLocation(we.getSelection(player).getMinimumPoint(), 0);
 				CommandManager.setLocation(we.getSelection(player).getMaximumPoint(), 1);
@@ -73,12 +73,12 @@ public class SaveCommand implements BaseCommand {
 		
 		if(!loc[0].getWorld().equals(loc[1].getWorld())) {
 			ChatUtil.sendError("Your selection points are in different worlds");
-			return;
+			return false;
 		}
 
 		if(MineUtil.getMine(args[1]) != null) {
 			ChatUtil.sendError("Mine '" + args[1] + "' already exists!");
-			return;
+			return false;
 		}
 
         ChatUtil.debug("Mine existance check passed");
@@ -115,7 +115,7 @@ public class SaveCommand implements BaseCommand {
 		CommandManager.resetLocation();
 		CommandManager.setMine(newMine);
 		ChatUtil.sendNote(newMine.getName(), "Mine created successfully!");
-		return;
+		return true;
 	}
 	
 	public void getHelp() {

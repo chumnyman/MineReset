@@ -77,10 +77,12 @@ public class ResetCommand implements BaseCommand
 		}
 		else broadcastMessage = Language.getString("reset.manual-reset-successful");
 		
-		broadcastMessage = Util.parseVars(broadcastMessage, curMine);
-		
-		if(!curMine.getSilent()) ChatUtil.broadcast(broadcastMessage);
-		else if(!source.equals(Reset.AUTOMATIC)) ChatUtil.sendSuccess(broadcastMessage);
+		if(curMine.getParent() == null) {
+			broadcastMessage = Util.parseVars(broadcastMessage, curMine);
+			
+			if(!curMine.getSilent()) ChatUtil.broadcast(broadcastMessage);
+			else if(!source.equals(Reset.AUTOMATIC)) ChatUtil.sendSuccess(broadcastMessage);
+		}
 		return true;
 	}
 	

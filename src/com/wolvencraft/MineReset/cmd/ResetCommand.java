@@ -29,8 +29,14 @@ public class ResetCommand implements BaseCommand
 		
 		ChatUtil.debug("Resettign mine: " + curMine.getName());
 		Reset source;
-		if(CommandManager.getSender() == null) source = Reset.AUTOMATIC;
-		else source = Reset.MANUAL;
+		if(CommandManager.getSender() == null) {
+			source = Reset.AUTOMATIC;
+			ChatUtil.debug("Automatic reset!");
+		}
+		else {
+			source = Reset.MANUAL;
+			ChatUtil.debug("Manual reset!");
+		}
 		
 		if(source.equals(Reset.MANUAL)) {
 			if(!Util.hasPermission("reset.manual." + curMine.getName()) && !Util.hasPermission("reset.manual")) {

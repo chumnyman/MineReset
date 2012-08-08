@@ -28,6 +28,7 @@ public class CommandManager implements CommandExecutor
 		
 		if(args.length == 0) {
 			MineCommand.HELP.getHelp();
+			CommandManager.sender = null;
 			return true;
 		}
 		for(MineCommand cmd : MineCommand.values()) {

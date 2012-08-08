@@ -26,7 +26,10 @@ public class CommandManager implements CommandExecutor
 		CommandManager.sender = sender;
 		if(!command.getName().equalsIgnoreCase("mine")) return false;
 		
-		if(args.length == 0) MineCommand.HELP.getHelp();
+		if(args.length == 0) {
+			MineCommand.HELP.getHelp();
+			return true;
+		}
 		for(MineCommand cmd : MineCommand.values()) {
 			if(cmd.isCommand(args[0])) {
 				String argString = "/mine";
@@ -35,8 +38,9 @@ public class CommandManager implements CommandExecutor
 		        }
 				ChatUtil.debug(sender.getName() + ": " + argString);
 				
+				boolean result = cmd.run(args);
 				CommandManager.sender = null;
-				return cmd.run(args);
+				return result;
 			}
 		}
 		

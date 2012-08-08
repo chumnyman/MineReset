@@ -160,7 +160,7 @@ public class InfoCommand  implements BaseCommand {
 				else parentName = curMine.getParent();
 				for(int i = 0; i < (25 - parentName.length()); i++)
 					str += " ";
-				str += "Linked to: " + parentName;
+				str += ChatColor.WHITE + "Linked to: " + ChatColor.GOLD + parentName;
 				ChatUtil.sendMessage(str);
 				
 				// Mine composition

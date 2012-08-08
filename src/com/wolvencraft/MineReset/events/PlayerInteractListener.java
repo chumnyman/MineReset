@@ -36,14 +36,13 @@ public class PlayerInteractListener implements Listener
         ChatUtil.debug("PlayerInteractEvent passed");
 		
 		Player player = event.getPlayer();
-		Block block = event.getClickedBlock();
 		if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 			if(!Util.playerHasPermission(player, "edit.select")) return;
 			ItemStack wand = new ItemStack(Configuration.getInt("misc.wand-item"));
 			if(player.getItemInHand().equals(wand)) {
+				if(MineReset.getWorldEditPlugin() != null && (new ItemStack(MineReset.getWorldEditPlugin().getLocalConfiguration().navigationWand).equals(wand))) return;
 				
-				if(MineReset.getWorldEditPlugin() != null && !(new ItemStack(MineReset.getWorldEditPlugin().getLocalConfiguration().navigationWand).equals(wand))) return;
-				Location loc = block.getLocation();
+				Location loc = event.getClickedBlock().getLocation();
 				CommandManager.setLocation(loc, 0);
 				event.setCancelled(true);
 
@@ -58,7 +57,7 @@ public class PlayerInteractListener implements Listener
 			ItemStack wand = new ItemStack(Configuration.getInt("misc.wand-item"));
 			
 			if(player.getItemInHand().equals(wand)) {
-				if(MineReset.getWorldEditPlugin() != null && !(new ItemStack(MineReset.getWorldEditPlugin().getLocalConfiguration().navigationWand).equals(wand))) return;
+				if(MineReset.getWorldEditPlugin() != null && (new ItemStack(MineReset.getWorldEditPlugin().getLocalConfiguration().navigationWand).equals(wand))) return;
 
 				if(!Util.playerHasPermission(player, "edit.select")) return;
 				Location loc = event.getClickedBlock().getLocation();
@@ -70,6 +69,8 @@ public class PlayerInteractListener implements Listener
 				event.setCancelled(true);
 				return;
 			}
+			
+			Block block = event.getClickedBlock();
 			
 			if(block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN_POST)
 			{

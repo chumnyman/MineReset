@@ -3,6 +3,7 @@ package com.wolvencraft.MineReset.cmd;
 import java.util.List;
 
 import com.wolvencraft.MineReset.CommandManager;
+import com.wolvencraft.MineReset.MineCommand;
 import com.wolvencraft.MineReset.MineReset;
 import com.wolvencraft.MineReset.config.Language;
 import com.wolvencraft.MineReset.mine.Mine;
@@ -68,7 +69,7 @@ public class ResetCommand implements BaseCommand
 			for(Mine childMine : mines) {
 				Mine parent = MineUtil.getMine(childMine.getParent());
 				if(parent != null && parent.equals(curMine)) {
-					if(!(parent.reset(generator))) continue;
+					MineCommand.RESET.run(childMine.getName());
 				}
 			}
 			
@@ -78,7 +79,7 @@ public class ResetCommand implements BaseCommand
 		
 		broadcastMessage = Util.parseVars(broadcastMessage, curMine);
 		
-		if(!curMine.getSilent()) ChatUtil.broadcast(broadcastMessage, curMine.getWorld());
+		if(!curMine.getSilent()) ChatUtil.broadcast(broadcastMessage);
 		else if(!source.equals(Reset.AUTOMATIC)) ChatUtil.sendSuccess(broadcastMessage);
 		return true;
 	}

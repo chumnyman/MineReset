@@ -114,7 +114,7 @@ public class MineReset extends JavaPlugin {
 						List<Integer> warnTimes = curMine.getWarningTimes();
 						
 						if(!curMine.getSilent() && curMine.getWarned() && warnTimes.indexOf(new Integer(nextReset)) != -1)
-							ChatUtil.broadcast(Util.parseVars(Language.getString("reset.automatic-reset-warning"), curMine), curMine.getWorld());
+							ChatUtil.broadcast(Util.parseVars(Language.getString("reset.automatic-reset-warning"), curMine));
 						
 						if(nextReset <= 0) {
 							MineCommand.RESET.run(curMine.getName());

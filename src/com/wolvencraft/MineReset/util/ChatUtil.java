@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -65,30 +64,17 @@ public class ChatUtil
 		player.sendMessage(message);
 	}
 
-	/**
-	 * Broadcasts a green-titled message to all players
-	 * This should be normally used just for the mine reset warnings
-	 * @param message A message to be sent
-	 */
-	public static void broadcast(String message) {
-		if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
-		String title = Language.getString("general.title-success");
-		title = Util.parseColors(title);
-		message = Util.parseColors(message);
-		Bukkit.getServer().broadcastMessage(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
-	}
-
     /**
-     * Broadcasts a green-titled message to all players in a specified world, the console logger, and to admins/ops.
+     * Broadcasts a green-titled message to all players with a permission
      * @param message A message to be sent
      */
-    public static void broadcast(String message, World world) {
+    public static void broadcast(String message) {
         if(message == null) message = " == UNABLE TO FIND LANGUAGE DATA ==";
         String title = Language.getString("general.title-success");
         title = Util.parseColors(title);
         message = Util.parseColors(message);
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (Util.playerHasPermission(p, "reset.broadcast." + world.getName()) || p.isOp()) {
+            if (Util.playerHasPermission(p, "reset.broadcast." + p.getWorld().getName()) || p.isOp()) {
                 p.sendMessage(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
             }
         }

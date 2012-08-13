@@ -23,7 +23,6 @@ public class ResetCommand implements BaseCommand
 		
 		if(curMine == null) {
 			if(args.length == 1) getHelp();
-			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 			return false;
 		}
 		

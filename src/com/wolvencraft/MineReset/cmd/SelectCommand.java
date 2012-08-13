@@ -26,7 +26,7 @@ public class SelectCommand  implements BaseCommand {
 			return false;
 		}
 		
-		if(args.length != 2) {
+		if(args.length > 2) {
 			ChatUtil.sendInvalid(MineError.ARGUMENTS, args);
 			return false;
 		}

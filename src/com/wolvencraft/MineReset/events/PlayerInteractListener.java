@@ -54,19 +54,19 @@ public class PlayerInteractListener implements Listener
 		}
 		
 		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			if(!Util.playerHasPermission(player, "edit.select")) return;
 			ItemStack wand = new ItemStack(Configuration.getInt("misc.wand-item"));
-			
 			if(player.getItemInHand().equals(wand)) {
 				if(MineReset.getWorldEditPlugin() != null && (new ItemStack(MineReset.getWorldEditPlugin().getLocalConfiguration().navigationWand).equals(wand))) return;
 
-				if(!Util.playerHasPermission(player, "edit.select")) return;
 				Location loc = event.getClickedBlock().getLocation();
 				CommandManager.setLocation(loc, 1);
+				event.setCancelled(true);
+				
 				String message =  "Second point selected (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")";
 				if(Util.locationsSet()) message = message + ": " + Util.getBlockCount() + " blocks";
 				ChatUtil.sendSuccess (message);
 
-				event.setCancelled(true);
 				return;
 			}
 			

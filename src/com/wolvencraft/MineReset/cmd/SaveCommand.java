@@ -1,5 +1,6 @@
 package com.wolvencraft.MineReset.cmd;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -120,8 +121,9 @@ public class SaveCommand implements BaseCommand {
 	
 	public void getHelp() {
 		ChatUtil.formatHeader(20, "Save");
-		ChatUtil.formatHelp("save", "<name> [generator]", "Saves the region for future use, with an optional generator");
-		ChatUtil.formatMessage("If no generator is specified, RandomGenerator will be used. Available generators:");
+		ChatUtil.formatHelp("save", "<name> [generator]", "Saves the mine region");
+		ChatUtil.formatMessage("If no generator is specified, " + ChatColor.GOLD + "RANDOM" + ChatColor.WHITE + " will be used.");
+		ChatUtil.formatMessage("Available generators:");
 		ChatUtil.formatMessage(GeneratorUtil.list());
 		return;
 	}

@@ -209,4 +209,19 @@ public class MineUtil
 		else
 			return getNextReset(getMine(curMine.getParent()));
 	}
+	
+	/**
+	 * Returns the children of the mine specified
+	 * @param curMine Mine to check
+	 * @return List of mines
+	 */
+	public static List<Mine> getChildren(Mine curMine) {
+		List<Mine> children = new ArrayList<Mine>();
+		for(Mine mine : MineReset.getMines()) {
+			if(mine.hasParent() && mine.getParent().equalsIgnoreCase(curMine.getName())) {
+				children.add(mine);
+			}
+		}
+		return children;
+	}
 }

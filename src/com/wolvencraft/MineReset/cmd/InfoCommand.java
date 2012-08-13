@@ -163,6 +163,13 @@ public class InfoCommand  implements BaseCommand {
 				str += ChatColor.WHITE + "Linked to: " + ChatColor.GOLD + parentName;
 				ChatUtil.sendMessage(str);
 				
+				List<Mine> children = MineUtil.getChildren(curMine);
+				if(children.size() != 0) {
+					str = "    Children:" + ChatColor.GOLD;
+					for(Mine mine : children) { str += " " + mine.getName(); }
+					ChatUtil.sendMessage(str);
+				}
+				
 				// Mine composition
 				List<String> finalList = MineUtil.getSortedList(curMine);
 				for(int i = 0; i < (finalList.size() - 1); i += 2) {

@@ -23,7 +23,6 @@ public class HelpCommand implements BaseCommand {
 		formatHelp("select", "", "Shows region selection help page", "edit.select");
 		formatHelp("save", "<name>", "Saves the region for future use", "edit.save");
 		formatHelp("edit", "", "Shows a help page on how to handle the mine options", "edit.info");
-		formatHelp("snapshot", "", "Displays a help page on the snapshots", "edit.snapshot");
 		formatHelp("delete", "<name>", "Completely deletes a mine", "edit.info");
 		formatHelp("timer", "", "Shows a help page on how to automate the mine", "edit.timer");
 		formatHelp("protection", "", "Shows how to set up a mine protection", "edit.protection");

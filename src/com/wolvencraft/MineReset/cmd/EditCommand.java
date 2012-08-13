@@ -332,13 +332,12 @@ public class EditCommand  implements BaseCommand {
 		ChatUtil.formatHelp("name", "<id>", "Creates a display name for a mine");
 		ChatUtil.formatHelp("+", "<block> [percentage]", "Adds a block type to the mine");
 		ChatUtil.formatMessage("If no persentage is provided, the block will fill up all the space available");
-		ChatUtil.formatHelp("-", "<block> [persentage]", "Removes the specified persentage of a block from the mine");
+		ChatUtil.formatHelp("-", "<block> [persentage]", "Removes the block from the mine");
 		ChatUtil.formatMessage("If no persentage is provided, the block will be removed completely");
-		ChatUtil.formatHelp("delete", "", "Completely deletes all the data about the selected mine");
-		ChatUtil.formatHelp("name", "", "Set a display name for a mine");
+		ChatUtil.formatHelp("delete", "", "Deletes all the data about the selected mine");
 		ChatUtil.formatHelp("silent", "", "Toggles the public notifications on and off");
-		ChatUtil.formatHelp("setparent", "<id>", "Links the timers of the mine to the timers of another");
-		ChatUtil.formatHelp("generator", "<generator>", "Changes the active generator for the mine");
+		ChatUtil.formatHelp("setparent", "<id>", "Links the timers of two mines");
+		ChatUtil.formatHelp("generator", "<generator>", "Changes the active generator");
 		ChatUtil.formatMessage("The following generators are supported: ");
 		ChatUtil.formatMessage(GeneratorUtil.list());
 		ChatUtil.formatHelp("cooldown toggle", "", "Turn the reset cooldown on and off for the mine");

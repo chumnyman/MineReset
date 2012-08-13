@@ -313,6 +313,16 @@ public class EditCommand  implements BaseCommand {
 				return false;
 			}
 			
+			if(args[1].equalsIgnoreCase(curMine.getName())) {
+				ChatUtil.sendError("You cannot set mine's parent to itself, silly");
+				return false;
+			}
+			
+			if(MineUtil.getMine(args[1]).getParent().equalsIgnoreCase(curMine.getName())) {
+				ChatUtil.sendError("Infinite loop detected in timers!");
+				return false;
+			}
+			
 			curMine.setParent(args[1]);
 			ChatUtil.sendNote(curMine.getName(), "Mine will is now linked to " + ChatColor.GREEN + args[1]);
 			MineUtil.save(curMine);

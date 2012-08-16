@@ -106,7 +106,7 @@ public class SaveCommand implements BaseCommand {
 		
 		Mine newMine = new Mine(loc[0], loc[1], player.getLocation(), loc[0].getWorld(), args[1], generator, 900);
 		
-		GeneratorUtil.get(generator).init(newMine);
+		if(!GeneratorUtil.get(generator).init(newMine)) return false;
 		
 		MineReset.getMines().add(newMine);
 		MineUtil.save(newMine);

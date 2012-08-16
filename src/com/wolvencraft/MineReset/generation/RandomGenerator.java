@@ -70,18 +70,14 @@ public class RandomGenerator implements BaseGenerator {
 	}
 
 	@Override
-	public String getName() {
-		return NAME;
-	}
+	public boolean init(Mine mine) { return true; }
 
 	@Override
-	public String getDescription() {
-		return DESCRIPTION;
-	}
+	public boolean remove(Mine mine) { return true; }
 
 	@Override
-	public boolean init(Mine mine) {
-		// Does nothing, since we do not need to initialize the RandomGenerator
-		return true;
-	}
+	public String getName() { return NAME; }
+
+	@Override
+	public String getDescription() { return DESCRIPTION; }
 }

@@ -204,8 +204,9 @@ public class EditCommand  implements BaseCommand {
 				}
 			}
 			
-			List<Mine> mines = MineReset.getMines();
-			mines.remove(curMine);
+			if(!GeneratorUtil.get(curMine.getGenerator()).remove(curMine)) return false;
+			
+			MineReset.getMines().remove(curMine);
 			CommandManager.setMine(null);
 			ChatUtil.sendNote(curMine.getName(), "Mine successfully deleted");
 			MineUtil.delete(curMine);
@@ -287,8 +288,8 @@ public class EditCommand  implements BaseCommand {
 				return false;
 			}
 			
+			if(!GeneratorUtil.get(args[1]).init(curMine)) return false;
 			curMine.setGenerator(args[1].toUpperCase());
-			GeneratorUtil.get(args[1]).init(curMine);
 			
 			ChatUtil.sendNote(curMine.getName(), "Mine generator has been set to " + ChatColor.GREEN + args[1].toUpperCase());
 

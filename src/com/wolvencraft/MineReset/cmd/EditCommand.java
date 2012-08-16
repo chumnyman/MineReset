@@ -36,7 +36,10 @@ public class EditCommand  implements BaseCommand {
 		}
 		
 		Mine curMine = CommandManager.getMine();
-		if(!args[0].equalsIgnoreCase("edit") && !args[0].equalsIgnoreCase("delete") && curMine == null) {
+		if(curMine == null
+				&& !args[0].equalsIgnoreCase("edit")
+				&& !args[0].equalsIgnoreCase("delete")
+				&& !args[0].equalsIgnoreCase("generator")) {
 			ChatUtil.sendInvalid(MineError.MINE_NOT_SELECTED, args);
 			return false;
 		}
@@ -360,7 +363,7 @@ public class EditCommand  implements BaseCommand {
 		ChatUtil.formatHelp("generator", "<generator>", "Changes the active generator for the mine");
 		ChatUtil.formatMessage("The following generators are available:");
 		for(BaseGenerator gen : MineReset.getGenerators())
-			ChatUtil.formatMessage(gen.getName() + ": " + gen.getDescription());
+			ChatUtil.formatMessage(ChatColor.GOLD + gen.getName() + ChatColor.WHITE + ": " + gen.getDescription());
 		return;
 	}
 }

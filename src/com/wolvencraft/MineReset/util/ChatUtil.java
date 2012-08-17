@@ -74,7 +74,9 @@ public class ChatUtil
         title = Util.parseColors(title);
         message = Util.parseColors(message);
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (Util.playerHasPermission(p, "reset.broadcast." + p.getWorld().getName()) || p.isOp()) {
+            if (p.isOp()
+            		|| Util.playerHasPermission(p, "reset.broadcast")
+            		|| Util.playerHasPermission(p, "reset.broadcast." + p.getWorld().getName())) {
                 p.sendMessage(ChatColor.GREEN + title + " " + ChatColor.WHITE + message);
             }
         }

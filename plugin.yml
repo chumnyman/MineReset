@@ -22,6 +22,7 @@ permissions:
       MineReset.reset.sign: true
       MineReset.protection.break: true
       MineReset.protection.place: true
+      MineReset.reset.broadcast: true
   MineReset.admin:
     default: op
     children:

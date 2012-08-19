@@ -82,28 +82,8 @@ public class Util
 			MaterialData block;
 			if(isNumeric(parts[0])) block = new MaterialData(Material.getMaterial(Integer.parseInt(parts[0])));
 			else {
-				if(parts[0].equalsIgnoreCase("iron") || parts[0].equalsIgnoreCase("ironore"))
-					parts[0] = "iron_ore";
-				else if(blockName.equalsIgnoreCase("gold") || parts[0].equalsIgnoreCase("goldore"))
-					parts[0] = "gold_ore";
-				else if(blockName.equalsIgnoreCase("goldblock"))
-					parts[0] = "gold_block";
-				else if(blockName.equalsIgnoreCase("lapis") || parts[0].equalsIgnoreCase("lapisore")  || parts[0].equalsIgnoreCase("lapislazuli"))
-					parts[0] = "lapis_ore";
-				else if(blockName.equalsIgnoreCase("lapisblock"))
-					parts[0] = "lapis_block";
-				else if(blockName.equalsIgnoreCase("diamond") || parts[0].equalsIgnoreCase("diamondore"))
-					parts[0] = "diamond_ore";
-				else if(blockName.equalsIgnoreCase("diamondblock"))
-					parts[0] = "diamond_block";
-				else if(blockName.equalsIgnoreCase("coal") || parts[0].equalsIgnoreCase("coalore"))
-					parts[0] = "coal_ore";
-				else if(blockName.equalsIgnoreCase("redstone") || parts[0].equalsIgnoreCase("redstoneore"))
-					parts[0] = "redstone_ore";
-				else if(blockName.equalsIgnoreCase("emerald") || parts[0].equalsIgnoreCase("emeraldore"))
-					parts[0] = "emerald_ore";
-				else if(blockName.equalsIgnoreCase("emeraldblock"))
-					parts[0] = "emerald_block";
+				MineOre ore = MineOre.match(parts[0]);
+				if(ore != null) parts[0] = ore.getMaterial();
 				
 				ChatUtil.debug(parts[0] + " => " + Material.getMaterial(parts[0].toUpperCase()).name());
 				block = new MaterialData(Material.getMaterial(parts[0].toUpperCase()));

@@ -296,6 +296,9 @@ public class Util
 			str = str.replaceAll("%COOL%", parseSeconds(curMine.getNextCooldown()));
 		}
 		
+		str = str.replaceAll("%TBLOCKS%", curMine.getTotalBlocks() + "");
+		str = str.replaceAll("%RBLOCKS%", curMine.getBlocksLeft() + "");
+		
 		if(curMine.getAutomatic()) {
 			// Reset period variable calculations
 			int ptime = curMine.getResetPeriod();
@@ -492,7 +495,7 @@ public class Util
 		if(point[0] == null || point[1] == null) return false;
 		return true;
 	}
-
+	
 	/**
 	 * Counts the number of blocks in the selection region
 	 * @return the number of blocks in the region
@@ -502,6 +505,28 @@ public class Util
 		int x1 = point[0].getBlockX(), x2 = point[1].getBlockX(),
 	       y1 = point[0].getBlockY(), y2 = point[1].getBlockY(),
 	       z1 = point[0].getBlockZ(), z2 = point[1].getBlockZ();
+
+		int xdist, zdist, ydist;
+
+		if(x1 > x2) { xdist = Math.round(x1 - x2); } else { xdist = Math.round(x2 - x1); }
+		if(y1 > y2) { ydist = Math.round(y1 - y2); } else { ydist = Math.round(y2 - y1); }
+		if(z1 > z2) { zdist = Math.round(z1 - z2); } else { zdist = Math.round(z2 - z1); }
+
+		int blockCount = xdist * ydist * zdist;
+
+		return blockCount;
+	}
+	
+	/**
+	 * Counts the number of blocks in region
+	 * @param p1 First (smaller) point
+	 * @param p2 Second (larger) point
+	 * @return the number of blocks in the region
+	 */
+	public static int getBlockCount(Location p1, Location p2) {
+		int x1 = p1.getBlockX(), x2 = p2.getBlockX(),
+	       y1 = p1.getBlockY(), y2 = p2.getBlockY(),
+	       z1 = p1.getBlockZ(), z2 = p2.getBlockZ();
 
 		int xdist, zdist, ydist;
 

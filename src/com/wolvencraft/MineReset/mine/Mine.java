@@ -54,6 +54,9 @@ public class Mine implements ConfigurationSerializable, Listener {
     private Location protTwo;
     private Blacklist breakBlacklist;
     private Blacklist placeBlacklist;
+    
+    private int totalBlocks;
+    private int blocksLeft;
 
     /**
      * Constuctor for new mines.
@@ -91,6 +94,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     	protTwo = two;
     	breakBlacklist = new Blacklist();
     	placeBlacklist = new Blacklist();
+    	
+    	totalBlocks = blocksLeft = Util.getBlockCount(one, two);
     }
 
     /**
@@ -136,6 +141,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         this.protTwo = protTwo;
     	breakBlacklist = new Blacklist();
     	placeBlacklist = new Blacklist();
+    	
+    	totalBlocks = blocksLeft = Util.getBlockCount(one, two);
     }
 
     /**
@@ -175,6 +182,9 @@ public class Mine implements ConfigurationSerializable, Listener {
         protTwo = ((Vector) me.get("protTwo")).toLocation(world);
         breakBlacklist = (Blacklist) me.get("breakBlacklist");
         placeBlacklist = (Blacklist) me.get("placeBlacklist");
+        
+        totalBlocks = Util.getBlockCount(one, two);
+        if(me.containsKey("blocksLeft")) blocksLeft = ((Integer) me.get("blocksLeft")).intValue();
     }
 
     public Map<String, Object> serialize() {
@@ -205,6 +215,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("blocks", blocks);
         me.put("breakBlacklist", breakBlacklist);
         me.put("placeBlacklist", placeBlacklist);
+        me.put("blocksLeft", blocksLeft);
         return me;
     }
     
@@ -440,5 +451,17 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public Blacklist getPlaceBlacklist() {
     	return placeBlacklist;
+    }
+    
+    public int getBlocksLeft() {
+    	return blocksLeft;
+    }
+    
+    public int getTotalBlocks() {
+    	return totalBlocks;
+    }
+    
+    public void updateBlocksLeft() {
+    	blocksLeft--;
     }
 }

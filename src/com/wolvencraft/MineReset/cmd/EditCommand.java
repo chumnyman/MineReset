@@ -322,7 +322,8 @@ public class EditCommand  implements BaseCommand {
 				return false;
 			}
 			
-			if(MineUtil.getMine(args[1]).getParent().equalsIgnoreCase(curMine.getName())) {
+			if(MineUtil.getMine(args[1]).getParent() != null
+					&& MineUtil.getMine(args[1]).getParent().equalsIgnoreCase(curMine.getName())) {
 				ChatUtil.sendError("Infinite loop detected in timers!");
 				return false;
 			}

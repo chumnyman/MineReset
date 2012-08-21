@@ -68,6 +68,7 @@ public class BlockBreakListener implements Listener
 				
 			if(!mine.getProtection().contains(Protection.BLOCK_BREAK)) {
 				ChatUtil.debug("Mine has no block breaking protection enabled");
+				mine.updateBlocksLeft();
 				continue;
 			}
 				
@@ -94,6 +95,7 @@ public class BlockBreakListener implements Listener
 				ChatUtil.sendError(player, "You are not allowed to break " + blockName + " in this area");
 				event.setCancelled(true);
 			}
+			mine.updateBlocksLeft();
 		}
 		ChatUtil.debug("Broken block was not in the mine region");
 		signCheck(event);

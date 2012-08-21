@@ -298,6 +298,7 @@ public class Util
 		
 		str = str.replaceAll("%TBLOCKS%", curMine.getTotalBlocks() + "");
 		str = str.replaceAll("%RBLOCKS%", curMine.getBlocksLeft() + "");
+		str = str.replaceAll("%PBLOCKS%", (curMine.getBlocksLeft() / curMine.getTotalBlocks()) * 100 + "");
 		
 		if(curMine.getAutomatic()) {
 			// Reset period variable calculations
@@ -386,7 +387,7 @@ public class Util
 	 * @return Parsed string
 	 */
 	public static String parseColors(String msg) {
-		if(msg == null) return null;
+		if(msg == null) return "";
 		msg = msg.replaceAll("&0", ChatColor.BLACK.toString());
 		msg = msg.replaceAll("&1", ChatColor.DARK_BLUE.toString());
 		msg = msg.replaceAll("&2", ChatColor.DARK_GREEN.toString());

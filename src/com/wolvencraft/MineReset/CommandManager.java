@@ -20,225 +20,109 @@
 
 package com.wolvencraft.MineReset;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
+import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 
-public class CommandManager {
+import com.wolvencraft.MineReset.mine.Mine;
+import com.wolvencraft.MineReset.util.ChatUtil;
+import com.wolvencraft.MineReset.util.MineError;
+
+public class CommandManager implements CommandExecutor
+{
+    private static CommandSender sender;
+    private static MineReset plugin;
+    private static Location[] loc = {null, null};
+    private static Mine curMine = null;
     
-    @Getter(AccessLevel.PUBLIC)
-    private static CommandManager instance;
-    
-    /**
-     * Registered command container classes
-     * @author bitWolfy
-     *
-     */
-    private enum CommandClass {
-        
-        ;
-        
-        @Getter(AccessLevel.PRIVATE) private Class<?> command;
-        
-        CommandClass(Class<?> command) {
-            this.command = command;
-        }
-        
+    public CommandManager(MineReset plugin) {
+        CommandManager.plugin = plugin;
+        plugin.getLogger();
     }
-    
-    @Getter(AccessLevel.PUBLIC) private static List<CommandPair> commands;
-    @Getter(AccessLevel.PUBLIC) private static CommandSender sender = null;
-    
-    public CommandManager() {
-        instance = this;
-        
-        Message.debug("Starting to register commands");
-        commands = new ArrayList<CommandPair>();
-        
-        for(CommandClass command : CommandClass.values()) {
-            load(command.getCommand());
-        }
-    }
-    
-    /**
-     * Executes the command with the specified arguments
-     * @param sender Command sender
-     * @param args Command arguments
-     * @return <b>true</b> if the command was executed successfully, <b>false</b> otherwise
-     */
-    public static boolean run(CommandSender sender, String... args) {
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         CommandManager.sender = sender;
-        if(args.length < 1) {
-            return run(sender, "help");
-        }
-        List<String> arguments = new LinkedList<String>(Arrays.asList(args));
-        CommandPair command = get(arguments.get(0));
-        arguments.remove(0);
+        if(!command.getName().equalsIgnoreCase("mine")) return false;
         
-        // Command check
-        if(command == null) {
-            Message.sendFormattedError(sender, "Unknown command");
+        if(args.length == 0) {
+            MineCommand.HELP.getHelp();
             CommandManager.sender = null;
-            return false;
+            return true;
         }
-        Command properties = command.getProperties();
-        
-        // Argument check
-        if(arguments.size() < properties.minArgs()
-                || (properties.maxArgs() != -1 && arguments.size() > properties.maxArgs())) {
-            Message.sendFormattedError(sender, "Invalid argument count");
-            CommandManager.sender = null;
-            return false;
-        }
-        
-        // Console check
-        if(sender instanceof ConsoleCommandSender && !properties.allowConsole()) {
-            Message.sendFormattedError(sender, "This command can only be run by a living player");
-            CommandManager.sender = null;
-            return false;
-        }
-        
-        // Permission check
-        if(!(sender instanceof ConsoleCommandSender)
-                && !sender.isOp()
-                && !properties.permission().equals("")
-                && !sender.hasPermission(properties.permission())) {
-            Message.sendFormattedError(sender, "You lack the permission to run this command");
-            CommandManager.sender = null;
-            return false;
-        }
-        
-        // Attempting to execute a command
-        boolean result;
-        try { result = command.run(arguments); }
-        catch(Throwable t) {
-            ExceptionHandler.handle(t, sender, command);
-            result = false;
-        }
-        CommandManager.sender = null;
-        return result;
-    }
-    
-    /**
-     * Performs a lookup of a command method based on an alias
-     * @param alias Alias to look for
-     * @return Command method pair
-     */
-    private static CommandPair get(String alias) {
-        for(CommandPair command : commands) {
-            if(Arrays.asList(command.getProperties().alias()).contains(alias)) return command;
-        }
-        return null;
-    }
-    
-    /**
-     * Loads all methods with the {@link CommandManager.Command} annotation
-     * @param commandClass Command class
-     */
-    private void load(Class<?> commandClass) {
-        Message.debug("Scanning " + commandClass.getName() + " for command methods (" + commandClass.getMethods().length  + " total)");
-        for(Method method : commandClass.getMethods()) {
-            Command cmd = method.getAnnotation(Command.class);
-            if(cmd != null) {
-                Message.debug("Registering a command with alias: " + cmd.alias()[0]);
-                commands.add(new CommandPair(commandClass, method, cmd));
+        for(MineCommand cmd : MineCommand.values()) {
+            if(cmd.isCommand(args[0])) {
+                String argString = "/mine";
+                for (String arg : args) {
+                    argString = argString + " " + arg;
+                }
+                ChatUtil.debug(sender.getName() + ": " + argString);
+                
+                boolean result = cmd.run(args);
+                CommandManager.sender = null;
+                return result;
             }
         }
         
+        ChatUtil.sendInvalid(MineError.INVALID, args);
+        CommandManager.sender = null;
+        return false;
     }
     
     /**
-     * An annotation for commands
-     * @author bitWolfy
-     *
+     * Returns the command sender
+     * @return CommandSender
      */
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    public @interface Command {
-        
-        /**
-         * Returns the alias associated with this command.
-         * @return List of alias
-         */
-        public String[] alias();
-        
-        /**
-         * Returns the minimum number of arguments this command accepts.
-         * Requires {@link #maxArgs()}.<br />
-         * Defaults to 0 (no arguments).
-         * @return Minimum number of arguments
-         */
-        public int minArgs() default 0;
-        
-        /**
-         * Returns the maximum number of arguments this command accepts.
-         * Required {@link #minArgs()}.<br />
-         * Defaults to -1 (any number of arguments)
-         * @return Minimum number of arguments
-         */
-        public int maxArgs() default -1;
-        
-        /**
-         * Returns the permission required to use this command.
-         * Pass <code>"*"</code> for ops-only; empty string for no permission
-         * @return Command permission
-         */
-        public String permission() default "";
-        
-        /**
-         * Should the console sender be allowed to run this command
-         * @return <b>true</b> if the console command sender should be allowed to run the command, <b>false</b> otherwise
-         */
-        public boolean allowConsole() default true;
-        
-        /**
-         * Returns the usage of the command. Requires {@link #description()}.<br />
-         * Example: <code>/command (requiredArgument) [optionalArgument]</code>
-         * @return Command usage
-         */
-        public String usage() default "";
-        
-        /**
-         * Returns the description string for the help page.
-         * Requires {@link #usage()}.
-         * @return Description string
-         */
-        public String description() default "";
-        
+    public static CommandSender getSender() {
+        return sender;
     }
     
     /**
-     * Storage unit for command properties
-     * @author bitWolfy
-     *
+     * Returns the plugin
+     * @return MineReset
      */
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
-    @Getter(AccessLevel.PUBLIC)
-    public class CommandPair {
-        
-        Class<?> declaringClass;
-        Method command;
-        Command properties;
-        
-        public boolean run(List<String> args) throws Throwable {
-            boolean result = false;
-            result = (Boolean) command.invoke(declaringClass, args);
-            return result;
-        }
-        
+    public static MineReset getPlugin() {
+        return plugin;
     }
     
+    /**
+     * Returns the location selected with either a command or a wand
+     * @return Location[] if a selection was made, null if it was not
+     */
+    public static Location[] getLocation() {
+        return loc;
+    }
+    
+    /**
+     * Sets the location selected with either a command or a wand
+     * @param newLoc New selection location
+     * @param id ID of a selection location (0 or 1)
+     */
+    public static void setLocation(Location newLoc, int id) {
+        loc[id] = newLoc;
+        return;
+    }
+    
+    public static void resetLocation() {
+        loc[0] = null;
+        loc[1] = null;
+    }
+    
+    /**
+     * Returns the name of a mine that is being edited
+     * @return String is a mine is selected, null if it is not
+     */
+    public static Mine getMine() {
+        return curMine;
+    }
+    
+    /**
+     * Sets the name of a current mine to a value specified
+     * @param newMine The newly selected mine name
+     */
+    public static void setMine(Mine newMine) {
+        curMine = newMine;
+        return;
+    }
 }

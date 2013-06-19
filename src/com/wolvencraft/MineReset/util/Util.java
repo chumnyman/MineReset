@@ -69,7 +69,8 @@ public class Util
      * Checks if the command sender is a player or a console
      * @return true if sender is a player, false if not
      */
-    public static boolean isPlayer() {
+    public static boolean isPlayer()
+    {
         CommandSender sender = CommandManager.getSender();
         
         if(sender instanceof Player) return true;
@@ -80,7 +81,8 @@ public class Util
      * Checks if debug mode is enabled in the config
      * @return true if debug is enabled, false if it's not
      */
-    public static boolean debugEnabled() {
+    public static boolean debugEnabled()
+    {
         if(Configuration.getBoolean("configuration.debug-mode")) return true;
         else return false;
     }
@@ -92,7 +94,8 @@ public class Util
      */
     public static MaterialData getBlock(String blockName) {
         ChatUtil.debug("Parsing block: " + blockName);
-        try {
+        try
+        {
             String[] parts = blockName.split(":");
             if(parts.length > 2) return null;
             
@@ -127,8 +130,10 @@ public class Util
      * @return metadata of a block
      */
     public static String parseMetadata(String[] parts, boolean recursive) {
-        if(recursive) {
-            switch(Integer.parseInt(parts[0])) {
+        if(recursive)
+        {
+            switch(Integer.parseInt(parts[0]))
+            {
                 case 5:
                 case 6:
                 case 17:
@@ -397,14 +402,52 @@ public class Util
     }
     
     /**
-     * Parses the string, replacing ampersand-codes with CraftBukkit color codes
-     * @param str String to be parsed
+     * Replaces the color codes with colors
+     * @param msg String to be parsed
      * @return Parsed string
      */
-    public static String parseColors(String str) {
-        if(str == null) return "";
-        for(ChatColor color : ChatColor.values()) str = str.replaceAll("&" + color.getChar(), color + "");
-        return str;
+    public static String parseColors(String msg) {
+        if(msg == null) return "";
+        msg = msg.replaceAll("&0", ChatColor.BLACK.toString());
+        msg = msg.replaceAll("&1", ChatColor.DARK_BLUE.toString());
+        msg = msg.replaceAll("&2", ChatColor.DARK_GREEN.toString());
+        msg = msg.replaceAll("&3", ChatColor.DARK_AQUA.toString());
+        msg = msg.replaceAll("&4", ChatColor.DARK_RED.toString());
+        msg = msg.replaceAll("&5", ChatColor.DARK_PURPLE.toString());
+        msg = msg.replaceAll("&6", ChatColor.GOLD.toString());
+        msg = msg.replaceAll("&7", ChatColor.GRAY.toString());
+        msg = msg.replaceAll("&8", ChatColor.DARK_GRAY.toString());
+        msg = msg.replaceAll("&9", ChatColor.BLUE.toString());
+
+        msg = msg.replaceAll("&a", ChatColor.GREEN.toString());
+        msg = msg.replaceAll("&b", ChatColor.AQUA.toString());
+        msg = msg.replaceAll("&c", ChatColor.RED.toString());
+        msg = msg.replaceAll("&d", ChatColor.LIGHT_PURPLE.toString());
+        msg = msg.replaceAll("&e", ChatColor.YELLOW.toString());
+        msg = msg.replaceAll("&f", ChatColor.WHITE.toString());
+
+        msg = msg.replaceAll("&A", ChatColor.GREEN.toString());
+        msg = msg.replaceAll("&B", ChatColor.AQUA.toString());
+        msg = msg.replaceAll("&C", ChatColor.RED.toString());
+        msg = msg.replaceAll("&D", ChatColor.LIGHT_PURPLE.toString());
+        msg = msg.replaceAll("&E", ChatColor.YELLOW.toString());
+        msg = msg.replaceAll("&F", ChatColor.WHITE.toString());
+
+        msg = msg.replaceAll("&k", ChatColor.MAGIC.toString());
+        msg = msg.replaceAll("&l", ChatColor.BOLD.toString());
+        msg = msg.replaceAll("&m", ChatColor.STRIKETHROUGH.toString());
+        msg = msg.replaceAll("&n", ChatColor.UNDERLINE.toString());
+        msg = msg.replaceAll("&o", ChatColor.ITALIC.toString());
+        msg = msg.replaceAll("&r", ChatColor.RESET.toString());
+
+        msg = msg.replaceAll("&K", ChatColor.MAGIC.toString());
+        msg = msg.replaceAll("&L", ChatColor.BOLD.toString());
+        msg = msg.replaceAll("&M", ChatColor.STRIKETHROUGH.toString());
+        msg = msg.replaceAll("&N", ChatColor.UNDERLINE.toString());
+        msg = msg.replaceAll("&O", ChatColor.ITALIC.toString());
+        msg = msg.replaceAll("&R", ChatColor.RESET.toString());
+
+        return msg;
     }
     
     /**

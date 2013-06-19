@@ -1,3 +1,23 @@
+/*
+ * BlockBreakListener.java
+ * 
+ * MineReset
+ * Copyright (C) 2013 bitWolfy <http://www.wolvencraft.com> and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.wolvencraft.MineReset.events;
 
 import java.util.List;
@@ -23,97 +43,97 @@ import com.wolvencraft.MineReset.util.Util;
 
 public class BlockBreakListener implements Listener
 {
-	public BlockBreakListener(MineReset plugin) {
-		ChatUtil.debug("Initiating BlockBreakListener");
+    public BlockBreakListener(MineReset plugin) {
+        ChatUtil.debug("Initiating BlockBreakListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
-	
-	@EventHandler
-	public void onBlockbreak(BlockBreakEvent event) {
-		if(event.isCancelled()) return;
-		ChatUtil.debug("BlockBreakEvent caught");
-		
-		Player player = event.getPlayer();
-		
-		if(Util.playerHasPermission(player, "protection.bypass.break")) {
-			ChatUtil.debug("The player has a permission to bypass the protection. Aborting . . .");
-			signCheck(event);
-			return;
-		}
+    
+    @EventHandler
+    public void onBlockbreak(BlockBreakEvent event) {
+        if(event.isCancelled()) return;
+        ChatUtil.debug("BlockBreakEvent caught");
+        
+        Player player = event.getPlayer();
+        
+        if(Util.playerHasPermission(player, "protection.bypass.break")) {
+            ChatUtil.debug("The player has a permission to bypass the protection. Aborting . . .");
+            signCheck(event);
+            return;
+        }
 
-		ChatUtil.debug("Retrieving the region list...");
-		List<Mine> mines = MineReset.getMines();
-		
-		if(mines.size() == 0) {
-			ChatUtil.debug("No mines defined! Aborting . . .");
-			signCheck(event);
-			return;
-		}
-		Block b = event.getBlock();
-		String blockName = ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE;
-		
-		for(Mine mine : mines) {
-			ChatUtil.debug("Checking mine " + mine.getName());
-			
-			if(!mine.isLocationInProtection(b.getLocation())) continue;
-			
-			ChatUtil.debug("Location is in the mine protection region");
-			
-			if(!Util.playerHasPermission(player, "protection.break." + mine.getName()) && !Util.playerHasPermission(player, "protection.break")) {
-				ChatUtil.debug("Player " + event.getPlayer().getName() + " does not have permission to break blocks in the mine");
-				ChatUtil.sendError(player, "You are not allowed to break " + blockName + " in this area");
-				event.setCancelled(true);
-				return;
-			}
-				
-			if(!mine.getProtection().contains(Protection.BLOCK_BREAK)) {
-				ChatUtil.debug("Mine has no block breaking protection enabled");
-				mine.updateBlocksLeft();
-				continue;
-			}
-				
-			ChatUtil.debug("Mine has a block breaking protection enabled");
-			if(mine.getBreakBlacklist().getEnabled()) {
-				ChatUtil.debug("Block breaking blacklist detected");
-				boolean found = false;
-				for(MaterialData block : mine.getBreakBlacklist().getBlocks()) {
-					if(block.getItemType().equals(b.getType())) {
-						found = true;
-						break;
-					}
-				}
-				
-				if((mine.getBreakBlacklist().getWhitelist() && !found) || (!mine.getBreakBlacklist().getWhitelist() && found)) {
-					ChatUtil.debug("Player " + player.getName() + " broke a black/whitelisted block in the mine!");
-					ChatUtil.sendError(player, "You are not allowed to break " + blockName + " in this area");
-					event.setCancelled(true);
-					return;
-				}
-			}
-			else {
-				ChatUtil.debug("No block breaking blacklist detected");
-				ChatUtil.sendError(player, "You are not allowed to break " + blockName + " in this area");
-				event.setCancelled(true);
-			}
-			mine.updateBlocksLeft();
-		}
-		ChatUtil.debug("Broken block was not in the mine region");
-		signCheck(event);
-		return;
-	}
-	
-	public void signCheck(BlockBreakEvent event) {
-		if(event.isCancelled()) return;
+        ChatUtil.debug("Retrieving the region list...");
+        List<Mine> mines = MineReset.getMines();
+        
+        if(mines.size() == 0) {
+            ChatUtil.debug("No mines defined! Aborting . . .");
+            signCheck(event);
+            return;
+        }
+        Block b = event.getBlock();
+        String blockName = ChatColor.RED + b.getType().name().toLowerCase().replace("_", " ") + ChatColor.WHITE;
+        
+        for(Mine mine : mines) {
+            ChatUtil.debug("Checking mine " + mine.getName());
+            
+            if(!mine.isLocationInProtection(b.getLocation())) continue;
+            
+            ChatUtil.debug("Location is in the mine protection region");
+            
+            if(!Util.playerHasPermission(player, "protection.break." + mine.getName()) && !Util.playerHasPermission(player, "protection.break")) {
+                ChatUtil.debug("Player " + event.getPlayer().getName() + " does not have permission to break blocks in the mine");
+                ChatUtil.sendError(player, "You are not allowed to break " + blockName + " in this area");
+                event.setCancelled(true);
+                return;
+            }
+                
+            if(!mine.getProtection().contains(Protection.BLOCK_BREAK)) {
+                ChatUtil.debug("Mine has no block breaking protection enabled");
+                mine.updateBlocksLeft();
+                continue;
+            }
+                
+            ChatUtil.debug("Mine has a block breaking protection enabled");
+            if(mine.getBreakBlacklist().getEnabled()) {
+                ChatUtil.debug("Block breaking blacklist detected");
+                boolean found = false;
+                for(MaterialData block : mine.getBreakBlacklist().getBlocks()) {
+                    if(block.getItemType().equals(b.getType())) {
+                        found = true;
+                        break;
+                    }
+                }
+                
+                if((mine.getBreakBlacklist().getWhitelist() && !found) || (!mine.getBreakBlacklist().getWhitelist() && found)) {
+                    ChatUtil.debug("Player " + player.getName() + " broke a black/whitelisted block in the mine!");
+                    ChatUtil.sendError(player, "You are not allowed to break " + blockName + " in this area");
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+            else {
+                ChatUtil.debug("No block breaking blacklist detected");
+                ChatUtil.sendError(player, "You are not allowed to break " + blockName + " in this area");
+                event.setCancelled(true);
+            }
+            mine.updateBlocksLeft();
+        }
+        ChatUtil.debug("Broken block was not in the mine region");
+        signCheck(event);
+        return;
+    }
+    
+    public void signCheck(BlockBreakEvent event) {
+        if(event.isCancelled()) return;
         BlockState b = event.getBlock().getState();
         if(b instanceof Sign) {
-        	ChatUtil.debug("Checking for defined signs before quitting . . .");
-        	SignClass sign = SignUtil.getSign((Sign) b);
-        	if(sign == null) return;
-        	
-        	SignUtil.delete(sign);
-        	ChatUtil.sendSuccess(event.getPlayer(), "Sign successfully removed");
-        	return;
+            ChatUtil.debug("Checking for defined signs before quitting . . .");
+            SignClass sign = SignUtil.getSign((Sign) b);
+            if(sign == null) return;
+            
+            SignUtil.delete(sign);
+            ChatUtil.sendSuccess(event.getPlayer(), "Sign successfully removed");
+            return;
         }
         else return;
-	}
+    }
 }

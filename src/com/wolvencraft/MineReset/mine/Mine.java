@@ -1,3 +1,23 @@
+/*
+ * Mine.java
+ * 
+ * MineReset
+ * Copyright (C) 2013 bitWolfy <http://www.wolvencraft.com> and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.wolvencraft.MineReset.mine;
 
 import com.wolvencraft.MineReset.CommandManager;
@@ -69,33 +89,33 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @param automaticSeconds Number of seconds between automatic resets.
      */
     public Mine(Location one, Location two, Location tpPoint, World world, String name, String generator, int automaticSeconds) {
-    	this.one = one;
-    	this.two = two;
-    	this.tpPoint = tpPoint;
-    	this.world = world;
-    	displayName = "";
-    	parent = null;
-    	this.name = name;
-    	blocks = new ArrayList<MineBlock>();
-    	blocks.add(new MineBlock(new MaterialData(Material.AIR), 1.0));
-    	generator = "RANDOM";
-    	blacklist = new Blacklist();
-    	silent = false;
-    	automatic = false;
-    	this.automaticSeconds = automaticSeconds;
-    	nextAutomaticResetTick = automaticSeconds * 20;
-    	cooldownEnabled = false;
-    	cooldownSeconds = 0;
-    	nextCooldownTicks = 0;
-    	warned = true;
-    	warningTimes = new ArrayList<Integer>();
-    	enabledProtection = new ArrayList<Protection>();
-    	protOne = one;
-    	protTwo = two;
-    	breakBlacklist = new Blacklist();
-    	placeBlacklist = new Blacklist();
-    	
-    	totalBlocks = blocksLeft = Util.getBlockCount(one, two);
+        this.one = one;
+        this.two = two;
+        this.tpPoint = tpPoint;
+        this.world = world;
+        displayName = "";
+        parent = null;
+        this.name = name;
+        blocks = new ArrayList<MineBlock>();
+        blocks.add(new MineBlock(new MaterialData(Material.AIR), 1.0));
+        generator = "RANDOM";
+        blacklist = new Blacklist();
+        silent = false;
+        automatic = false;
+        this.automaticSeconds = automaticSeconds;
+        nextAutomaticResetTick = automaticSeconds * 20;
+        cooldownEnabled = false;
+        cooldownSeconds = 0;
+        nextCooldownTicks = 0;
+        warned = true;
+        warningTimes = new ArrayList<Integer>();
+        enabledProtection = new ArrayList<Protection>();
+        protOne = one;
+        protTwo = two;
+        breakBlacklist = new Blacklist();
+        placeBlacklist = new Blacklist();
+        
+        totalBlocks = blocksLeft = Util.getBlockCount(one, two);
     }
 
     /**
@@ -126,35 +146,35 @@ public class Mine implements ConfigurationSerializable, Listener {
         this.name = name;
         this.blocks = blocks;
         this.generator = generator;
-    	blacklist = new Blacklist();
+        blacklist = new Blacklist();
         silent = isSilent;
         automatic = isAutomatic;
         this.automaticSeconds = automaticSeconds;
-    	nextAutomaticResetTick = automaticSeconds * 20;
-    	this.cooldownEnabled = cooldownEnabled;
-    	this.cooldownSeconds = cooldownSeconds;
-    	nextCooldownTicks = cooldownSeconds;
+        nextAutomaticResetTick = automaticSeconds * 20;
+        this.cooldownEnabled = cooldownEnabled;
+        this.cooldownSeconds = cooldownSeconds;
+        nextCooldownTicks = cooldownSeconds;
         warned = warningTimes != null && warningTimes.size() > 0;
         this.warningTimes = warningTimes;
         this.enabledProtection = enabledProtection;
         this.protOne = protOne;
         this.protTwo = protTwo;
-    	breakBlacklist = new Blacklist();
-    	placeBlacklist = new Blacklist();
-    	
-    	totalBlocks = blocksLeft = Util.getBlockCount(one, two);
+        breakBlacklist = new Blacklist();
+        placeBlacklist = new Blacklist();
+        
+        totalBlocks = blocksLeft = Util.getBlockCount(one, two);
     }
 
     /**
      * Deserialize a mine from its YML form
      * @param me Bukkitian map of strings to objects. <b>Incorrect object types for values are not tolerated by the code!</b>
      */
-	@SuppressWarnings("unchecked")
-	public Mine(Map<String, Object> me) {
-		String worldString = (String) me.get("world");
-		world = Bukkit.getServer().getWorld(worldString);
-		if(world == null) world = Bukkit.getServer().getWorld(UUID.fromString(worldString));
-		if(world == null) throw new IllegalArgumentException("Mine file contains an invalid world!");
+    @SuppressWarnings("unchecked")
+    public Mine(Map<String, Object> me) {
+        String worldString = (String) me.get("world");
+        world = Bukkit.getServer().getWorld(worldString);
+        if(world == null) world = Bukkit.getServer().getWorld(UUID.fromString(worldString));
+        if(world == null) throw new IllegalArgumentException("Mine file contains an invalid world!");
         one = ((Vector) me.get("one")).toLocation(world);
         two = ((Vector) me.get("two")).toLocation(world);
         tpPoint = ((SimpleLoc) me.get("tpPoint")).toLocation();
@@ -166,8 +186,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         silent = (Boolean) me.get("silent");
         automatic = (Boolean) me.get("automatic");
         automaticSeconds = (Integer) me.get("automaticResetTime");
-    	if(me.containsKey("nextAutomaticResetTick")) nextAutomaticResetTick = ((Integer) me.get("nextAutomaticResetTick")).longValue();
-    	else nextAutomaticResetTick = automaticSeconds * 20;
+        if(me.containsKey("nextAutomaticResetTick")) nextAutomaticResetTick = ((Integer) me.get("nextAutomaticResetTick")).longValue();
+        else nextAutomaticResetTick = automaticSeconds * 20;
         cooldownEnabled = (Boolean) me.get("cooldownEnabled");
         cooldownSeconds = (Integer) me.get("cooldownSeconds");
         nextCooldownTicks = cooldownSeconds * 20;
@@ -177,7 +197,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         List<String> names = (List<String>) me.get("protectionTypes");
         enabledProtection = new ArrayList<Protection>();
         for(String name : names)
-        	enabledProtection.add(Protection.valueOf(name));
+            enabledProtection.add(Protection.valueOf(name));
         protOne = ((Vector) me.get("protOne")).toLocation(world);
         protTwo = ((Vector) me.get("protTwo")).toLocation(world);
         breakBlacklist = (Blacklist) me.get("breakBlacklist");
@@ -208,7 +228,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         me.put("warningTimes", warningTimes);
         List<String> names = new ArrayList<String>();
         for(Protection prot : enabledProtection)
-        	names.add(prot.name());
+            names.add(prot.name());
         me.put("protectionTypes", names);
         me.put("protOne", protOne.toVector());
         me.put("protTwo", protTwo.toVector());
@@ -221,12 +241,12 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public boolean reset(String generator) {
         if(!removePlayers()) {
-        	ChatUtil.getLogger().severe("Mine on file is located in an invalid world!");
-        	return false;
+            ChatUtil.getLogger().severe("Mine on file is located in an invalid world!");
+            return false;
         }
         BaseGenerator gen = GeneratorUtil.get(generator);
         if(gen == null) {
-        	if(CommandManager.getSender() != null) ChatUtil.sendError("Invalid generator selected!");
+            if(CommandManager.getSender() != null) ChatUtil.sendError("Invalid generator selected!");
             else ChatUtil.getLogger().severe("Invalid generator selected!");
             return false;
         }
@@ -234,8 +254,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     }
 
     private boolean removePlayers() {
-    	if(!Configuration.getBoolean("misc.teleport-on-reset")) return true;
-    	if(world == null) return false;
+        if(!Configuration.getBoolean("misc.teleport-on-reset")) return true;
+        if(world == null) return false;
         for (Player p : world.getPlayers()) {
             if (isLocationInMine(p.getLocation())) {
                 p.teleport(tpPoint, PlayerTeleportEvent.TeleportCause.PLUGIN);
@@ -247,198 +267,198 @@ public class Mine implements ConfigurationSerializable, Listener {
 
     public boolean isLocationInMine(Location l) {
         return (l.getWorld().equals(world)
-        		&& (l.getX() >= one.getX() && l.getX() <= two.getX())
+                && (l.getX() >= one.getX() && l.getX() <= two.getX())
                 && (l.getY() >= one.getY() && l.getY() <= two.getY())
                 && (l.getZ() >= one.getZ() && l.getZ() <= two.getZ()));
     }
     
     public boolean isLocationInProtection(Location l) {
         return (l.getWorld().equals(world)
-        		&& (l.getX() >= protOne.getX() && l.getX() <= protTwo.getX())
+                && (l.getX() >= protOne.getX() && l.getX() <= protTwo.getX())
                 && (l.getY() >= protOne.getY() && l.getY() <= protTwo.getY())
                 && (l.getZ() >= protOne.getZ() && l.getZ() <= protTwo.getZ()));
     }
     
     public Location getFirstPoint() {
-    	return one;
+        return one;
     }
     
     public Location getSecondPoint() {
-    	return two;
+        return two;
     }
     
     public World getWorld() {
-    	return world;
+        return world;
     }
     
     public Location getWarp() {
-    	return tpPoint;
+        return tpPoint;
     }
     
     public String getName() {
-    	return name;
+        return name;
     }
     
     public String getDisplayName() {
-    	return displayName;
+        return displayName;
     }
     
     public String getParent() {
-    	return parent;
+        return parent;
     }
     
     public boolean hasParent() {
-    	return (parent != null);
+        return (parent != null);
     }
     
     public Blacklist getBlacklist() {
-    	return blacklist;
+        return blacklist;
     }
     
     public boolean getSilent() {
-    	return silent;
+        return silent;
     }
     
     public List<MineBlock> getBlocks() {
-    	return blocks;
+        return blocks;
     }
     
     public boolean getAutomatic() {
-    	return automatic;
+        return automatic;
     }
     
     public String getGenerator() {
-    	if(generator == null) generator = "RANDOM";
-    	return generator.toUpperCase();
+        if(generator == null) generator = "RANDOM";
+        return generator.toUpperCase();
     }
     
     public boolean getCooldown() {
-    	return cooldownEnabled;
+        return cooldownEnabled;
     }
     
     public int getCooldownTime() {
-    	return cooldownSeconds;
+        return cooldownSeconds;
     }
     
     public int getNextCooldown() {
-    	return (int)(nextCooldownTicks / 20);
+        return (int)(nextCooldownTicks / 20);
     }
     
     public int getResetPeriod() {
-    	return automaticSeconds;
+        return automaticSeconds;
     }
     
     public long getNextReset() {
-    	return nextAutomaticResetTick;
+        return nextAutomaticResetTick;
     }
     
     public boolean getWarned() {
-    	return warned;
+        return warned;
     }
     
     public List<Integer> getWarningTimes() {
-    	return warningTimes;
+        return warningTimes;
     }
     
     public List<Protection> getProtection() {
-    	return enabledProtection;
+        return enabledProtection;
     }
     
     public Location getFirstProtPoint() {
-    	return protOne;
+        return protOne;
     }
     
     public Location getSecondProtPoint() {
-    	return protTwo;
+        return protTwo;
     }
     
     public void setFirstPoint(Location position) {
-    	one = position;
+        one = position;
     }
     
     public void setSecondPoint(Location position) {
-    	two = position;
+        two = position;
     }
     
     public void setWarp(Location tpPoint) {
-    	this.tpPoint = tpPoint;
+        this.tpPoint = tpPoint;
     }
     
     public void setWorld(World world) {
-    	this.world = world;
+        this.world = world;
     }
     
     public void setName(String name) {
-    	this.name = name;
+        this.name = name;
     }
     
     public void setDisplayName(String displayName) {
-    	this.displayName = displayName;
+        this.displayName = displayName;
     }
     
     public void setParent(String parent) {
-    	this.parent = parent;
+        this.parent = parent;
     }
     
     public void setSilent(boolean silent) {
-    	this.silent = silent;
+        this.silent = silent;
     }
     
     public void setBlocks(List<MineBlock> blocks) {
-    	this.blocks = blocks;
+        this.blocks = blocks;
     }
     
     public void setAutomatic(boolean automatic) {
-    	this.automatic = automatic;
+        this.automatic = automatic;
     }
     
     public void setGenerator(String generator) {
-    	this.generator = generator;
+        this.generator = generator;
     }
     
     public void setCooldown(boolean cooldownEnabled) {
-    	this.cooldownEnabled = cooldownEnabled;
+        this.cooldownEnabled = cooldownEnabled;
     }
     
     public void setCooldownTime(int cooldownSeconds) {
-    	this.cooldownSeconds = cooldownSeconds;
+        this.cooldownSeconds = cooldownSeconds;
     }
     
     public void updateCooldown(long ticks) {
-    	this.nextCooldownTicks -= ticks;
+        this.nextCooldownTicks -= ticks;
     }
     
     public void resetCooldown() {
-    	this.nextCooldownTicks = cooldownSeconds * 20;
+        this.nextCooldownTicks = cooldownSeconds * 20;
     }
     
     public void setResetPeriod(int automaticSeconds) {
-    	this.automaticSeconds = automaticSeconds;
+        this.automaticSeconds = automaticSeconds;
     }
     
     public void updateTimer(long ticks) {
-    	this.nextAutomaticResetTick -= ticks;
+        this.nextAutomaticResetTick -= ticks;
     }
     
     public void resetTimer() {
-    	nextAutomaticResetTick = automaticSeconds * 20;
+        nextAutomaticResetTick = automaticSeconds * 20;
     }
     
     public void setWarned(boolean warned) {
-    	this.warned = warned;
+        this.warned = warned;
     }
     
     public void setWarningTimes(List<Integer> warningTimes) {
-    	this.warningTimes = warningTimes;
+        this.warningTimes = warningTimes;
     }
     
     public void setProtection(List<Protection> enabledProtection) {
-    	this.enabledProtection = enabledProtection;
+        this.enabledProtection = enabledProtection;
     }
 
     public void setProtectionRegion(Location[] coords) {
-    	protOne = coords[0];
-    	protTwo = coords[1];
+        protOne = coords[0];
+        protTwo = coords[1];
     }
 
     public long getNextAutomaticResetTick() {
@@ -446,22 +466,22 @@ public class Mine implements ConfigurationSerializable, Listener {
     }
     
     public Blacklist getBreakBlacklist() {
-    	return breakBlacklist;
+        return breakBlacklist;
     }
     
     public Blacklist getPlaceBlacklist() {
-    	return placeBlacklist;
+        return placeBlacklist;
     }
     
     public int getBlocksLeft() {
-    	return blocksLeft;
+        return blocksLeft;
     }
     
     public int getTotalBlocks() {
-    	return totalBlocks;
+        return totalBlocks;
     }
     
     public void updateBlocksLeft() {
-    	blocksLeft--;
+        blocksLeft--;
     }
 }

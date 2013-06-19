@@ -1,3 +1,23 @@
+/*
+ * ConfigurationUpdater.java
+ * 
+ * MineReset
+ * Copyright (C) 2013 bitWolfy <http://www.wolvencraft.com> and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.wolvencraft.MineReset.config;
 
 import java.io.File;
@@ -22,111 +42,111 @@ import com.wolvencraft.MineReset.util.MineUtil;
 import com.wolvencraft.MineReset.util.SignUtil;
 
 public class ConfigurationUpdater {
-	
-	private static FileConfiguration regionData = null;
-	private static FileConfiguration signData = null;
-	private static File regionDataFile = null;
-	private static File signDataFile = null;
-	
-	public static void updateRegions() {
-		List<String> mineList = getRegionData().getStringList("data.list-of-mines");
-		List<Mine> mines = MineReset.getMines();
-		for(String mine : mineList) {
-			if(MineUtil.getMine(mine) != null) {
-				ChatUtil.sendError("Mine '" + mine + "' is already in the system and was not imported");
-				continue;
-			}
-			String displayName = getRegionData().getString("mines." + mine + ".display-name");
-			boolean silent = getRegionData().getBoolean("mines." + mine + ".silent");
-			World world = CommandManager.getPlugin().getServer().getWorld(getRegionData().getString("mines." + mine + ".coordinates.world"));
-			Location one = new Location(world, getRegionData().getInt("mines." + mine + ".coordinates.pos0.x"), getRegionData().getInt("mines." + mine + ".coordinates.pos0.y"), getRegionData().getInt("mines." + mine + ".coordinates.pos0.z"));
-			Location two = new Location(world, getRegionData().getInt("mines." + mine + ".coordinates.pos1.x"), getRegionData().getInt("mines." + mine + ".coordinates.pos1.y"), getRegionData().getInt("mines." + mine + ".coordinates.pos1.z"));
-			Location tpPos = new Location(world, getRegionData().getDouble("mines." + mine + ".coordinates.pos2.x"), getRegionData().getDouble("mines." + mine + ".coordinates.pos2.y"), getRegionData().getDouble("mines." + mine + ".coordinates.pos2.z"), (float)getRegionData().getDouble("mines." + mine + ".coordinates.pos2.yaw"), (float)getRegionData().getDouble("mines." + mine + ".coordinates.pos2.pitch"));
-			
-			List<MineBlock> blocks = new ArrayList<MineBlock>();
-			List<String> iBlocks = getRegionData().getStringList("mines." + mine + ".materials.blocks");
-			List<Double> iWeight = getRegionData().getDoubleList("mines." + mine + ".materials.weights");
-			
-			for(int i = 0; i < iBlocks.size(); i++) {
-				String datBlock = iBlocks.get(i);
-				if(datBlock.indexOf(":") == -1) datBlock = datBlock + ":0";
-				String[] parts = datBlock.split(":");
-				blocks.add(new MineBlock(new MaterialData(Integer.parseInt(parts[0]),Byte.parseByte(parts[1])), iWeight.get(i) / 100));
-			}
-			
-			String gen = getRegionData().getString("mines." + mine + ".reset.generator");
-			if(gen == null || gen.equals("")) gen = "RANDOM";
-			boolean automatic = getRegionData().getBoolean("mines." + mine + ".reset.auto.reset");
-			int automaticSeconds = getRegionData().getInt("mines." + mine + ".reset.auto.reset-every");
-			List<Integer> warnTimes = getRegionData().getIntegerList("mines" + mine + ".reset.auto.warn-times");
-			List<Protection> enabledProt = new ArrayList<Protection>();
-			if(getRegionData().getBoolean("mines." + mine + ".protection.PVP")) enabledProt.add(Protection.BLOCK_BREAK);
-			
-			mines.add(new Mine(one, two, world, tpPos, displayName, null, mine, blocks, gen, silent, automatic, automaticSeconds, false, 0, warnTimes, enabledProt, one, two));
-			ChatUtil.sendSuccess("Mine '" + mine + "' was successfully imported into the system");
-		}
-		MineUtil.saveAll();
-	}
-	
-	public static void updateSigns() {
-		List<String> signList = getSignData().getStringList("data.list-of-signs");
-		List<SignClass> signs = MineReset.getSigns();
-		
-		for(String sign : signList) {
-			String id = SignUtil.generateId();
-			Mine parent = MineUtil.getMine(getSignData().getString("signs." + sign + ".mine"));
-			boolean reset = getSignData().getBoolean("signs." + sign + ".reset");
-			World world = CommandManager.getPlugin().getServer().getWorld(getSignData().getString("signs." + sign + ".world"));
-			Location loc = new Location(world, getSignData().getInt("signs." + sign + ".x"), getSignData().getInt("signs." + sign + ".y"), getSignData().getInt("signs." + sign + ".z"));
-			if(SignUtil.getSignAt(loc) != null) {
-				ChatUtil.sendError("A sign is already defined at (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")!");
-				continue;
-			}
-			List<String> lines = new ArrayList<String>();
-			for(int i = 0; i < 4; i++) {
-				lines.add(getSignData().getString("signs." + sign + ".lines." + i));
-			}
-			
-			signs.add(new SignClass(id, world, loc, parent.getName(), reset, lines));
-			ChatUtil.sendSuccess("A sign at (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ") was imported into the system!");
-		}
-		
-		SignUtil.saveAll();
-	}
-	
-	public static void reloadRegionData() {
-	    if (regionDataFile == null)
-	    regionDataFile = new File(CommandManager.getPlugin().getDataFolder(), "regions.yml");
-	    regionData = YamlConfiguration.loadConfiguration(regionDataFile);
+    
+    private static FileConfiguration regionData = null;
+    private static FileConfiguration signData = null;
+    private static File regionDataFile = null;
+    private static File signDataFile = null;
+    
+    public static void updateRegions() {
+        List<String> mineList = getRegionData().getStringList("data.list-of-mines");
+        List<Mine> mines = MineReset.getMines();
+        for(String mine : mineList) {
+            if(MineUtil.getMine(mine) != null) {
+                ChatUtil.sendError("Mine '" + mine + "' is already in the system and was not imported");
+                continue;
+            }
+            String displayName = getRegionData().getString("mines." + mine + ".display-name");
+            boolean silent = getRegionData().getBoolean("mines." + mine + ".silent");
+            World world = CommandManager.getPlugin().getServer().getWorld(getRegionData().getString("mines." + mine + ".coordinates.world"));
+            Location one = new Location(world, getRegionData().getInt("mines." + mine + ".coordinates.pos0.x"), getRegionData().getInt("mines." + mine + ".coordinates.pos0.y"), getRegionData().getInt("mines." + mine + ".coordinates.pos0.z"));
+            Location two = new Location(world, getRegionData().getInt("mines." + mine + ".coordinates.pos1.x"), getRegionData().getInt("mines." + mine + ".coordinates.pos1.y"), getRegionData().getInt("mines." + mine + ".coordinates.pos1.z"));
+            Location tpPos = new Location(world, getRegionData().getDouble("mines." + mine + ".coordinates.pos2.x"), getRegionData().getDouble("mines." + mine + ".coordinates.pos2.y"), getRegionData().getDouble("mines." + mine + ".coordinates.pos2.z"), (float)getRegionData().getDouble("mines." + mine + ".coordinates.pos2.yaw"), (float)getRegionData().getDouble("mines." + mine + ".coordinates.pos2.pitch"));
+            
+            List<MineBlock> blocks = new ArrayList<MineBlock>();
+            List<String> iBlocks = getRegionData().getStringList("mines." + mine + ".materials.blocks");
+            List<Double> iWeight = getRegionData().getDoubleList("mines." + mine + ".materials.weights");
+            
+            for(int i = 0; i < iBlocks.size(); i++) {
+                String datBlock = iBlocks.get(i);
+                if(datBlock.indexOf(":") == -1) datBlock = datBlock + ":0";
+                String[] parts = datBlock.split(":");
+                blocks.add(new MineBlock(new MaterialData(Integer.parseInt(parts[0]),Byte.parseByte(parts[1])), iWeight.get(i) / 100));
+            }
+            
+            String gen = getRegionData().getString("mines." + mine + ".reset.generator");
+            if(gen == null || gen.equals("")) gen = "RANDOM";
+            boolean automatic = getRegionData().getBoolean("mines." + mine + ".reset.auto.reset");
+            int automaticSeconds = getRegionData().getInt("mines." + mine + ".reset.auto.reset-every");
+            List<Integer> warnTimes = getRegionData().getIntegerList("mines" + mine + ".reset.auto.warn-times");
+            List<Protection> enabledProt = new ArrayList<Protection>();
+            if(getRegionData().getBoolean("mines." + mine + ".protection.PVP")) enabledProt.add(Protection.BLOCK_BREAK);
+            
+            mines.add(new Mine(one, two, world, tpPos, displayName, null, mine, blocks, gen, silent, automatic, automaticSeconds, false, 0, warnTimes, enabledProt, one, two));
+            ChatUtil.sendSuccess("Mine '" + mine + "' was successfully imported into the system");
+        }
+        MineUtil.saveAll();
+    }
+    
+    public static void updateSigns() {
+        List<String> signList = getSignData().getStringList("data.list-of-signs");
+        List<SignClass> signs = MineReset.getSigns();
+        
+        for(String sign : signList) {
+            String id = SignUtil.generateId();
+            Mine parent = MineUtil.getMine(getSignData().getString("signs." + sign + ".mine"));
+            boolean reset = getSignData().getBoolean("signs." + sign + ".reset");
+            World world = CommandManager.getPlugin().getServer().getWorld(getSignData().getString("signs." + sign + ".world"));
+            Location loc = new Location(world, getSignData().getInt("signs." + sign + ".x"), getSignData().getInt("signs." + sign + ".y"), getSignData().getInt("signs." + sign + ".z"));
+            if(SignUtil.getSignAt(loc) != null) {
+                ChatUtil.sendError("A sign is already defined at (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")!");
+                continue;
+            }
+            List<String> lines = new ArrayList<String>();
+            for(int i = 0; i < 4; i++) {
+                lines.add(getSignData().getString("signs." + sign + ".lines." + i));
+            }
+            
+            signs.add(new SignClass(id, world, loc, parent.getName(), reset, lines));
+            ChatUtil.sendSuccess("A sign at (" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ") was imported into the system!");
+        }
+        
+        SignUtil.saveAll();
+    }
+    
+    public static void reloadRegionData() {
+        if (regionDataFile == null)
+        regionDataFile = new File(CommandManager.getPlugin().getDataFolder(), "regions.yml");
+        regionData = YamlConfiguration.loadConfiguration(regionDataFile);
 
-	    InputStream defConfigStream = CommandManager.getPlugin().getResource("regions.yml");
-	    if (defConfigStream != null) {
-	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-	        regionData.setDefaults(defConfig);
-	    }
-	}
+        InputStream defConfigStream = CommandManager.getPlugin().getResource("regions.yml");
+        if (defConfigStream != null) {
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+            regionData.setDefaults(defConfig);
+        }
+    }
 
-	public static FileConfiguration getRegionData() {
-	    if (regionData == null)
-	        reloadRegionData();
-	    return regionData;
-	}
-	
-	public static void reloadSignData() {
-	    if (signDataFile == null)
-	    	signDataFile = new File(CommandManager.getPlugin().getDataFolder(), "signs.yml");
-	    signData = YamlConfiguration.loadConfiguration(signDataFile);
+    public static FileConfiguration getRegionData() {
+        if (regionData == null)
+            reloadRegionData();
+        return regionData;
+    }
+    
+    public static void reloadSignData() {
+        if (signDataFile == null)
+            signDataFile = new File(CommandManager.getPlugin().getDataFolder(), "signs.yml");
+        signData = YamlConfiguration.loadConfiguration(signDataFile);
 
-	    InputStream defConfigStream = CommandManager.getPlugin().getResource("signs.yml");
-	    if (defConfigStream != null) {
-	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-	        signData.setDefaults(defConfig);
-	    }
-	}
+        InputStream defConfigStream = CommandManager.getPlugin().getResource("signs.yml");
+        if (defConfigStream != null) {
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+            signData.setDefaults(defConfig);
+        }
+    }
 
-	public static FileConfiguration getSignData() {
-	    if (signData == null)
-	        reloadSignData();
-	    return signData;
-	}
+    public static FileConfiguration getSignData() {
+        if (signData == null)
+            reloadSignData();
+        return signData;
+    }
 }

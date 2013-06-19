@@ -1,3 +1,23 @@
+/*
+ * SignClass.java
+ * 
+ * MineReset
+ * Copyright (C) 2013 bitWolfy <http://www.wolvencraft.com> and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.wolvencraft.MineReset.mine;
 
 import java.util.ArrayList;
@@ -21,56 +41,56 @@ import com.wolvencraft.MineReset.util.Util;
 
 @SerializableAs("SignClass")
 public class SignClass implements ConfigurationSerializable, Listener  {
-	private String id;
-	private World world;
-	private Location loc;
-	private String parent;
-	private boolean reset;
-	private List<String> lines;
-	
-	public SignClass(String parent, Location loc, Sign sign) {
-		id = SignUtil.generateId();
-		this.parent = parent;
-		world = loc.getWorld();
-		this.loc = loc;
-		lines = new ArrayList<String>();
-		Mine parentMine = MineUtil.getMine(parent);
-		for(int i = 0; i < sign.getLines().length; i++) {
-			String line = sign.getLine(i);
-			lines.add(line);
-			sign.setLine(i, Util.parseVars(line, parentMine));
-		}
-		sign.update(true);
-	}
-	
-	public SignClass(String id, World world, Location loc, String parent, boolean reset, List<String> lines) {
-		this.id = id;
-		this.world = world;
-		this.loc = loc;
-		this.parent = parent;
-		this.reset = reset;
-		this.lines = lines;
-		Mine parentMine = MineUtil.getMine(parent);
-		
-		BlockState block = world.getBlockAt(loc).getState();
-		if(!(block instanceof Sign)) return; 
-		Sign sign = (Sign) block;
-		for(int i = 0; i < lines.size(); i++) {
-			sign.setLine(i, Util.parseVars(lines.get(i), parentMine));
-		}
-		sign.update(true);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public SignClass(Map<String, Object> me) {
-		id = (String) me.get("id");
+    private String id;
+    private World world;
+    private Location loc;
+    private String parent;
+    private boolean reset;
+    private List<String> lines;
+    
+    public SignClass(String parent, Location loc, Sign sign) {
+        id = SignUtil.generateId();
+        this.parent = parent;
+        world = loc.getWorld();
+        this.loc = loc;
+        lines = new ArrayList<String>();
+        Mine parentMine = MineUtil.getMine(parent);
+        for(int i = 0; i < sign.getLines().length; i++) {
+            String line = sign.getLine(i);
+            lines.add(line);
+            sign.setLine(i, Util.parseVars(line, parentMine));
+        }
+        sign.update(true);
+    }
+    
+    public SignClass(String id, World world, Location loc, String parent, boolean reset, List<String> lines) {
+        this.id = id;
+        this.world = world;
+        this.loc = loc;
+        this.parent = parent;
+        this.reset = reset;
+        this.lines = lines;
+        Mine parentMine = MineUtil.getMine(parent);
+        
+        BlockState block = world.getBlockAt(loc).getState();
+        if(!(block instanceof Sign)) return; 
+        Sign sign = (Sign) block;
+        for(int i = 0; i < lines.size(); i++) {
+            sign.setLine(i, Util.parseVars(lines.get(i), parentMine));
+        }
+        sign.update(true);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public SignClass(Map<String, Object> me) {
+        id = (String) me.get("id");
         world = Bukkit.getWorld((String) me.get("world"));
         loc = ((Vector) me.get("loc")).toLocation(world);
         parent = (String) me.get("parent");
         reset = (Boolean) me.get("reset");
         lines = (List<String>) me.get("lines");
-	}
-	
+    }
+    
     public Map<String, Object> serialize() {
         Map<String, Object> me = new HashMap<String, Object>();
         me.put("id", id);
@@ -87,7 +107,7 @@ public class SignClass implements ConfigurationSerializable, Listener  {
      * @return Sign id
      */
     public String getId() {
-    	return id;
+        return id;
     }
     
     /**
@@ -95,7 +115,7 @@ public class SignClass implements ConfigurationSerializable, Listener  {
      * @return The sign location
      */
     public Location getLocation() {
-    	return loc;
+        return loc;
     }
     
     /**
@@ -103,7 +123,7 @@ public class SignClass implements ConfigurationSerializable, Listener  {
      * @return The parent mine
      */
     public String getParent() {
-    	return parent;
+        return parent;
     }
     
     /**
@@ -111,7 +131,7 @@ public class SignClass implements ConfigurationSerializable, Listener  {
      * @return true if reset is enabled, false otherwise
      */
     public boolean getReset() {
-    	return reset;
+        return reset;
     }
     
     /**
@@ -119,7 +139,7 @@ public class SignClass implements ConfigurationSerializable, Listener  {
      * @return the original text on the sign
      */
     public List<String> getLines() {
-    	return lines;
+        return lines;
     }
     
     /**
@@ -127,6 +147,6 @@ public class SignClass implements ConfigurationSerializable, Listener  {
      * @param reset New value for the reset
      */
     public void setReset(boolean reset) {
-    	this.reset = reset;
+        this.reset = reset;
     }
 }

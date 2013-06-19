@@ -61,9 +61,11 @@ import com.wolvencraft.MineReset.util.Util;
  */
 
 public class MineReset extends JavaPlugin {
+    
+    private static MineReset instance;
+    
     private static WorldEditPlugin worldEditPlugin = null;
     
-    public CommandManager manager;
     private FileConfiguration languageData = null;
     private File languageDataFile = null;
     private static List<Mine> mines;
@@ -74,8 +76,7 @@ public class MineReset extends JavaPlugin {
     public void onEnable() {
         ChatUtil.log("MineReset is starting up");
         
-        manager = new CommandManager(this);
-        getCommand("mine").setExecutor(manager);
+        new CommandManager();
         
         worldEditPlugin = (WorldEditPlugin) this.getServer().getPluginManager().getPlugin("WorldEdit");
         if(worldEditPlugin != null) ChatUtil.log("WorldEdit found, using it for region selection");
@@ -192,7 +193,11 @@ public class MineReset extends JavaPlugin {
             ChatUtil.log("Could not save config to " + languageDataFile);
         }
     }
-
+    
+    public static MineReset getInstance() {
+        return instance;
+    }
+    
     public static List<Mine> getMines() {
         return mines;
     }
